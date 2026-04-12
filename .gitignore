@@ -1,0 +1,51 @@
+# OS
+.DS_Store
+*.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+env/
+
+# IDE / tools
+.idea/
+.vscode/
+.cursor/
+.claude/
+.pytest_cache/
+
+# Environment / secrets
+.env
+bigquery.json
+*.json.key
+
+# Raw source datasets (not needed, prepared data is in git)
+data/raw/
+data/bird/__MACOSX/
+data/tpcds/*.db.bak.*
+
+# Run outputs
+runs/
+
+# Databases
+*.sqlite
+
+# Logs
+*.log
+
+# Temporary
+tmp_dbg*
+terminals/
+datasets/
+
+# Legacy
+eval/
+eval_cli.py
+bench_bootstrap.py
+Dockerfile.tpcds
+configs/
+tpcds-kit/

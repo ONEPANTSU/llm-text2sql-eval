@@ -1,0 +1,41 @@
+model:
+  provider: openai
+  model: openai/gpt-4o-mini
+  base_url: ${LLM_BASE_URL}
+  api_key: ${LLM_API_KEY}
+  temperature: 0.0
+
+models:
+  qwen3-coder-next:
+    base_url: ${LLM_BASE_URL}
+    model: qwen/qwen3-coder-next
+    api_key: ${LLM_API_KEY}
+    temperature: 0.0
+
+datasets:
+  bird_root: data/bird
+  spider2_root: data/spider2
+  tpcds_duckdb: data/tpcds/duckdb.db
+
+architecture:
+  name: hybrid
+  params:
+    sgr_grounding: true
+    initial_candidates: 5
+    temperature: 0.7
+    top_p: 0.9
+    parallelism: parallel
+    max_workers: 5
+    generation_timeout: 30
+    expansion_enabled: true
+    expansion_seeds: 2
+    expansion_per_seed: 2
+    expansion_sim_threshold: 0.85
+    expansion_timeout: 15
+    aggregation_mode: hybrid
+    execution_timeout: 30
+
+comparator:
+  float_tol: 1e-4
+  column_order_insensitive: true
+  string_normalize: true

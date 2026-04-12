@@ -1,0 +1,37 @@
+# EvalSuite Configuration
+# Copy this file to config.yaml and adjust as needed.
+
+# Model configuration (any OpenAI-compatible API)
+model:
+  provider: openai
+  model: openai/gpt-4o-mini
+  base_url: ${LLM_BASE_URL}
+  api_key: ${LLM_API_KEY}
+  temperature: 0.0
+
+# Additional named models (optional)
+# Use with: uv run python -m evalsuite run --model qwen3-coder-next ...
+# models:
+#   qwen3-coder-next:
+#     base_url: ${LLM_BASE_URL}
+#     model: qwen/qwen3-coder-next
+#     api_key: ${LLM_API_KEY}
+#     temperature: 0.0
+
+# Dataset paths (relative to project root)
+datasets:
+  bird_root: data/bird
+  spider2_root: data/spider2
+  tpcds_duckdb: data/tpcds/duckdb.db
+
+# Evaluation architecture
+# Options: plain, self_consistency, sgr, sql_factory, hybrid
+architecture:
+  name: plain
+  params: {}
+
+# Result comparison settings
+comparator:
+  float_tol: 1e-4
+  column_order_insensitive: true
+  string_normalize: true
