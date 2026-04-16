@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_271",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1669.6100420012954,
+  "execution_time_ms": 22.556707997864578,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON (connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id)\nWHERE bond.bond_id = 'TR001_1_8'\nGROUP BY bond.molecule_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.901541001454461,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON (connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id)\nWHERE bond.bond_id = 'TR001_1_8'\nGROUP BY bond.molecule_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.135250004765112,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id\nWHERE bond.bond_id = 'TR001_1_8'\nGROUP BY bond.molecule_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8850410017184913,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON (connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id)\nWHERE bond.bond_id = 'TR001_1_8';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6616250033839606,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id\nWHERE bond.bond_id = 'TR001_1_8'\nGROUP BY bond.molecule_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.395417002844624,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n  COUNT(CASE WHEN atom.element = 'Cl' THEN 1 END) AS cl_count,\n  COUNT(CASE WHEN atom.element = 'C' THEN 1 END) AS c_count\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id\nWHERE bond.bond_id = 'TR001_1_8'\nGROUP BY bond.molecule_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1692.35137499345
+}

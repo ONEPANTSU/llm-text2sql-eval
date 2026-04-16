@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_416",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 4,
+  "generation_time_ms": 2396.232916995359,
+  "execution_time_ms": 1795721.879083001,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.language = 'French' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.id IN (\n    SELECT id \n    FROM cards \n    WHERE convertedManaCost IS NULL OR convertedManaCost = 0\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 431.89724999683676,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.language = 'French' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.hasPower = 0;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: cards.hasPower",
+      "exec_time_ms": 0.3484579938231036,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN foreign_data.language = 'French' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.id IN (\n    SELECT id \n    FROM cards \n    WHERE id NOT IN (\n        SELECT DISTINCT cards.id \n        FROM cards \n        JOIN foreign_data ON cards.id = foreign_data.uuid \n        WHERE foreign_data.type LIKE '%Power%'\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 45.12624999915715,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN fd.language = 'French' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.id IN (\n    SELECT id \n    FROM cards \n    WHERE id NOT IN (\n        SELECT DISTINCT c2.id \n        FROM cards c2\n        JOIN foreign_data fd2 ON c2.uuid = fd2.uuid\n        WHERE fd2.text LIKE '%power%' OR fd2.flavorText LIKE '%power%'\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1795161.9945420024,
+      "result_signature": "9805f0c35377da7675af738cbcf9ac94f38180a258b1a8f42743eae5d8815a0b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.language = 'French' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.id IN (\n    SELECT id \n    FROM cards \n    WHERE convertedManaCost IS NULL OR convertedManaCost = 0\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 79.9662499994156,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 1
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN foreign_data.language = 'French' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.id IN (\n    SELECT id \n    FROM cards \n    WHERE id NOT IN (\n        SELECT DISTINCT cards.id \n        FROM cards \n        JOIN foreign_data ON cards.id = foreign_data.uuid \n        WHERE foreign_data.type LIKE '%Power%'\n    )\n);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 3,
+        "9805f0c35377da7675af738cbcf9ac94f38180a258b1a8f42743eae5d8815a0b": 1,
+        "f11bcc7ce31d9a7843de31d60788c06ff0a28a282b6fc6938f818de2aa4eca36": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 2015.3690000006463,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN fd.language = 'French' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.uuid NOT IN (\n    SELECT DISTINCT c2.uuid\n    FROM cards c2\n    JOIN foreign_data fd2 ON c2.uuid = fd2.uuid\n    WHERE fd2.type LIKE '%Power%'\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 147.4765410021064,
+        "result_signature": "f11bcc7ce31d9a7843de31d60788c06ff0a28a282b6fc6938f818de2aa4eca36",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 1800133.5625409991
+}

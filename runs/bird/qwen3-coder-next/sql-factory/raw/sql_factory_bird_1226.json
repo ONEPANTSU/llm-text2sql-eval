@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_1226",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"T-CHO\" = (\n    SELECT MAX(\"T-CHO\")\n    FROM Laboratory\n)\nORDER BY p.Birthday ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nORDER BY p.Birthday ASC, l.\"T-CHO\" DESC\nLIMIT 1;",
+          "score": 0.8417832167832168,
+          "similarity_max": 0.7164335664335664,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"T-CHO\" = (\n    SELECT MAX(\"T-CHO\")\n    FROM Laboratory\n)\nORDER BY p.Birthday ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nORDER BY p.Birthday ASC, l.\"T-CHO\" DESC\nLIMIT 1;",
+          "score": 0.8417832167832168,
+          "similarity_max": 0.7164335664335664,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday = (SELECT MIN(Birthday) FROM Patient)\nORDER BY l.\"T-CHO\" DESC\nLIMIT 1;",
+          "score": 0.7978535353535353,
+          "similarity_max": 0.8042929292929293,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"T-CHO\" = (\n    SELECT MAX(\"T-CHO\")\n    FROM Laboratory\n)\nORDER BY p.Birthday ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"T-CHO\" = (\n    SELECT MAX(\"T-CHO\")\n    FROM Laboratory\n    WHERE \"T-CHO\" IS NOT NULL\n)\nAND p.Birthday = (\n    SELECT MIN(Birthday)\n    FROM Patient\n    WHERE ID IN (\n        SELECT ID\n        FROM Laboratory\n        WHERE \"T-CHO\" = (\n            SELECT MAX(\"T-CHO\")\n            FROM Laboratory\n            WHERE \"T-CHO\" IS NOT NULL\n        )\n    )\n)\nLIMIT 1;",
+          "score": 1.0198553948832036,
+          "similarity_max": 0.5602892102335929,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nORDER BY p.Birthday ASC, l.\"T-CHO\" DESC\nLIMIT 1;",
+          "score": 0.8417832167832168,
+          "similarity_max": 0.7164335664335664,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT p.ID, l.\"T-CHO\"\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"T-CHO\" = (\n    SELECT MAX(\"T-CHO\")\n    FROM Laboratory\n)\nORDER BY p.Birthday ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.43
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_932",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1357.879207993392,
+  "execution_time_ms": 21.560416003922,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT races.year\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.135834003041964,
+      "result_signature": "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT races.year\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON races.raceId = results.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.61437499668682,
+      "result_signature": "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT races.year\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2097500006784685,
+      "result_signature": "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT races.year\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON races.raceId = results.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.1903749986668117,
+      "result_signature": "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT races.year\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.22266599687282,
+      "result_signature": "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT DISTINCT races.year\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON races.raceId = results.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "235f34f4b2a1417fe6639a3cde4e4f8b70bdaa49802b18965877413e5bb5d389": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1379.5026670049992
+}

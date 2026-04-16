@@ -1,0 +1,154 @@
+{
+  "task_id": "spider2_57",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        month_year AS time,\n        interest_id,\n        composition,\n        RANK() OVER (ORDER BY composition DESC) AS rank_desc,\n        RANK() OVER (ORDER BY composition ASC) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        },
+        {
+          "sql": "WITH ranked_interests AS (\n  SELECT \n    month_year AS time,\n    interest_id AS interest_name,\n    composition,\n    ROW_NUMBER() OVER (ORDER BY composition DESC) AS rank_high,\n    ROW_NUMBER() OVER (ORDER BY composition ASC) AS rank_low\n  FROM interest_metrics\n)\nSELECT time, interest_name, composition\nFROM ranked_interests\nWHERE rank_high <= 10 OR rank_low <= 10\nORDER BY composition DESC, time;",
+          "score": 0.9322950819672131,
+          "similarity_max": 0.7354098360655739,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        month_year AS time,\n        interest_id,\n        composition,\n        RANK() OVER (ORDER BY composition DESC) AS rank_desc,\n        RANK() OVER (ORDER BY composition ASC) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        },
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        printf('%02d-%d', _month, _year) AS time,\n        interest_id,\n        composition,\n        ROW_NUMBER() OVER (ORDER BY composition DESC, _year, _month) AS rank_desc,\n        ROW_NUMBER() OVER (ORDER BY composition ASC, _year, _month) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+          "score": 0.9650000000000001,
+          "similarity_max": 0.6699999999999999,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        },
+        {
+          "sql": "WITH ranked_interests AS (\n  SELECT \n    month_year AS time,\n    interest_id AS interest_name,\n    composition,\n    ROW_NUMBER() OVER (ORDER BY composition DESC) AS rank_high,\n    ROW_NUMBER() OVER (ORDER BY composition ASC) AS rank_low\n  FROM interest_metrics\n)\nSELECT time, interest_name, composition\nFROM ranked_interests\nWHERE rank_high <= 10 OR rank_low <= 10\nORDER BY composition DESC, time;",
+          "score": 0.9322950819672131,
+          "similarity_max": 0.7354098360655739,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        month_year AS time,\n        interest_id,\n        composition,\n        RANK() OVER (ORDER BY composition DESC) AS rank_desc,\n        RANK() OVER (ORDER BY composition ASC) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        },
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        printf('%02d-%d', _month, _year) AS time,\n        interest_id,\n        composition,\n        ROW_NUMBER() OVER (PARTITION BY interest_id ORDER BY composition DESC, _year, _month) AS comp_rank_desc,\n        ROW_NUMBER() OVER (PARTITION BY interest_id ORDER BY composition ASC, _year, _month) AS comp_rank_asc\n    FROM interest_metrics\n),\ntop_bottom AS (\n    SELECT \n        time,\n        interest_id,\n        composition,\n        ROW_NUMBER() OVER (ORDER ...",
+          "score": 1.0382215619694395,
+          "similarity_max": 0.6235568760611205,
+          "tables_used": [
+            "ranked_interests",
+            "top_bottom",
+            "interest_metrics"
+          ]
+        },
+        {
+          "sql": "WITH ranked_interests AS (\n    SELECT \n        printf('%02d-%d', _month, _year) AS time,\n        interest_id,\n        composition,\n        ROW_NUMBER() OVER (ORDER BY composition DESC, _year, _month) AS rank_desc,\n        ROW_NUMBER() OVER (ORDER BY composition ASC, _year, _month) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+          "score": 0.9650000000000001,
+          "similarity_max": 0.6699999999999999,
+          "tables_used": [
+            "ranked_interests",
+            "interest_metrics"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH ranked_interests AS (\n    SELECT \n        month_year AS time,\n        interest_id,\n        composition,\n        RANK() OVER (ORDER BY composition DESC) AS rank_desc,\n        RANK() OVER (ORDER BY composition ASC) AS rank_asc\n    FROM interest_metrics\n)\nSELECT \n    time,\n    interest_id,\n    composition\nFROM ranked_interests\nWHERE rank_desc <= 10 OR rank_asc <= 10\nORDER BY composition DESC, time;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ranked_interests",
+        "interest_metrics"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "ORDER BY clause should come after UNION ALL not before",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.29
+  }
+}

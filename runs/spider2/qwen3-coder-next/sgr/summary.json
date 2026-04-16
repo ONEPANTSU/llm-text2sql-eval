@@ -1,0 +1,23 @@
+{
+  "benches": [
+    {
+      "bench": "spider2",
+      "total": 123,
+      "executed": 123,
+      "skipped": 0,
+      "gold_failed": 5,
+      "pred_failed": 16,
+      "ex_correct": 83,
+      "compared": 102
+    }
+  ],
+  "overall": {
+    "total": 123,
+    "executed": 123,
+    "skipped": 0,
+    "gold_failed": 5,
+    "pred_failed": 16,
+    "ex_correct": 83,
+    "compared": 102
+  }
+}

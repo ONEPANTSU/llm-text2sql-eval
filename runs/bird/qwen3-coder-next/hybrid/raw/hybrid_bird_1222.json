@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_1222",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1372.0970829963335,
+  "execution_time_ms": 11.111333995359018,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) AS count\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.CRE IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.99883399688406,
+      "result_signature": "8c2be387fae7e3514ba5ff548b9fc3cf2ee39ce8877746e630033d644c6afe0c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) AS count\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.CRE IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2911669982713647,
+      "result_signature": "8c2be387fae7e3514ba5ff548b9fc3cf2ee39ce8877746e630033d644c6afe0c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) AS count\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.CRE IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6212500011315569,
+      "result_signature": "8c2be387fae7e3514ba5ff548b9fc3cf2ee39ce8877746e630033d644c6afe0c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(*) AS count\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.CRE IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "8c2be387fae7e3514ba5ff548b9fc3cf2ee39ce8877746e630033d644c6afe0c": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1383.2836669971584
+}

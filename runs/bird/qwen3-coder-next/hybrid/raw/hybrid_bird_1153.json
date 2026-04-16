@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_1153",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2658.843249999336,
+  "execution_time_ms": 3.424333997827489,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.Diagnosis, l.Date\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.ID = 30609;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9573749994160607,
+      "result_signature": "cb059173436bf9b3eba97aceed43f5b6899a3bf1045d8e92ab8fd17556377b38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Diagnosis FROM Patient WHERE ID = 30609\nUNION ALL\nSELECT Diagnosis FROM Examination WHERE ID = 30609\nUNION ALL\nSELECT Date FROM Laboratory WHERE ID = 30609;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5384589967434295,
+      "result_signature": "ca5756b1709fa7ed039b80f6cdeda989a7c3a77080090eea7ac7c7b8aacfa695",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Diagnosis, l.Date\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.ID = 30609;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7864579965826124,
+      "result_signature": "cb059173436bf9b3eba97aceed43f5b6899a3bf1045d8e92ab8fd17556377b38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.Diagnosis, l.Date\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.ID = 30609;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.272749995929189,
+      "result_signature": "cb059173436bf9b3eba97aceed43f5b6899a3bf1045d8e92ab8fd17556377b38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.Diagnosis, l.Date\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.ID = 30609;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.45779200445394963,
+      "result_signature": "cb059173436bf9b3eba97aceed43f5b6899a3bf1045d8e92ab8fd17556377b38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT p.Diagnosis, l.Date\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.ID = 30609;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "cb059173436bf9b3eba97aceed43f5b6899a3bf1045d8e92ab8fd17556377b38": 4,
+        "ca5756b1709fa7ed039b80f6cdeda989a7c3a77080090eea7ac7c7b8aacfa695": 1,
+        "fcb7819cdfd67ed82f1ce229c8a03b27e9f347a290641c77927b5260c2c2f726": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1805.4546249986743,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT Diagnosis, 'Patient' AS Source FROM Patient WHERE ID = 30609\nUNION ALL\nSELECT Diagnosis, 'Examination' AS Source FROM Examination WHERE ID = 30609\nUNION ALL\nSELECT Date, 'Laboratory' AS Source FROM Laboratory WHERE ID = 30609;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5229580056038685,
+        "result_signature": "fcb7819cdfd67ed82f1ce229c8a03b27e9f347a290641c77927b5260c2c2f726",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4467.808084002172
+}

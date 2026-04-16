@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q30",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5649.884667000151,
+  "execution_time_ms": 133.66629200754687,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH customer_returns AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON web_returns.wr_returned_date_sk = date_dim.d_date_sk\n    JOIN customer_address ON web_returns.wr_returning_addr_sk = customer_address.ca_address_sk\n    WHERE date_dim.d_year = 2002\n      AND customer_address.ca_state = 'GA'\n    GROUP BY wr_returning_customer_sk, ca_state\n),\nstate_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM customer_returns\n    GROUP BY ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    cr.ctr_total_return\nFROM customer_returns cr\nJOIN state_avg sa ON cr.ca_state = sa.ca_state\nJOIN customer c ON cr.wr_returning_customer_sk = c.c_customer_sk\nWHERE cr.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.65979100414552,
+      "result_signature": "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH customer_returns AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON web_returns.wr_returned_date_sk = date_dim.d_date_sk\n    JOIN customer_address ON web_returns.wr_returning_addr_sk = customer_address.ca_address_sk\n    WHERE date_dim.d_year = 2002\n      AND customer_address.ca_state = 'GA'\n    GROUP BY wr_returning_customer_sk, ca_state\n),\nstate_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM customer_returns\n    GROUP BY ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    cr.ctr_total_return\nFROM customer_returns cr\nJOIN state_avg sa ON cr.ca_state = sa.ca_state\nJOIN customer c ON cr.wr_returning_customer_sk = c.c_customer_sk\nWHERE cr.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.63879100023769,
+      "result_signature": "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n        GROUP BY wr_returning_customer_sk, ca_state\n    ) AS customer_returns\n    WHERE ca_state = 'GA'\n    GROUP BY ca_state\n),\ncustomer_totals AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON wr_returned_date_sk = d_date_sk\n    JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n    WHERE d_year = 2002\n    GROUP BY wr_returning_customer_sk, ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    ct.ctr_total_return\nFROM customer_totals ct\nJOIN customer c ON ct.wr_returning_customer_sk = c.c_customer_sk\nJOIN state_avg sa ON ct.ca_state = sa.ca_state\nWHERE ct.ca_state = 'GA'\n  AND ct.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.7344170010183,
+      "result_signature": "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH state_averages AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n        GROUP BY wr_returning_customer_sk, ca_state\n    ) AS customer_returns\n    GROUP BY ca_state\n),\nhigh_return_customers AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON wr_returned_date_sk = d_date_sk\n    JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n    WHERE d_year = 2002\n    GROUP BY wr_returning_customer_sk, ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    hrc.ctr_total_return\nFROM high_return_customers hrc\nJOIN customer c ON hrc.wr_returning_customer_sk = c.c_customer_sk\nJOIN state_averages sa ON hrc.ca_state = sa.ca_state\nWHERE hrc.ca_state = 'GA'\n  AND hrc.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.150417010881938,
+      "result_signature": "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n          AND ca_state = 'GA'\n        GROUP BY wr_returning_customer_sk, ca_state\n    ) AS customer_returns\n    GROUP BY ca_state\n),\ncustomer_returns AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON wr_returned_date_sk = d_date_sk\n    JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n    WHERE d_year = 2002\n      AND ca_state = 'GA'\n    GROUP BY wr_returning_customer_sk, ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    cr.ctr_total_return\nFROM customer_returns cr\nJOIN customer c ON cr.wr_returning_customer_sk = c.c_customer_sk\nJOIN state_avg sa ON cr.ca_state = sa.ca_state\nWHERE cr.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.230791003792547,
+      "result_signature": "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS state_avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n          AND ca_state = 'GA'\n        GROUP BY wr_returning_customer_sk, ca_state\n    ) AS customer_returns\n    GROUP BY ca_state\n),\ncustomer_returns AS (\n    SELECT \n        wr_returning_customer_sk,\n        ca_state,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON wr_returned_date_sk = d_date_sk\n    JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n    WHERE d_year = 2002\n      AND ca_state = 'GA'\n    GROUP BY wr_returning_customer_sk, ca_state\n)\nSELECT \n    c.c_customer_id,\n    c.c_salutation,\n    c.c_first_name,\n    c.c_last_name,\n    c.c_preferred_cust_flag,\n    c.c_birth_day,\n    c.c_birth_month,\n    c.c_birth_year,\n    c.c_birth_country,\n    c.c_login,\n    c.c_email_address,\n    c.c_last_review_date_sk,\n    cr.ctr_total_return\nFROM customer_returns cr\nJOIN customer c ON cr.wr_returning_customer_sk = c.c_customer_sk\nJOIN state_avg sa ON cr.ca_state = sa.ca_state\nWHERE cr.ctr_total_return > 1.2 * sa.state_avg_return\nORDER BY c.c_customer_id\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4947f4c708b535768da69791a33fe20657375f32e39e2d10c9615b3b9b7ebec4": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5783.600167007535
+}

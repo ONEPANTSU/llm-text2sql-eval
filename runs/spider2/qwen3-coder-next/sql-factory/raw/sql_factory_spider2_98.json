@@ -1,0 +1,243 @@
+{
+  "task_id": "spider2_98",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH fifo_inventory AS (\n    SELECT \n        i.product_id,\n        i.location_id,\n        i.qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rn\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nassign...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "i",
+            "fifo_inventory",
+            "purchases",
+            "aq",
+            "product_picks",
+            "p",
+            "orderlines",
+            "o",
+            "ol",
+            "fi",
+            "inventory",
+            "assigned_quantities",
+            "products"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH fifo_inventory AS (\n    SELECT \n        i.product_id,\n        i.location_id,\n        i.qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rn\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nassign...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "i",
+            "fifo_inventory",
+            "purchases",
+            "aq",
+            "product_picks",
+            "p",
+            "orderlines",
+            "o",
+            "ol",
+            "fi",
+            "inventory",
+            "assigned_quantities",
+            "products"
+          ]
+        },
+        {
+          "sql": "WITH fifo_ranked AS (\n    SELECT \n        i.product_id,\n        i.qty AS inv_qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS req_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id\n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rnk\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nfirst_fit AS (\n    SELE...",
+          "score": 0.8594787644787645,
+          "similarity_max": 0.5810424710424711,
+          "tables_used": [
+            "orders",
+            "i",
+            "first_fit",
+            "purchases",
+            "orderlines",
+            "o",
+            "ol",
+            "product_totals",
+            "ff",
+            "inventory",
+            "p",
+            "products",
+            "fifo_ranked"
+          ]
+        },
+        {
+          "sql": "WITH fifo_assignments AS (\n    SELECT \n        i.product_id,\n        p.purchased,\n        i.qty AS inv_qty,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY o.id, i.product_id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS fifo_rank\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\npicked AS...",
+          "score": 0.8168339768339768,
+          "similarity_max": 0.5663320463320464,
+          "tables_used": [
+            "orders",
+            "picked",
+            "i",
+            "purchases",
+            "pk",
+            "orderlines",
+            "o",
+            "fifo_assignments",
+            "ol",
+            "fa",
+            "pr",
+            "inventory",
+            "p",
+            "products"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH fifo_inventory AS (\n    SELECT \n        i.product_id,\n        i.location_id,\n        i.qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rn\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nassign...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "i",
+            "fifo_inventory",
+            "purchases",
+            "aq",
+            "product_picks",
+            "p",
+            "orderlines",
+            "o",
+            "ol",
+            "fi",
+            "inventory",
+            "assigned_quantities",
+            "products"
+          ]
+        },
+        {
+          "sql": "WITH fifo_ranked AS (\n    SELECT \n        i.product_id,\n        i.qty AS inv_qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS req_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id\n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rnk\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nfirst_fit AS (\n    SELE...",
+          "score": 0.8594787644787645,
+          "similarity_max": 0.5810424710424711,
+          "tables_used": [
+            "orders",
+            "i",
+            "first_fit",
+            "purchases",
+            "orderlines",
+            "o",
+            "ol",
+            "product_totals",
+            "ff",
+            "inventory",
+            "p",
+            "products",
+            "fifo_ranked"
+          ]
+        },
+        {
+          "sql": "WITH fifo_assignments AS (\n    SELECT \n        i.product_id,\n        p.purchased,\n        i.qty AS inv_qty,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY o.id, i.product_id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS fifo_rank\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\npicked AS...",
+          "score": 0.8168339768339768,
+          "similarity_max": 0.5663320463320464,
+          "tables_used": [
+            "orders",
+            "picked",
+            "i",
+            "purchases",
+            "pk",
+            "orderlines",
+            "o",
+            "fifo_assignments",
+            "ol",
+            "fa",
+            "pr",
+            "inventory",
+            "p",
+            "products"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH fifo_inventory AS (\n    SELECT \n        i.product_id,\n        i.location_id,\n        i.qty,\n        p.purchased,\n        o.id AS order_id,\n        ol.qty AS order_qty,\n        ROW_NUMBER() OVER (\n            PARTITION BY i.product_id, o.id \n            ORDER BY p.purchased ASC, i.qty ASC\n        ) AS rn\n    FROM inventory i\n    JOIN purchases p ON i.purchase_id = p.id\n    JOIN orderlines ol ON i.product_id = ol.product_id\n    JOIN orders o ON ol.order_id = o.id\n    WHERE i.qty > 0\n),\nassign...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "orders",
+        "i",
+        "fifo_inventory",
+        "purchases",
+        "aq",
+        "product_picks",
+        "p",
+        "orderlines",
+        "o",
+        "ol",
+        "fi",
+        "inventory",
+        "assigned_quantities",
+        "products"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: ol.qty",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such function: LEAST",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.9
+  }
+}

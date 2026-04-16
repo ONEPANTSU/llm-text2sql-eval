@@ -1,0 +1,202 @@
+{
+  "task_id": "tpcds_q24",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    cs_bill_customer_sk AS customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name\nFROM catalog_sales cs1\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = cs1.cs_bill_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY cs_bill_customer_sk, c_customer_id, c_first_name,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "date_dim",
+            "ss",
+            "customer",
+            "catalog_sales",
+            "d2",
+            "cs1",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cs1.cs_bill_customer_sk AS customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name\nFROM catalog_sales cs1\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON cs1.cs_bill_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY cs1.cs_bill_customer_sk, c.c_customer_id, c.c_first_name, c.c_last_name\nORDER BY cs1....",
+          "score": 0.8035963165754106,
+          "similarity_max": 0.6928073668491788,
+          "tables_used": [
+            "c",
+            "ss2",
+            "store_sales",
+            "date_dim",
+            "customer",
+            "catalog_sales",
+            "d2",
+            "cs1",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    cs_bill_customer_sk AS customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name\nFROM catalog_sales cs1\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = cs1.cs_bill_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY cs_bill_customer_sk, c_customer_id, c_first_name,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "date_dim",
+            "ss",
+            "customer",
+            "catalog_sales",
+            "d2",
+            "cs1",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.c_customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name\nFROM customer c\nJOIN catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk\nJOIN date_dim d1 ON cs.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY c.c_customer_sk, c.c_customer_id, c.c_first_name, c.c_last_name\nORDER BY ...",
+          "score": 0.9456049263462932,
+          "similarity_max": 0.8087901473074137,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "cs",
+            "date_dim",
+            "ss",
+            "customer",
+            "d2",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cs1.cs_bill_customer_sk AS customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name\nFROM catalog_sales cs1\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON cs1.cs_bill_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY cs1.cs_bill_customer_sk, c.c_customer_id, c.c_first_name, c.c_last_name\nORDER BY cs1....",
+          "score": 0.8035963165754106,
+          "similarity_max": 0.6928073668491788,
+          "tables_used": [
+            "c",
+            "ss2",
+            "store_sales",
+            "date_dim",
+            "customer",
+            "catalog_sales",
+            "d2",
+            "cs1",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    cs_bill_customer_sk AS customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name\nFROM catalog_sales cs1\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = cs1.cs_bill_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY cs_bill_customer_sk, c_customer_id, c_first_name,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "date_dim",
+            "ss",
+            "customer",
+            "catalog_sales",
+            "d2",
+            "cs1",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT\n    cs_bill_customer_sk AS customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name\nFROM catalog_sales\nJOIN date_dim cd ON catalog_sales.cs_sold_date_sk = cd.d_date_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE cd.d_year IN (2001, 2002)\n  AND EXISTS (\n      SELECT 1\n      FROM store_sales\n      JOIN date_dim sd ON store_sales.ss_sold_date_sk = sd.d_date_sk\n      WHERE store_sales.ss_customer_sk = catalog_sales.cs_bill_customer_sk\n  ...",
+          "score": 1.0101757631822386,
+          "similarity_max": 0.6796484736355226,
+          "tables_used": [
+            "catalog_sales",
+            "customer",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.c_customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name\nFROM customer c\nJOIN catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk\nJOIN date_dim d1 ON cs.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY c.c_customer_sk, c.c_customer_id, c.c_first_name, c.c_last_name\nORDER BY ...",
+          "score": 0.9456049263462932,
+          "similarity_max": 0.8087901473074137,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "cs",
+            "date_dim",
+            "ss",
+            "customer",
+            "d2",
+            "catalog_sales",
+            "d1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    cs_bill_customer_sk AS customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name\nFROM catalog_sales cs1\nJOIN customer c ON cs1.cs_bill_customer_sk = c.c_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d2 ON ss.ss_sold_date_sk = d2.d_date_sk\n    WHERE ss.ss_customer_sk = cs1.cs_bill_customer_sk\n      AND d2.d_year = d1.d_year + 1\n)\nGROUP BY cs_bill_customer_sk, c_customer_id, c_first_name,...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "store_sales",
+        "date_dim",
+        "ss",
+        "customer",
+        "catalog_sales",
+        "d2",
+        "cs1",
+        "d1"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 62.1
+  }
+}

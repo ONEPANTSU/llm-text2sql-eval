@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_335",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON a.atom_id = c.atom_id2\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+          "score": 0.9016233766233768,
+          "similarity_max": 0.7967532467532467,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT molecule_id)\nFROM bond\nWHERE bond_type = 'double'\n  AND bond_id IN (\n    SELECT bond_id\n    FROM connected c\n    JOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\n    WHERE a.element = 'O'\n  );",
+          "score": 1.1052351097178683,
+          "similarity_max": 0.6895297805642633,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON a.atom_id = c.atom_id2\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+          "score": 0.9016233766233768,
+          "similarity_max": 0.7967532467532467,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT molecule_id)\nFROM bond\nWHERE bond_type = 'double'\n  AND bond_id IN (\n    SELECT bond_id\n    FROM connected c\n    JOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\n    WHERE a.element = 'O'\n  );",
+          "score": 1.1052351097178683,
+          "similarity_max": 0.6895297805642633,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id)\nFROM molecule m\nWHERE m.molecule_id IN (\n    SELECT DISTINCT b.molecule_id\n    FROM bond b\n    JOIN connected c ON b.bond_id = c.bond_id\n    JOIN atom a ON (c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id)\n    WHERE b.bond_type = 'double' AND a.element = 'O'\n);",
+          "score": 1.041532258064516,
+          "similarity_max": 0.7169354838709676,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(DISTINCT b.molecule_id)\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id\nWHERE b.bond_type = 'double' AND a.element = 'O';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "connected",
+        "c",
+        "bond",
+        "a",
+        "b",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 22.97
+  }
+}

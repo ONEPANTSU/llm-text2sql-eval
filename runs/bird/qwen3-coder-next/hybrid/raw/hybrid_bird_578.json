@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_578",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6764.787249994697,
+  "execution_time_ms": 160.2206669995212,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 42.64191699621733,
+      "result_signature": "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.340000000956934,
+      "result_signature": "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.087582995998673,
+      "result_signature": "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.229499999724794,
+      "result_signature": "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 30.63537499838276,
+      "result_signature": "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT u.Reputation\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Title = 'Understanding what Dassault iSight is doing?';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "48a067319d59695da634e1b7fdec10fc3b33cfe34b6b498400b28b49d2a554d3": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6925.03554099676
+}

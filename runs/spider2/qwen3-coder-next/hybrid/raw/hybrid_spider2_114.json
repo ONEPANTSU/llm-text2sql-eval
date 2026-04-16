@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_114",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4302.37395799486,
+  "execution_time_ms": 7.755500002531335,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT lap_positions.lap_type, COUNT(*) AS count\nFROM lap_positions\nJOIN races_ext ON lap_positions.race_id = races_ext.race_id\nJOIN retirements ON lap_positions.race_id = retirements.race_id AND lap_positions.driver_id = retirements.driver_id AND lap_positions.lap = retirements.lap\nJOIN pit_stops ON lap_positions.race_id = pit_stops.race_id AND lap_positions.driver_id = pit_stops.driver_id AND lap_positions.lap = pit_stops.lap\nWHERE races_ext.is_pit_data_available = 1\nGROUP BY lap_positions.lap_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8295420052018017,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT lp.lap_type, COUNT(*) AS count\nFROM lap_positions lp\nJOIN races_ext re ON lp.race_id = re.race_id\nWHERE re.is_pit_data_available = 1\nGROUP BY lp.lap_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0611660002032295,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT lp.lap_type, COUNT(*) AS count\nFROM lap_positions lp\nJOIN races_ext re ON lp.race_id = re.race_id\nWHERE re.is_pit_data_available = 1\nGROUP BY lp.lap_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4972500028088689,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT lap_type, COUNT(*) AS count\nFROM lap_positions\nJOIN races_ext ON lap_positions.race_id = races_ext.race_id\nWHERE races_ext.is_pit_data_available = 1\nGROUP BY lap_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0844170028576627,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT lap_positions.lap_type, COUNT(*) AS count\nFROM lap_positions\nJOIN races_ext ON lap_positions.race_id = races_ext.race_id\nJOIN retirements ON lap_positions.race_id = retirements.race_id\nJOIN pit_stops ON lap_positions.race_id = pit_stops.race_id\nWHERE races_ext.is_pit_data_available = 1\nGROUP BY lap_positions.lap_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5614999972749501,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT lp.lap_type, COUNT(*) AS count\nFROM lap_positions lp\nJOIN races_ext re ON lp.race_id = re.race_id\nWHERE re.is_pit_data_available = 1\nGROUP BY lp.lap_type;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4310.345584002789
+}

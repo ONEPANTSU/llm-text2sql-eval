@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q41",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2563.0077090027044,
+  "execution_time_ms": 83.26400000078138,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    w.w_warehouse_name,\n    i.i_item_desc,\n    SUM(ss.ss_ext_sales_price) AS total_sales_volume\nFROM \n    store_sales ss\nJOIN \n    warehouse w ON ss.ss_warehouse_sk = w.w_warehouse_sk\nJOIN \n    item i ON ss.ss_item_sk = i.i_item_sk\nJOIN \n    date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    w.w_warehouse_name,\n    i.i_item_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"ss\" does not have a column named \"ss_warehouse_sk\"\n\nCandidate bindings: : \"ss_addr_sk\"\n\nLINE 8:     warehouse w ON ss.ss_warehouse_sk = w.w_warehouse_sk\n                           ^",
+      "exec_time_ms": 27.595250008744188,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  warehouse.w_warehouse_name,\n  item.i_item_desc,\n  SUM(store_sales.ss_ext_sales_price) AS total_sales_volume\nFROM store_sales\nJOIN warehouse ON store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY warehouse.w_warehouse_name, item.i_item_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"store_sales\" does not have a column named \"ss_warehouse_sk\"\n\nCandidate bindings: : \"ss_addr_sk\"\n\nLINE 6: JOIN warehouse ON store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\n                          ^",
+      "exec_time_ms": 16.060791997006163,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    w.w_warehouse_name,\n    i.i_item_desc,\n    SUM(ss_ext_sales_price) AS total_sales_volume\nFROM \n    store_sales,\n    warehouse,\n    item,\n    date_dim\nWHERE \n    store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\n    AND store_sales.ss_item_sk = item.i_item_sk\n    AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    w.w_warehouse_name,\n    i.i_item_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"store_sales\" does not have a column named \"ss_warehouse_sk\"\n\nCandidate bindings: : \"ss_addr_sk\"\n\nLINE 11:     store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\n             ^",
+      "exec_time_ms": 12.946417002240196,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    w.w_warehouse_name,\n    i.i_item_desc,\n    SUM(ss.ss_ext_sales_price) AS total_sales_volume\nFROM \n    store_sales ss\nJOIN \n    warehouse w ON ss.ss_warehouse_sk = w.w_warehouse_sk\nJOIN \n    item i ON ss.ss_item_sk = i.i_item_sk\nJOIN \n    date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    w.w_warehouse_name,\n    i.i_item_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"ss\" does not have a column named \"ss_warehouse_sk\"\n\nCandidate bindings: : \"ss_addr_sk\"\n\nLINE 8:     warehouse w ON ss.ss_warehouse_sk = w.w_warehouse_sk\n                           ^",
+      "exec_time_ms": 11.465040995972231,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  warehouse.w_warehouse_name,\n  item.i_item_desc,\n  SUM(store_sales.ss_ext_sales_price) AS total_sales_volume\nFROM \n  store_sales\n  JOIN warehouse ON store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\n  JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n  warehouse.w_warehouse_name,\n  item.i_item_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"store_sales\" does not have a column named \"ss_warehouse_sk\"\n\nCandidate bindings: : \"ss_addr_sk\"\n\nLINE 7:   JOIN warehouse ON store_sales.ss_warehouse_sk = warehouse.w_warehouse_sk\n                            ^",
+      "exec_time_ms": 10.249500002828427,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 2646.3102080015233
+}

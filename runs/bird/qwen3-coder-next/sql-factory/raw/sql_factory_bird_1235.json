@@ -1,0 +1,179 @@
+{
+  "task_id": "bird_1235",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < (SELECT AVG(RBC) FROM Laboratory);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < 4.0;",
+          "score": 0.9230769230769231,
+          "similarity_max": 0.7538461538461538,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < (SELECT AVG(RBC) FROM Laboratory);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m%d', 'now') < strftime('%m%d', p.Birthday)) AS Age, e.Diagnosis\nFROM Patient p\nJOIN Examination e ON p.ID = e.ID\nWHERE p.ID IN (\n    SELECT ID FROM Laboratory WHERE RBC < (SELECT AVG(RBC) FROM Laboratory)\n);",
+          "score": 1.048943661971831,
+          "similarity_max": 0.602112676056338,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < 4.0;",
+          "score": 0.9230769230769231,
+          "similarity_max": 0.7538461538461538,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < (SELECT AVG(RBC) FROM Laboratory);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m%d', 'now') < strftime('%m%d', p.Birthday)) AS Age, e.Diagnosis\nFROM Patient p\nJOIN Examination e ON p.ID = e.ID\nWHERE p.ID IN (\n    SELECT ID FROM Laboratory WHERE RBC < (SELECT AVG(RBC) FROM Laboratory)\n);",
+          "score": 1.048943661971831,
+          "similarity_max": 0.602112676056338,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < 4.0;",
+          "score": 0.9230769230769231,
+          "similarity_max": 0.7538461538461538,
+          "tables_used": [
+            "Laboratory",
+            "e",
+            "Examination",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT p.ID, p.Birthday, e.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nJOIN Examination e ON p.ID = e.ID\nWHERE l.RBC < (SELECT AVG(RBC) FROM Laboratory);",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "e",
+        "Examination",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 20.0
+  }
+}

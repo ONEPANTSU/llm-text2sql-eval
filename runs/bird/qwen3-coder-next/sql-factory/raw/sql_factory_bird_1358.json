@@ -1,0 +1,149 @@
+{
+  "task_id": "bird_1358",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT first_name, last_name\nFROM member\nWHERE member_id = (\n    SELECT link_to_member\n    FROM income\n    ORDER BY date_received ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT first_name || ' ' || last_name AS full_name\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE income.date_received = (\n    SELECT MIN(date_received)\n    FROM income\n)\nLIMIT 1;",
+          "score": 0.9640688259109313,
+          "similarity_max": 0.47186234817813766,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT first_name, last_name\nFROM member\nWHERE member_id = (\n    SELECT link_to_member\n    FROM income\n    ORDER BY date_received ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT first_name || ' ' || last_name AS full_name\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE income.date_received = (\n    SELECT MIN(date_received)\n    FROM income\n)\nLIMIT 1;",
+          "score": 0.9640688259109313,
+          "similarity_max": 0.47186234817813766,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nORDER BY i.date_received ASC\nLIMIT 1;",
+          "score": 0.8894736842105263,
+          "similarity_max": 0.6210526315789473,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT first_name, last_name\nFROM member\nWHERE member_id = (\n    SELECT link_to_member\n    FROM income\n    ORDER BY date_received ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nWHERE i.date_received = (\n    SELECT MIN(date_received)\n    FROM income\n);",
+          "score": 0.977421052631579,
+          "similarity_max": 0.6451578947368422,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT first_name || ' ' || last_name AS full_name\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE income.date_received = (\n    SELECT MIN(date_received)\n    FROM income\n)\nLIMIT 1;",
+          "score": 0.9640688259109313,
+          "similarity_max": 0.47186234817813766,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT first_name, last_name\nFROM member\nWHERE member_id = (\n    SELECT link_to_member\n    FROM income\n    ORDER BY date_received ASC\n    LIMIT 1\n);",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "income",
+        "member"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.04
+  }
+}

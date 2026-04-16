@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1318",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7917.29508300341,
+  "execution_time_ms": 4.76666699978523,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3164169979281723,
+      "result_signature": "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8952089992817491,
+      "result_signature": "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3811670030700043,
+      "result_signature": "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6166660023154691,
+      "result_signature": "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.33629200333962217,
+      "result_signature": "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(a.link_to_member) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f507daa4b4c77b8613e874aee37286363d1a70c0184be39692de77b5c9910760": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7922.1360410010675
+}

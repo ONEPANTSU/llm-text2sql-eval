@@ -11,6 +11,16 @@ models:
     model: qwen/qwen3-coder-next
     api_key: ${LLM_API_KEY}
     temperature: 0.0
+  qwen3-32b:
+    base_url: ${LLM_BASE_URL}
+    model: qwen/qwen3-32b
+    api_key: ${LLM_API_KEY}
+    temperature: 0.0
+  gpt-oss-120b:
+    base_url: ${LLM_BASE_URL}
+    model: gpt-oss-120b
+    api_key: ${LLM_API_KEY}
+    temperature: 0.0
 
 datasets:
   bird_root: data/bird

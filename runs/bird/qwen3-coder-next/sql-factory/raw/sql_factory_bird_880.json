@@ -1,0 +1,211 @@
+{
+  "task_id": "bird_880",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nrace_853 AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 853\n),\nnext_race AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 854\n)\nSELECT \n    CASE \n     ...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "d",
+            "paul_races",
+            "r",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH paul_races AS (\n    SELECT \n        r.raceId,\n        r.name AS race_name,\n        res.position,\n        res.fastestLapSpeed,\n        res.rank\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n),\nrace_853 AS (\n    SELECT \n        raceId,\n        fastestLapSpeed\n    FROM paul_races\n    WHERE raceId = 853\n),\nother_races AS (\n    SELECT \n        raceId,\n        fastestLapSpeed\n...",
+          "score": 0.9119791666666668,
+          "similarity_max": 0.6760416666666667,
+          "tables_used": [
+            "drivers",
+            "d",
+            "paul_races",
+            "other_races",
+            "r",
+            "fastest_other_race",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nrace_853 AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 853\n),\nnext_race AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 854\n)\nSELECT \n    CASE \n     ...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "d",
+            "paul_races",
+            "r",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nranked_races AS (\n    SELECT \n        round, \n        fastestLapSpeed,\n        LEAD(fastestLapSpeed) OVER (ORDER BY round) AS next_race_speed\n    FROM paul_races\n)\nSELECT \n    CASE \n        WHEN ...",
+          "score": 1.038191515752915,
+          "similarity_max": 0.7236169684941701,
+          "tables_used": [
+            "drivers",
+            "d",
+            "ranked_races",
+            "paul_races",
+            "r",
+            "res",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH paul_races AS (\n    SELECT \n        r.raceId,\n        r.name AS race_name,\n        res.position,\n        res.fastestLapSpeed,\n        res.rank\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n),\nrace_853 AS (\n    SELECT \n        raceId,\n        fastestLapSpeed\n    FROM paul_races\n    WHERE raceId = 853\n),\nother_races AS (\n    SELECT \n        raceId,\n        fastestLapSpeed\n...",
+          "score": 0.9119791666666668,
+          "similarity_max": 0.6760416666666667,
+          "tables_used": [
+            "drivers",
+            "d",
+            "paul_races",
+            "other_races",
+            "r",
+            "fastest_other_race",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nrace_853 AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 853\n),\nnext_race AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 854\n)\nSELECT \n    CASE \n     ...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "d",
+            "paul_races",
+            "r",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nranked_races AS (\n    SELECT \n        round, \n        fastestLapSpeed,\n        LEAD(fastestLapSpeed) OVER (ORDER BY round) AS next_race_speed\n    FROM paul_races\n)\nSELECT \n    CASE \n        WHEN ...",
+          "score": 1.038191515752915,
+          "similarity_max": 0.7236169684941701,
+          "tables_used": [
+            "drivers",
+            "d",
+            "ranked_races",
+            "paul_races",
+            "r",
+            "res",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nranked_races AS (\n    SELECT round, fastestLapSpeed,\n           ROW_NUMBER() OVER (ORDER BY round) AS rn\n    FROM paul_races\n),\nrace_853 AS (\n    SELECT fastestLapSpeed AS speed_853\n    FROM ranked_races\n    WHERE ro...",
+          "score": 0.9277070063694268,
+          "similarity_max": 0.7445859872611464,
+          "tables_used": [
+            "drivers",
+            "d",
+            "ranked_races",
+            "paul_races",
+            "r",
+            "res",
+            "r853",
+            "races",
+            "race_853",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH paul_races AS (\n    SELECT r.raceId, r.name AS race_name, r.round, res.fastestLapSpeed\n    FROM results res\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN races r ON res.raceId = r.raceId\n    WHERE d.forename = 'Paul' AND d.surname = 'di Resta'\n      AND res.fastestLapSpeed IS NOT NULL\n),\nrace_853 AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 853\n),\nnext_race AS (\n    SELECT fastestLapSpeed\n    FROM paul_races\n    WHERE round = 854\n)\nSELECT \n    CASE \n     ...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "drivers",
+        "d",
+        "paul_races",
+        "r",
+        "res",
+        "r853",
+        "races",
+        "race_853",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 9.72
+  }
+}

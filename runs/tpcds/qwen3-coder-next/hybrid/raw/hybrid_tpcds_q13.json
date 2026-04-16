@@ -1,0 +1,155 @@
+{
+  "task_id": "tpcds_q13",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3520.4977500106907,
+  "execution_time_ms": 187.9930409922963,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    AVG(ss_quantity) AS avg_ss_quantity,\n    AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\n    AND (\n        (customer_demographics.cd_marital_status IN ('M', 'S', 'D') \n         AND customer_demographics.cd_education_status IN ('Advanced Degree', 'College', '4 Year Degree'))\n        OR (store_sales.ss_sales_price > 100.00)\n        OR (household_demographics.hd_dep_count > 2)\n    )\n    AND (\n        (customer_address.ca_country = 'United States')\n        OR (customer_address.ca_state IN ('TX', 'CA', 'NY', 'FL', 'GA'))\n        OR (store_sales.ss_net_profit BETWEEN 100 AND 500)\n    );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 63.36987500253599,
+      "result_signature": "6619c712332561c7db59046cee3e0c7acc6a350d147dd8e0d68d6bb18ca5436b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  AVG(ss_quantity) AS avg_ss_quantity,\n  AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n  AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n  SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM\n  store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n  JOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\n  JOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\n  JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nWHERE\n  date_dim.d_year = 2001\n  AND (\n    (customer_demographics.cd_marital_status IN ('M', 'D', 'S') AND customer_demographics.cd_education_status IN ('Advanced Degree', 'College', '2 yr Degree'))\n    OR (store_sales.ss_sales_price > 100.00 AND household_demographics.hd_dep_count > 2)\n    OR (customer_address.ca_country = 'United States' AND customer_address.ca_state IN ('CA', 'TX', 'NY'))\n  )\n  AND (\n    (customer_address.ca_country = 'United States')\n    OR (customer_address.ca_state IN ('FL', 'GA', 'OH'))\n    OR (store_sales.ss_net_profit BETWEEN 100 AND 500)\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 33.58820801076945,
+      "result_signature": "9ed39f6e29b4e9c6006da04f70a68b5d64c4a1b2dbeaaefa299eb9738a45b428",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  AVG(ss_quantity) AS avg_ss_quantity,\n  AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n  AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n  SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM \n  store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n  JOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\n  JOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\n  JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nWHERE \n  date_dim.d_year = 2001\n  AND (\n    (customer_demographics.cd_marital_status IN ('M', 'S', 'D') OR\n     customer_demographics.cd_education_status IN ('College', 'Advanced Degree', 'Secondary') OR\n     store_sales.ss_sales_price > 100.0)\n    OR\n    (household_demographics.hd_dep_count > 3)\n  )\n  AND (\n    (customer_address.ca_country = 'United States' OR\n     customer_address.ca_state IN ('CA', 'TX', 'FL', 'NY', 'IL') OR\n     store_sales.ss_net_profit BETWEEN 100 AND 500)\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 31.122207990847528,
+      "result_signature": "95d3bf780531fd8e6d9905b560db9ad3214f41773a03d6555069f73d212c74e8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    AVG(ss_quantity) AS avg_ss_quantity,\n    AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\n    AND (\n        (customer_demographics.cd_marital_status IN ('M', 'S', 'D') \n         OR customer_demographics.cd_education_status IN ('College', 'Advanced Degree', 'Secondary'))\n        OR (store_sales.ss_sales_price > 100.00 AND household_demographics.hd_dep_count > 2)\n    )\n    AND (\n        (customer_address.ca_country = 'United States')\n        OR (customer_address.ca_state IN ('TX', 'CA', 'NY'))\n        OR (store_sales.ss_net_profit BETWEEN 100 AND 500)\n    );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 30.297916993731633,
+      "result_signature": "bcf00ea160f26af0fa6c29add5d7e44352bb8fc2b368a9c5d8674c1df7640e93",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n  AVG(ss_quantity) AS avg_ss_quantity,\n  AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n  AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n  SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM store_sales\nJOIN store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nJOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 2001\n  AND (\n    (customer_demographics.cd_marital_status IN ('M', 'S', 'D') AND customer_demographics.cd_education_status IN ('Advanced Degree', 'College', '4 Year Degree'))\n    OR (store_sales.ss_sales_price > 100.0 AND household_demographics.hd_dep_count > 2)\n    OR (customer_address.ca_country = 'United States' AND customer_address.ca_state IN ('CA', 'TX', 'NY'))\n  )\n  AND (\n    (customer_address.ca_country = 'United States')\n    OR (customer_address.ca_state IN ('FL', 'GA', 'OH'))\n    OR (store_sales.ss_net_profit BETWEEN 100 AND 500)\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.55216700118035,
+      "result_signature": "9bbd2260cdf05f0d98f31c7c051516f13af0f7677322d49c7ea1f09db683b755",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT \n    AVG(ss_quantity) AS avg_ss_quantity,\n    AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\n    AND (\n        (customer_demographics.cd_marital_status IN ('M', 'S', 'D') \n         AND customer_demographics.cd_education_status IN ('Advanced Degree', 'College', '4 Year Degree'))\n        OR (store_sales.ss_sales_price > 100.00)\n        OR (household_demographics.hd_dep_count > 2)\n    )\n    AND (\n        (customer_address.ca_country = 'United States')\n        OR (customer_address.ca_state IN ('TX', 'CA', 'NY', 'FL', 'GA'))\n        OR (store_sales.ss_net_profit BETWEEN 100 AND 500)\n    );",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6619c712332561c7db59046cee3e0c7acc6a350d147dd8e0d68d6bb18ca5436b": 1,
+        "9ed39f6e29b4e9c6006da04f70a68b5d64c4a1b2dbeaaefa299eb9738a45b428": 1,
+        "95d3bf780531fd8e6d9905b560db9ad3214f41773a03d6555069f73d212c74e8": 1,
+        "bcf00ea160f26af0fa6c29add5d7e44352bb8fc2b368a9c5d8674c1df7640e93": 1,
+        "9bbd2260cdf05f0d98f31c7c051516f13af0f7677322d49c7ea1f09db683b755": 1,
+        "e9f38af155811722b286f056c488f96674698a74bd207b8b9fd18906def5a52f": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 3666.4722910063574,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT\n  AVG(ss_quantity) AS avg_ss_quantity,\n  AVG(ss_ext_sales_price) AS avg_ss_ext_sales_price,\n  AVG(ss_ext_wholesale_cost) AS avg_ss_ext_wholesale_cost,\n  SUM(ss_ext_wholesale_cost) AS sum_ss_ext_wholesale_cost\nFROM store_sales\nJOIN store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nJOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 2001\n  AND (\n    (customer_demographics.cd_marital_status IN ('W', 'U') AND customer_demographics.cd_education_status IN ('Secondary', 'Doctorate'))\n    OR (store_sales.ss_sales_price > 150.0 AND household_demographics.hd_dep_count > 3)\n    OR (customer_address.ca_country = 'United States' AND customer_address.ca_state IN ('WA', 'VA', 'PA'))\n  )\n  AND (\n    (customer_address.ca_country = 'United States')\n    OR (customer_address.ca_state IN ('NC', 'SC', 'AL'))\n    OR (store_sales.ss_net_profit BETWEEN 200 AND 600)\n  );",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 54.55583400907926,
+        "result_signature": "e9f38af155811722b286f056c488f96674698a74bd207b8b9fd18906def5a52f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7375.092832997325
+}

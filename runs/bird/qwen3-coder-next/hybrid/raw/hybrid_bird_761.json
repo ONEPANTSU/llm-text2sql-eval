@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_761",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2792.82937500102,
+  "execution_time_ms": 2.1022079963586293,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (\n    SELECT 0.79 * AVG(weight_kg)\n    FROM superhero\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0758340067695826,
+      "result_signature": "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (SELECT 0.79 * AVG(weight_kg) FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2320830026292242,
+      "result_signature": "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (SELECT AVG(weight_kg) * 0.79 FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.20512499759206548,
+      "result_signature": "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (SELECT AVG(weight_kg) * 0.79 FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.19683299615280703,
+      "result_signature": "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (SELECT AVG(weight_kg) * 0.79 FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.19050000264542177,
+      "result_signature": "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN gender g ON s.gender_id = g.id\nWHERE g.gender = 'Male'\n  AND s.weight_kg > (SELECT AVG(weight_kg) * 0.79 FROM superhero);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f9c0bbdb1f34c9ca8b54db70affd318ac3981cf897cdddf4cf0ebe87f7c80cff": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2794.9852500023553
+}

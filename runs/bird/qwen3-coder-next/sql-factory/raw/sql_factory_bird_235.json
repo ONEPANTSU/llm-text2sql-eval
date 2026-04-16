@@ -1,0 +1,141 @@
+{
+  "task_id": "bird_235",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'Br' AND m.label LIKE '%carcinogen%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'Br' AND m.label LIKE '%carcinogen%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id)\nFROM molecule m\nINNER JOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'Br' AND m.label LIKE '%carcinogen%';",
+          "score": 0.9031428571428572,
+          "similarity_max": 0.7937142857142857,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'Br' AND m.label LIKE '%carcinogen%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM (\n    SELECT DISTINCT m.molecule_id\n    FROM molecule m\n    JOIN atom a ON m.molecule_id = a.molecule_id\n    WHERE a.element = 'Br' AND LOWER(m.label) LIKE '%carcinogen%'\n) sub;",
+          "score": 1.0274725274725274,
+          "similarity_max": 0.7450549450549451,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE m.label LIKE '%carcinogen%' \n  AND EXISTS (\n    SELECT 1 \n    FROM atom a \n    WHERE a.molecule_id = m.molecule_id \n      AND a.element = 'Br'\n  );",
+          "score": 0.975027027027027,
+          "similarity_max": 0.649945945945946,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'Br' AND m.label LIKE '%carcinogen%';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "a",
+        "m",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.2,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.41
+  }
+}

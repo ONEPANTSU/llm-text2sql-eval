@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_1168",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2019.3477499997243,
+  "execution_time_ms": 6.47854200360598,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT MIN(Laboratory.Date) AS oldest_sjs_lab_date, strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS age_at_arrival\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.Diagnosis = 'SJS'\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9834169981768355,
+      "result_signature": "39919d631cb71ceec745573470af3ae721ac629965da2abef8133c9ebb69dd65",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT MIN(Laboratory.Date) AS lab_date, (strftime('%Y', 'now') - strftime('%Y', Patient.Birthday)) - (strftime('%m%d', 'now') < strftime('%m%d', Patient.Birthday)) AS age_at_admission\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5512919999309815,
+      "result_signature": "514ba8714ca470d5e29d59c63a2503c78c91c10b6d88d6d1201d3488d7da62fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    MIN(Laboratory.Date) AS oldest_sjs_lab_date,\n    CAST((julianday(Patient.\"First Date\") - julianday(Patient.Birthday)) / 365.25 AS INTEGER) AS age_at_arrival\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.Diagnosis = 'SJS'\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9456659972784109,
+      "result_signature": "6cef3fae1711e402af2d5b5281ceb524f6edae3b1e003077e98f5c7b65e64e33",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT MIN(Laboratory.Date) AS oldest_sjs_lab_date, (strftime('%Y', Patient.First Date) - strftime('%Y', Patient.Birthday)) - (strftime('%m-%d', Patient.First Date) < strftime('%m-%d', Patient.Birthday)) AS age_at_admission\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.Diagnosis = 'SJS'\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.12425000022631139,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT MIN(Laboratory.Date) AS oldest_sjs_lab_date, strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS age_at_arrival\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.Diagnosis = 'SJS'\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5086669989395887,
+      "result_signature": "39919d631cb71ceec745573470af3ae721ac629965da2abef8133c9ebb69dd65",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT MIN(Laboratory.Date) AS oldest_sjs_lab_date, strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS age_at_arrival\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.Diagnosis = 'SJS'\nORDER BY Patient.Birthday DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "39919d631cb71ceec745573470af3ae721ac629965da2abef8133c9ebb69dd65": 2,
+        "514ba8714ca470d5e29d59c63a2503c78c91c10b6d88d6d1201d3488d7da62fb": 1,
+        "6cef3fae1711e402af2d5b5281ceb524f6edae3b1e003077e98f5c7b65e64e33": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2213.0496250028955,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4239.862834001542
+}

@@ -1,0 +1,145 @@
+{
+  "task_id": "spider2_94",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT L1_model, COUNT(*) AS total_count\nFROM (\n    SELECT L1_model FROM model\n    UNION ALL\n    SELECT L1_model FROM stack_ok\n) AS combined_models\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "model",
+            "stack_ok"
+          ]
+        },
+        {
+          "sql": "SELECT L1_model, COUNT(*) AS total_count\nFROM model\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+          "score": 0.7227272727272728,
+          "similarity_max": 0.6545454545454545,
+          "tables_used": [
+            "model"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT L1_model, COUNT(*) AS total_count\nFROM (\n    SELECT L1_model FROM model\n    UNION ALL\n    SELECT L1_model FROM stack_ok\n) AS combined_models\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "model",
+            "stack_ok"
+          ]
+        },
+        {
+          "sql": "WITH model_counts AS (\n    SELECT L1_model, COUNT(*) AS total_count\n    FROM model\n    GROUP BY L1_model\n)\nSELECT L1_model, total_count\nFROM model_counts\nWHERE total_count = (SELECT MAX(total_count) FROM model_counts);",
+          "score": 1.0687426556991775,
+          "similarity_max": 0.46251468860164513,
+          "tables_used": [
+            "model_counts",
+            "model"
+          ]
+        },
+        {
+          "sql": "WITH combined_models AS (\n    SELECT L1_model FROM model\n    UNION ALL\n    SELECT L1_model FROM stack_ok\n)\nSELECT L1_model, COUNT(*) AS total_count\nFROM combined_models\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+          "score": 0.9463768115942027,
+          "similarity_max": 0.8072463768115943,
+          "tables_used": [
+            "stack_ok",
+            "model",
+            "combined_models"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT L1_model, COUNT(*) AS total_count\nFROM (\n    SELECT L1_model FROM model\n    UNION ALL\n    SELECT L1_model FROM stack_ok\n) AS combined_models\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "model",
+            "stack_ok"
+          ]
+        },
+        {
+          "sql": "WITH model_counts AS (\n    SELECT L1_model, COUNT(*) AS total_count\n    FROM model\n    GROUP BY L1_model\n)\nSELECT L1_model, total_count\nFROM model_counts\nWHERE total_count = (SELECT MAX(total_count) FROM model_counts);",
+          "score": 1.0687426556991775,
+          "similarity_max": 0.46251468860164513,
+          "tables_used": [
+            "model_counts",
+            "model"
+          ]
+        },
+        {
+          "sql": "WITH model_category_counts AS (\n    SELECT L1_model, COUNT(*) AS occurrence_count\n    FROM model\n    GROUP BY L1_model\n)\nSELECT L1_model, occurrence_count\nFROM model_category_counts\nORDER BY occurrence_count DESC\nLIMIT 1;",
+          "score": 0.9990783410138249,
+          "similarity_max": 0.6018433179723502,
+          "tables_used": [
+            "model",
+            "model_category_counts"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT L1_model, COUNT(*) AS total_count\nFROM (\n    SELECT L1_model FROM model\n    UNION ALL\n    SELECT L1_model FROM stack_ok\n) AS combined_models\nGROUP BY L1_model\nORDER BY total_count DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "model",
+        "stack_ok"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.77
+  }
+}

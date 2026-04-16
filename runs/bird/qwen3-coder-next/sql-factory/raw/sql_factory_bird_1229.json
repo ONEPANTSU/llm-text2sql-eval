@@ -1,0 +1,164 @@
+{
+  "task_id": "bird_1229",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG > (SELECT MAX(CASE WHEN Description LIKE '%TG%' THEN CAST(SUBSTR(Description, INSTR(Description, ':') + 1) AS REAL) END) \n              FROM Patient \n              WHERE Description LIKE '%TG%')\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TG > (SELECT TG FROM Laboratory WHERE TG IS NOT NULL ORDER BY TG LIMIT 1) -- This subquery is not valid; need a fixed threshold\nAND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) > 50;",
+          "score": 0.968903743315508,
+          "similarity_max": 0.4621925133689839,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG > (SELECT MAX(CASE WHEN Description LIKE '%TG%' THEN CAST(SUBSTR(Description, INSTR(Description, ':') + 1) AS REAL) END) \n              FROM Patient \n              WHERE Description LIKE '%TG%')\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TG > (SELECT TG FROM Laboratory WHERE TG IS NOT NULL ORDER BY TG LIMIT 1) -- This subquery is not valid; need a fixed threshold\nAND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) > 50;",
+          "score": 0.968903743315508,
+          "similarity_max": 0.4621925133689839,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG > 150\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50;",
+          "score": 0.9186363636363636,
+          "similarity_max": 0.5627272727272727,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "Patient",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG > (SELECT MAX(CASE WHEN Description LIKE '%TG%' THEN CAST(SUBSTR(Description, INSTR(Description, ':') + 1) AS REAL) END) \n              FROM Patient \n              WHERE Description LIKE '%TG%')\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT DISTINCT p.ID\n    FROM Laboratory l\n    JOIN Patient p ON l.ID = p.ID\n    WHERE l.TG > (\n        SELECT CAST(SUBSTR(p2.Description, INSTR(p2.Description, ':') + 1) AS REAL)\n        FROM Patient p2\n        WHERE p2.Description LIKE 'TG:%'\n        LIMIT 1\n    )\n    AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50\n) t;",
+          "score": 1.1187906976744186,
+          "similarity_max": 0.6624186046511628,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p2",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TG > (SELECT TG FROM Laboratory WHERE TG IS NOT NULL ORDER BY TG LIMIT 1) -- This subquery is not valid; need a fixed threshold\nAND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) > 50;",
+          "score": 0.968903743315508,
+          "similarity_max": 0.4621925133689839,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG > (SELECT MAX(CASE WHEN Description LIKE '%TG%' THEN CAST(SUBSTR(Description, INSTR(Description, ':') + 1) AS REAL) END) \n              FROM Patient \n              WHERE Description LIKE '%TG%')\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) > 50;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 11.88
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "task_id": "bird_701",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH top_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts\nWHERE OwnerUserId = (SELECT Id FROM top_user);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH most_influential_user AS (\n    SELECT Id, Reputation\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\nuser_posts AS (\n    SELECT p.Score\n    FROM posts p\n    JOIN most_influential_user u ON p.OwnerUserId = u.Id\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM user_posts;",
+          "score": 1.131463068181818,
+          "similarity_max": 0.6370738636363636,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "most_influential_user",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH top_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts\nWHERE OwnerUserId = (SELECT Id FROM top_user);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH most_influential_user AS (\n    SELECT Id, Reputation\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\nuser_posts AS (\n    SELECT p.Score\n    FROM posts p\n    JOIN most_influential_user u ON p.OwnerUserId = u.Id\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM user_posts;",
+          "score": 1.131463068181818,
+          "similarity_max": 0.6370738636363636,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "most_influential_user",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH most_influential_user AS (\n    SELECT Id AS UserId\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\nuser_posts AS (\n    SELECT Score\n    FROM posts\n    WHERE OwnerUserId = (SELECT UserId FROM most_influential_user)\n)\nSELECT \n    ROUND(CAST(SUM(CASE WHEN Score > 50 THEN 1.0 ELSE 0.0 END) AS REAL) * 100 / COUNT(*), 2) AS percentage\nFROM user_posts;",
+          "score": 1.0083705357142858,
+          "similarity_max": 0.5832589285714286,
+          "tables_used": [
+            "posts",
+            "users"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH top_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts\nWHERE OwnerUserId = (SELECT Id FROM top_user);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH most_influential_user AS (\n    SELECT Id, Reputation\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\nuser_posts AS (\n    SELECT p.Score\n    FROM posts p\n    JOIN most_influential_user u ON p.OwnerUserId = u.Id\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM user_posts;",
+          "score": 1.131463068181818,
+          "similarity_max": 0.6370738636363636,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "most_influential_user",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH most_influential_user AS (\n    SELECT Id AS UserId\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\nuser_posts AS (\n    SELECT Score\n    FROM posts\n    WHERE OwnerUserId = (SELECT UserId FROM most_influential_user)\n)\nSELECT \n    ROUND(CAST(SUM(CASE WHEN Score > 50 THEN 1.0 ELSE 0.0 END) AS REAL) * 100 / COUNT(*), 2) AS percentage\nFROM user_posts;",
+          "score": 1.0083705357142858,
+          "similarity_max": 0.5832589285714286,
+          "tables_used": [
+            "posts",
+            "users"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH top_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts\nWHERE OwnerUserId = (SELECT Id FROM top_user);",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "posts",
+        "users"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \",\": syntax error",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 64.43
+  }
+}

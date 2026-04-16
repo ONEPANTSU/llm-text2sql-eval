@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_10",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1646.6266669958713,
+  "execution_time_ms": 15.111208005691878,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT frpm.\"FRPM Count (Ages 5-17)\"\nFROM satscores\nJOIN frpm ON satscores.cds = frpm.CDSCode\nORDER BY satscores.AvgScrRead DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.53020799998194,
+      "result_signature": "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE s.AvgScrRead IS NOT NULL\nORDER BY s.AvgScrRead DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.3902499999385327,
+      "result_signature": "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT f.`FRPM Count (Ages 5-17)`\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nORDER BY s.AvgScrRead DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2574160029762425,
+      "result_signature": "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nORDER BY s.AvgScrRead DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8164579960284755,
+      "result_signature": "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT f.`FRPM Count (Ages 5-17)`\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE s.AvgScrRead IS NOT NULL\nORDER BY s.AvgScrRead DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4476659998763353,
+      "result_signature": "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT f.`FRPM Count (Ages 5-17)`\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE s.AvgScrRead IS NOT NULL\nORDER BY s.AvgScrRead DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "9c1651f1ffcd03153267b0c6d6fff9e7896eea4e45dc616253c81b2cdd6fcadc": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1661.9336660005501
+}

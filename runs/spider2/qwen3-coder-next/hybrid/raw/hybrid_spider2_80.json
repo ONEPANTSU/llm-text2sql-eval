@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_80",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7393.766207998851,
+  "execution_time_ms": 11.050707995309494,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH feb_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(o.order_id) AS finished_orders_feb\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 2\n    GROUP BY s.hub_id\n),\nmar_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(o.order_id) AS finished_orders_mar\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 3\n    GROUP BY s.hub_id\n),\nhub_comparison AS (\n    SELECT \n        COALESCE(f.hub_id, m.hub_id) AS hub_id,\n        COALESCE(f.finished_orders_feb, 0) AS finished_orders_feb,\n        COALESCE(m.finished_orders_mar, 0) AS finished_orders_mar\n    FROM feb_orders f\n    FULL OUTER JOIN mar_orders m ON f.hub_id = m.hub_id\n)\nSELECT \n    h.hub_name\nFROM hub_comparison hc\nJOIN hubs h ON hc.hub_id = h.hub_id\nWHERE hc.finished_orders_feb > 0\n  AND (hc.finished_orders_mar - hc.finished_orders_feb) * 1.0 / hc.finished_orders_feb > 0.20;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8990409919060767,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    JOIN hubs h ON s.hub_id = h.hub_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 2\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    JOIN hubs h ON s.hub_id = h.hub_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 3\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n)\nSELECT \n    m.hub_name\nFROM feb_orders f\nJOIN mar_orders m ON f.hub_id = m.hub_id\nWHERE m.mar_orders > f.feb_orders * 1.2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6459170108428225,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 2\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 3\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n)\nSELECT \n    m.hub_name\nFROM feb_orders f\nJOIN mar_orders m ON f.hub_id = m.hub_id\nWHERE m.mar_orders > f.feb_orders * 1.20;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4160419921390712,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH feb_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(o.order_id) AS feb_orders\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 2\n      AND o.order_created_year = 2023\n    GROUP BY s.hub_id\n),\nmar_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(o.order_id) AS mar_orders\n    FROM orders o\n    JOIN stores s ON o.store_id = s.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month = 3\n      AND o.order_created_year = 2023\n    GROUP BY s.hub_id\n),\ngrowth AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COALESCE(feb.feb_orders, 0) AS feb_orders,\n        COALESCE(mar.mar_orders, 0) AS mar_orders,\n        CASE \n            WHEN COALESCE(feb.feb_orders, 0) > 0 \n            THEN (COALESCE(mar.mar_orders, 0) - COALESCE(feb.feb_orders, 0)) * 1.0 / COALESCE(feb.feb_orders, 0)\n            ELSE NULL\n        END AS growth_ratio\n    FROM hubs h\n    LEFT JOIN feb_orders feb ON h.hub_id = feb.hub_id\n    LEFT JOIN mar_orders mar ON h.hub_id = mar.hub_id\n)\nSELECT hub_name\nFROM growth\nWHERE growth_ratio > 0.20;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9904579928843305,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 2\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 3\n    GROUP BY h.hub_id, h.hub_name\n)\nSELECT \n    m.hub_name\nFROM feb_orders f\nJOIN mar_orders m ON f.hub_id = m.hub_id\nWHERE m.mar_orders > f.feb_orders * 1.2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5587080086115748,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 2\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'finished' \n      AND o.order_created_month = 3\n      AND o.order_created_year = 2023\n    GROUP BY h.hub_id, h.hub_name\n)\nSELECT \n    m.hub_name\nFROM feb_orders f\nJOIN mar_orders m ON f.hub_id = m.hub_id\nWHERE m.mar_orders > f.feb_orders * 1.20;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7405.016165997949
+}

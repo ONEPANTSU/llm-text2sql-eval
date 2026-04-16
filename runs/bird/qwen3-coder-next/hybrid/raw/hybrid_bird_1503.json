@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1503",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1496.813875004591,
+  "execution_time_ms": 976.743291997991,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT products.Description\nFROM transactions_1k\nJOIN products ON transactions_1k.ProductID = products.ProductID;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.104499999608379,
+      "result_signature": "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.Description\nFROM transactions_1k t\nJOIN products p ON t.ProductID = p.ProductID;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2682080016238615,
+      "result_signature": "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT p.Description\nFROM transactions_1k t\nJOIN products p ON t.ProductID = p.ProductID\nWHERE t.ProductID IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3105000034556724,
+      "result_signature": "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT p.Description\nFROM transactions_1k t\nJOIN products p ON t.ProductID = p.ProductID\nWHERE t.TransactionID IN (\n    SELECT TransactionID\n    FROM transactions_1k\n    WHERE CardID IN (\n        SELECT CardID\n        FROM customers\n        WHERE Currency = 'EUR'\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 968.7459159977152,
+      "result_signature": "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT p.Description\nFROM transactions_1k t\nJOIN products p ON t.ProductID = p.ProductID;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4135839990340173,
+      "result_signature": "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT p.Description\nFROM transactions_1k t\nJOIN products p ON t.ProductID = p.ProductID;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0f94430c628467f0f342beca3b595fd2974343c9f630ab940fc12460221c093f": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2473.661624993838
+}

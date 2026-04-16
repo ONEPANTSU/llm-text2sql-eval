@@ -1,0 +1,177 @@
+{
+  "task_id": "bird_297",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.molecule_id\nFROM atom a\nWHERE a.element = 'C'\nAND a.molecule_id NOT IN (\n    SELECT DISTINCT a2.molecule_id\n    FROM atom a2\n    JOIN molecule m ON a2.molecule_id = m.molecule_id\n    WHERE LOWER(m.label) LIKE '%carcinogenic%'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'C'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a2 ON m2.molecule_id = a2.molecule_id\n    WHERE a2.element = 'C'\n    AND m2.label LIKE '%carcinogen%'\n);",
+          "score": 1.1496408045977011,
+          "similarity_max": 0.7007183908045977,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.molecule_id\nFROM atom a\nWHERE a.element = 'C'\nAND a.molecule_id NOT IN (\n    SELECT DISTINCT a2.molecule_id\n    FROM atom a2\n    JOIN molecule m ON a2.molecule_id = m.molecule_id\n    WHERE LOWER(m.label) LIKE '%carcinogenic%'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'C'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a2 ON m2.molecule_id = a2.molecule_id\n    WHERE a2.element = 'C'\n    AND m2.label LIKE '%carcinogen%'\n);",
+          "score": 1.1496408045977011,
+          "similarity_max": 0.7007183908045977,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\nAND NOT EXISTS (\n    SELECT 1\n    FROM molecule m2\n    JOIN atom a2 ON m2.molecule_id = a2.molecule_id\n    WHERE m2.molecule_id = m.molecule_id\n    AND a2.element = 'C'\n    AND m2.label LIKE '%carcinogen%'\n);",
+          "score": 1.14375,
+          "similarity_max": 0.7124999999999999,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.molecule_id\nFROM atom a\nWHERE a.element = 'C'\nAND a.molecule_id NOT IN (\n    SELECT DISTINCT a2.molecule_id\n    FROM atom a2\n    JOIN molecule m ON a2.molecule_id = m.molecule_id\n    WHERE LOWER(m.label) LIKE '%carcinogenic%'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE a.element = 'C'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a2 ON m2.molecule_id = a2.molecule_id\n    WHERE a2.element = 'C'\n    AND m2.label LIKE '%carcinogen%'\n);",
+          "score": 1.1496408045977011,
+          "similarity_max": 0.7007183908045977,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\nAND NOT EXISTS (\n    SELECT 1\n    FROM molecule m2\n    JOIN atom a2 ON m2.molecule_id = a2.molecule_id\n    WHERE m2.molecule_id = m.molecule_id\n    AND a2.element = 'C'\n    AND m2.label LIKE '%carcinogen%'\n);",
+          "score": 1.14375,
+          "similarity_max": 0.7124999999999999,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "a",
+            "m",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT a.molecule_id\nFROM atom a\nWHERE a.element = 'C'\nAND a.molecule_id NOT IN (\n    SELECT DISTINCT a2.molecule_id\n    FROM atom a2\n    JOIN molecule m ON a2.molecule_id = m.molecule_id\n    WHERE LOWER(m.label) LIKE '%carcinogenic%'\n);",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "a",
+        "m",
+        "a2",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.71
+  }
+}

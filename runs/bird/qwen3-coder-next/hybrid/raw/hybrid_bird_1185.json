@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1185",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2147.8921250018175,
+  "execution_time_ms": 3.1792080044397153,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (t_nov.T-CHO - t_dec.T-CHO) * 1.0 / t_nov.T-CHO AS decrease_rate\nFROM \n    Patient p\n    JOIN Laboratory t_nov ON p.ID = t_nov.ID AND t_nov.Date LIKE '1981-11%'\n    JOIN Laboratory t_dec ON p.ID = t_dec.ID AND t_dec.Date LIKE '1981-12%'\nWHERE \n    p.Birthday = '1959-02-18'\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: t_nov.T",
+      "exec_time_ms": 0.5096669992781244,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (t_nov.T-CHO - t_dec.T-CHO) * 1.0 / t_nov.T-CHO AS decrease_rate\nFROM \n    Patient p\nJOIN \n    Laboratory t_nov ON p.ID = t_nov.ID\nJOIN \n    Laboratory t_dec ON p.ID = t_dec.ID\nWHERE \n    p.Birthday = '1959-02-18'\n    AND t_nov.Date LIKE '1981-11%'\n    AND t_dec.Date LIKE '1981-12%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: t_nov.T",
+      "exec_time_ms": 0.20604200108209625,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    (t_nov.`T-CHO` - t_dec.`T-CHO`) * 1.0 / t_nov.`T-CHO` AS decrease_rate\nFROM \n    Patient p\nJOIN \n    Laboratory t_nov ON p.ID = t_nov.ID\nJOIN \n    Laboratory t_dec ON p.ID = t_dec.ID\nWHERE \n    p.Birthday = '1959-02-18'\n    AND t_nov.Date LIKE '1981-11%'\n    AND t_dec.Date LIKE '1981-12%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8961669993586838,
+      "result_signature": "d43fd83905bfd4ce897e1c1af51f8cc1714215e36b3d10e8a5da3c36f7084093",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (t_nov.`T-CHO` - t_dec.`T-CHO`) * 1.0 / t_nov.`T-CHO` AS decrease_rate\nFROM \n    Patient p\nJOIN \n    Laboratory t_nov ON p.ID = t_nov.ID\nJOIN \n    Laboratory t_dec ON p.ID = t_dec.ID\nWHERE \n    p.Birthday = '1959-02-18'\n    AND t_nov.Date LIKE '1981-11%'\n    AND t_dec.Date LIKE '1981-12%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2469160026521422,
+      "result_signature": "d43fd83905bfd4ce897e1c1af51f8cc1714215e36b3d10e8a5da3c36f7084093",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT (nov.T-CHO - dec.T-CHO) * 1.0 / nov.T-CHO AS decrease_rate\nFROM Patient p\nJOIN Laboratory nov ON p.ID = nov.ID\nJOIN Laboratory dec ON p.ID = dec.ID\nWHERE p.Birthday = '1959-02-18'\n  AND nov.Date LIKE '1981-11%'\n  AND dec.Date LIKE '1981-12%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: nov.T",
+      "exec_time_ms": 0.1327499994658865,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    (t_nov.`T-CHO` - t_dec.`T-CHO`) * 1.0 / t_nov.`T-CHO` AS decrease_rate\nFROM \n    Patient p\nJOIN \n    Laboratory t_nov ON p.ID = t_nov.ID\nJOIN \n    Laboratory t_dec ON p.ID = t_dec.ID\nWHERE \n    p.Birthday = '1959-02-18'\n    AND t_nov.Date LIKE '1981-11%'\n    AND t_dec.Date LIKE '1981-12%';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d43fd83905bfd4ce897e1c1af51f8cc1714215e36b3d10e8a5da3c36f7084093": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2151.1761250003474
+}

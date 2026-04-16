@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_668",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nORDER BY COUNT(b.Id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nORDER BY COUNT(b.Id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nHAVING COUNT(*) = (\n    SELECT MAX(badge_count)\n    FROM (\n        SELECT COUNT(*) AS badge_count\n        FROM badges\n        GROUP BY UserId\n    )\n);",
+          "score": 1.1099999999999999,
+          "similarity_max": 0.58,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 0.8855769230769232,
+          "similarity_max": 0.8288461538461538,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nORDER BY COUNT(b.Id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nHAVING COUNT(*) = (\n    SELECT MAX(badge_count)\n    FROM (\n        SELECT COUNT(*) AS badge_count\n        FROM badges\n        GROUP BY UserId\n    )\n);",
+          "score": 1.1099999999999999,
+          "similarity_max": 0.58,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT u.DisplayName\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nHAVING COUNT(b.Id) = (\n    SELECT MAX(badge_count)\n    FROM (\n        SELECT COUNT(b2.Id) AS badge_count\n        FROM badges b2\n        GROUP BY b2.UserId\n    )\n);",
+          "score": 0.9570175438596492,
+          "similarity_max": 0.7859649122807018,
+          "tables_used": [
+            "u",
+            "b2",
+            "users",
+            "b",
+            "badges"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT u.DisplayName\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nGROUP BY u.Id, u.DisplayName\nORDER BY COUNT(b.Id) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "badges",
+        "users",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 64.76
+  }
+}

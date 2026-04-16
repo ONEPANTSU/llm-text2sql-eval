@@ -1,0 +1,72 @@
+{
+  "task_id": "bird_378",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT id\nFROM cards\nWHERE hasFoil = 1 AND hasNonFoil = 1\nAND (cardKingdomFoilId IS NOT NULL OR cardKingdomId IS NOT NULL)\nAND id IN (\n    SELECT c1.id\n    FROM cards c1\n    JOIN cards c2 ON c1.faceName = c2.faceName OR c1.id = c2.cardKingdomFoilId OR c1.id = c2.cardKingdomId\n    WHERE c1.hasFoil = 1 AND c2.hasNonFoil = 1\n    AND c1.id != c2.id\n)",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c2",
+            "c1",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.id\nFROM cards c\nWHERE c.hasFoil = 1\n  AND c.hasNonFoil = 1\n  AND c.id IN (\n    SELECT c2.id\n    FROM cards c2\n    WHERE c2.hasFoil = 0\n      AND c2.hasNonFoil = 1\n      AND c2.id != c.id\n      AND (\n        c2.faceName LIKE '%' || c.faceName || '%'\n        OR c.faceName LIKE '%' || c2.faceName || '%'\n        OR c2.name LIKE '%' || c.name || '%'\n        OR c.name LIKE '%' || c2.name || '%'\n      )\n  );",
+          "score": 1.011520737327189,
+          "similarity_max": 0.4769585253456221,
+          "tables_used": [
+            "c",
+            "c2",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT id\nFROM cards\nWHERE hasFoil = 1 AND hasNonFoil = 1\nAND (cardKingdomFoilId IS NOT NULL OR cardKingdomId IS NOT NULL)\nAND id IN (\n    SELECT c1.id\n    FROM cards c1\n    JOIN cards c2 ON c1.faceName = c2.faceName OR c1.id = c2.cardKingdomFoilId OR c1.id = c2.cardKingdomId\n    WHERE c1.hasFoil = 1 AND c2.hasNonFoil = 1\n    AND c1.id != c2.id\n)",
+    "meta": {
+      "score": 1.3499999999999999,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c2",
+        "c1",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 527446.65
+  }
+}

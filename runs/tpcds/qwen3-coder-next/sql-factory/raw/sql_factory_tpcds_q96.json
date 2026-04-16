@@ -1,0 +1,66 @@
+{
+  "task_id": "tpcds_q96",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    s_store_name,\n    d_year,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    household_demographics.hd_dep_count = 7\n    AND store.s_store_name = 'ese'\n    AND time_dim.t_hour = 20\n    AND time_dim.t...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced table \"time_dim\" not found!\nCandidate tables: \"date_dim",
+        "count": 1
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"t_hour\" not found in FROM clause!\nCandidate bin",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 24.18
+  }
+}

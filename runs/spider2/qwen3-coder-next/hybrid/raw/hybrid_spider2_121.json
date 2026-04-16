@@ -1,0 +1,135 @@
+{
+  "task_id": "spider2_121",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3357.7370830025757,
+  "execution_time_ms": 21.600666994345374,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH team_swaps AS (\n    SELECT \n        d.year,\n        d.driver_id,\n        d.first_round,\n        d.last_round,\n        d.constructor_id,\n        LAG(cr.constructor_id) OVER (PARTITION BY d.driver_id, d.year ORDER BY r.round) AS prev_constructor_id,\n        LEAD(cr.constructor_id) OVER (PARTITION BY d.driver_id, d.year ORDER BY r.round) AS next_constructor_id\n    FROM drives d\n    JOIN races r ON d.year = r.year AND d.first_round = r.round\n    JOIN results res ON d.driver_id = res.driver_id AND d.year = res.race_id\n    JOIN constructor_results cr ON res.race_id = cr.race_id\n    WHERE d.last_round - d.first_round < 3\n),\nfiltered_drives AS (\n    SELECT \n        year,\n        driver_id,\n        first_round,\n        last_round\n    FROM team_swaps\n    WHERE prev_constructor_id IS NOT NULL \n      AND next_constructor_id IS NOT NULL \n      AND prev_constructor_id != next_constructor_id\n)\nSELECT \n    AVG(first_round) AS avg_first_round_missed,\n    AVG(last_round) AS avg_last_round_missed\nFROM filtered_drives;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.6501669965218753,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH missed_races AS (\n    SELECT \n        d.year,\n        d.driver_id,\n        d.first_round,\n        d.last_round,\n        d.constructor_id AS before_constructor_id,\n        cr_after.constructor_id AS after_constructor_id\n    FROM drives d\n    JOIN races r_before ON d.year = r_before.year AND d.first_round = r_before.round\n    JOIN races r_after ON d.year = r_after.year AND (d.last_round + 1) = r_after.round\n    JOIN results res_before ON res_before.race_id = r_before.race_id AND res_before.driver_id = d.driver_id\n    JOIN constructor_results cr_before ON cr_before.race_id = r_before.race_id AND cr_before.constructor_id = res_before.constructor_id\n    JOIN results res_after ON res_after.race_id = r_after.race_id AND res_after.driver_id = d.driver_id\n    JOIN constructor_results cr_after ON cr_after.race_id = r_after.race_id AND cr_after.constructor_id = res_after.constructor_id\n    WHERE (d.last_round - d.first_round + 1) < 3\n      AND cr_before.constructor_id != cr_after.constructor_id\n)\nSELECT \n    AVG(first_round) AS avg_first_round_missed,\n    AVG(last_round) AS avg_last_round_missed\nFROM missed_races;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7609580061398447,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH driver_missed_races AS (\n    SELECT \n        d.year,\n        d.driver_id,\n        d.first_round,\n        d.last_round,\n        d.constructor_id AS current_constructor_id,\n        LAG(d.constructor_id) OVER (PARTITION BY d.driver_id, d.year ORDER BY d.first_round) AS prev_constructor_id,\n        LEAD(d.constructor_id) OVER (PARTITION BY d.driver_id, d.year ORDER BY d.last_round) AS next_constructor_id\n    FROM drives d\n    INNER JOIN races r ON d.year = r.year AND d.first_round = r.round\n),\nfiltered_drivers AS (\n    SELECT \n        driver_id,\n        first_round,\n        last_round\n    FROM driver_missed_races\n    WHERE (last_round - first_round + 1) < 3\n      AND (\n          (prev_constructor_id IS NOT NULL AND prev_constructor_id != current_constructor_id) \n          OR \n          (next_constructor_id IS NOT NULL AND next_constructor_id != current_constructor_id)\n      )\n)\nSELECT \n    AVG(first_round) AS avg_first_round_missed,\n    AVG(last_round) AS avg_last_round_missed\nFROM filtered_drivers;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1057499941671267,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "WITH missed_races AS (\n    SELECT \n        d.year,\n        d.driver_id,\n        d.first_round,\n        d.last_round,\n        d.constructor_id AS before_constructor_id,\n        cr_after.constructor_id AS after_constructor_id\n    FROM drives d\n    JOIN races r_before ON d.year = r_before.year AND d.first_round = r_before.round\n    JOIN races r_after ON d.year = r_after.year AND (d.last_round + 1) = r_after.round\n    JOIN results res_before ON res_before.race_id = r_before.race_id AND res_before.driver_id = d.driver_id\n    JOIN constructor_results cr_before ON cr_before.race_id = r_before.race_id AND cr_before.constructor_id = res_before.constructor_id\n    JOIN results res_after ON res_after.race_id = r_after.race_id AND res_after.driver_id = d.driver_id\n    JOIN constructor_results cr_after ON cr_after.race_id = r_after.race_id AND cr_after.constructor_id = res_after.constructor_id\n    WHERE (d.last_round - d.first_round + 1) < 3\n      AND cr_before.constructor_id != cr_after.constructor_id\n)\nSELECT \n    AVG(first_round) AS avg_first_round_missed,\n    AVG(last_round) AS avg_last_round_missed\nFROM missed_races;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3379.5002499973634
+}

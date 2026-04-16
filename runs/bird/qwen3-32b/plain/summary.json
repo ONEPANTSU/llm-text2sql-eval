@@ -1,0 +1,23 @@
+{
+  "benches": [
+    {
+      "bench": "bird_sqlite",
+      "total": 1534,
+      "executed": 1534,
+      "skipped": 0,
+      "gold_failed": 0,
+      "pred_failed": 1131,
+      "ex_correct": 115,
+      "compared": 403
+    }
+  ],
+  "overall": {
+    "total": 1534,
+    "executed": 1534,
+    "skipped": 0,
+    "gold_failed": 0,
+    "pred_failed": 1131,
+    "ex_correct": 115,
+    "compared": 403
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_1120",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 5,
+  "generation_time_ms": 9815.696124998794,
+  "execution_time_ms": 301.06399999931455,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player ON (\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X2 = Player.player_api_id OR\n    Match.away_player_X3 = Player.player_api_id OR\n    Match.away_player_X4 = Player.player_api_id OR\n    Match.away_player_X5 = Player.player_api_id OR\n    Match.away_player_X6 = Player.player_api_id OR\n    Match.away_player_X7 = Player.player_api_id OR\n    Match.away_player_X8 = Player.player_api_id OR\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X10 = Player.player_api_id OR\n    Match.away_player_X11 = Player.player_api_id\n)\nWHERE Player.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.77258300036192,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player ON (\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X2 = Player.player_api_id OR\n    Match.away_player_X3 = Player.player_api_id OR\n    Match.away_player_X4 = Player.player_api_id OR\n    Match.away_player_X5 = Player.player_api_id OR\n    Match.away_player_X6 = Player.player_api_id OR\n    Match.away_player_X7 = Player.player_api_id OR\n    Match.away_player_X8 = Player.player_api_id OR\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X10 = Player.player_api_id OR\n    Match.away_player_X11 = Player.player_api_id\n)\nWHERE Player.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.04125000152271,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player p1 ON Match.away_player_X1 = p1.player_api_id\nJOIN Player p2 ON Match.away_player_X2 = p2.player_api_id\nJOIN Player p3 ON Match.away_player_X3 = p3.player_api_id\nJOIN Player p4 ON Match.away_player_X4 = p4.player_api_id\nJOIN Player p5 ON Match.away_player_X5 = p5.player_api_id\nJOIN Player p6 ON Match.away_player_X6 = p6.player_api_id\nJOIN Player p7 ON Match.away_player_X7 = p7.player_api_id\nJOIN Player p8 ON Match.away_player_X8 = p8.player_api_id\nJOIN Player p9 ON Match.away_player_X1 = p9.player_api_id\nJOIN Player p10 ON Match.away_player_X10 = p10.player_api_id\nJOIN Player p11 ON Match.away_player_X11 = p11.player_api_id\nWHERE p1.player_name = 'Daan Smith'\n   OR p2.player_name = 'Daan Smith'\n   OR p3.player_name = 'Daan Smith'\n   OR p4.player_name = 'Daan Smith'\n   OR p5.player_name = 'Daan Smith'\n   OR p6.player_name = 'Daan Smith'\n   OR p7.player_name = 'Daan Smith'\n   OR p8.player_name = 'Daan Smith'\n   OR p9.player_name = 'Daan Smith'\n   OR p10.player_name = 'Daan Smith'\n   OR p11.player_name = 'Daan Smith'\n   OR p1.player_name = 'Filipe Ferreira'\n   OR p2.player_name = 'Filipe Ferreira'\n   OR p3.player_name = 'Filipe Ferreira'\n   OR p4.player_name = 'Filipe Ferreira'\n   OR p5.player_name = 'Filipe Ferreira'\n   OR p6.player_name = 'Filipe Ferreira'\n   OR p7.player_name = 'Filipe Ferreira'\n   OR p8.player_name = 'Filipe Ferreira'\n   OR p9.player_name = 'Filipe Ferreira'\n   OR p10.player_name = 'Filipe Ferreira'\n   OR p11.player_name = 'Filipe Ferreira';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.30683300452074,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player ON (\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X2 = Player.player_api_id OR\n    Match.away_player_X3 = Player.player_api_id OR\n    Match.away_player_X4 = Player.player_api_id OR\n    Match.away_player_X5 = Player.player_api_id OR\n    Match.away_player_X6 = Player.player_api_id OR\n    Match.away_player_X7 = Player.player_api_id OR\n    Match.away_player_X8 = Player.player_api_id OR\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X10 = Player.player_api_id OR\n    Match.away_player_X11 = Player.player_api_id\n)\nWHERE Player.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.21312500402564,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player ON (\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X2 = Player.player_api_id OR\n    Match.away_player_X3 = Player.player_api_id OR\n    Match.away_player_X4 = Player.player_api_id OR\n    Match.away_player_X5 = Player.player_api_id OR\n    Match.away_player_X6 = Player.player_api_id OR\n    Match.away_player_X7 = Player.player_api_id OR\n    Match.away_player_X8 = Player.player_api_id OR\n    Match.away_player_X1 = Player.player_api_id OR\n    Match.away_player_X10 = Player.player_api_id OR\n    Match.away_player_X11 = Player.player_api_id\n)\nWHERE Player.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.65758300124435,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 11
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT SUM(Match.away_team_goal) AS total_away_goals\nFROM Match\nJOIN Player p1 ON Match.away_player_X1 = p1.player_api_id\nJOIN Player p2 ON Match.away_player_X2 = p2.player_api_id\nJOIN Player p3 ON Match.away_player_X3 = p3.player_api_id\nJOIN Player p4 ON Match.away_player_X4 = p4.player_api_id\nJOIN Player p5 ON Match.away_player_X5 = p5.player_api_id\nJOIN Player p6 ON Match.away_player_X6 = p6.player_api_id\nJOIN Player p7 ON Match.away_player_X7 = p7.player_api_id\nJOIN Player p8 ON Match.away_player_X8 = p8.player_api_id\nJOIN Player p9 ON Match.away_player_X1 = p9.player_api_id\nJOIN Player p10 ON Match.away_player_X10 = p10.player_api_id\nJOIN Player p11 ON Match.away_player_X11 = p11.player_api_id\nWHERE p1.player_name = 'Daan Smith'\n   OR p2.player_name = 'Daan Smith'\n   OR p3.player_name = 'Daan Smith'\n   OR p4.player_name = 'Daan Smith'\n   OR p5.player_name = 'Daan Smith'\n   OR p6.player_name = 'Daan Smith'\n   OR p7.player_name = 'Daan Smith'\n   OR p8.player_name = 'Daan Smith'\n   OR p9.player_name = 'Daan Smith'\n   OR p10.player_name = 'Daan Smith'\n   OR p11.player_name = 'Daan Smith'\n   OR p1.player_name = 'Filipe Ferreira'\n   OR p2.player_name = 'Filipe Ferreira'\n   OR p3.player_name = 'Filipe Ferreira'\n   OR p4.player_name = 'Filipe Ferreira'\n   OR p5.player_name = 'Filipe Ferreira'\n   OR p6.player_name = 'Filipe Ferreira'\n   OR p7.player_name = 'Filipe Ferreira'\n   OR p8.player_name = 'Filipe Ferreira'\n   OR p9.player_name = 'Filipe Ferreira'\n   OR p10.player_name = 'Filipe Ferreira'\n   OR p11.player_name = 'Filipe Ferreira';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 10116.866332995414
+}

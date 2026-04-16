@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_49",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 13898.756458991556,
+  "execution_time_ms": 36.35637499974109,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN -ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_change\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_customers_months AS (\n    SELECT DISTINCT \n        ct.customer_id,\n        m.month\n    FROM customer_transactions ct\n    CROSS JOIN (\n        SELECT DISTINCT strftime('%Y-%m', txn_date) AS month \n        FROM customer_transactions\n    ) m\n),\ncustomer_monthly_with_zeros AS (\n    SELECT \n        acm.customer_id,\n        acm.month,\n        COALESCE(mb.monthly_change, 0) AS monthly_change\n    FROM all_customers_months acm\n    LEFT JOIN monthly_balances mb \n        ON acm.customer_id = mb.customer_id AND acm.month = mb.month\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month,\n        monthly_change,\n        SUM(monthly_change) OVER (\n            PARTITION BY customer_id \n            ORDER BY month \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM customer_monthly_with_zeros\n)\nSELECT \n    customer_id,\n    month,\n    monthly_change,\n    cumulative_balance\nFROM cumulative_balances\nORDER BY customer_id ASC, month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.75891698745545,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN -ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_net_change\n    FROM customer_transactions ct\n    JOIN customer_nodes cn ON ct.customer_id = cn.customer_id\n    JOIN customer_regions cr ON cn.region_id = cr.region_id\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_months AS (\n    SELECT DISTINCT strftime('%Y-%m', txn_date) AS month\n    FROM customer_transactions\n),\nall_customers AS (\n    SELECT DISTINCT customer_id\n    FROM customer_transactions\n),\ncustomer_months AS (\n    SELECT \n        ac.customer_id,\n        am.month\n    FROM all_customers ac\n    CROSS JOIN all_months am\n),\nmonthly_with_zeros AS (\n    SELECT \n        cm.customer_id,\n        cm.month,\n        COALESCE(mb.monthly_net_change, 0) AS monthly_net_change\n    FROM customer_months cm\n    LEFT JOIN monthly_balances mb \n        ON cm.customer_id = mb.customer_id \n        AND cm.month = mb.month\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month,\n        monthly_net_change,\n        SUM(monthly_net_change) OVER (\n            PARTITION BY customer_id \n            ORDER BY month \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM monthly_with_zeros\n)\nSELECT \n    customer_id,\n    month,\n    monthly_net_change,\n    cumulative_balance\nFROM cumulative_balances\nORDER BY customer_id ASC, month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6021250010235235,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN -ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_net_change\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_months AS (\n    SELECT DISTINCT strftime('%Y-%m', txn_date) AS month\n    FROM customer_transactions\n),\nall_customers AS (\n    SELECT DISTINCT customer_id\n    FROM customer_transactions\n),\ncustomer_month_combinations AS (\n    SELECT c.customer_id, m.month\n    FROM all_customers c\n    CROSS JOIN all_months m\n),\nbalanced_months AS (\n    SELECT \n        cm.customer_id,\n        cm.month,\n        COALESCE(mb.monthly_net_change, 0) AS monthly_net_change\n    FROM customer_month_combinations cm\n    LEFT JOIN monthly_balances mb \n        ON cm.customer_id = mb.customer_id \n        AND cm.month = mb.month\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month,\n        monthly_net_change,\n        SUM(monthly_net_change) OVER (\n            PARTITION BY customer_id \n            ORDER BY month \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM balanced_months\n)\nSELECT \n    customer_id,\n    month,\n    monthly_net_change AS monthly_change,\n    cumulative_balance AS closing_balance\nFROM cumulative_balances\nORDER BY customer_id ASC, month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6343340064631775,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN -ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_net_change\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_months AS (\n    SELECT DISTINCT strftime('%Y-%m', txn_date) AS month\n    FROM customer_transactions\n),\ncustomer_months AS (\n    SELECT DISTINCT ct.customer_id, am.month\n    FROM customer_transactions ct\n    CROSS JOIN all_months am\n),\ncustomer_monthly_balances AS (\n    SELECT \n        cm.customer_id,\n        cm.month,\n        COALESCE(mb.monthly_net_change, 0) AS monthly_change\n    FROM customer_months cm\n    LEFT JOIN monthly_balances mb \n        ON cm.customer_id = mb.customer_id AND cm.month = mb.month\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month,\n        monthly_change,\n        SUM(monthly_change) OVER (\n            PARTITION BY customer_id \n            ORDER BY month \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM customer_monthly_balances\n)\nSELECT \n    customer_id,\n    month,\n    monthly_change,\n    cumulative_balance\nFROM cumulative_balances\nORDER BY customer_id ASC, month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.38329200469888747,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN -ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_change,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN -ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN ct.txn_amount\n                ELSE 0\n            END\n        ) OVER (\n            PARTITION BY ct.customer_id \n            ORDER BY strftime('%Y-%m', ct.txn_date)\n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM customer_transactions ct\n    JOIN customer_nodes cn ON ct.customer_id = cn.customer_id\n    JOIN customer_regions cr ON cn.region_id = cr.region_id\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_months AS (\n    SELECT DISTINCT strftime('%Y-%m', txn_date) AS month\n    FROM customer_transactions\n),\ncustomer_list AS (\n    SELECT DISTINCT customer_id\n    FROM customer_transactions\n),\ncustomer_months AS (\n    SELECT \n        c.customer_id,\n        m.month\n    FROM customer_list c\n    CROSS JOIN all_months m\n),\nfilled_balances AS (\n    SELECT \n        cm.customer_id,\n        cm.month,\n        COALESCE(mb.monthly_change, 0) AS monthly_change,\n        COALESCE(mb.cumulative_balance, \n            (SELECT SUM(\n                CASE \n                    WHEN ct.txn_type = 'purchase' THEN -ct.txn_amount\n                    WHEN ct.txn_type = 'refund' THEN ct.txn_amount\n                    ELSE 0\n                END\n            )\n            FROM customer_transactions ct\n            WHERE ct.customer_id = cm.customer_id\n              AND strftime('%Y-%m', ct.txn_date) <= cm.month\n            )\n        ) AS cumulative_balance\n    FROM customer_months cm\n    LEFT JOIN monthly_balances mb \n        ON cm.customer_id = mb.customer_id AND cm.month = mb.month\n)\nSELECT \n    customer_id,\n    month,\n    monthly_change,\n    cumulative_balance\nFROM filled_balances\nORDER BY customer_id ASC, month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3906250058207661,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH monthly_balances AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m', ct.txn_date) AS month,\n        SUM(\n            CASE \n                WHEN ct.txn_type = 'purchase' THEN -ct.txn_amount\n                WHEN ct.txn_type = 'refund' THEN ct.txn_amount\n                ELSE 0\n            END\n        ) AS monthly_net_change\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m', ct.txn_date)\n),\nall_months AS (\n    SELECT DISTINCT strftime('%Y-%m', txn_date) AS month\n    FROM customer_transactions\n),\ncustomer_months AS (\n    SELECT DISTINCT ct.customer_id, am.month\n    FROM customer_transactions ct\n    CROSS JOIN all_months am\n),\ncustomer_monthly_balances AS (\n    SELECT \n        cm.customer_id,\n        cm.month,\n        COALESCE(mb.monthly_net_change, 0) AS monthly_change\n    FROM customer_months cm\n    LEFT JOIN monthly_balances mb \n        ON cm.customer_id = mb.customer_id AND cm.month = mb.month\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month,\n        monthly_change,\n        SUM(monthly_change) OVER (\n            PARTITION BY customer_id \n            ORDER BY month \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_balance\n    FROM customer_monthly_balances\n)\nSELECT \n    customer_id,\n    month,\n    monthly_change,\n    cumulative_balance\nFROM cumulative_balances\nORDER BY customer_id ASC, month ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 13935.245665998082
+}

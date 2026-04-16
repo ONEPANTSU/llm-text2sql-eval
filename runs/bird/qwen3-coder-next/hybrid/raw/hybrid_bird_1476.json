@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_1476",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2164.1560420030146,
+  "execution_time_ms": 356.64141699817264,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    SUM(CASE WHEN customers.Currency = 'CZK' THEN yearmonth.Consumption ELSE 0 END) -\n    SUM(CASE WHEN customers.Currency = 'EUR' THEN yearmonth.Consumption ELSE 0 END) AS ConsumptionDifference\nFROM yearmonth\nJOIN customers ON yearmonth.CustomerID = customers.CustomerID\nWHERE yearmonth.Date LIKE '2012%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 66.42124999780208,
+      "result_signature": "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    customers.Currency,\n    SUM(yearmonth.Consumption) AS TotalConsumption\nFROM \n    yearmonth\nJOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\nWHERE \n    yearmonth.Date LIKE '2012%'\nGROUP BY \n    customers.Currency;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 59.353666001698,
+      "result_signature": "0836654b8415c3a0ecab7a1a65c95f59abf272968ac27c0cbdfc32bf529c5a0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  customers.Currency,\n  SUM(yearmonth.Consumption) AS TotalConsumption\nFROM \n  yearmonth\nJOIN \n  customers ON yearmonth.CustomerID = customers.CustomerID\nWHERE \n  yearmonth.Date LIKE '2012%'\nGROUP BY \n  customers.Currency;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 58.688750003057066,
+      "result_signature": "0836654b8415c3a0ecab7a1a65c95f59abf272968ac27c0cbdfc32bf529c5a0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    customers.Currency,\n    SUM(yearmonth.Consumption) AS TotalConsumption\nFROM yearmonth\nJOIN customers ON yearmonth.CustomerID = customers.CustomerID\nWHERE yearmonth.Date LIKE '2012%'\nGROUP BY customers.Currency",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 112.17391699756263,
+      "result_signature": "0836654b8415c3a0ecab7a1a65c95f59abf272968ac27c0cbdfc32bf529c5a0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    customers.Currency,\n    SUM(yearmonth.Consumption) AS TotalConsumption\nFROM \n    yearmonth\nJOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\nWHERE \n    yearmonth.Date LIKE '2012%'\nGROUP BY \n    customers.Currency;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 59.49470800260315,
+      "result_signature": "0836654b8415c3a0ecab7a1a65c95f59abf272968ac27c0cbdfc32bf529c5a0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 8,
+    "selected_sql": "SELECT  \n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'CZK') \n    - \n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'EUR') \n    AS ConsumptionDifference",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197": 5,
+        "0836654b8415c3a0ecab7a1a65c95f59abf272968ac27c0cbdfc32bf529c5a0e": 4
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 12336.234875001537,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n  (SELECT SUM(ym.Consumption) \n   FROM yearmonth ym \n   JOIN customers c ON ym.CustomerID = c.CustomerID \n   WHERE ym.Date LIKE '2012%' AND c.Currency = 'CZK') \n  - \n  (SELECT SUM(ym.Consumption) \n   FROM yearmonth ym \n   JOIN customers c ON ym.CustomerID = c.CustomerID \n   WHERE ym.Date LIKE '2012%' AND c.Currency = 'EUR') AS ConsumptionDifference",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 164.29820800112793,
+        "result_signature": "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH consumption_by_currency AS (\n  SELECT \n    customers.Currency,\n    SUM(yearmonth.Consumption) AS TotalConsumption\n  FROM \n    yearmonth\n  JOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\n  WHERE \n    yearmonth.Date LIKE '2012%'\n  GROUP BY \n    customers.Currency\n)\nSELECT \n  (SELECT TotalConsumption FROM consumption_by_currency WHERE Currency = 'CZK') -\n  (SELECT TotalConsumption FROM consumption_by_currency WHERE Currency = 'EUR') AS ConsumptionDifference\nFROM \n  consumption_by_currency\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 56.92458300472936,
+        "result_signature": "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'CZK') -\n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'EUR') AS ConsumptionDifference",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 52.04320899792947,
+        "result_signature": "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT  \n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'CZK') \n    - \n    (SELECT SUM(ym.Consumption) \n     FROM yearmonth ym \n     JOIN customers c ON ym.CustomerID = c.CustomerID \n     WHERE ym.Date LIKE '2012%' AND c.Currency = 'EUR') \n    AS ConsumptionDifference",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 50.851166000938974,
+        "result_signature": "84fd6a8ac2388f6da008fe3310bd800b86bad72001d2e80d09aba449396b9197",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 14857.167292000668
+}

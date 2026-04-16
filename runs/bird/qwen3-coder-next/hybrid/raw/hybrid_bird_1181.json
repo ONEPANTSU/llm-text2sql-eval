@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1181",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5170.926624996355,
+  "execution_time_ms": 18.916375003755093,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT (strftime('%Y', '1991-10-21') - strftime('%Y', Birthday)) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.UA = 8.4 AND Laboratory.Date = '1991-10-21';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.960374995600432,
+      "result_signature": "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT (strftime('%Y', '1991-10-21') - strftime('%Y', Birthday)) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.UA = 8.4 AND Laboratory.Date = '1991-10-21';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.450499999918975,
+      "result_signature": "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT (strftime('%Y', '1991-10-21') - strftime('%Y', Birthday)) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.UA = 8.4 AND Laboratory.Date = '1991-10-21';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7241250025108457,
+      "result_signature": "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT strftime('%Y', '1991-10-21') - strftime('%Y', Birthday) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.UA = 8.4\n  AND Laboratory.Date = '1991-10-21';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2237910050316714,
+      "result_signature": "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT (strftime('%Y', '1991-10-21') - strftime('%Y', Birthday)) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UA = 8.4 AND l.Date = '1991-10-21';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2404170047375374,
+      "result_signature": "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT strftime('%Y', '1991-10-21') - strftime('%Y', Birthday) - (strftime('%m-%d', '1991-10-21') < strftime('%m-%d', Birthday)) AS Age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.UA = 8.4\n  AND Laboratory.Date = '1991-10-21';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "7ad3ddeeb13ec7e502e19ca483028171dfce051b875ca2fb9deb248ff907d0af": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5189.923416997772
+}

@@ -1,0 +1,160 @@
+{
+  "task_id": "bird_987",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(CAST(results.fastestLapTime AS REAL)) \nFROM results \nJOIN races ON results.raceId = races.raceId \nWHERE races.year = 2006 \n  AND races.name = 'United States Grand Prix' \n  AND results.position <= 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(fastestLapTime) \nFROM results \nWHERE raceId = (\n    SELECT raceId \n    FROM races \n    WHERE year = 2006 AND name = 'United States Grand Prix'\n) \nAND driverId IN (\n    SELECT driverId \n    FROM driverStandings \n    WHERE raceId = (\n        SELECT raceId \n        FROM races \n        WHERE year = 2006 AND name = 'United States Grand Prix'\n    ) \n    AND position <= 10\n);",
+          "score": 0.9720673076923076,
+          "similarity_max": 0.5558653846153846,
+          "tables_used": [
+            "driverStandings",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(CAST(results.fastestLapTime AS REAL)) \nFROM results \nJOIN races ON results.raceId = races.raceId \nWHERE races.year = 2006 \n  AND races.name = 'United States Grand Prix' \n  AND results.position <= 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(fastestLapTime) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN driverStandings ds ON r.raceId = ds.raceId AND r.driverId = ds.driverId\nWHERE ra.year = 2006 \n  AND ra.name = 'United States Grand Prix'\n  AND ds.position <= 10;",
+          "score": 0.9816051844466601,
+          "similarity_max": 0.6367896311066799,
+          "tables_used": [
+            "r",
+            "ra",
+            "driverStandings",
+            "ds",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(fastestLapTime) \nFROM results \nWHERE raceId = (\n    SELECT raceId \n    FROM races \n    WHERE year = 2006 AND name = 'United States Grand Prix'\n) \nAND driverId IN (\n    SELECT driverId \n    FROM driverStandings \n    WHERE raceId = (\n        SELECT raceId \n        FROM races \n        WHERE year = 2006 AND name = 'United States Grand Prix'\n    ) \n    AND position <= 10\n);",
+          "score": 0.9720673076923076,
+          "similarity_max": 0.5558653846153846,
+          "tables_used": [
+            "driverStandings",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT AVG(fastestLapTime) \nFROM results r\nWHERE r.raceId = (\n    SELECT raceId \n    FROM races \n    WHERE year = 2006 AND name = 'United States Grand Prix'\n) \nAND r.driverId IN (\n    SELECT ds.driverId \n    FROM driverStandings ds\n    JOIN races rac ON ds.raceId = rac.raceId\n    WHERE rac.year = 2006 AND rac.name = 'United States Grand Prix'\n    AND ds.position <= 10\n);",
+          "score": 1.1542464114832536,
+          "similarity_max": 0.6915071770334927,
+          "tables_used": [
+            "r",
+            "rac",
+            "driverStandings",
+            "ds",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(CAST(results.fastestLapTime AS REAL)) \nFROM results \nJOIN races ON results.raceId = races.raceId \nWHERE races.year = 2006 \n  AND races.name = 'United States Grand Prix' \n  AND results.position <= 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(fastestLapTime) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN driverStandings ds ON r.raceId = ds.raceId AND r.driverId = ds.driverId\nWHERE ra.year = 2006 \n  AND ra.name = 'United States Grand Prix'\n  AND ds.position <= 10;",
+          "score": 0.9816051844466601,
+          "similarity_max": 0.6367896311066799,
+          "tables_used": [
+            "r",
+            "ra",
+            "driverStandings",
+            "ds",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(fastestLapTime) \nFROM results r\nWHERE r.raceId = (\n    SELECT raceId \n    FROM races \n    WHERE year = 2006 AND name = 'United States Grand Prix'\n) \nAND r.driverId IN (\n    SELECT ds.driverId \n    FROM driverStandings ds\n    JOIN races rac ON ds.raceId = rac.raceId\n    WHERE rac.year = 2006 AND rac.name = 'United States Grand Prix'\n    AND ds.position <= 10\n);",
+    "meta": {
+      "score": 1.1542464114832536,
+      "similarity_max": 0.6915071770334927,
+      "tables_used": [
+        "r",
+        "rac",
+        "driverStandings",
+        "ds",
+        "races",
+        "results"
+      ],
+      "phase": "exp",
+      "round_idx": 2,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 10.4
+  }
+}

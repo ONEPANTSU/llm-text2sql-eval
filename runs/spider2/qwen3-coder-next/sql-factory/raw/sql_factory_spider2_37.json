@@ -1,0 +1,228 @@
+{
+  "task_id": "spider2_37",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH q4_sales AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        c.cust_city,\n        SUM(CASE WHEN s.time_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN s.time_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_products",
+            "sales",
+            "co",
+            "filtered_sales",
+            "qs",
+            "s",
+            "c",
+            "city_sales_change",
+            "countries",
+            "csc",
+            "product_totals",
+            "q4_sales",
+            "p",
+            "products",
+            "customers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH q4_sales AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        c.cust_city,\n        SUM(CASE WHEN s.time_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN s.time_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_products",
+            "sales",
+            "co",
+            "filtered_sales",
+            "qs",
+            "s",
+            "c",
+            "city_sales_change",
+            "countries",
+            "csc",
+            "product_totals",
+            "q4_sales",
+            "p",
+            "products",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH city_q4_sales AS (\n    SELECT \n        c.cust_city,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_qtr_sales\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY c.cust_city, t.calendar_quarter_id\n),\nqualifying_cities AS (\n    SELECT \n   ...",
+          "score": 0.7555231252806467,
+          "similarity_max": 0.4889537494387068,
+          "tables_used": [
+            "prod_totals",
+            "prod_city_qtr",
+            "co",
+            "c",
+            "s",
+            "times",
+            "countries",
+            "p",
+            "products",
+            "customers",
+            "city_q4_sales",
+            "sales",
+            "t",
+            "c1",
+            "with_shares",
+            "c2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH q4_sales AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        c.cust_city,\n        SUM(CASE WHEN s.time_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN s.time_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ranked_products",
+            "sales",
+            "co",
+            "filtered_sales",
+            "qs",
+            "s",
+            "c",
+            "city_sales_change",
+            "countries",
+            "csc",
+            "product_totals",
+            "q4_sales",
+            "p",
+            "products",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH city_q4_sales AS (\n    SELECT \n        c.cust_city,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_qtr_sales\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY c.cust_city, t.calendar_quarter_id\n),\nqualifying_cities AS (\n    SELECT \n   ...",
+          "score": 0.7555231252806467,
+          "similarity_max": 0.4889537494387068,
+          "tables_used": [
+            "prod_totals",
+            "prod_city_qtr",
+            "co",
+            "c",
+            "s",
+            "times",
+            "countries",
+            "p",
+            "products",
+            "customers",
+            "city_q4_sales",
+            "sales",
+            "t",
+            "c1",
+            "with_shares",
+            "c2"
+          ]
+        },
+        {
+          "sql": "WITH q4_sales AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        c.cust_city,\n        SUM(CASE WHEN s.time_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN s.time_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n...",
+          "score": 0.7505889758115278,
+          "similarity_max": 0.5988220483769444,
+          "tables_used": [
+            "sales",
+            "co",
+            "city_growth",
+            "qs",
+            "filtered",
+            "cg",
+            "s",
+            "c",
+            "countries",
+            "q4_sales",
+            "prod_agg",
+            "p",
+            "products",
+            "with_shares",
+            "customers"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH q4_sales AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        c.cust_city,\n        SUM(CASE WHEN s.time_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN s.time_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE s.promo_id = 999\n      AND co.country_name = 'United States'\n...",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ranked_products",
+        "sales",
+        "co",
+        "filtered_sales",
+        "qs",
+        "s",
+        "c",
+        "city_sales_change",
+        "countries",
+        "csc",
+        "product_totals",
+        "q4_sales",
+        "p",
+        "products",
+        "customers"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.2,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: q.prod_name",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 4.81
+  }
+}

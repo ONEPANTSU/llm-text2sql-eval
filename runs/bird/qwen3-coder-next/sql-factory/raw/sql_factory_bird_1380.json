@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1380",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT SUM(cost) \nFROM expense \nWHERE link_to_budget IN (\n    SELECT budget_id \n    FROM budget \n    WHERE category = 'food'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT SUM(cost) \nFROM expense \nWHERE link_to_budget IN (\n    SELECT budget_id \n    FROM budget \n    WHERE category = 'food'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(e.cost)\nFROM expense e\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE b.category = 'food';",
+          "score": 0.9160714285714285,
+          "similarity_max": 0.5678571428571428,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT SUM(cost) \nFROM expense \nWHERE link_to_budget IN (\n    SELECT budget_id \n    FROM budget \n    WHERE category = 'food'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(e.cost)\nFROM expense e\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE b.category = 'food';",
+          "score": 0.9160714285714285,
+          "similarity_max": 0.5678571428571428,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(e.cost)\nFROM expense e\nINNER JOIN budget b ON e.link_to_budget = b.budget_id\nWHERE LOWER(b.category) = 'food';",
+          "score": 0.8876175548589342,
+          "similarity_max": 0.8247648902821316,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "expense"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT SUM(cost) \nFROM expense \nWHERE link_to_budget IN (\n    SELECT budget_id \n    FROM budget \n    WHERE category = 'food'\n);",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "budget",
+        "expense"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.18
+  }
+}

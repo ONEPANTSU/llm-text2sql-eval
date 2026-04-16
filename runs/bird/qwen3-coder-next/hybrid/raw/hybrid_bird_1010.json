@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1010",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1341.2953749939334,
+  "execution_time_ms": 39.22841700114077,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.939707994519267,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT MIN(r.fastestLapTime) \nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.653416996821761,
+      "result_signature": "3de2c4a46f4b5f735f2feb70b015c927b4254c668d743930c4d3bc56e6dc2126",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.870584002172109,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT results.fastestLapTime\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton'\nORDER BY results.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.4756249955971725,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.845208000915591,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 6,
+        "3de2c4a46f4b5f735f2feb70b015c927b4254c668d743930c4d3bc56e6dc2126": 1,
+        "901896c1b31299bc37fded1e1bdc5b90b40c02eaebb07c5f88a19a2f53006c1a": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 2025.7943749966216,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nAND r.fastestLapTime IS NOT NULL\nORDER BY CAST(r.fastestLapTime AS REAL)\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5.4418340005213395,
+        "result_signature": "901896c1b31299bc37fded1e1bdc5b90b40c02eaebb07c5f88a19a2f53006c1a",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime\nLIMIT 1",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 7.685166005103383,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT r.fastestLapTime\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.fastestLapTime ASC\nLIMIT 1",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 7.764458998281043,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3406.4463339964277
+}

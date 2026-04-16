@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_322",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3021.0837089980487,
+  "execution_time_ms": 3.020500000275206,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1403749958844855,
+      "result_signature": "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.45508400216931477,
+      "result_signature": "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3269579974585213,
+      "result_signature": "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2857919971575029,
+      "result_signature": "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5432499965536408,
+      "result_signature": "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT element FROM atom WHERE atom_id = 'TR000_1'",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "9e74fdb4c5c45e08e57def34325633c361f7f84516f2e89d7e5e5d25dafa4a28": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3024.2031660018256
+}

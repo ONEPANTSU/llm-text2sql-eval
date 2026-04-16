@@ -1,0 +1,124 @@
+{
+  "task_id": "bird_1411",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT expense_description\nFROM expense e\nJOIN member m ON e.link_to_member = m.member_id\nWHERE m.first_name = 'Sacha' AND m.last_name = 'Harrison';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "expense",
+            "m",
+            "e"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT expense_description\nFROM expense e\nJOIN member m ON e.link_to_member = m.member_id\nWHERE m.first_name = 'Sacha' AND m.last_name = 'Harrison';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "expense",
+            "m",
+            "e"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT expense.expense_description\nFROM expense\nJOIN member ON expense.link_to_member = member.member_id\nWHERE member.first_name = 'Sacha' AND member.last_name = 'Harrison';",
+          "score": 0.6512987012987014,
+          "similarity_max": 0.7974025974025973,
+          "tables_used": [
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT expense_description\nFROM expense e\nJOIN member m ON e.link_to_member = m.member_id\nWHERE m.first_name = 'Sacha' AND m.last_name = 'Harrison';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "expense",
+            "m",
+            "e"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT expense.expense_description\nFROM expense\nJOIN member ON expense.link_to_member = member.member_id\nWHERE member.first_name = 'Sacha' AND member.last_name = 'Harrison';",
+          "score": 0.6512987012987014,
+          "similarity_max": 0.7974025974025973,
+          "tables_used": [
+            "expense"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT expense_description\nFROM expense e\nJOIN member m ON e.link_to_member = m.member_id\nWHERE m.first_name = 'Sacha' AND m.last_name = 'Harrison';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "member",
+        "expense",
+        "m",
+        "e"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.6,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.27
+  }
+}

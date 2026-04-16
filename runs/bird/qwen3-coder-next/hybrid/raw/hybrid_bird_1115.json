@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_1115",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5026.997124994523,
+  "execution_time_ms": 263.41770800354425,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (london_rating.overall_rating - bowery_rating.overall_rating) * 100.0 / bowery_rating.overall_rating AS percentage_difference\nFROM \n    Player_Attributes AS london_rating\nJOIN \n    Player ON london_rating.player_api_id = Player.player_api_id\nJOIN \n    Player_Attributes AS bowery_rating\nJOIN \n    Player AS bowery_player ON bowery_rating.player_api_id = bowery_player.player_api_id\nWHERE \n    Player.player_name = 'Landon Donovan'\n    AND bowery_player.player_name = 'Jordan Bowery'\n    AND london_rating.date = '2013-07-12'\n    AND bowery_rating.date = '2013-07-12';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 69.51850000041304,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    ((l.overall_rating - j.overall_rating) * 100.0 / j.overall_rating) AS percentage_difference\nFROM \n    Player_Attributes l\nJOIN \n    Player p1 ON l.player_api_id = p1.player_api_id\nJOIN \n    Player_Attributes j\nJOIN \n    Player p2 ON j.player_api_id = p2.player_api_id\nWHERE \n    p1.player_name = 'Landon Donovan'\n    AND p2.player_name = 'Jordan Bowery'\n    AND l.date = '2013-07-12'\n    AND j.date = '2013-07-12';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.238874993287027,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    (SELECT overall_rating \n     FROM Player_Attributes pa \n     JOIN Player p ON pa.player_api_id = p.player_api_id \n     WHERE p.player_name = 'Landon Donovan' AND pa.date = '2013-07-12') \n    AS landdon_rating,\n    (SELECT overall_rating \n     FROM Player_Attributes pa \n     JOIN Player p ON pa.player_api_id = p.player_api_id \n     WHERE p.player_name = 'Jordan Bowery' AND pa.date = '2013-07-12') \n    AS bowery_rating,\n    CASE \n        WHEN (SELECT overall_rating \n              FROM Player_Attributes pa \n              JOIN Player p ON pa.player_api_id = p.player_api_id \n              WHERE p.player_name = 'Jordan Bowery' AND pa.date = '2013-07-12') = 0 \n        THEN NULL\n        ELSE ROUND(\n            ((SELECT overall_rating \n              FROM Player_Attributes pa \n              JOIN Player p ON pa.player_api_id = p.player_api_id \n              WHERE p.player_name = 'Landon Donovan' AND pa.date = '2013-07-12') \n             - (SELECT overall_rating \n                FROM Player_Attributes pa \n                JOIN Player p ON pa.player_api_id = p.player_api_id \n                WHERE p.player_name = 'Jordan Bowery' AND pa.date = '2013-07-12')) \n            / (SELECT overall_rating \n               FROM Player_Attributes pa \n               JOIN Player p ON pa.player_api_id = p.player_api_id \n               WHERE p.player_name = 'Jordan Bowery' AND pa.date = '2013-07-12') * 100, 2)\n    END AS percentage_difference;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 115.17250000179047,
+      "result_signature": "38183bfec2fbed86968ac4d8f7eb305338f9c67318ff016811854463b15f10eb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (landon.overall_rating - jordan.overall_rating) * 100.0 / jordan.overall_rating AS percentage_difference\nFROM \n    Player_Attributes landon\nJOIN \n    Player p1 ON landon.player_api_id = p1.player_api_id\nJOIN \n    Player_Attributes jordan ON jordan.player_api_id = (\n        SELECT player_api_id \n        FROM Player \n        WHERE player_name = 'Jordan Bowery'\n    )\nWHERE \n    p1.player_name = 'Landon Donovan' \n    AND landon.date = '2013-07-12'\n    AND jordan.date = '2013-07-12';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.875499998102896,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    (SELECT overall_rating \n     FROM Player_Attributes pa \n     JOIN Player p ON pa.player_api_id = p.player_api_id \n     WHERE p.player_name = 'Landon Donovan' AND pa.date = '2013-07-12') * 100.0 / \n    (SELECT overall_rating \n     FROM Player_Attributes pa \n     JOIN Player p ON pa.player_api_id = p.player_api_id \n     WHERE p.player_name = 'Jordan Bowery' AND pa.date = '2013-07-12') - 100 AS percentage_difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 38.171125001099426,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    (landon.overall_rating - jordan.overall_rating) * 100.0 / jordan.overall_rating AS percentage_difference\nFROM \n    Player_Attributes landon\nJOIN \n    Player p1 ON landon.player_api_id = p1.player_api_id\nJOIN \n    Player_Attributes jordan ON jordan.player_api_id = (\n        SELECT player_api_id \n        FROM Player \n        WHERE player_name = 'Jordan Bowery'\n    )\nWHERE \n    p1.player_name = 'Landon Donovan' \n    AND landon.date = '2013-07-12'\n    AND jordan.date = '2013-07-12';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5,
+        "38183bfec2fbed86968ac4d8f7eb305338f9c67318ff016811854463b15f10eb": 1,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 5241.142624996428,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    (l.overall_rating - j.overall_rating) * 100.0 / j.overall_rating AS percentage_difference\nFROM \n    Player l_p\nJOIN \n    Player_Attributes l ON l_p.player_api_id = l.player_api_id\nJOIN \n    Player j_p ON j_p.player_name = 'Jordan Bowery'\nJOIN \n    Player_Attributes j ON j_p.player_api_id = j.player_api_id\nWHERE \n    l_p.player_name = 'Landon Donovan'\n    AND l.date = '2013-07-12'\n    AND j.date = '2013-07-12';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 55.32387499988545,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    (l.overall_rating - j.overall_rating) * 100.0 / j.overall_rating AS percentage_difference\nFROM \n    Player_Attributes l\nJOIN \n    Player p_l ON l.player_api_id = p_l.player_api_id\nJOIN \n    Player_Attributes j\nJOIN \n    Player p_j ON j.player_api_id = p_j.player_api_id\nWHERE \n    p_l.player_name = 'Landon Donovan'\n    AND p_j.player_name = 'Jordan Bowery'\n    AND l.date = '2013-07-12'\n    AND j.date = '2013-07-12';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 26.948250000714324,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 10531.685499998275
+}

@@ -1,0 +1,172 @@
+{
+  "task_id": "spider2_107",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH pre_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- 4 weeks leading up to June 15 (week ~28)\n    GROUP BY calendar_year\n),\npost_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 AND 31  -- 4 weeks fo...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "po",
+            "pre_june",
+            "p",
+            "post_june",
+            "cleaned_weekly_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_before AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_before\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- Weeks leading up to June 15 (approx. weeks 24-27)\n    GROUP BY calendar_year\n),\nsales_after AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_after\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 ...",
+          "score": 1.1053595968850205,
+          "similarity_max": 0.6892808062299587,
+          "tables_used": [
+            "b",
+            "sales_after",
+            "cleaned_weekly_sales",
+            "sales_before",
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH pre_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- 4 weeks leading up to June 15 (week ~28)\n    GROUP BY calendar_year\n),\npost_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 AND 31  -- 4 weeks fo...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "po",
+            "pre_june",
+            "p",
+            "post_june",
+            "cleaned_weekly_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_before AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_before\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- Weeks leading up to June 15 (approx. weeks 24-27)\n    GROUP BY calendar_year\n),\nsales_after AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_after\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 ...",
+          "score": 1.1053595968850205,
+          "similarity_max": 0.6892808062299587,
+          "tables_used": [
+            "b",
+            "sales_after",
+            "cleaned_weekly_sales",
+            "sales_before",
+            "a"
+          ]
+        },
+        {
+          "sql": "WITH sales_before AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_before\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 23 AND 26  -- Slightly shifted: weeks before June 15\n    GROUP BY calendar_year\n),\nsales_after AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_after\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 27 AND 30  -- ...",
+          "score": 1.0970093457943926,
+          "similarity_max": 0.705981308411215,
+          "tables_used": [
+            "b",
+            "sales_after",
+            "cleaned_weekly_sales",
+            "sales_before",
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH pre_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- 4 weeks leading up to June 15 (week ~28)\n    GROUP BY calendar_year\n),\npost_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 AND 31  -- 4 weeks fo...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "po",
+            "pre_june",
+            "p",
+            "post_june",
+            "cleaned_weekly_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_before AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_before\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- Weeks leading up to June 15 (approx. weeks 24-27)\n    GROUP BY calendar_year\n),\nsales_after AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_after\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 ...",
+          "score": 1.1053595968850205,
+          "similarity_max": 0.6892808062299587,
+          "tables_used": [
+            "b",
+            "sales_after",
+            "cleaned_weekly_sales",
+            "sales_before",
+            "a"
+          ]
+        },
+        {
+          "sql": "WITH sales_before AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_before\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 23 AND 26  -- Slightly shifted: weeks before June 15\n    GROUP BY calendar_year\n),\nsales_after AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS total_sales_after\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 27 AND 30  -- ...",
+          "score": 1.0970093457943926,
+          "similarity_max": 0.705981308411215,
+          "tables_used": [
+            "b",
+            "sales_after",
+            "cleaned_weekly_sales",
+            "sales_before",
+            "a"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH pre_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 24 AND 27  -- 4 weeks leading up to June 15 (week ~28)\n    GROUP BY calendar_year\n),\npost_june AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_june_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_number BETWEEN 28 AND 31  -- 4 weeks fo...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "po",
+        "pre_june",
+        "p",
+        "post_june",
+        "cleaned_weekly_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.39
+  }
+}

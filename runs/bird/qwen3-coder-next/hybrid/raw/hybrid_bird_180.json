@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_180",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2317.3606249984005,
+  "execution_time_ms": 12.67349999397993,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT client.client_id\nFROM client\nJOIN district ON client.district_id = district.district_id\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nWHERE client.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND district.A2 = 'East Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.913833003025502,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN district d ON c.district_id = d.district_id\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nWHERE c.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND d.A2 = 'East Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9008750023203902,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN district d ON c.district_id = d.district_id\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nWHERE c.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND d.A2 = 'East Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9419580023386516,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN district d ON c.district_id = d.district_id\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nWHERE c.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND d.A2 = 'East Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5782499976921827,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN district d ON c.district_id = d.district_id\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nWHERE c.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND d.A2 = 'East Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.824667000619229,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT c.client_id\nFROM client c\nJOIN district d ON c.district_id = d.district_id\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nWHERE c.birth_date BETWEEN '1983-01-01' AND '1987-12-31'\n  AND d.A2 = 'East Bohemia';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2330.1452089945087
+}

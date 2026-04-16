@@ -1,0 +1,166 @@
+{
+  "task_id": "bird_983",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1824.8228340016794,
+  "execution_time_ms": 22.46654200280318,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT constructors.name, constructors.url\nFROM constructors\nJOIN constructorStandings ON constructors.constructorId = constructorStandings.constructorId\nWHERE constructors.nationality = 'Italian'\nORDER BY constructorStandings.points DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.505625002726447,
+      "result_signature": "bdd752a24a35d5532f49e5da98f19cae08f8df71c48363180d1e81428d6000f5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT constructors.name, constructors.url\nFROM constructors\nJOIN constructorStandings ON constructors.constructorId = constructorStandings.constructorId\nWHERE constructors.nationality = 'Italian'\nORDER BY constructorStandings.points DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.053333999763709,
+      "result_signature": "bdd752a24a35d5532f49e5da98f19cae08f8df71c48363180d1e81428d6000f5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT constructors.name, constructors.url\nFROM constructors\nJOIN constructorStandings ON constructors.constructorId = constructorStandings.constructorId\nWHERE constructors.nationality = 'Italian'\nORDER BY constructorStandings.points DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.551957997842692,
+      "result_signature": "bdd752a24a35d5532f49e5da98f19cae08f8df71c48363180d1e81428d6000f5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.url\nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nWHERE c.nationality = 'Italian'\nORDER BY cs.points DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.002457997354213,
+      "result_signature": "dc70a5b74b5e2329844c7817358091730ad7df58a3a6a51d74c8472ff623d604",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT constructors.name, constructors.url\nFROM constructors\nJOIN constructorStandings ON constructors.constructorId = constructorStandings.constructorId\nWHERE constructors.nationality = 'Italian'\nORDER BY constructorStandings.points DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9348329990170896,
+      "result_signature": "bdd752a24a35d5532f49e5da98f19cae08f8df71c48363180d1e81428d6000f5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT constructors.name, constructors.url\nFROM constructors\nJOIN constructorStandings ON constructors.constructorId = constructorStandings.constructorId\nWHERE constructors.nationality = 'Italian'\nORDER BY constructorStandings.points DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "bdd752a24a35d5532f49e5da98f19cae08f8df71c48363180d1e81428d6000f5": 4,
+        "dc70a5b74b5e2329844c7817358091730ad7df58a3a6a51d74c8472ff623d604": 3
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2080.4044590040576,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT c.url\nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nWHERE c.nationality = 'Italian'\nGROUP BY c.constructorId, c.name, c.nationality, c.url\nORDER BY MAX(cs.points) DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.71112500235904,
+        "result_signature": "dc70a5b74b5e2329844c7817358091730ad7df58a3a6a51d74c8472ff623d604",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT c.url\nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nWHERE c.nationality = 'Italian'\nGROUP BY c.constructorId, c.url\nORDER BY MAX(cs.points) DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.620832994580269,
+        "result_signature": "dc70a5b74b5e2329844c7817358091730ad7df58a3a6a51d74c8472ff623d604",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3927.780707999773
+}

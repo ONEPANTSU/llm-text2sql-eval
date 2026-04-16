@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_994",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' AND r.year BETWEEN 1980 AND 2010\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' AND r.year BETWEEN 1980 AND 2010\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        },
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' \n  AND r.year >= 1980 \n  AND r.year <= 2010\n  AND cr.status = 'Finished'\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 0.9086642087351107,
+          "similarity_max": 0.7826715825297788,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' AND r.year BETWEEN 1980 AND 2010\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        },
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nINNER JOIN constructorResults cr ON c.constructorId = cr.constructorId\nINNER JOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' AND r.year >= 1980 AND r.year <= 2010\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 0.9837351106069201,
+          "similarity_max": 0.83252977878616,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        },
+        {
+          "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' \n  AND r.year >= 1980 \n  AND r.year <= 2010\n  AND cr.status = 'Finished'\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+          "score": 0.9086642087351107,
+          "similarity_max": 0.7826715825297788,
+          "tables_used": [
+            "r",
+            "c",
+            "races",
+            "constructorResults",
+            "cr",
+            "constructors"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.name, c.nationality, SUM(cr.points) AS total_points\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nJOIN races r ON cr.raceId = r.raceId\nWHERE r.name = 'Monaco Grand Prix' AND r.year BETWEEN 1980 AND 2010\nGROUP BY c.constructorId, c.name, c.nationality\nORDER BY total_points DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "c",
+        "races",
+        "constructorResults",
+        "cr",
+        "constructors"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.2,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.63
+  }
+}

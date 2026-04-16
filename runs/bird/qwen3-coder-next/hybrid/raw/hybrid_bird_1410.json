@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1410",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2800.8186250008293,
+  "execution_time_ms": 11.987750003754627,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.first_name, m.last_name, SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.5622090003453195,
+      "result_signature": "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.first_name, m.last_name, SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.377749995503109,
+      "result_signature": "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    m.first_name, \n    m.last_name, \n    SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.905917000840418,
+      "result_signature": "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.first_name, m.last_name, SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7882089994382113,
+      "result_signature": "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.first_name, m.last_name, SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.48758299817563966,
+      "result_signature": "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT m.first_name, m.last_name, SUM(e.cost + i.amount) AS total_cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.member_id = 'rec4BLdZHS2Blfp4v'\nGROUP BY m.first_name, m.last_name;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a46df10850c22664c5f52e9595edf58881522e9e30a09aa61d6ac68d35840750": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2812.997875000292
+}

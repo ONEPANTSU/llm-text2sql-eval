@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_60",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3169.5236660016235,
+  "execution_time_ms": 23.579125001560897,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH regional_sales AS (\n    SELECT \n        hw.region,\n        ws.id AS rep_id,\n        ws.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS total_sales,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps ws ON wa.sales_rep_id = ws.id\n    JOIN hardware_dim_customer hw ON ws.region_id = hw.region\n    GROUP BY hw.region, ws.id, ws.name\n),\nmax_rep_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_sales\n    FROM regional_sales\n    GROUP BY region\n)\nSELECT \n    rs.region,\n    rs.rep_name,\n    rs.order_count,\n    rs.total_sales,\n    rs.rep_sales\nFROM regional_sales rs\nJOIN max_rep_sales_per_region mrs \n    ON rs.region = mrs.region AND rs.rep_sales = mrs.max_sales\nORDER BY rs.region ASC, rs.rep_sales DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.45520900352858,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH regional_sales AS (\n    SELECT \n        hc.region,\n        ws.id AS rep_id,\n        ws.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps ws ON wa.sales_rep_id = ws.id\n    JOIN hardware_dim_customer hc ON ws.region_id = hc.region\n    GROUP BY hc.region, ws.id, ws.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_rep_sales\n    FROM regional_sales\n    GROUP BY region\n)\nSELECT \n    rs.region,\n    rs.rep_name,\n    rs.order_count,\n    rs.rep_sales\nFROM regional_sales rs\nJOIN max_sales_per_region msr \n    ON rs.region = msr.region AND rs.rep_sales = msr.max_rep_sales\nORDER BY rs.region ASC, rs.rep_sales DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.486999997519888,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH rep_sales AS (\n    SELECT \n        h.region,\n        wsr.id AS rep_id,\n        wsr.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps wsr ON wa.sales_rep_id = wsr.id\n    JOIN hardware_dim_customer h ON wsr.region_id = h.region\n    GROUP BY h.region, wsr.id, wsr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_rep_sales\n    FROM rep_sales\n    GROUP BY region\n)\nSELECT \n    rs.region,\n    rs.rep_name,\n    rs.rep_sales,\n    rs.order_count,\n    SUM(rs.rep_sales) OVER (PARTITION BY rs.region) AS total_sales\nFROM rep_sales rs\nJOIN max_sales_per_region msr ON rs.region = msr.region AND rs.rep_sales = msr.max_rep_sales\nORDER BY rs.region ASC, rs.rep_sales DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5046660080552101,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH rep_sales_summary AS (\n    SELECT \n        hc.region,\n        ws.id AS rep_id,\n        ws.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps ws ON wa.sales_rep_id = ws.id\n    JOIN hardware_dim_customer hc ON ws.region_id = hc.region\n    GROUP BY hc.region, ws.id, ws.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_rep_sales\n    FROM rep_sales_summary\n    GROUP BY region\n)\nSELECT \n    rss.region,\n    COUNT(DISTINCT rss.rep_id) OVER (PARTITION BY rss.region) AS num_reps,\n    SUM(rss.rep_sales) OVER (PARTITION BY rss.region) AS total_sales,\n    rss.rep_name,\n    rss.rep_sales\nFROM rep_sales_summary rss\nJOIN max_sales_per_region msr \n    ON rss.region = msr.region AND rss.rep_sales = msr.max_rep_sales\nORDER BY rss.region ASC, rss.rep_sales DESC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "DISTINCT is not supported for window functions",
+      "exec_time_ms": 0.23754200083203614,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH regional_sales AS (\n    SELECT \n        hc.region,\n        sr.id AS rep_id,\n        sr.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps sr ON wa.sales_rep_id = sr.id\n    JOIN hardware_dim_customer hc ON sr.region_id = hc.region\n    GROUP BY hc.region, sr.id, sr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_sales\n    FROM regional_sales\n    GROUP BY region\n)\nSELECT \n    rs.region,\n    rs.rep_name,\n    rs.rep_sales,\n    rs.order_count\nFROM regional_sales rs\nJOIN max_sales_per_region msp ON rs.region = msp.region AND rs.rep_sales = msp.max_sales\nORDER BY rs.region ASC, rs.rep_sales DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3486250061541796,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH regional_sales AS (\n    SELECT \n        hc.region,\n        sr.id AS rep_id,\n        sr.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_sales\n    FROM web_orders wo\n    JOIN web_accounts wa ON wo.account_id = wa.id\n    JOIN web_sales_reps sr ON wa.sales_rep_id = sr.id\n    JOIN hardware_dim_customer hc ON sr.region_id = hc.region\n    GROUP BY hc.region, sr.id, sr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region,\n        MAX(rep_sales) AS max_sales\n    FROM regional_sales\n    GROUP BY region\n)\nSELECT \n    rs.region,\n    rs.rep_name,\n    rs.rep_sales,\n    rs.order_count\nFROM regional_sales rs\nJOIN max_sales_per_region msp ON rs.region = msp.region AND rs.rep_sales = msp.max_sales\nORDER BY rs.region ASC, rs.rep_sales DESC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3193.285332992673
+}

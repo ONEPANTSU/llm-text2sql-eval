@@ -1,0 +1,151 @@
+{
+  "task_id": "spider2_78",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH state_stats AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n),\ntop_10_states AS (\n    SELECT \n        state,\n        total_aliens,\n        avg_age,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count AS REAL) /...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_10_states",
+            "state_stats",
+            "alien_data"
+          ]
+        },
+        {
+          "sql": "WITH top_states AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n    HAVING AVG(age) > 200\n    ORDER BY total_aliens DESC\n    LIMIT 10\n)\nSELECT \n    COUNT(*) AS states_with_more_friendly\nFROM top_states\nWHERE friendly_count > hostile_count...",
+          "score": 0.9710169491525424,
+          "similarity_max": 0.6579661016949152,
+          "tables_used": [
+            "alien_data",
+            "top_states"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH state_stats AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n),\ntop_10_states AS (\n    SELECT \n        state,\n        total_aliens,\n        avg_age,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count AS REAL) /...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_10_states",
+            "state_stats",
+            "alien_data"
+          ]
+        },
+        {
+          "sql": "WITH state_aliens AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n    HAVING avg_age > 200\n),\nranked_states AS (\n    SELECT \n        state,\n        total_aliens,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count A...",
+          "score": 0.9915014390789894,
+          "similarity_max": 0.716997121842021,
+          "tables_used": [
+            "alien_data",
+            "state_aliens",
+            "ranked_states"
+          ]
+        },
+        {
+          "sql": "WITH top_states AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n    HAVING AVG(age) > 200\n    ORDER BY total_aliens DESC\n    LIMIT 10\n)\nSELECT \n    COUNT(*) AS states_with_more_friendly\nFROM top_states\nWHERE friendly_count > hostile_count...",
+          "score": 0.9710169491525424,
+          "similarity_max": 0.6579661016949152,
+          "tables_used": [
+            "alien_data",
+            "top_states"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH state_stats AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n),\ntop_10_states AS (\n    SELECT \n        state,\n        total_aliens,\n        avg_age,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count AS REAL) /...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_10_states",
+            "state_stats",
+            "alien_data"
+          ]
+        },
+        {
+          "sql": "WITH state_aliens AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n    HAVING avg_age > 200\n),\nranked_states AS (\n    SELECT \n        state,\n        total_aliens,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count A...",
+          "score": 0.9915014390789894,
+          "similarity_max": 0.716997121842021,
+          "tables_used": [
+            "alien_data",
+            "state_aliens",
+            "ranked_states"
+          ]
+        },
+        {
+          "sql": "WITH top_states AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n    HAVING AVG(age) > 200\n    ORDER BY total_aliens DESC\n    LIMIT 10\n)\nSELECT \n    COUNT(*) AS states_with_more_friendly\nFROM top_states\nWHERE friendly_count > hostile_count...",
+          "score": 0.9710169491525424,
+          "similarity_max": 0.6579661016949152,
+          "tables_used": [
+            "alien_data",
+            "top_states"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH state_stats AS (\n    SELECT \n        state,\n        COUNT(*) AS total_aliens,\n        AVG(age) AS avg_age,\n        SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n        SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    WHERE state IS NOT NULL\n    GROUP BY state\n),\ntop_10_states AS (\n    SELECT \n        state,\n        total_aliens,\n        avg_age,\n        friendly_count,\n        hostile_count,\n        CAST(friendly_count AS REAL) /...",
+    "meta": {
+      "score": 1.3499999999999999,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "top_10_states",
+        "state_stats",
+        "alien_data"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.24
+  }
+}

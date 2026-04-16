@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q76",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 10927.505125000607,
+  "execution_time_ms": 7.0152910047909245,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    hd_buy_potential,\n    SUM(ss_ext_sales_price) AS store_sales_total,\n    SUM(ws_ext_sales_price) AS web_sales_total,\n    SUM(cs_ext_sales_price) AS catalog_sales_total,\n    SUM(sr_return_amt) AS store_returns_total,\n    SUM(wr_return_amt) AS web_returns_total,\n    SUM(cr_return_amt) AS catalog_returns_total\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\nLEFT JOIN web_sales ON store_sales.ss_sold_date_sk = web_sales.ws_sold_date_sk AND store_sales.ss_hdemo_sk = web_sales.ws_hdemo_sk\nLEFT JOIN catalog_sales ON store_sales.ss_sold_date_sk = catalog_sales.cs_sold_date_sk AND store_sales.ss_hdemo_sk = catalog_sales.cs_bill_hdemo_sk\nLEFT JOIN store_returns ON store_sales.ss_sold_date_sk = store_returns.sr_returned_date_sk AND store_sales.ss_hdemo_sk = store_returns.sr_hdemo_sk\nLEFT JOIN web_returns ON store_sales.ss_sold_date_sk = web_returns.wr_returned_date_sk AND store_sales.ss_hdemo_sk = web_returns.wr_hdemo_sk\nLEFT JOIN catalog_returns ON store_sales.ss_sold_date_sk = catalog_returns.cr_returned_date_sk AND store_sales.ss_hdemo_sk = catalog_returns.cr_refunded_hdemo_sk\nGROUP BY hd_buy_potential\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"web_sales\" does not have a column named \"ws_hdemo_sk\"\n\nCandidate bindings: : \"ws_item_sk\"\n\nLINE 12: ... = web_sales.ws_sold_date_sk AND store_sales.ss_hdemo_sk = web_sales.ws_hdemo_sk\n                                                                       ^",
+      "exec_time_ms": 0.6766250007785857,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    hd_buy_potential,\n    SUM(CASE WHEN ss_sold_date_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales_total,\n    SUM(CASE WHEN ws_sold_date_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales_total,\n    SUM(CASE WHEN cs_bill_hdemo_sk IS NOT NULL THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_total\nFROM \n    household_demographics\nLEFT JOIN \n    store_sales ON ss_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    store_returns ON sr_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    web_sales ON ws_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    web_returns ON wr_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    catalog_sales ON cs_bill_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    catalog_returns ON cr_refunded_hdemo_sk = hd_demo_sk\nLEFT JOIN \n    date_dim ON (ss_sold_date_sk = d_date_sk OR ws_sold_date_sk = d_date_sk OR cs_sold_date_sk = d_date_sk OR sr_returned_date_sk = d_date_sk OR wr_returned_date_sk = d_date_sk OR cr_returned_date_sk = d_date_sk)\nGROUP BY \n    hd_buy_potential\nORDER BY \n    hd_buy_potential\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"ws_hdemo_sk\" not found in FROM clause!\nCandidate bindings: \"sr_hdemo_sk\", \"ss_hdemo_sk\", \"ws_ship_mode_sk\", \"ws_item_sk\", \"ss_cdemo_sk\"\n\nLINE 13:     web_sales ON ws_hdemo_sk = hd_demo_sk\n                          ^",
+      "exec_time_ms": 0.39733300218358636,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  hd_buy_potential,\n  SUM(ss_ext_sales_price) AS store_sales_total,\n  SUM(ws_ext_sales_price) AS web_sales_total,\n  SUM(cs_ext_sales_price) AS catalog_sales_total\nFROM \n  store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\n  LEFT JOIN web_sales ON date_dim.d_date_sk = web_sales.ws_sold_date_sk AND household_demographics.hd_demo_sk = web_sales.ws_hdemo_sk\n  LEFT JOIN catalog_sales ON date_dim.d_date_sk = catalog_sales.cs_sold_date_sk AND household_demographics.hd_demo_sk = catalog_sales.cs_bill_hdemo_sk\nGROUP BY \n  hd_buy_potential\nORDER BY \n  hd_buy_potential\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"web_sales\" does not have a column named \"ws_hdemo_sk\"\n\nCandidate bindings: : \"ws_item_sk\"\n\nLINE 10: ....ws_sold_date_sk AND household_demographics.hd_demo_sk = web_sales.ws_hdemo_sk\n                                                                     ^",
+      "exec_time_ms": 0.3381670103408396,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    hd.hd_buy_potential,\n    SUM(ss.ss_ext_sales_price) AS store_sales_total,\n    SUM(ws.ws_ext_sales_price) AS web_sales_total,\n    SUM(cs.cs_ext_sales_price) AS catalog_sales_total,\n    SUM(sr.sr_return_amt) AS store_returns_total,\n    SUM(wr.wr_return_amt) AS web_returns_total,\n    SUM(cr.cr_return_amt) AS catalog_returns_total\nFROM \n    store_sales ss\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    LEFT JOIN store_returns sr ON ss.ss_sold_date_sk = sr.sr_returned_date_sk AND ss.ss_hdemo_sk = sr.sr_hdemo_sk\n    LEFT JOIN web_sales ws ON ss.ss_sold_date_sk = ws.ws_sold_date_sk AND ss.ss_hdemo_sk = ws.ws_hdemo_sk\n    LEFT JOIN web_returns wr ON ws.ws_sold_date_sk = wr.wr_returned_date_sk AND ws.ws_hdemo_sk = wr.wr_hdemo_sk\n    LEFT JOIN catalog_sales cs ON ss.ss_sold_date_sk = cs.cs_sold_date_sk AND ss.ss_hdemo_sk = cs.cs_bill_hdemo_sk\n    LEFT JOIN catalog_returns cr ON cs.cs_sold_date_sk = cr.cr_returned_date_sk AND cs.cs_bill_hdemo_sk = cr.cr_refunded_hdemo_sk\nGROUP BY \n    hd.hd_buy_potential\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"ws\" does not have a column named \"ws_hdemo_sk\"\n\nCandidate bindings: : \"ws_item_sk\"\n\nLINE 14: ... ss.ss_sold_date_sk = ws.ws_sold_date_sk AND ss.ss_hdemo_sk = ws.ws_hdemo_sk\n                                                                          ^",
+      "exec_time_ms": 0.3919580049114302,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  hd_buy_potential,\n  SUM(ss_ext_sales_price) AS store_sales_total,\n  SUM(ws_ext_sales_price) AS web_sales_total,\n  SUM(cs_ext_sales_price) AS catalog_sales_total\nFROM \n  store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN household_demographics ON store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk\n  LEFT JOIN web_sales ON store_sales.ss_sold_date_sk = web_sales.ws_sold_date_sk AND store_sales.ss_hdemo_sk = web_sales.ws_hdemo_sk\n  LEFT JOIN catalog_sales ON store_sales.ss_sold_date_sk = catalog_sales.cs_sold_date_sk AND store_sales.ss_hdemo_sk = catalog_sales.cs_bill_hdemo_sk\nGROUP BY \n  hd_buy_potential\nORDER BY \n  hd_buy_potential\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"web_sales\" does not have a column named \"ws_hdemo_sk\"\n\nCandidate bindings: : \"ws_item_sk\"\n\nLINE 10: ... = web_sales.ws_sold_date_sk AND store_sales.ss_hdemo_sk = web_sales.ws_hdemo_sk\n                                                                       ^",
+      "exec_time_ms": 0.4225839948048815,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 10934.583583992207
+}

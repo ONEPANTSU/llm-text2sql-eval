@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_1502",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'EUR';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gs",
+            "gasstations"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'EUR';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gs",
+            "gasstations"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nINNER JOIN transactions_1k t USING (GasStationID)\nINNER JOIN customers c USING (CustomerID)\nWHERE c.Currency = 'EUR';",
+          "score": 1.0650000000000002,
+          "similarity_max": 0.6699999999999999,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gs",
+            "gasstations"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'EUR';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gs",
+            "gasstations"
+          ]
+        },
+        {
+          "sql": "WITH EUR_Customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'EUR'\n),\nEUR_Transactions AS (\n    SELECT DISTINCT GasStationID\n    FROM transactions_1k\n    WHERE CustomerID IN (SELECT CustomerID FROM EUR_Customers)\n)\nSELECT DISTINCT gs.ChainID\nFROM gasstations gs\nINNER JOIN EUR_Transactions et ON gs.GasStationID = et.GasStationID;",
+          "score": 1.2475862068965518,
+          "similarity_max": 0.5048275862068965,
+          "tables_used": [
+            "customers",
+            "et",
+            "transactions_1k",
+            "EUR_Transactions",
+            "gs",
+            "gasstations"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nINNER JOIN transactions_1k t USING (GasStationID)\nINNER JOIN customers c USING (CustomerID)\nWHERE c.Currency = 'EUR';",
+          "score": 1.0650000000000002,
+          "similarity_max": 0.6699999999999999,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gs",
+            "gasstations"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT gs.ChainID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'EUR';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "c",
+        "t",
+        "transactions_1k",
+        "gs",
+        "gasstations"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.51
+  }
+}

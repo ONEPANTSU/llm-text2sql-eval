@@ -1,0 +1,67 @@
+{
+  "task_id": "tpcds_q22",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE EXISTS (\n    SELECT 1 \n    FROM store_sales ss\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n    AND d.d_month_seq = :month_seq\n)\nAND EXISTS (...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_runtime_fail": 1,
+      "pred_parse_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_runtime_fail",
+        "message_head": "Invalid Input Error: Values were not provided for the following prepared stateme",
+        "count": 1
+      },
+      {
+        "error_type": "pred_parse_fail",
+        "message_head": "Parser Error: syntax error at or near \":\"\n\nLINE 18:     AND d.d_month_seq = :mon",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 15.86
+  }
+}

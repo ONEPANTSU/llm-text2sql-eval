@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1065",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2826.2842080002883,
+  "execution_time_ms": 7.999833003850654,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.buildUpPlaySpeedClass = 'Fast';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.815500004042406,
+      "result_signature": "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT T.team_long_name\nFROM Team_Attributes TA\nJOIN Team T ON TA.team_api_id = T.team_api_id\nWHERE TA.buildUpPlaySpeedClass = 'Fast';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9502089960733429,
+      "result_signature": "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.buildUpPlaySpeedClass = 'Fast';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.513040999067016,
+      "result_signature": "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT t.team_long_name\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE ta.buildUpPlaySpeedClass = 'Fast';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.650083995424211,
+      "result_signature": "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT t.team_long_name\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE ta.buildUpPlaySpeedClass = 'Fast';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5470830001286231,
+      "result_signature": "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT DISTINCT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.buildUpPlaySpeedClass = 'Fast';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "7e5a21994066e36706f194718cc352497411d7df540a3454d6fe0fbe4617e769": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2834.3870000026072
+}

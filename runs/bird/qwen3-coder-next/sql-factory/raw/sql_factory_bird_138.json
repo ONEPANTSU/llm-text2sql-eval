@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_138",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(*) \nFROM client c\nJOIN second_highest_district shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "second_highest_district",
+            "t",
+            "a",
+            "shd",
+            "crime_counts",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(*) \nFROM client c\nJOIN second_highest_district shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "second_highest_district",
+            "t",
+            "a",
+            "shd",
+            "crime_counts",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nranked_districts AS (\n    SELECT \n        district_id,\n        crime_count,\n        ROW_NUMBER() OVER (ORDER BY crime_count DESC) AS rank\n    FROM crime_counts\n)\nSELECT COUNT(*) \nFROM client c\nJOIN ranked_districts rd ON c.district_id = rd.district_id\nWHERE rd.rank = 2 A...",
+          "score": 1.0124653098982423,
+          "similarity_max": 0.6750693802035153,
+          "tables_used": [
+            "client",
+            "t",
+            "a",
+            "crime_counts",
+            "c",
+            "account",
+            "rd",
+            "ranked_districts",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(*) \nFROM client c\nJOIN second_highest_district shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "second_highest_district",
+            "t",
+            "a",
+            "shd",
+            "crime_counts",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nranked_districts AS (\n    SELECT \n        district_id,\n        crime_count,\n        ROW_NUMBER() OVER (ORDER BY crime_count DESC) AS rank\n    FROM crime_counts\n)\nSELECT COUNT(*) \nFROM client c\nJOIN ranked_districts rd ON c.district_id = rd.district_id\nWHERE rd.rank = 2 A...",
+          "score": 1.0124653098982423,
+          "similarity_max": 0.6750693802035153,
+          "tables_used": [
+            "client",
+            "t",
+            "a",
+            "crime_counts",
+            "c",
+            "account",
+            "rd",
+            "ranked_districts",
+            "trans"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(*) \nFROM client c\nJOIN second_highest_district shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "client",
+        "second_highest_district",
+        "t",
+        "a",
+        "shd",
+        "crime_counts",
+        "c",
+        "account",
+        "trans"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: district_id",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 301.11
+  }
+}

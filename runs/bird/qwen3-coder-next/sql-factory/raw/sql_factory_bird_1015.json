@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1015",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN results res ON r.raceId = res.raceId\nWHERE c.name = 'Austria'\n  AND res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "res",
+            "c",
+            "circuits",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.name = 'Austria'\n  AND res.rank = 1\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 0.902102534562212,
+          "similarity_max": 0.7957949308755761,
+          "tables_used": [
+            "r",
+            "res",
+            "circuits",
+            "c",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN results res ON r.raceId = res.raceId\nWHERE c.name = 'Austria'\n  AND res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "res",
+            "c",
+            "circuits",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN lapTimes lt ON r.raceId = lt.raceId\nWHERE c.name = 'Austria'\n  AND lt.milliseconds IS NOT NULL\nGROUP BY r.raceId, r.name, r.year\nORDER BY MIN(lt.milliseconds) ASC\nLIMIT 1;",
+          "score": 0.96466317063332,
+          "similarity_max": 0.6706736587333602,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.name = 'Austria'\nORDER BY lt.milliseconds ASC\nLIMIT 1;",
+          "score": 0.9519648093841643,
+          "similarity_max": 0.6960703812316715,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN results res ON r.raceId = res.raceId\nWHERE c.name = 'Austria'\n  AND res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "res",
+            "c",
+            "circuits",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN lapTimes lt ON r.raceId = lt.raceId\nWHERE c.name = 'Austria'\n  AND lt.milliseconds IS NOT NULL\nGROUP BY r.raceId, r.name, r.year\nORDER BY MIN(lt.milliseconds) ASC\nLIMIT 1;",
+          "score": 0.96466317063332,
+          "similarity_max": 0.6706736587333602,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.name = 'Austria'\nORDER BY lt.milliseconds ASC\nLIMIT 1;",
+          "score": 0.9519648093841643,
+          "similarity_max": 0.6960703812316715,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT r.name, r.year\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nJOIN results res ON r.raceId = res.raceId\nWHERE c.name = 'Austria'\n  AND res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "res",
+        "c",
+        "circuits",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 28.99
+  }
+}

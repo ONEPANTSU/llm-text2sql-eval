@@ -1,0 +1,149 @@
+{
+  "task_id": "spider2_4",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.name_given,\n    MAX(b.g) AS games_played,\n    MAX(b.r) AS runs,\n    MAX(b.h) AS hits,\n    MAX(b.hr) AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nGROUP BY p.player_id, p.name_given\nHAVING MAX(b.g) = (SELECT MAX(g) FROM batting)\n   AND MAX(b.r) = (SELECT MAX(r) FROM batting)\n   AND MAX(b.h) = (SELECT MAX(h) FROM batting)\n   AND MAX(b.hr) = (SELECT MAX(hr) FROM batting);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "batting",
+            "p",
+            "player",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.name_given,\n    MAX(b.g) AS games_played,\n    MAX(b.r) AS runs,\n    MAX(b.h) AS hits,\n    MAX(b.hr) AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nGROUP BY p.player_id, p.name_given\nHAVING MAX(b.g) = (SELECT MAX(g) FROM batting)\n   AND MAX(b.r) = (SELECT MAX(r) FROM batting)\n   AND MAX(b.h) = (SELECT MAX(h) FROM batting)\n   AND MAX(b.hr) = (SELECT MAX(hr) FROM batting);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "batting",
+            "p",
+            "player",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.name_given,\n    b.g AS games_played,\n    b.r AS runs,\n    b.h AS hits,\n    b.hr AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nWHERE b.g = (SELECT MAX(g) FROM batting)\n  AND b.r = (SELECT MAX(r) FROM batting)\n  AND b.h = (SELECT MAX(h) FROM batting)\n  AND b.hr = (SELECT MAX(hr) FROM batting);",
+          "score": 0.8456541218637992,
+          "similarity_max": 0.7086917562724014,
+          "tables_used": [
+            "batting",
+            "p",
+            "player",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.name_given,\n    MAX(b.g) AS games_played,\n    MAX(b.r) AS runs,\n    MAX(b.h) AS hits,\n    MAX(b.hr) AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nGROUP BY p.player_id, p.name_given\nHAVING MAX(b.g) = (SELECT MAX(g) FROM batting)\n   AND MAX(b.r) = (SELECT MAX(r) FROM batting)\n   AND MAX(b.h) = (SELECT MAX(h) FROM batting)\n   AND MAX(b.hr) = (SELECT MAX(hr) FROM batting);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "batting",
+            "p",
+            "player",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.name_given,\n    b.g AS games_played,\n    b.r AS runs,\n    b.h AS hits,\n    b.hr AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nWHERE (b.g, b.r, b.h, b.hr) = (\n    SELECT g, r, h, hr \n    FROM batting \n    ORDER BY g DESC, r DESC, h DESC, hr DESC \n    LIMIT 1\n);",
+          "score": 0.9700879765395896,
+          "similarity_max": 0.6598240469208211,
+          "tables_used": [
+            "batting",
+            "b",
+            "p",
+            "player"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.name_given,\n    b.g AS games_played,\n    b.r AS runs,\n    b.h AS hits,\n    b.hr AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nWHERE b.g = (SELECT MAX(g) FROM batting)\n  AND b.r = (SELECT MAX(r) FROM batting)\n  AND b.h = (SELECT MAX(h) FROM batting)\n  AND b.hr = (SELECT MAX(hr) FROM batting);",
+          "score": 0.8456541218637992,
+          "similarity_max": 0.7086917562724014,
+          "tables_used": [
+            "batting",
+            "p",
+            "player",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    p.name_given,\n    MAX(b.g) AS games_played,\n    MAX(b.r) AS runs,\n    MAX(b.h) AS hits,\n    MAX(b.hr) AS home_runs\nFROM player p\nJOIN batting b ON p.player_id = b.player_id\nGROUP BY p.player_id, p.name_given\nHAVING MAX(b.g) = (SELECT MAX(g) FROM batting)\n   AND MAX(b.r) = (SELECT MAX(r) FROM batting)\n   AND MAX(b.h) = (SELECT MAX(h) FROM batting)\n   AND MAX(b.hr) = (SELECT MAX(hr) FROM batting);",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "batting",
+        "p",
+        "player",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: r",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.39
+  }
+}

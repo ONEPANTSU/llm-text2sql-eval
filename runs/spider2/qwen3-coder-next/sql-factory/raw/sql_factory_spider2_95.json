@@ -1,0 +1,164 @@
+{
+  "task_id": "spider2_95",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n    -- Base case: start with all leaf-level items (items that are not parents in packaging_relations)\n    SELECT pr.contains_id AS root_id, pr.contains_id AS leaf_id, pr.qty AS total_qty\n    FROM packaging_relations pr\n    WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n    \n    UNION ALL\n    \n    -- Recursive case: expand upwards by joining with packaging_relations\n    SELECT ep.root_id, pr.contains_id AS leaf_id, ep.total_qty * ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT packaging_id, contains_id, qty, qty AS total_qty\n  FROM packaging_relations\n  WHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n  UNION ALL\n  SELECT ep.packaging_id, pr.contains_id, ep.qty * pr.qty, ep.total_qty * pr.qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.contains_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging;",
+          "score": 1.1296253469010176,
+          "similarity_max": 0.5407493061979649,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n    -- Base case: start with all leaf-level items (items that are not parents in packaging_relations)\n    SELECT pr.contains_id AS root_id, pr.contains_id AS leaf_id, pr.qty AS total_qty\n    FROM packaging_relations pr\n    WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n    \n    UNION ALL\n    \n    -- Recursive case: expand upwards by joining with packaging_relations\n    SELECT ep.root_id, pr.contains_id AS leaf_id, ep.total_qty * ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT packaging_id, contains_id, qty, qty AS total_qty\n  FROM packaging_relations\n  WHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n  UNION ALL\n  SELECT ep.packaging_id, pr.contains_id, ep.qty * pr.qty, ep.total_qty * pr.qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.contains_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging;",
+          "score": 1.1296253469010176,
+          "similarity_max": 0.5407493061979649,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE leaf_expansion AS (\n    -- Start from leaf items (those not acting as packaging_id)\n    SELECT pr.contains_id AS base_item, pr.contains_id AS current_item, pr.qty AS cumulative_qty\n    FROM packaging_relations pr\n    WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n    \n    UNION ALL\n    \n    -- Move upward through packaging hierarchy\n    SELECT le.base_item, pr.packaging_id AS current_item, le.cumulative_qty * pr.qty AS cumulative_qty\n    FROM leaf_expan...",
+          "score": 1.081578947368421,
+          "similarity_max": 0.6368421052631579,
+          "tables_used": [
+            "le",
+            "leaf_expansion",
+            "pr",
+            "packaging_relations"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n    -- Base case: start with all leaf-level items (items that are not parents in packaging_relations)\n    SELECT pr.contains_id AS root_id, pr.contains_id AS leaf_id, pr.qty AS total_qty\n    FROM packaging_relations pr\n    WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n    \n    UNION ALL\n    \n    -- Recursive case: expand upwards by joining with packaging_relations\n    SELECT ep.root_id, pr.contains_id AS leaf_id, ep.total_qty * ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE leaf_expansion AS (\n    -- Start with direct children of each packaging (non-leaf items)\n    SELECT pr.packaging_id AS root_id, pr.contains_id AS current_id, pr.qty AS cumulative_qty\n    FROM packaging_relations pr\n    \n    UNION ALL\n    \n    -- Recursively expand: if current_id is itself a packaging, multiply quantities\n    SELECT le.root_id, pr.contains_id AS current_id, le.cumulative_qty * pr.qty AS cumulative_qty\n    FROM leaf_expansion le\n    JOIN packaging_relations pr ON le...",
+          "score": 1.1733193277310923,
+          "similarity_max": 0.5533613445378152,
+          "tables_used": [
+            "le",
+            "leaf_expansion",
+            "pr",
+            "packaging_relations",
+            "final_leaf_totals"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT packaging_id, contains_id, qty, qty AS total_qty\n  FROM packaging_relations\n  WHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n  UNION ALL\n  SELECT ep.packaging_id, pr.contains_id, ep.qty * pr.qty, ep.total_qty * pr.qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.contains_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging;",
+          "score": 1.1296253469010176,
+          "similarity_max": 0.5407493061979649,
+          "tables_used": [
+            "ep",
+            "expanded_packaging",
+            "pr",
+            "packaging_relations"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH RECURSIVE expanded_packaging AS (\n    -- Base case: start with all leaf-level items (items that are not parents in packaging_relations)\n    SELECT pr.contains_id AS root_id, pr.contains_id AS leaf_id, pr.qty AS total_qty\n    FROM packaging_relations pr\n    WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n    \n    UNION ALL\n    \n    -- Recursive case: expand upwards by joining with packaging_relations\n    SELECT ep.root_id, pr.contains_id AS leaf_id, ep.total_qty * ...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ep",
+        "expanded_packaging",
+        "pr",
+        "packaging_relations"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.04
+  }
+}

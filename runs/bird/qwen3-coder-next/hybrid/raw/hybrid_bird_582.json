@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_582",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1599.165040999651,
+  "execution_time_ms": 233.57475000375416,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT posts.Title\nFROM posts\nJOIN users ON posts.LastEditorUserId = users.Id\nWHERE users.DisplayName = 'Vebjorn Ljosa';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 60.76033399585867,
+      "result_signature": "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Title FROM posts JOIN users ON posts.LastEditorUserId = users.Id WHERE users.DisplayName = 'Vebjorn Ljosa';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 42.638708000595216,
+      "result_signature": "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Title FROM posts JOIN users ON posts.LastEditorUserId = users.Id WHERE users.DisplayName = 'Vebjorn Ljosa';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 44.540833994688,
+      "result_signature": "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT Title\nFROM posts\nJOIN users ON posts.LastEditorUserId = users.Id\nWHERE users.DisplayName = 'Vebjorn Ljosa';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 42.21724999661092,
+      "result_signature": "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Title\nFROM posts\nJOIN users ON posts.LastEditorUserId = users.Id\nWHERE users.DisplayName = 'Vebjorn Ljosa';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.081540999992285,
+      "result_signature": "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT Title\nFROM posts\nJOIN users ON posts.LastEditorUserId = users.Id\nWHERE users.DisplayName = 'Vebjorn Ljosa';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "be25b08de62c5fb2ac518f4453ba40f5793d2a2780c4fb4a5253cb5ca9254d57": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1832.8420420002658
+}

@@ -1,0 +1,211 @@
+{
+  "task_id": "spider2_73",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH cohort AS (\n  SELECT \n    l.id_bioguide,\n    MIN(t.term_start) AS first_term_start\n  FROM legislators l\n  JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n  WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n  GROUP BY l.id_bioguide\n),\nretention AS (\n  SELECT \n    c.id_bioguide,\n    c.first_term_start,\n    strftime('%Y', '1999-12-31') AS year_end,\n    CASE \n      WHEN EXISTS (\n        SELECT 1 \n        FROM legislators_terms t2 \n        WHERE t2.id_bioguide = c.id_...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "legislators_terms",
+            "c",
+            "t2",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "retention_summary",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH cohort AS (\n    SELECT \n        l.id_bioguide,\n        MIN(t.term_start) AS first_term_start\n    FROM legislators l\n    JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n    WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n    GROUP BY l.id_bioguide\n),\nretention AS (\n    SELECT \n        c.id_bioguide,\n        c.first_term_start,\n        strftime('%Y', '1917-01-01', '+' || (y.n - 1) || ' years', '-1 day') AS year_end,\n        CASE \n            WHEN MAX(CASE WHEN t....",
+          "score": 1.072205572205572,
+          "similarity_max": 0.6555888555888556,
+          "tables_used": [
+            "year_counts",
+            "legislators_terms",
+            "c",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH cohort AS (\n  SELECT \n    l.id_bioguide,\n    MIN(t.term_start) AS first_term_start\n  FROM legislators l\n  JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n  WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n  GROUP BY l.id_bioguide\n),\nretention AS (\n  SELECT \n    c.id_bioguide,\n    c.first_term_start,\n    strftime('%Y', '1999-12-31') AS year_end,\n    CASE \n      WHEN EXISTS (\n        SELECT 1 \n        FROM legislators_terms t2 \n        WHERE t2.id_bioguide = c.id_...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "legislators_terms",
+            "c",
+            "t2",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "retention_summary",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH cohort AS (\n    SELECT \n        l.id_bioguide,\n        MIN(t.term_start) AS first_term_start\n    FROM legislators l\n    JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n    WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n    GROUP BY l.id_bioguide\n),\nretention AS (\n    SELECT \n        c.id_bioguide,\n        c.first_term_start,\n        strftime('%Y', '1917-01-01', '+' || (y.n - 1) || ' years', '-1 day') AS year_end,\n        CASE \n            WHEN MAX(CASE WHEN t....",
+          "score": 1.072205572205572,
+          "similarity_max": 0.6555888555888556,
+          "tables_used": [
+            "year_counts",
+            "legislators_terms",
+            "c",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH cohort AS (\n    SELECT \n        l.id_bioguide,\n        MIN(t.term_start) AS first_term_start\n    FROM legislators l\n    JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n    WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n    GROUP BY l.id_bioguide\n),\nyears AS (\n    SELECT 1 AS year_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5\n    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10\n   ...",
+          "score": 0.9394197292069633,
+          "similarity_max": 0.7211605415860735,
+          "tables_used": [
+            "y",
+            "summary",
+            "legislators_terms",
+            "c",
+            "t",
+            "cohort",
+            "legislators",
+            "years",
+            "retention_check",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH cohort AS (\n  SELECT \n    l.id_bioguide,\n    MIN(t.term_start) AS first_term_start\n  FROM legislators l\n  JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n  WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n  GROUP BY l.id_bioguide\n),\nretention AS (\n  SELECT \n    c.id_bioguide,\n    c.first_term_start,\n    strftime('%Y', '1999-12-31') AS year_end,\n    CASE \n      WHEN EXISTS (\n        SELECT 1 \n        FROM legislators_terms t2 \n        WHERE t2.id_bioguide = c.id_...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "legislators_terms",
+            "c",
+            "t2",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "retention_summary",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH cohort AS (\n    SELECT \n        l.id_bioguide,\n        MIN(t.term_start) AS first_term_start\n    FROM legislators l\n    JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n    WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n    GROUP BY l.id_bioguide\n),\nretention AS (\n    SELECT \n        c.id_bioguide,\n        c.first_term_start,\n        strftime('%Y', '1917-01-01', '+' || (y.n - 1) || ' years', '-1 day') AS year_end,\n        CASE \n            WHEN MAX(CASE WHEN t....",
+          "score": 1.072205572205572,
+          "similarity_max": 0.6555888555888556,
+          "tables_used": [
+            "year_counts",
+            "legislators_terms",
+            "c",
+            "t",
+            "cohort",
+            "legislators",
+            "retention",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH cohort AS (\n    SELECT \n        l.id_bioguide,\n        MIN(t.term_start) AS first_term_start\n    FROM legislators l\n    JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n    WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n    GROUP BY l.id_bioguide\n),\nyears AS (\n    SELECT 1 AS year_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5\n    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10\n   ...",
+          "score": 0.9394197292069633,
+          "similarity_max": 0.7211605415860735,
+          "tables_used": [
+            "y",
+            "summary",
+            "legislators_terms",
+            "c",
+            "t",
+            "cohort",
+            "legislators",
+            "years",
+            "retention_check",
+            "l"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH cohort AS (\n  SELECT \n    l.id_bioguide,\n    MIN(t.term_start) AS first_term_start\n  FROM legislators l\n  JOIN legislators_terms t ON l.id_bioguide = t.id_bioguide\n  WHERE t.term_start >= '1917-01-01' AND t.term_start <= '1999-12-31'\n  GROUP BY l.id_bioguide\n),\nretention AS (\n  SELECT \n    c.id_bioguide,\n    c.first_term_start,\n    strftime('%Y', '1999-12-31') AS year_end,\n    CASE \n      WHEN EXISTS (\n        SELECT 1 \n        FROM legislators_terms t2 \n        WHERE t2.id_bioguide = c.id_...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "legislators_terms",
+        "c",
+        "t2",
+        "t",
+        "cohort",
+        "legislators",
+        "retention",
+        "retention_summary",
+        "l"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.95
+  }
+}

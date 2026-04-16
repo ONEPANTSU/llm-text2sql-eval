@@ -1,0 +1,164 @@
+{
+  "task_id": "spider2_111",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 ON r1.session = r2.session AND r2.stamp > r1.stamp\nJOIN read_log r3 ON r2.session = r3.session AND r3.stamp > r2.stamp\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY occurrence_count DESC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r2",
+            "r1",
+            "read_log",
+            "r3"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 ON r1.session = r2.session AND r2.stamp > r1.stamp\nJOIN read_log r3 ON r2.session = r3.session AND r3.stamp > r2.stamp\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY occurrence_count DESC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r2",
+            "r1",
+            "read_log",
+            "r3"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 \n    ON r1.session = r2.session \n    AND r2.stamp = (\n        SELECT MIN(r2_inner.stamp) \n        FROM read_log r2_inner \n        WHERE r2_inner.session = r1.session \n          AND r2_inner.stamp > r1.stamp \n          AND r2_inner.url = '/detail'\n    )\nJOIN read_log r3 \n    ON r2.session = r3.session \n    AND r3.stamp = (\n        SELECT MIN(r3_inner.stamp) \n        FROM read_log r3_inner \n       ...",
+          "score": 1.0395985401459855,
+          "similarity_max": 0.7208029197080291,
+          "tables_used": [
+            "r3_inner",
+            "read_log",
+            "r2_inner",
+            "r2",
+            "r1",
+            "r3"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nINNER JOIN read_log r2 \n    ON r1.session = r2.session \n    AND r2.stamp = (SELECT MIN(stamp) FROM read_log WHERE session = r1.session AND stamp > r1.stamp)\nINNER JOIN read_log r3 \n    ON r2.session = r3.session \n    AND r3.stamp = (SELECT MIN(stamp) FROM read_log WHERE session = r2.session AND stamp > r2.stamp)\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY o...",
+          "score": 0.8929374630104557,
+          "similarity_max": 0.8141250739790886,
+          "tables_used": [
+            "r2",
+            "r1",
+            "read_log",
+            "r3"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 ON r1.session = r2.session AND r2.stamp > r1.stamp\nJOIN read_log r3 ON r2.session = r3.session AND r3.stamp > r2.stamp\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY occurrence_count DESC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r2",
+            "r1",
+            "read_log",
+            "r3"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 \n    ON r1.session = r2.session \n    AND r2.stamp = (\n        SELECT MIN(r2_inner.stamp) \n        FROM read_log r2_inner \n        WHERE r2_inner.session = r1.session \n          AND r2_inner.stamp > r1.stamp \n          AND r2_inner.url = '/detail'\n    )\nJOIN read_log r3 \n    ON r2.session = r3.session \n    AND r3.stamp = (\n        SELECT MIN(r3_inner.stamp) \n        FROM read_log r3_inner \n       ...",
+          "score": 1.0395985401459855,
+          "similarity_max": 0.7208029197080291,
+          "tables_used": [
+            "r3_inner",
+            "read_log",
+            "r2_inner",
+            "r2",
+            "r1",
+            "r3"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nINNER JOIN read_log r2 \n    ON r1.session = r2.session \n    AND r2.stamp = (SELECT MIN(stamp) FROM read_log WHERE session = r1.session AND stamp > r1.stamp)\nINNER JOIN read_log r3 \n    ON r2.session = r3.session \n    AND r3.stamp = (SELECT MIN(stamp) FROM read_log WHERE session = r2.session AND stamp > r2.stamp)\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY o...",
+          "score": 0.8929374630104557,
+          "similarity_max": 0.8141250739790886,
+          "tables_used": [
+            "r2",
+            "r1",
+            "read_log",
+            "r3"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    r3.url AS third_page,\n    COUNT(*) AS occurrence_count\nFROM read_log r1\nJOIN read_log r2 ON r1.session = r2.session AND r2.stamp > r1.stamp\nJOIN read_log r3 ON r2.session = r3.session AND r3.stamp > r2.stamp\nWHERE r1.url = '/detail'\n  AND r2.url = '/detail'\n  AND r3.url != '/detail'\nGROUP BY r3.url\nORDER BY occurrence_count DESC\nLIMIT 3;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r2",
+        "r1",
+        "read_log",
+        "r3"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: path",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 1.7
+  }
+}

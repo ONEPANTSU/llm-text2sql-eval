@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1372",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2940.843707998283,
+  "execution_time_ms": 6.3020829984452575,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.008250001585111,
+      "result_signature": "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7012499991105869,
+      "result_signature": "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.48674999561626464,
+      "result_signature": "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4533750034170225,
+      "result_signature": "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7498330014641397,
+      "result_signature": "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT income.date_received\nFROM income\nJOIN member ON income.link_to_member = member.member_id\nWHERE member.first_name = 'Casey' AND member.last_name = 'Mason';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "1378d86e0b4e79f1dca6028cc553495e985bf39b16402fb0af8919bc2bd8a6b2": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2947.4278749985388
+}

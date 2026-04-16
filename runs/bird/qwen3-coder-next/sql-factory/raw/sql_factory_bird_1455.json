@@ -1,0 +1,151 @@
+{
+  "task_id": "bird_1455",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT b.budget_id, b.amount\nFROM budget b\nJOIN expense e ON b.budget_id = e.link_to_budget\nWHERE LOWER(e.expense_description) LIKE '%water%' \n   OR LOWER(e.expense_description) LIKE '%chips%' \n   OR LOWER(e.expense_description) LIKE '%cookies%'\nGROUP BY b.budget_id, b.amount\nORDER BY SUM(e.cost) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT budget_id\nFROM budget\nWHERE category IN ('water', 'chips', 'cookies')\nGROUP BY budget_id\nORDER BY SUM(amount) DESC\nLIMIT 1;",
+          "score": 0.8285714285714286,
+          "similarity_max": 0.44285714285714284,
+          "tables_used": [
+            "budget"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT b.budget_id, b.amount\nFROM budget b\nJOIN expense e ON b.budget_id = e.link_to_budget\nWHERE LOWER(e.expense_description) LIKE '%water%' \n   OR LOWER(e.expense_description) LIKE '%chips%' \n   OR LOWER(e.expense_description) LIKE '%cookies%'\nGROUP BY b.budget_id, b.amount\nORDER BY SUM(e.cost) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT budget_id\nFROM budget\nWHERE category IN ('water', 'chips', 'cookies')\nGROUP BY budget_id\nORDER BY SUM(amount) DESC\nLIMIT 1;",
+          "score": 0.8285714285714286,
+          "similarity_max": 0.44285714285714284,
+          "tables_used": [
+            "budget"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT b.budget_id, b.amount\nFROM budget b\nJOIN expense e ON b.budget_id = e.link_to_budget\nWHERE LOWER(e.expense_description) LIKE '%water%' \n   OR LOWER(e.expense_description) LIKE '%chips%' \n   OR LOWER(e.expense_description) LIKE '%cookies%'\nGROUP BY b.budget_id, b.amount\nORDER BY SUM(e.cost) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.budget_id, b.amount\nFROM budget b\nWHERE b.budget_id IN (\n    SELECT e.link_to_budget\n    FROM expense e\n    WHERE LOWER(e.expense_description) LIKE '%water%' \n       OR LOWER(e.expense_description) LIKE '%chips%' \n       OR LOWER(e.expense_description) LIKE '%cookies%'\n)\nORDER BY b.amount DESC\nLIMIT 1;",
+          "score": 0.971764705882353,
+          "similarity_max": 0.6564705882352941,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT budget_id\nFROM budget\nWHERE category IN ('water', 'chips', 'cookies')\nGROUP BY budget_id\nHAVING SUM(amount) = (\n    SELECT MAX(total_amount)\n    FROM (\n        SELECT SUM(amount) AS total_amount\n        FROM budget\n        WHERE category IN ('water', 'chips', 'cookies')\n        GROUP BY budget_id\n    )\n);",
+          "score": 0.895744680851064,
+          "similarity_max": 0.5085106382978724,
+          "tables_used": [
+            "budget"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT b.budget_id, b.amount\nFROM budget b\nJOIN expense e ON b.budget_id = e.link_to_budget\nWHERE LOWER(e.expense_description) LIKE '%water%' \n   OR LOWER(e.expense_description) LIKE '%chips%' \n   OR LOWER(e.expense_description) LIKE '%cookies%'\nGROUP BY b.budget_id, b.amount\nORDER BY SUM(e.cost) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "budget",
+        "expense",
+        "e",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.2,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"ILIKE\": syntax error",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 1.67
+  }
+}

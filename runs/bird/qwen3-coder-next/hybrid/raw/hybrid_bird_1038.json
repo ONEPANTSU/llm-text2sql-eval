@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1038",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2686.479625001084,
+  "execution_time_ms": 144.685125000251,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT League.name, SUM(Match.home_team_goal + Match.away_team_goal) AS total_goals\nFROM Match\nJOIN League ON Match.league_id = League.id\nGROUP BY League.name\nORDER BY total_goals ASC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.039583998383023,
+      "result_signature": "2614cbed51ce816080acd2e818ce4e8a5198484bb820e569e74a901571771979",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT League.name, SUM(Match.home_team_goal + Match.away_team_goal) AS total_goals\nFROM Match\nJOIN League ON Match.league_id = League.id\nGROUP BY League.name\nORDER BY total_goals ASC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.42941599758342,
+      "result_signature": "2614cbed51ce816080acd2e818ce4e8a5198484bb820e569e74a901571771979",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT l.name\nFROM League l\nJOIN Match m ON l.id = m.league_id\nGROUP BY l.name\nORDER BY SUM(m.home_team_goal + m.away_team_goal) ASC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.41445800004294,
+      "result_signature": "85a0356cb748b933e95b26cd7f35c165d68d6e8435bf5da70d3039977fe5ddb2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    League.name\nFROM \n    Match\nJOIN \n    League ON Match.league_id = League.id\nGROUP BY \n    League.name\nORDER BY \n    SUM(Match.home_team_goal) + SUM(Match.away_team_goal) ASC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.93358299479587,
+      "result_signature": "85a0356cb748b933e95b26cd7f35c165d68d6e8435bf5da70d3039977fe5ddb2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT l.name, SUM(m.home_team_goal + m.away_team_goal) AS total_goals\nFROM League l\nJOIN Match m ON l.id = m.league_id\nGROUP BY l.name\nORDER BY total_goals ASC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.57233399845427,
+      "result_signature": "2614cbed51ce816080acd2e818ce4e8a5198484bb820e569e74a901571771979",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT l.name, SUM(m.home_team_goal + m.away_team_goal) AS total_goals\nFROM League l\nJOIN Match m ON l.id = m.league_id\nGROUP BY l.name\nORDER BY total_goals ASC\nLIMIT 5;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2614cbed51ce816080acd2e818ce4e8a5198484bb820e569e74a901571771979": 3,
+        "85a0356cb748b933e95b26cd7f35c165d68d6e8435bf5da70d3039977fe5ddb2": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 6250.742125004763,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9081.984958000248
+}

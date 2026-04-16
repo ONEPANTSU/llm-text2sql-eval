@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_37",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 19038.620041988906,
+  "execution_time_ms": 20.282583995140158,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        SUM(CASE WHEN t.calendar_quarter_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN t.calendar_quarter_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id\n),\ncity_with_growth AS (\n    SELECT DISTINCT cust_city_id\n    FROM city_sales\n    WHERE q4_2019_sales > 0\n      AND (q4_2020_sales - q4_2019_sales) / q4_2019_sales >= 0.20\n),\nproduct_city_sales AS (\n    SELECT \n        cs.prod_id,\n        cs.prod_name,\n        cs.cust_city_id,\n        cs.q4_2019_sales,\n        cs.q4_2020_sales,\n        (cs.q4_2020_sales - cs.q4_2019_sales) * 100.0 / NULLIF(cs.q4_2019_sales, 0) AS sales_pct_change,\n        SUM(cs.q4_2019_sales) OVER (PARTITION BY cs.prod_id) AS prod_q4_2019_total,\n        SUM(cs.q4_2020_sales) OVER (PARTITION BY cs.prod_id) AS prod_q4_2020_total,\n        SUM(cs.q4_2019_sales) OVER () AS total_q4_2019,\n        SUM(cs.q4_2020_sales) OVER () AS total_q4_2020\n    FROM city_sales cs\n    WHERE cs.cust_city_id IN (SELECT cust_city_id FROM city_with_growth)\n),\nproduct_sales_pct AS (\n    SELECT \n        prod_id,\n        prod_name,\n        (prod_q4_2020_total * 100.0 / NULLIF(total_q4_2020, 0)) - (prod_q4_2019_total * 100.0 / NULLIF(total_q4_2019, 0)) AS sales_share_pct_point_change,\n        prod_q4_2020_total + prod_q4_2019_total AS total_sales\n    FROM product_city_sales\n    GROUP BY prod_id, prod_name, prod_q4_2020_total, prod_q4_2019_total, total_q4_2020, total_q4_2019\n),\ntop_products AS (\n    SELECT \n        prod_id,\n        prod_name,\n        sales_share_pct_point_change,\n        total_sales,\n        NTILE(5) OVER (ORDER BY total_sales DESC) AS sales_quintile\n    FROM product_sales_pct\n)\nSELECT prod_name\nFROM top_products\nWHERE sales_quintile = 1\nORDER BY ABS(sales_share_pct_point_change) ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9072919967584312,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_quarter_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id, t.calendar_quarter_id\n),\ncity_sales_pivot AS (\n    SELECT \n        prod_id,\n        prod_name,\n        cust_city_id,\n        MAX(CASE WHEN calendar_quarter_id = 1772 THEN city_quarter_sales ELSE 0 END) AS q4_2019_sales,\n        MAX(CASE WHEN calendar_quarter_id = 1776 THEN city_quarter_sales ELSE 0 END) AS q4_2020_sales\n    FROM city_sales\n    GROUP BY prod_id, prod_name, cust_city_id\n),\ncity_with_growth AS (\n    SELECT \n        prod_id,\n        prod_name,\n        cust_city_id,\n        q4_2019_sales,\n        q4_2020_sales,\n        (q4_2020_sales - q4_2019_sales) * 100.0 / NULLIF(q4_2019_sales, 0) AS pct_change\n    FROM city_sales_pivot\n    WHERE q4_2019_sales > 0\n      AND (q4_2020_sales - q4_2019_sales) * 100.0 / q4_2019_sales >= 20\n),\nproduct_total_sales AS (\n    SELECT \n        prod_id,\n        prod_name,\n        SUM(q4_2019_sales) AS total_q4_2019_sales,\n        SUM(q4_2020_sales) AS total_q4_2020_sales,\n        SUM(q4_2019_sales + q4_2020_sales) AS total_sales\n    FROM city_with_growth\n    GROUP BY prod_id, prod_name\n),\nranked_products AS (\n    SELECT \n        prod_id,\n        prod_name,\n        total_q4_2019_sales,\n        total_q4_2020_sales,\n        total_sales,\n        PERCENT_RANK() OVER (ORDER BY total_sales DESC) AS sales_rank_pct\n    FROM product_total_sales\n),\ntop_20_products AS (\n    SELECT *\n    FROM ranked_products\n    WHERE sales_rank_pct >= 0.8\n),\nproduct_sales_share AS (\n    SELECT \n        prod_id,\n        prod_name,\n        total_q4_2019_sales,\n        total_q4_2020_sales,\n        total_q4_2019_sales + total_q4_2020_sales AS total_sales,\n        CAST(total_q4_2019_sales AS REAL) * 100.0 / (SELECT SUM(total_q4_2019_sales) FROM top_20_products) AS share_2019_pct,\n        CAST(total_q4_2020_sales AS REAL) * 100.0 / (SELECT SUM(total_q4_2020_sales) FROM top_20_products) AS share_2020_pct\n    FROM top_20_products\n)\nSELECT \n    prod_name\nFROM product_sales_share\nORDER BY ABS(share_2020_pct - share_2019_pct) ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7906660030130297,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id, t.calendar_quarter_id\n),\ncity_sales_pivot AS (\n    SELECT \n        prod_id,\n        prod_name,\n        cust_city_id,\n        SUM(CASE WHEN calendar_quarter_id = 1772 THEN city_sales ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN calendar_quarter_id = 1776 THEN city_sales ELSE 0 END) AS q4_2020_sales\n    FROM city_sales\n    GROUP BY prod_id, prod_name, cust_city_id\n),\nqualified_cities AS (\n    SELECT DISTINCT cust_city_id\n    FROM city_sales_pivot\n    WHERE q4_2019_sales > 0 \n      AND (q4_2020_sales - q4_2019_sales) * 100.0 / q4_2019_sales >= 20\n),\nproduct_city_sales AS (\n    SELECT \n        cs.prod_id,\n        cs.prod_name,\n        cs.cust_city_id,\n        cs.q4_2019_sales,\n        cs.q4_2020_sales\n    FROM city_sales_pivot cs\n    WHERE cs.cust_city_id IN (SELECT cust_city_id FROM qualified_cities)\n),\nproduct_totals AS (\n    SELECT \n        prod_id,\n        prod_name,\n        SUM(q4_2019_sales) AS total_q4_2019,\n        SUM(q4_2020_sales) AS total_q4_2020,\n        SUM(q4_2019_sales) + SUM(q4_2020_sales) AS total_sales\n    FROM product_city_sales\n    GROUP BY prod_id, prod_name\n),\nproduct_shares AS (\n    SELECT \n        prod_id,\n        prod_name,\n        total_q4_2019,\n        total_q4_2020,\n        total_sales,\n        CAST(total_q4_2019 AS REAL) / SUM(total_q4_2019) OVER () AS share_2019,\n        CAST(total_q4_2020 AS REAL) / SUM(total_q4_2020) OVER () AS share_2020\n    FROM product_totals\n),\nranked_products AS (\n    SELECT \n        prod_id,\n        prod_name,\n        share_2019,\n        share_2020,\n        (share_2020 - share_2019) AS share_pct_change,\n        PERCENT_RANK() OVER (ORDER BY total_sales DESC) AS sales_rank\n    FROM product_shares\n)\nSELECT prod_name\nFROM ranked_products\nWHERE sales_rank >= 0.8\nORDER BY share_pct_change ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.49500000022817403,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_quarter_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id, t.calendar_quarter_id\n),\ncity_q4_2019 AS (\n    SELECT prod_id, cust_city_id, city_quarter_sales AS q4_2019_sales\n    FROM city_sales\n    WHERE calendar_quarter_id = 1772\n),\ncity_q4_2020 AS (\n    SELECT prod_id, cust_city_id, city_quarter_sales AS q4_2020_sales\n    FROM city_sales\n    WHERE calendar_quarter_id = 1776\n),\ncity_sales_change AS (\n    SELECT \n        COALESCE(q2019.prod_id, q2020.prod_id) AS prod_id,\n        COALESCE(q2019.cust_city_id, q2020.cust_city_id) AS cust_city_id,\n        COALESCE(q2019.q4_2019_sales, 0) AS q4_2019_sales,\n        COALESCE(q2020.q4_2020_sales, 0) AS q4_2020_sales,\n        CASE \n            WHEN q2019.q4_2019_sales > 0 THEN \n                (q2020.q4_2020_sales - q2019.q4_2019_sales) * 100.0 / q2019.q4_2019_sales\n            ELSE NULL \n        END AS sales_pct_change\n    FROM city_q4_2019 q2019\n    FULL OUTER JOIN city_q4_2020 q2020 \n        ON q2019.prod_id = q2020.prod_id \n        AND q2019.cust_city_id = q2020.cust_city_id\n),\nqualifying_cities AS (\n    SELECT DISTINCT cust_city_id\n    FROM city_sales_change\n    WHERE sales_pct_change >= 20\n),\nproduct_total_sales AS (\n    SELECT \n        cs.prod_id,\n        SUM(CASE WHEN cs.calendar_quarter_id = 1772 THEN cs.city_quarter_sales ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN cs.calendar_quarter_id = 1776 THEN cs.city_quarter_sales ELSE 0 END) AS q4_2020_sales,\n        SUM(cs.city_quarter_sales) AS total_sales\n    FROM city_sales cs\n    JOIN qualifying_cities qc ON cs.cust_city_id = qc.cust_city_id\n    GROUP BY cs.prod_id\n),\nproduct_sales_pct AS (\n    SELECT \n        prod_id,\n        q4_2019_sales,\n        q4_2020_sales,\n        total_sales,\n        CASE \n            WHEN q4_2019_sales > 0 THEN q4_2019_sales * 100.0 / total_sales \n            ELSE 0 \n        END AS pct_2019,\n        CASE \n            WHEN q4_2020_sales > 0 THEN q4_2020_sales * 100.0 / total_sales \n            ELSE 0 \n        END AS pct_2020,\n        CASE \n            WHEN q4_2019_sales > 0 THEN \n                (q4_2020_sales * 100.0 / total_sales) - (q4_2019_sales * 100.0 / total_sales)\n            ELSE 0 \n        END AS sales_pct_point_change\n    FROM product_total_sales\n),\ntop_20_percent AS (\n    SELECT \n        prod_id,\n        q4_2019_sales,\n        q4_2020_sales,\n        total_sales,\n        pct_2019,\n        pct_2020,\n        sales_pct_point_change,\n        PERCENT_RANK() OVER (ORDER BY total_sales DESC) AS sales_rank_pct\n    FROM product_sales_pct\n)\nSELECT prod_id\nFROM top_20_percent\nWHERE sales_rank_pct >= 0.8\nORDER BY sales_pct_point_change ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7749999931547791,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS q_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id, t.calendar_quarter_id\n),\ncity_q4_comparison AS (\n    SELECT \n        cs1.prod_id,\n        cs1.prod_name,\n        cs1.cust_city_id,\n        cs1.q_sales AS q4_2019_sales,\n        cs2.q_sales AS q4_2020_sales,\n        (cs2.q_sales - cs1.q_sales) * 100.0 / NULLIF(cs1.q_sales, 0) AS sales_pct_change\n    FROM city_sales cs1\n    JOIN city_sales cs2 \n        ON cs1.prod_id = cs2.prod_id \n        AND cs1.cust_city_id = cs2.cust_city_id\n    WHERE cs1.calendar_quarter_id = 1772\n      AND cs2.calendar_quarter_id = 1776\n      AND (cs2.q_sales - cs1.q_sales) * 100.0 / NULLIF(cs1.q_sales, 0) >= 20\n),\nproduct_totals AS (\n    SELECT \n        s.prod_id,\n        p.prod_name,\n        SUM(CASE WHEN t.calendar_quarter_id = 1772 THEN s.amount_sold ELSE 0 END) AS q4_2019_total,\n        SUM(CASE WHEN t.calendar_quarter_id = 1776 THEN s.amount_sold ELSE 0 END) AS q4_2020_total,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY s.prod_id, p.prod_name\n),\ntop_20_products AS (\n    SELECT \n        prod_id,\n        prod_name,\n        q4_2019_total,\n        q4_2020_total,\n        total_sales,\n        PERCENT_RANK() OVER (ORDER BY total_sales DESC) AS sales_rank_pct\n    FROM product_totals\n    WHERE sales_rank_pct <= 0.20\n),\nproduct_share_change AS (\n    SELECT \n        t20.prod_id,\n        t20.prod_name,\n        t20.q4_2019_total,\n        t20.q4_2020_total,\n        t20.total_sales,\n        (t20.q4_2019_total * 100.0 / SUM(t20.q4_2019_total) OVER ()) AS share_2019,\n        (t20.q4_2020_total * 100.0 / SUM(t20.q4_2020_total) OVER ()) AS share_2020,\n        ((t20.q4_2020_total * 100.0 / SUM(t20.q4_2020_total) OVER ()) - \n         (t20.q4_19_total * 100.0 / SUM(t20.q4_2019_total) OVER ())) AS share_pct_point_change\n    FROM top_20_products t20\n),\nvalid_products AS (\n    SELECT \n        ps.prod_id,\n        ps.prod_name,\n        ps.share_pct_point_change,\n        cqc.sales_pct_change\n    FROM product_share_change ps\n    JOIN city_q4_comparison cqc ON ps.prod_id = cqc.prod_id\n)\nSELECT \n    prod_id,\n    prod_name\nFROM valid_products\nORDER BY ABS(share_pct_point_change) ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "misuse of aliased window function sales_rank_pct",
+      "exec_time_ms": 0.4107910062884912,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH city_sales AS (\n    SELECT \n        p.prod_id,\n        p.prod_name,\n        c.cust_city_id,\n        t.calendar_quarter_id,\n        SUM(s.amount_sold) AS city_sales\n    FROM sales s\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'United States'\n      AND s.promo_id = 999\n      AND t.calendar_quarter_id IN (1772, 1776)\n    GROUP BY p.prod_id, p.prod_name, c.cust_city_id, t.calendar_quarter_id\n),\ncity_sales_pivot AS (\n    SELECT \n        prod_id,\n        prod_name,\n        cust_city_id,\n        SUM(CASE WHEN calendar_quarter_id = 1772 THEN city_sales ELSE 0 END) AS q4_2019_sales,\n        SUM(CASE WHEN calendar_quarter_id = 1776 THEN city_sales ELSE 0 END) AS q4_2020_sales\n    FROM city_sales\n    GROUP BY prod_id, prod_name, cust_city_id\n),\nqualified_cities AS (\n    SELECT DISTINCT cust_city_id\n    FROM city_sales_pivot\n    WHERE q4_2019_sales > 0 \n      AND (q4_2020_sales - q4_2019_sales) * 100.0 / q4_2019_sales >= 20\n),\nproduct_city_sales AS (\n    SELECT \n        cs.prod_id,\n        cs.prod_name,\n        cs.cust_city_id,\n        cs.q4_2019_sales,\n        cs.q4_2020_sales\n    FROM city_sales_pivot cs\n    WHERE cs.cust_city_id IN (SELECT cust_city_id FROM qualified_cities)\n),\nproduct_totals AS (\n    SELECT \n        prod_id,\n        prod_name,\n        SUM(q4_2019_sales) AS total_q4_2019,\n        SUM(q4_2020_sales) AS total_q4_2020,\n        SUM(q4_2019_sales) + SUM(q4_2020_sales) AS total_sales\n    FROM product_city_sales\n    GROUP BY prod_id, prod_name\n),\nproduct_shares AS (\n    SELECT \n        prod_id,\n        prod_name,\n        total_q4_2019,\n        total_q4_2020,\n        total_sales,\n        CAST(total_q4_2019 AS REAL) / SUM(total_q4_2019) OVER () AS share_2019,\n        CAST(total_q4_2020 AS REAL) / SUM(total_q4_2020) OVER () AS share_2020\n    FROM product_totals\n),\nranked_products AS (\n    SELECT \n        prod_id,\n        prod_name,\n        share_2019,\n        share_2020,\n        (share_2020 - share_2019) AS share_pct_change,\n        PERCENT_RANK() OVER (ORDER BY total_sales DESC) AS sales_rank\n    FROM product_shares\n)\nSELECT prod_name\nFROM ranked_products\nWHERE sales_rank >= 0.8\nORDER BY share_pct_change ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 19059.0142919973
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_110",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2901.8970830002218,
+  "execution_time_ms": 293.3085830009077,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE trans.amount = 5100\n  AND trans.date = '1998-09-02';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 137.98454200150445,
+      "result_signature": "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE trans.amount = 5100\n  AND trans.date = '1998-09-02';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 36.65241699491162,
+      "result_signature": "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE trans.amount = 5100 AND trans.date = '1998-09-02';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 46.00191700592404,
+      "result_signature": "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nWHERE trans.amount = 5100\n  AND trans.date = '1998-09-02';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 36.56066700204974,
+      "result_signature": "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE trans.amount = 5100 AND trans.date = '1998-09-02';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 35.7165419991361,
+      "result_signature": "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT disp.disp_id\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE trans.amount = 5100 AND trans.date = '1998-09-02';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "cd11e15737de607d18fc7eebfda42b202ecf46d934c8bbc747aad99f42de429c": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3195.2521669954876
+}

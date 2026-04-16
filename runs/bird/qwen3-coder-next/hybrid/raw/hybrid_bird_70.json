@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_70",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1906.9957500032615,
+  "execution_time_ms": 38.451500004157424,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) AS count\nFROM schools\nWHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.442249998974148,
+      "result_signature": "d031a2f52c936db4b9052d4524fecb03b6b3be0e28a75fe2ddfd3d7ebc613c57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) AS count\nFROM schools\nWHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.7657089966814965,
+      "result_signature": "d031a2f52c936db4b9052d4524fecb03b6b3be0e28a75fe2ddfd3d7ebc613c57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(StatusType) AS count, StatusType\nFROM schools\nWHERE County = 'Alpine'\nGROUP BY StatusType;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.6530420004273765,
+      "result_signature": "116110b4e9d37f2ec59da15e3af40757ec04a90b52a3f5753e6a2f215db9cc31",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(StatusType) AS count, StatusType\nFROM schools\nWHERE County = 'Alpine'\nGROUP BY StatusType;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.140334000112489,
+      "result_signature": "116110b4e9d37f2ec59da15e3af40757ec04a90b52a3f5753e6a2f215db9cc31",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) AS count\nFROM schools\nWHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed')",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.054542001336813,
+      "result_signature": "d031a2f52c936db4b9052d4524fecb03b6b3be0e28a75fe2ddfd3d7ebc613c57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(*) AS count\nFROM schools\nWHERE County = 'Alpine' AND StatusType IN ('Active', 'Closed')",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d031a2f52c936db4b9052d4524fecb03b6b3be0e28a75fe2ddfd3d7ebc613c57": 4,
+        "116110b4e9d37f2ec59da15e3af40757ec04a90b52a3f5753e6a2f215db9cc31": 2,
+        "9f0b9785a43867eb004e1149fd2e09cf9de3fd2999016d56fce01832b25551d6": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2499.613791995216,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT COUNT(StatusType) AS count\nFROM schools\nWHERE County = 'Alpine' AND (StatusType = 'Active' OR StatusType = 'Closed')\nGROUP BY StatusType",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 12.587791999976616,
+        "result_signature": "9f0b9785a43867eb004e1149fd2e09cf9de3fd2999016d56fce01832b25551d6",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT COUNT(*) AS count\nFROM schools\nWHERE County = 'Alpine' AND (StatusType = 'Active' OR StatusType = 'Closed')",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 8.30724999832455,
+        "result_signature": "d031a2f52c936db4b9052d4524fecb03b6b3be0e28a75fe2ddfd3d7ebc613c57",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4445.179709000513
+}

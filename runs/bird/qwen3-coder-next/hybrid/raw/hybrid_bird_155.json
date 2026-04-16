@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_155",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1627.4782079999568,
+  "execution_time_ms": 6.624083005590364,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN type = 'Gold' AND issued < '1998-01-01' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.237750006315764,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT CAST(COUNT(CASE WHEN type = 'Gold' AND issued < '1998-01-01' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM card;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.898333001008723,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CAST(COUNT(CASE WHEN issued < '1998-01-01' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card\nWHERE type = 'Gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7373330008704215,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN type = 'Gold' AND issued < '1998-01-01' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6580000044777989,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CAST(COUNT(CASE WHEN card.type = 'Gold' AND card.issued < '1998-01-01' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4893340010312386,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT CAST(COUNT(CASE WHEN card.type = 'Gold' AND card.issued < '1998-01-01' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877": 4,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2878.9673329956713,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT CAST((SELECT COUNT(*) FROM card WHERE type = 'Gold' AND issued < '1998-01-01') AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM card\nWHERE type = 'Gold';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.519291999808047,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH gold_cards AS (\n    SELECT card_id\n    FROM card\n    WHERE type = 'Gold'\n),\ngold_before_1998 AS (\n    SELECT card_id\n    FROM gold_cards gc\n    JOIN card c ON gc.card_id = c.card_id\n    WHERE c.issued < '1998-01-01'\n)\nSELECT CAST((SELECT COUNT(*) FROM gold_before_1998) AS FLOAT) * 100 / (SELECT COUNT(*) FROM gold_cards) AS percentage;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "ambiguous column name: card_id",
+        "exec_time_ms": 0.2567080009612255,
+        "result_signature": null,
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4513.2325000013225
+}

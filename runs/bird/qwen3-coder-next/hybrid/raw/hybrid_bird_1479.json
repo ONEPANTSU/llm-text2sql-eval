@@ -1,0 +1,166 @@
+{
+  "task_id": "bird_1479",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3543.1217500008643,
+  "execution_time_ms": 910.2359160024207,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT strftime('%Y', Date) AS year\nFROM yearmonth\nGROUP BY strftime('%Y', Date)\nORDER BY SUM(Consumption) DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 224.3278750029276,
+      "result_signature": "3bdee95d6aa8b370e7f4d6fa9f67da67ac3e873910c4226d88f574ea92aa56c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT strftime('%Y', Date) AS year\nFROM yearmonth\nGROUP BY strftime('%Y', Date)\nORDER BY SUM(Consumption) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 150.9380420029629,
+      "result_signature": "3bdee95d6aa8b370e7f4d6fa9f67da67ac3e873910c4226d88f574ea92aa56c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT strftime('%Y', Date) AS year\nFROM yearmonth\nGROUP BY strftime('%Y', Date)\nORDER BY SUM(Consumption) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 156.45933299674653,
+      "result_signature": "3bdee95d6aa8b370e7f4d6fa9f67da67ac3e873910c4226d88f574ea92aa56c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT strftime('%Y', Date) AS year, SUM(Consumption) AS total_consumption\nFROM yearmonth\nGROUP BY year\nORDER BY total_consumption DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 157.92962499835994,
+      "result_signature": "3e318dedacd5136c9c0d1e269bfa43ddf49d1829051d0861a773d1e4fc5f39a3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT strftime('%Y', Date) AS year\nFROM yearmonth\nGROUP BY strftime('%Y', Date)\nORDER BY SUM(Consumption) DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 219.4267920058337,
+      "result_signature": "3bdee95d6aa8b370e7f4d6fa9f67da67ac3e873910c4226d88f574ea92aa56c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT strftime('%Y', Date) AS year\nFROM yearmonth\nGROUP BY strftime('%Y', Date)\nORDER BY SUM(Consumption) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3bdee95d6aa8b370e7f4d6fa9f67da67ac3e873910c4226d88f574ea92aa56c1": 4,
+        "3e318dedacd5136c9c0d1e269bfa43ddf49d1829051d0861a773d1e4fc5f39a3": 1,
+        "1d8a1464d38b70a7add99c3be0885d930897ea9781a04f004f81a3951a056a6c": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      1
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 4526.042541998322,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT substr(Date, 1, 4) AS year\nFROM yearmonth\nGROUP BY substr(Date, 1, 4)\nORDER BY SUM(Consumption) DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 155.9351659961976,
+        "result_signature": "1d8a1464d38b70a7add99c3be0885d930897ea9781a04f004f81a3951a056a6c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT substr(Date, 1, 4) AS year\nFROM yearmonth\nGROUP BY substr(Date, 1, 4)\nORDER BY SUM(Consumption) DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 106.11074999906123,
+        "result_signature": "1d8a1464d38b70a7add99c3be0885d930897ea9781a04f004f81a3951a056a6c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8979.579291997652
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_200",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2183.4314160005306,
+  "execution_time_ms": 13.346250001632143,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label\n    FROM molecule\n    WHERE label LIKE '%carcinogenic%'\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.858749995240942,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\n  AND m.label IN (\n    SELECT label\n    FROM molecule\n    WHERE label LIKE '%carcinogen%'\n       OR label LIKE '%Carcinogen%'\n       OR label LIKE '%carcinogenic%'\n       OR label LIKE '%Carcinogenic%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0165410023764707,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple' AND m.label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9327080008224584,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label\n    FROM molecule\n    WHERE label LIKE '%carcinogen%' OR label LIKE '%carcinogenic%'\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4663330002804287,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN ('benzene', 'formaldehyde', 'acetaldehyde', 'ethylene oxide', 'vinyl chloride', 'chloroprene', '1,3-butadiene', 'benzidine', 'arsine', 'phosgene', 'dioxin', 'asbestos', 'radon', 'tobacco smoke', 'alcohol beverages', 'red meat', 'processed meat', 'ultraviolet radiation', 'X-rays', 'gamma rays', 'cosmic radiation', 'alpha particles', 'beta particles', 'neutrons', 'protons', 'heavy ions', 'microwave radiation', 'radiofrequency radiation', 'infrared radiation', 'visible light', 'low-frequency electromagnetic fields', ' ELF magnetic fields', 'ELF electric fields', 'static electric fields', 'static magnetic fields');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5756659995531663,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label\n    FROM molecule\n    WHERE label LIKE '%carcinogen%' OR label LIKE '%carcinogenic%'\n);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2196.8626250018133
+}

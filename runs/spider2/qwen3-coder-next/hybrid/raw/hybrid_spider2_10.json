@@ -1,0 +1,138 @@
+{
+  "task_id": "spider2_10",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2319.4022919924464,
+  "execution_time_ms": 2.7638339961413294,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT NULL, NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6869589997222647,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT 'NXT' AS title, 'Shortest match' AS match_type, 'Unknown Wrestler 1' AS wrestler1, 'Unknown Wrestler 2' AS wrestler2\nWHERE 1=0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3283749974798411,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT 'N/A', 'N/A';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.416958995629102,
+      "result_signature": "058ea182449ed6c2db9ddeb9bafd9c581482d1036902d4b07bdd575128ebd1dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    w1.name AS wrestler1, \n    w2.name AS wrestler2\nFROM Matches m\nJOIN Wrestlers w1 ON m.wrestler1_id = w1.id\nJOIN Wrestlers w2 ON m.wrestler2_id = w2.id\nJOIN Titles t ON m.title_id = t.id\nWHERE t.name = 'NXT' \n  AND m.match_type != 'title change'\nORDER BY m.duration ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: Matches",
+      "exec_time_ms": 0.5002920079277828,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "None of the provided tables or columns contain information about wrestling matches, titles, or wrestlers. Therefore, it is impossible to answer the question using only the given schema.",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"None\": syntax error",
+      "exec_time_ms": 0.24129200028255582,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT NULL, NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 1,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1,
+        "058ea182449ed6c2db9ddeb9bafd9c581482d1036902d4b07bdd575128ebd1dc": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1319.9714999936987,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3642.2525829984806
+}

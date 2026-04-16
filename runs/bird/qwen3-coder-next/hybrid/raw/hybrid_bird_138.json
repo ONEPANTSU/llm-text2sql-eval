@@ -1,0 +1,171 @@
+{
+  "task_id": "bird_138",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1901.2168339977507,
+  "execution_time_ms": 10.954457997286227,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH crime_counts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans\n    WHERE strftime('%Y', date) = '1995'\n    GROUP BY district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN second_highest_district shd ON a.district_id = shd.district_id\nWHERE c.gender = 'M';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: district_id",
+      "exec_time_ms": 1.3804170012008399,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH CrimeCounts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans\n    WHERE strftime('%Y', date) = '1995'\n    GROUP BY district_id\n),\nSecondHighestDistrict AS (\n    SELECT district_id\n    FROM CrimeCounts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(*) \nFROM client\nWHERE gender = 'M' \n  AND district_id = (SELECT district_id FROM SecondHighestDistrict);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: district_id",
+      "exec_time_ms": 0.7369590020971373,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH CrimeCounts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans\n    WHERE strftime('%Y', date) = '1995'\n    GROUP BY district_id\n),\nSecondHighestDistrict AS (\n    SELECT district_id\n    FROM CrimeCounts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN SecondHighestDistrict shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: district_id",
+      "exec_time_ms": 0.4354999982751906,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH crime_counts AS (\n    SELECT \n        district_id, \n        COUNT(*) AS crime_count\n    FROM trans\n    WHERE strftime('%Y', date) = '1995'\n    GROUP BY district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN second_highest_district shd ON a.district_id = shd.district_id\nWHERE c.gender = 'M';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: district_id",
+      "exec_time_ms": 0.43283300328766927,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH CrimeCounts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans\n    WHERE strftime('%Y', date) = '1995'\n    GROUP BY district_id\n),\nSecondHighestDistrict AS (\n    SELECT district_id\n    FROM CrimeCounts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN SecondHighestDistrict shd ON c.district_id = shd.district_id\nWHERE c.gender = 'M';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: district_id",
+      "exec_time_ms": 0.3650409998954274,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "WITH crime_counts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN second_highest_district shd ON a.district_id = shd.district_id\nWHERE c.gender = 'M';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f51cc21aff28114ce712f7ea5e192009d3cab8319c79d33037aafdc2febe0b4e": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such column: district_id",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH crime_counts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN second_highest_district shd ON a.district_id = shd.district_id\nWHERE c.gender = 'M';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 313.7002500006929,
+        "result_signature": "f51cc21aff28114ce712f7ea5e192009d3cab8319c79d33037aafdc2febe0b4e",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH crime_counts AS (\n    SELECT \n        district_id,\n        COUNT(*) AS crime_count\n    FROM trans t\n    JOIN account a ON t.account_id = a.account_id\n    WHERE strftime('%Y', t.date) = '1995'\n    GROUP BY a.district_id\n),\nsecond_highest_district AS (\n    SELECT district_id\n    FROM crime_counts\n    ORDER BY crime_count DESC\n    LIMIT 1 OFFSET 1\n)\nSELECT COUNT(DISTINCT c.client_id)\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN second_highest_district shd ON a.district_id = shd.district_id\nWHERE c.gender = 'M';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 223.2518329983577,
+        "result_signature": "f51cc21aff28114ce712f7ea5e192009d3cab8319c79d33037aafdc2febe0b4e",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5770.839917000558
+}

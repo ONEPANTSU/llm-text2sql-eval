@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_537",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1773.9261669994448,
+  "execution_time_ms": 623.7719580021803,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 384.71416699758265,
+      "result_signature": "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 67.56450000102632,
+      "result_signature": "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 58.75691699475283,
+      "result_signature": "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.97741599578876,
+      "result_signature": "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.39458300336264,
+      "result_signature": "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(posts.OwnerUserId) AS post_count\nFROM users\nJOIN posts ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'csgillespie';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "bcfbc20b5f308044ad396659f766bf9a4f058a5117332e489c47f4656ede50d4": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2397.764166998968
+}

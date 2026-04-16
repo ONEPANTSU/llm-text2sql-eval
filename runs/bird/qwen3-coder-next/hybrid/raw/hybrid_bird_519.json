@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_519",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1474.8737919944688,
+  "execution_time_ms": 795.0607920065522,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT language FROM foreign_data WHERE multiverseid IN (SELECT id FROM cards WHERE setCode = (SELECT code FROM sets WHERE name = 'Battlebond')) LIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 571.8213329964783,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE asciiName = 'Battlebond');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.01466699549928,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT language FROM foreign_data WHERE multiverseid IN (SELECT id FROM cards WHERE asciiName = 'Battlebond');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 47.70270799781429,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = (SELECT code FROM sets WHERE name = 'Battlebond'));",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 87.79395799501799,
+      "result_signature": "54df7ab5977268c3990886032d79ce3b5f4944c4a4fdc7231db1284a85e67e3d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = (SELECT code FROM sets WHERE name = 'Battlebond')) LIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 33.03820899600396,
+      "result_signature": "17732db4f29a79d784ac6e9c5d8aaa453bacd10440fb7709b7b203eb430e5388",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT language FROM foreign_data WHERE multiverseid IN (SELECT id FROM cards WHERE asciiName = 'Battlebond');",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4,
+        "54df7ab5977268c3990886032d79ce3b5f4944c4a4fdc7231db1284a85e67e3d": 1,
+        "17732db4f29a79d784ac6e9c5d8aaa453bacd10440fb7709b7b203eb430e5388": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2186.6887500000303,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT language FROM foreign_data fd JOIN cards c ON fd.uuid = c.uuid JOIN sets s ON c.setCode = s.code WHERE s.name = 'Battlebond' LIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 30.614666997280437,
+        "result_signature": "17732db4f29a79d784ac6e9c5d8aaa453bacd10440fb7709b7b203eb430e5388",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE asciiName = 'Battlebond');",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 50.326792006671894,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4456.731792000937
+}

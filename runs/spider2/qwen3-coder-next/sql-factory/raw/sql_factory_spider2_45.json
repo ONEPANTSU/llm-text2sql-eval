@@ -1,0 +1,163 @@
+{
+  "task_id": "spider2_45",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS cities_added\n    FROM cities\n    WHERE insert_date >= '2021-01-01' AND insert_date <= '2023-06-30'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        cities_added,\n        SUM(cities_added) OVER (\n            PARTITION BY month \n            ORDER BY year \n     ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cities",
+            "running_totals",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        },
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS new_cities\n    FROM cities\n    WHERE insert_date >= '2021-04-01' AND insert_date < '2024-07-01'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nyear_month_data AS (\n    SELECT \n        year,\n        month,\n        new_cities,\n        SUM(new_cities) OVER (\n            PARTITION BY month \n            ORDER BY year \n           ...",
+          "score": 1.0843984962406015,
+          "similarity_max": 0.6312030075187969,
+          "tables_used": [
+            "cities",
+            "year_month_data",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS cities_added\n    FROM cities\n    WHERE insert_date >= '2021-01-01' AND insert_date <= '2023-06-30'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        cities_added,\n        SUM(cities_added) OVER (\n            PARTITION BY month \n            ORDER BY year \n     ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cities",
+            "running_totals",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        },
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        SUBSTR(insert_date, 1, 4) AS year,\n        SUBSTR(insert_date, 6, 2) AS month,\n        COUNT(*) AS new_cities\n    FROM cities\n    WHERE insert_date BETWEEN '2021-04-01' AND '2023-06-30'\n    GROUP BY SUBSTR(insert_date, 1, 4), SUBSTR(insert_date, 6, 2)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        new_cities,\n        SUM(new_cities) OVER (\n            PARTITION BY month \n            ORDER BY year \n            ROWS BETWEEN UNBO...",
+          "score": 1.1378905150576977,
+          "similarity_max": 0.5242189698846046,
+          "tables_used": [
+            "yoy_analysis",
+            "running_totals",
+            "monthly_counts",
+            "cities"
+          ]
+        },
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS new_cities\n    FROM cities\n    WHERE insert_date >= '2021-04-01' AND insert_date < '2024-07-01'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nyear_month_data AS (\n    SELECT \n        year,\n        month,\n        new_cities,\n        SUM(new_cities) OVER (\n            PARTITION BY month \n            ORDER BY year \n           ...",
+          "score": 1.0843984962406015,
+          "similarity_max": 0.6312030075187969,
+          "tables_used": [
+            "cities",
+            "year_month_data",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS cities_added\n    FROM cities\n    WHERE insert_date >= '2021-01-01' AND insert_date <= '2023-06-30'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        cities_added,\n        SUM(cities_added) OVER (\n            PARTITION BY month \n            ORDER BY year \n     ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cities",
+            "running_totals",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        },
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        SUBSTR(insert_date, 1, 4) AS year,\n        SUBSTR(insert_date, 6, 2) AS month,\n        COUNT(*) AS new_cities\n    FROM cities\n    WHERE insert_date BETWEEN '2021-04-01' AND '2023-06-30'\n    GROUP BY SUBSTR(insert_date, 1, 4), SUBSTR(insert_date, 6, 2)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        new_cities,\n        SUM(new_cities) OVER (\n            PARTITION BY month \n            ORDER BY year \n            ROWS BETWEEN UNBO...",
+          "score": 1.1378905150576977,
+          "similarity_max": 0.5242189698846046,
+          "tables_used": [
+            "yoy_analysis",
+            "running_totals",
+            "monthly_counts",
+            "cities"
+          ]
+        },
+        {
+          "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS new_cities\n    FROM cities\n    WHERE insert_date >= '2021-04-01' AND insert_date < '2024-07-01'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nyear_month_data AS (\n    SELECT \n        year,\n        month,\n        new_cities,\n        SUM(new_cities) OVER (\n            PARTITION BY month \n            ORDER BY year \n           ...",
+          "score": 1.0843984962406015,
+          "similarity_max": 0.6312030075187969,
+          "tables_used": [
+            "cities",
+            "year_month_data",
+            "monthly_counts",
+            "yoy_growth"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', insert_date) AS year,\n        strftime('%m', insert_date) AS month,\n        COUNT(*) AS cities_added\n    FROM cities\n    WHERE insert_date >= '2021-01-01' AND insert_date <= '2023-06-30'\n    GROUP BY strftime('%Y', insert_date), strftime('%m', insert_date)\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month,\n        cities_added,\n        SUM(cities_added) OVER (\n            PARTITION BY month \n            ORDER BY year \n     ...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "cities",
+        "running_totals",
+        "monthly_counts",
+        "yoy_growth"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.19
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "task_id": "spider2_16",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH player_avg_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        p.country_name,\n        SUM(bs.runs_scored) * 1.0 / COUNT(DISTINCT pb.match_id) AS avg_runs_per_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innin...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "player_avg_runs",
+            "ball_by_ball",
+            "player_match",
+            "country_avg",
+            "player",
+            "bs",
+            "pb",
+            "pm",
+            "p",
+            "batsman_scored"
+          ]
+        },
+        {
+          "sql": "WITH player_avg_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        p.country_name,\n        SUM(bs.runs_scored) * 1.0 / COUNT(DISTINCT pmb.match_id) AS avg_runs_per_match\n    FROM player p\n    JOIN player_match pmb ON p.player_id = pmb.player_id\n    JOIN ball_by_ball b ON pmb.match_id = b.match_id AND pmb.player_id = b.striker\n    JOIN batsman_scored bs ON b.match_id = bs.match_id AND b.over_id = bs.over_id AND b.ball_id = bs.ball_id AND b.innings_no = bs.innings_no\n    GRO...",
+          "score": 0.8750000000000002,
+          "similarity_max": 0.8499999999999999,
+          "tables_used": [
+            "player_avg_runs",
+            "b",
+            "ball_by_ball",
+            "player_match",
+            "country_avg",
+            "player",
+            "bs",
+            "pmb",
+            "p",
+            "batsman_scored"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH player_avg_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        p.country_name,\n        SUM(bs.runs_scored) * 1.0 / COUNT(DISTINCT pb.match_id) AS avg_runs_per_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innin...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "player_avg_runs",
+            "ball_by_ball",
+            "player_match",
+            "country_avg",
+            "player",
+            "bs",
+            "pb",
+            "pm",
+            "p",
+            "batsman_scored"
+          ]
+        },
+        {
+          "sql": "WITH player_runs_per_match AS (\n    SELECT \n        p.player_id,\n        p.country_name,\n        pb.match_id,\n        COALESCE(SUM(bs.runs_scored), 0) AS runs_in_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    LEFT JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innings_no = bs.innings_...",
+          "score": 0.9208130999435347,
+          "similarity_max": 0.6583738001129306,
+          "tables_used": [
+            "ball_by_ball",
+            "player_avg",
+            "player_match",
+            "player",
+            "player_runs_per_match",
+            "bs",
+            "pb",
+            "pm",
+            "p",
+            "batsman_scored",
+            "country_stats"
+          ]
+        },
+        {
+          "sql": "WITH player_match_runs AS (\n    SELECT \n        p.player_id,\n        p.country_name,\n        pmb.match_id,\n        COALESCE(SUM(bs.runs_scored), 0) AS total_runs\n    FROM player p\n    JOIN player_match pmb ON p.player_id = pmb.player_id\n    LEFT JOIN ball_by_ball b ON pmb.match_id = b.match_id AND p.player_id = b.striker\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n   ...",
+          "score": 0.8881478422465414,
+          "similarity_max": 0.7237043155069172,
+          "tables_used": [
+            "player_avg_runs",
+            "b",
+            "ball_by_ball",
+            "player_match",
+            "player_match_runs",
+            "country_avg",
+            "player",
+            "bs",
+            "pmb",
+            "p",
+            "batsman_scored"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH player_avg_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        p.country_name,\n        SUM(bs.runs_scored) * 1.0 / COUNT(DISTINCT pb.match_id) AS avg_runs_per_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innin...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "player_avg_runs",
+            "ball_by_ball",
+            "player_match",
+            "country_avg",
+            "player",
+            "bs",
+            "pb",
+            "pm",
+            "p",
+            "batsman_scored"
+          ]
+        },
+        {
+          "sql": "WITH player_runs_per_match AS (\n    SELECT \n        p.player_id,\n        p.country_name,\n        pb.match_id,\n        COALESCE(SUM(bs.runs_scored), 0) AS runs_in_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    LEFT JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innings_no = bs.innings_...",
+          "score": 0.9208130999435347,
+          "similarity_max": 0.6583738001129306,
+          "tables_used": [
+            "ball_by_ball",
+            "player_avg",
+            "player_match",
+            "player",
+            "player_runs_per_match",
+            "bs",
+            "pb",
+            "pm",
+            "p",
+            "batsman_scored",
+            "country_stats"
+          ]
+        },
+        {
+          "sql": "WITH player_match_runs AS (\n    SELECT \n        p.player_id,\n        p.country_name,\n        pmb.match_id,\n        COALESCE(SUM(bs.runs_scored), 0) AS total_runs\n    FROM player p\n    JOIN player_match pmb ON p.player_id = pmb.player_id\n    LEFT JOIN ball_by_ball b ON pmb.match_id = b.match_id AND p.player_id = b.striker\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n   ...",
+          "score": 0.8881478422465414,
+          "similarity_max": 0.7237043155069172,
+          "tables_used": [
+            "player_avg_runs",
+            "b",
+            "ball_by_ball",
+            "player_match",
+            "player_match_runs",
+            "country_avg",
+            "player",
+            "bs",
+            "pmb",
+            "p",
+            "batsman_scored"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH player_avg_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        p.country_name,\n        SUM(bs.runs_scored) * 1.0 / COUNT(DISTINCT pb.match_id) AS avg_runs_per_match\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN ball_by_ball pb ON pm.match_id = pb.match_id AND pm.player_id = pb.striker\n    JOIN batsman_scored bs ON pb.match_id = bs.match_id \n        AND pb.over_id = bs.over_id \n        AND pb.ball_id = bs.ball_id \n        AND pb.innin...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "player_avg_runs",
+        "ball_by_ball",
+        "player_match",
+        "country_avg",
+        "player",
+        "bs",
+        "pb",
+        "pm",
+        "p",
+        "batsman_scored"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.08
+  }
+}

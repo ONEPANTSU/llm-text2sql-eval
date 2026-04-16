@@ -1,0 +1,66 @@
+{
+  "task_id": "spider2_1",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH delivered_orders AS (\n    SELECT \n        o.customer_id,\n        c.customer_unique_id,\n        o.order_id,\n        oi.price,\n        oi.freight_value,\n        o.order_delivered_customer_date AS purchase_timestamp\n    FROM orders o\n    JOIN customers c ON o.customer_id = c.customer_id\n    JOIN order_items oi ON o.order_id = oi.order_id\n    WHERE o.order_status = 'delivered'\n      AND o.order_delivered_customer_date IS NOT NULL\n),\ncustomer_metrics AS (\n    SELECT \n        customer_unique_id,\n...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: total_spend",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "circular reference: rfm_classified",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 0.6
+  }
+}

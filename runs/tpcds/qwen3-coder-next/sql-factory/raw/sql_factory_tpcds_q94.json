@@ -1,0 +1,184 @@
+{
+  "task_id": "tpcds_q94",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_id, SUM(ws_ext_sales_price) AS total_web_purchase_amount\nFROM web_sales\nJOIN customer ON ws_bill_customer_sk = c_customer_sk\nJOIN customer_address ON c_current_addr_sk = ca_address_sk\nJOIN web_site ON ws_web_site_sk = web_site_sk\nWHERE ca_state = 'IL'\n  AND web_company_name = 'pri'\n  AND ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n  AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\nGROUP BY c_customer_id\nORDE...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "customer_address",
+            "web_site",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_id, SUM(ws_ext_sales_price) AS total_web_purchase_amount\nFROM web_sales\nJOIN customer ON ws_bill_customer_sk = c_customer_sk\nJOIN customer_address ON c_current_addr_sk = ca_address_sk\nJOIN web_site ON ws_web_site_sk = web_site_sk\nWHERE ca_state = 'IL'\n  AND web_company_name = 'pri'\n  AND ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n  AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\nGROUP BY c_customer_id\nORDE...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "customer_address",
+            "web_site",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "WITH filtered_web_sales AS (\n    SELECT ws_bill_customer_sk, ws_ext_sales_price\n    FROM web_sales\n    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n      AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\n),\ncustomer_web_sales AS (\n    SELECT f.ws_bill_customer_sk, SUM(f.ws_ext_sales_price) AS total_web_purchase_amount\n    FROM filtered_web_sales f\n    JOIN customer c ON f.ws_bill_customer_sk = c.c_customer_sk\n    JOIN cus...",
+          "score": 0.9190232240437157,
+          "similarity_max": 0.5619535519125683,
+          "tables_used": [
+            "customer_web_sales",
+            "c",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "filtered_web_sales",
+            "f",
+            "cws",
+            "ws",
+            "customer_address",
+            "web_site",
+            "ca"
+          ]
+        },
+        {
+          "sql": "SELECT c_customer_id, SUM(ws_ext_sales_price) AS total_web_purchase_amount\nFROM web_sales\nJOIN customer ON ws_bill_customer_sk = c_customer_sk\nJOIN customer_address ON c_current_addr_sk = ca_address_sk\nJOIN web_site ON ws_web_site_sk = web_site_sk\nWHERE ca_state = 'IL'\n  AND web_company_name = 'pri'\n  AND ws_sold_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01') AND (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\nGROUP BY c_customer_id\nORDER BY total_web_p...",
+          "score": 0.7918233547748639,
+          "similarity_max": 0.8163532904502722,
+          "tables_used": [
+            "date_dim",
+            "customer_address",
+            "web_site",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_id, SUM(ws_ext_sales_price) AS total_web_purchase_amount\nFROM web_sales\nJOIN customer ON ws_bill_customer_sk = c_customer_sk\nJOIN customer_address ON c_current_addr_sk = ca_address_sk\nJOIN web_site ON ws_web_site_sk = web_site_sk\nWHERE ca_state = 'IL'\n  AND web_company_name = 'pri'\n  AND ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n  AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\nGROUP BY c_customer_id\nORDE...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "customer_address",
+            "web_site",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "WITH filtered_web_sales AS (\n    SELECT ws_bill_customer_sk, ws_ext_sales_price\n    FROM web_sales\n    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n      AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\n),\ncustomer_web_sales AS (\n    SELECT f.ws_bill_customer_sk, SUM(f.ws_ext_sales_price) AS total_web_purchase_amount\n    FROM filtered_web_sales f\n    JOIN customer c ON f.ws_bill_customer_sk = c.c_customer_sk\n    JOIN cus...",
+          "score": 0.9190232240437157,
+          "similarity_max": 0.5619535519125683,
+          "tables_used": [
+            "customer_web_sales",
+            "c",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "filtered_web_sales",
+            "f",
+            "cws",
+            "ws",
+            "customer_address",
+            "web_site",
+            "ca"
+          ]
+        },
+        {
+          "sql": "WITH filtered_web_sales AS (\n    SELECT ws_bill_customer_sk, ws_ext_sales_price, ws_web_page_sk\n    FROM web_sales\n    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n      AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\n),\ncustomer_web_sales AS (\n    SELECT \n        f.ws_bill_customer_sk,\n        SUM(f.ws_ext_sales_price) AS total_web_purchase_amount\n    FROM filtered_web_sales f\n    JOIN customer c ON f.ws_bill_customer_...",
+          "score": 0.8005687520910003,
+          "similarity_max": 0.7988624958179993,
+          "tables_used": [
+            "customer_web_sales",
+            "c",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "filtered_web_sales",
+            "f",
+            "cws",
+            "ws",
+            "customer_address",
+            "web_site",
+            "ca"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c_customer_id, SUM(ws_ext_sales_price) AS total_web_purchase_amount\nFROM web_sales\nJOIN customer ON ws_bill_customer_sk = c_customer_sk\nJOIN customer_address ON c_current_addr_sk = ca_address_sk\nJOIN web_site ON ws_web_site_sk = web_site_sk\nWHERE ca_state = 'IL'\n  AND web_company_name = 'pri'\n  AND ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-02-01')\n  AND ws_sold_date_sk <= (SELECT d_date_sk FROM date_dim WHERE d_date = '1999-04-02')\nGROUP BY c_customer_id\nORDE...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "customer_address",
+        "web_site",
+        "web_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Values list \"fws\" does not have a column named \"ws_web_site_sk\"\n\nL",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 31.85
+  }
+}

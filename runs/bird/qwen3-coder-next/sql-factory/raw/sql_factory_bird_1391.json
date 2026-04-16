@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_1391",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id\nWHERE m.major_name IN ('Finance', 'Physics');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "me",
+            "member",
+            "major",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id;",
+          "score": 0.7982727272727272,
+          "similarity_max": 0.8034545454545454,
+          "tables_used": [
+            "me",
+            "member",
+            "major",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id\nWHERE m.major_name IN ('Finance', 'Physics');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "me",
+            "member",
+            "major",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST((SELECT COUNT(*) FROM member m1 JOIN major maj1 ON m1.link_to_major = maj1.major_id WHERE maj1.major_name = 'Finance') AS REAL) /\n    (SELECT COUNT(*) FROM member m2 JOIN major maj2 ON m2.link_to_major = maj2.major_id WHERE maj2.major_name = 'Physics') AS finance_to_physics_ratio;",
+          "score": 1.1909615384615386,
+          "similarity_max": 0.418076923076923,
+          "tables_used": [
+            "member",
+            "m2",
+            "m1",
+            "major",
+            "maj1",
+            "maj2"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.major_name = 'Finance' THEN 1 END) AS REAL) / \n    COUNT(CASE WHEN m.major_name = 'Physics' THEN 1 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id;",
+          "score": 0.8026631657914478,
+          "similarity_max": 0.7946736684171043,
+          "tables_used": [
+            "me",
+            "member",
+            "major",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id\nWHERE m.major_name IN ('Finance', 'Physics');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "me",
+            "member",
+            "major",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST((SELECT COUNT(*) FROM member m1 JOIN major maj1 ON m1.link_to_major = maj1.major_id WHERE maj1.major_name = 'Finance') AS REAL) /\n    (SELECT COUNT(*) FROM member m2 JOIN major maj2 ON m2.link_to_major = maj2.major_id WHERE maj2.major_name = 'Physics') AS finance_to_physics_ratio;",
+          "score": 1.1909615384615386,
+          "similarity_max": 0.418076923076923,
+          "tables_used": [
+            "member",
+            "m2",
+            "m1",
+            "major",
+            "maj1",
+            "maj2"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST((SELECT COUNT(*) FROM member m JOIN major maj ON m.link_to_major = maj.major_id WHERE maj.major_name = 'Finance') AS REAL) /\n    (SELECT COUNT(*) FROM member m JOIN major maj ON m.link_to_major = maj.major_id WHERE maj.major_name = 'Physics') AS finance_to_physics_ratio",
+          "score": 0.9224137931034484,
+          "similarity_max": 0.7551724137931034,
+          "tables_used": [
+            "member",
+            "maj",
+            "m",
+            "major"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id\nWHERE m.major_name IN ('Finance', 'Physics');",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "me",
+        "member",
+        "major",
+        "m"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.45
+  }
+}

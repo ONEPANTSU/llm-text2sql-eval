@@ -1,0 +1,193 @@
+{
+  "task_id": "bird_107",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id = (SELECT district_id FROM highest_salary_branch)\n...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id, \n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender\n    FROM client c\n    INNER JOIN account a ON c.district_id = a.district_id\n    INNER JOIN highest_salary_branch h ON a.district_id = h.district_id\n    ORDER BY c.birth_date ...",
+          "score": 0.9961764705882353,
+          "similarity_max": 0.8076470588235294,
+          "tables_used": [
+            "client",
+            "h",
+            "a",
+            "highest_salary_branch",
+            "c",
+            "account",
+            "branch_avg_salary",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id = (SELECT district_id FROM highest_salary_branch)\n...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id, \n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT district_id\n    FROM branch_avg_salary\n    WHERE avg_salary = (SELECT MAX(avg_salary) FROM branch_avg_salary)\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender\n    FROM client c\n    INNER JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id IN (SELECT district_id FROM highest_salary_b...",
+          "score": 1.1097051597051597,
+          "similarity_max": 0.7805896805896806,
+          "tables_used": [
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    INNER JOIN account a ON c.client_id = (SELECT client_id FROM disp WHERE account_id = a.account_id LIMIT 1)\n    WHERE a.dis...",
+          "score": 1.0575993555316863,
+          "similarity_max": 0.7848012889366273,
+          "tables_used": [
+            "disp",
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id = (SELECT district_id FROM highest_salary_branch)\n...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id, \n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT district_id\n    FROM branch_avg_salary\n    WHERE avg_salary = (SELECT MAX(avg_salary) FROM branch_avg_salary)\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender\n    FROM client c\n    INNER JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id IN (SELECT district_id FROM highest_salary_b...",
+          "score": 1.1097051597051597,
+          "similarity_max": 0.7805896805896806,
+          "tables_used": [
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    INNER JOIN account a ON c.client_id = (SELECT client_id FROM disp WHERE account_id = a.account_id LIMIT 1)\n    WHERE a.dis...",
+          "score": 1.0575993555316863,
+          "similarity_max": 0.7848012889366273,
+          "tables_used": [
+            "disp",
+            "client",
+            "c",
+            "account",
+            "a",
+            "branch_avg_salary",
+            "district"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH branch_avg_salary AS (\n    SELECT \n        district_id,\n        AVG(A11) AS avg_salary\n    FROM district\n    GROUP BY district_id\n),\nhighest_salary_branch AS (\n    SELECT \n        district_id\n    FROM branch_avg_salary\n    ORDER BY avg_salary DESC\n    LIMIT 1\n),\noldest_client_in_highest_branch AS (\n    SELECT \n        c.gender,\n        c.birth_date\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    WHERE a.district_id = (SELECT district_id FROM highest_salary_branch)\n...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "client",
+        "c",
+        "account",
+        "a",
+        "branch_avg_salary",
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "ambiguous column name: client_id",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 40.1
+  }
+}

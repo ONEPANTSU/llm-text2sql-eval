@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_950",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1283.2844580043457,
+  "execution_time_ms": 11.834416996862274,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT constructors.name\nFROM constructors\nJOIN constructorResults ON constructors.constructorId = constructorResults.constructorId\nWHERE constructorResults.raceId = 291 AND constructorResults.points = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.1924170038546436,
+      "result_signature": "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.name\nFROM constructors c\nJOIN constructorResults cr ON c.constructorId = cr.constructorId\nWHERE cr.raceId = 291 AND cr.points = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.840333003201522,
+      "result_signature": "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT constructors.name\nFROM constructors\nJOIN constructorResults ON constructors.constructorId = constructorResults.constructorId\nWHERE constructorResults.raceId = 291 AND constructorResults.points = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7993340006796643,
+      "result_signature": "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT constructors.name\nFROM constructors\nJOIN constructorResults ON constructors.constructorId = constructorResults.constructorId\nWHERE constructorResults.raceId = 291 AND constructorResults.points = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.22683299559867,
+      "result_signature": "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT constructors.name\nFROM constructors\nJOIN constructorResults ON constructors.constructorId = constructorResults.constructorId\nWHERE constructorResults.raceId = 291 AND constructorResults.points = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1470829995232634,
+      "result_signature": "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT constructors.name\nFROM constructors\nJOIN constructorResults ON constructors.constructorId = constructorResults.constructorId\nWHERE constructorResults.raceId = 291 AND constructorResults.points = 0;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f25bd29f527b7a8ab6238bbf442b15b4d847b0374c5d44b9b2a4e5f14e17e443": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1295.2003750033327
+}

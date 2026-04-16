@@ -1,0 +1,138 @@
+{
+  "task_id": "tpcds_q82",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2789.1861660027644,
+  "execution_time_ms": 23.44504199572839,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT i_item_id, p_promo_id, SUM(ss_ext_sales_price) AS total_sales\nFROM store_sales\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_date >= '2000-05-25'\n  AND date_dim.d_date <= '2000-07-24'\nGROUP BY i_item_id, p_promo_id\nORDER BY total_sales DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.497666003066115,
+      "result_signature": "a2338fbc4995d1de4314f6581809dee5e0ad895ed62e91711038e2441be504a5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_item_id,\n    p_promo_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN \n    promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_date >= '2000-05-25'\n    AND date_dim.d_date <= '2000-07-24'\nGROUP BY \n    i_item_id, p_promo_id\nORDER BY \n    i_item_id, p_promo_id\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.036000002291985,
+      "result_signature": "e83ca33d015486c8bfb0b9237626fa66db8e11de08d6214b1df117a91b962776",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i_item_id,\n    p_promo_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_date >= '2000-05-25'\n    AND date_dim.d_date <= '2000-07-24'\nGROUP BY \n    i_item_id,\n    p_promo_id\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.093833005754277,
+      "result_signature": "26c65e7b1eda4caccefcac3e70ba6cba8be56552a95bfaeed8a7d6ef2a60ea6e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    i_item_id,\n    p_promo_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_date >= '2000-05-25'\n    AND date_dim.d_date <= '2000-07-24'\nGROUP BY \n    i_item_id,\n    p_promo_id\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.950833997805603,
+      "result_signature": "26c65e7b1eda4caccefcac3e70ba6cba8be56552a95bfaeed8a7d6ef2a60ea6e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_item_id,\n    p_promo_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_date >= '2000-05-25'\n    AND date_dim.d_date <= '2000-07-24'\nGROUP BY \n    i_item_id, \n    p_promo_id\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.815417003352195,
+      "result_signature": "62b76c863037413057641fe0adc731623c9db8fd3e45e096660b04476b70987f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    i_item_id,\n    p_promo_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_date >= '2000-05-25'\n    AND date_dim.d_date <= '2000-07-24'\nGROUP BY \n    i_item_id,\n    p_promo_id\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a2338fbc4995d1de4314f6581809dee5e0ad895ed62e91711038e2441be504a5": 1,
+        "e83ca33d015486c8bfb0b9237626fa66db8e11de08d6214b1df117a91b962776": 1,
+        "26c65e7b1eda4caccefcac3e70ba6cba8be56552a95bfaeed8a7d6ef2a60ea6e": 2,
+        "62b76c863037413057641fe0adc731623c9db8fd3e45e096660b04476b70987f": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 4027.613916012342,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6840.294708992587
+}

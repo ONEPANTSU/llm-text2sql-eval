@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_415",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 5,
+  "generation_time_ms": 6832.27108400024,
+  "execution_time_ms": 179.16037500253879,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS percentage_no_content_warning\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nWHERE legalities.format = 'commander' AND legalities.status = 'Legal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 69.81854100013152,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS percentage_no_content_warning\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nWHERE legalities.format = 'commander' AND legalities.status = 'Legal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 26.370999999926426,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    (SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS percentage_no_content_warning\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nWHERE legalities.format = 'commander' \n  AND legalities.status = 'Legal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.729834000230767,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS percentage_without_content_warning\nFROM \n    legalities\nJOIN \n    cards ON legalities.uuid = cards.id\nWHERE \n    legalities.format = 'commander' \n    AND legalities.status = 'Legal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.882250004040543,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS percentage_without_content_warning\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nWHERE legalities.format = 'commander' \n  AND legalities.status = 'Legal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.402166000683792,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 1
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    (SUM(CASE WHEN cards.hasContentWarning = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS percentage_no_content_warning\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nWHERE legalities.format = 'commander' \n  AND legalities.status = 'Legal';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7011.50695799879
+}

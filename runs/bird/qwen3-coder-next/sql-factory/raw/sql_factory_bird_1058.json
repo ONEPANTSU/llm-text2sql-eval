@@ -1,0 +1,186 @@
+{
+  "task_id": "bird_1058",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH height_stats AS (\n    SELECT \n        MAX(height) AS max_height,\n        MIN(height) AS min_height\n    FROM Player\n    WHERE height IS NOT NULL\n),\nplayers_in_range AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    CROSS JOIN height_stats hs\n    WHERE p.height BETWEEN hs.min_height AND hs.max_height\n      AND p.height = hs.max_height OR p.height = hs.min_height\n      AND pa.finishing IS NOT N...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "hs",
+            "Player_Attributes",
+            "p",
+            "height_stats",
+            "Player",
+            "avg_finishing",
+            "pa",
+            "players_in_range"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH height_stats AS (\n    SELECT \n        MAX(height) AS max_height,\n        MIN(height) AS min_height\n    FROM Player\n    WHERE height IS NOT NULL\n),\nplayers_in_range AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    CROSS JOIN height_stats hs\n    WHERE p.height BETWEEN hs.min_height AND hs.max_height\n      AND p.height = hs.max_height OR p.height = hs.min_height\n      AND pa.finishing IS NOT N...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "hs",
+            "Player_Attributes",
+            "p",
+            "height_stats",
+            "Player",
+            "avg_finishing",
+            "pa",
+            "players_in_range"
+          ]
+        },
+        {
+          "sql": "WITH height_extremes AS (\n    SELECT \n        player_name,\n        height,\n        finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    WHERE p.height = (SELECT MAX(height) FROM Player WHERE height IS NOT NULL)\n       OR p.height = (SELECT MIN(height) FROM Player WHERE height IS NOT NULL)\n      AND pa.finishing IS NOT NULL\n),\navg_rates AS (\n    SELECT \n        player_name,\n        AVG(finishing) AS avg_finishing\n    FROM height_extremes\n    GROUP BY...",
+          "score": 1.1807636097917427,
+          "similarity_max": 0.6384727804165145,
+          "tables_used": [
+            "Player",
+            "pa",
+            "avg_rates",
+            "height_extremes",
+            "Player_Attributes",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH height_bounds AS (\n    SELECT \n        MAX(height) AS max_h,\n        MIN(height) AS min_h\n    FROM Player\n    WHERE height IS NOT NULL\n),\nfiltered_players AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    JOIN height_bounds hb ON p.height = hb.max_h OR p.height = hb.min_h\n    WHERE pa.finishing IS NOT NULL\n)\nSELECT \n    player_name\nFROM filtered_players\nORDER BY finishing DESC\nLIMIT 1;",
+          "score": 1.146938775510204,
+          "similarity_max": 0.6061224489795918,
+          "tables_used": [
+            "p",
+            "Player",
+            "pa",
+            "height_bounds",
+            "hb",
+            "Player_Attributes",
+            "filtered_players"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH height_stats AS (\n    SELECT \n        MAX(height) AS max_height,\n        MIN(height) AS min_height\n    FROM Player\n    WHERE height IS NOT NULL\n),\nplayers_in_range AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    CROSS JOIN height_stats hs\n    WHERE p.height BETWEEN hs.min_height AND hs.max_height\n      AND p.height = hs.max_height OR p.height = hs.min_height\n      AND pa.finishing IS NOT N...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "hs",
+            "Player_Attributes",
+            "p",
+            "height_stats",
+            "Player",
+            "avg_finishing",
+            "pa",
+            "players_in_range"
+          ]
+        },
+        {
+          "sql": "WITH height_extremes AS (\n    SELECT \n        player_name,\n        height,\n        finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    WHERE p.height = (SELECT MAX(height) FROM Player WHERE height IS NOT NULL)\n       OR p.height = (SELECT MIN(height) FROM Player WHERE height IS NOT NULL)\n      AND pa.finishing IS NOT NULL\n),\navg_rates AS (\n    SELECT \n        player_name,\n        AVG(finishing) AS avg_finishing\n    FROM height_extremes\n    GROUP BY...",
+          "score": 1.1807636097917427,
+          "similarity_max": 0.6384727804165145,
+          "tables_used": [
+            "Player",
+            "pa",
+            "avg_rates",
+            "height_extremes",
+            "Player_Attributes",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH height_bounds AS (\n    SELECT \n        MAX(height) AS max_h,\n        MIN(height) AS min_h\n    FROM Player\n    WHERE height IS NOT NULL\n),\nfiltered_players AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    JOIN height_bounds hb ON p.height = hb.max_h OR p.height = hb.min_h\n    WHERE pa.finishing IS NOT NULL\n)\nSELECT \n    player_name\nFROM filtered_players\nORDER BY finishing DESC\nLIMIT 1;",
+          "score": 1.146938775510204,
+          "similarity_max": 0.6061224489795918,
+          "tables_used": [
+            "p",
+            "Player",
+            "pa",
+            "height_bounds",
+            "hb",
+            "Player_Attributes",
+            "filtered_players"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH height_stats AS (\n    SELECT \n        MAX(height) AS max_height,\n        MIN(height) AS min_height\n    FROM Player\n    WHERE height IS NOT NULL\n),\nplayers_in_range AS (\n    SELECT \n        p.player_name,\n        pa.finishing\n    FROM Player p\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\n    CROSS JOIN height_stats hs\n    WHERE p.height BETWEEN hs.min_height AND hs.max_height\n      AND p.height = hs.max_height OR p.height = hs.min_height\n      AND pa.finishing IS NOT N...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "hs",
+        "Player_Attributes",
+        "p",
+        "height_stats",
+        "Player",
+        "avg_finishing",
+        "pa",
+        "players_in_range"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "ORDER BY clause should come after UNION ALL not before",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 73.55
+  }
+}

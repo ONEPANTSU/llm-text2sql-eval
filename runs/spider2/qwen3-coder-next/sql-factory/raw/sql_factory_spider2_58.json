@@ -1,0 +1,229 @@
+{
+  "task_id": "spider2_58",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        c.customerid,\n        c.companyname,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM customers c\n    INNER JOIN orders o ON c.customerid = o.customerid\n    INNER JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY c.customerid, c.companyname\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.companyname,\n        cs.total_spent,\n        cg.groupname\n    FROM c...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "c",
+            "o",
+            "group_counts",
+            "cs",
+            "gc",
+            "order_details",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        o.customerid,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM orders o\n    JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY o.customerid\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.total_spent,\n        cg.groupname\n    FROM customer_spending cs\n    LEFT JOIN customergroupthreshold cg \n        ON cs.total_spent >= cg.rangebottom AND cs.total_spent < ...",
+          "score": 0.9493023255813953,
+          "similarity_max": 0.7013953488372093,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "o",
+            "group_counts",
+            "cs",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "order_details"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        c.customerid,\n        c.companyname,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM customers c\n    INNER JOIN orders o ON c.customerid = o.customerid\n    INNER JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY c.customerid, c.companyname\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.companyname,\n        cs.total_spent,\n        cg.groupname\n    FROM c...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "c",
+            "o",
+            "group_counts",
+            "cs",
+            "gc",
+            "order_details",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        o.customerid,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM orders o\n    JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY o.customerid\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.total_spent,\n        cg.groupname\n    FROM customer_spending cs\n    LEFT JOIN customergroupthreshold cg \n        ON cs.total_spent >= cg.rangebottom AND cs.total_spent < ...",
+          "score": 0.9493023255813953,
+          "similarity_max": 0.7013953488372093,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "o",
+            "group_counts",
+            "cs",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "order_details"
+          ]
+        },
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        o.customerid,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM orders o\n    JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY o.customerid\n),\nspending_with_group AS (\n    SELECT \n        cs.customerid,\n        cs.total_spent,\n        CASE \n            WHEN cg.groupname IS NOT NULL THEN cg.groupname \n            ELSE 'No Group' \n        END AS groupname\n    FROM customer_spendi...",
+          "score": 0.9462117805755397,
+          "similarity_max": 0.7075764388489209,
+          "tables_used": [
+            "spending_with_group",
+            "orders",
+            "od",
+            "customer_spending",
+            "group_stats",
+            "o",
+            "cs",
+            "customergroupthreshold",
+            "cg",
+            "order_details"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        c.customerid,\n        c.companyname,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM customers c\n    INNER JOIN orders o ON c.customerid = o.customerid\n    INNER JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY c.customerid, c.companyname\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.companyname,\n        cs.total_spent,\n        cg.groupname\n    FROM c...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "c",
+            "o",
+            "group_counts",
+            "cs",
+            "gc",
+            "order_details",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        o.customerid,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM orders o\n    JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY o.customerid\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.total_spent,\n        cg.groupname\n    FROM customer_spending cs\n    LEFT JOIN customergroupthreshold cg \n        ON cs.total_spent >= cg.rangebottom AND cs.total_spent < ...",
+          "score": 0.9493023255813953,
+          "similarity_max": 0.7013953488372093,
+          "tables_used": [
+            "orders",
+            "od",
+            "customer_spending",
+            "o",
+            "group_counts",
+            "cs",
+            "customergroupthreshold",
+            "spending_groups",
+            "cg",
+            "order_details"
+          ]
+        },
+        {
+          "sql": "WITH customer_spending AS (\n    SELECT \n        o.customerid,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM orders o\n    JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY o.customerid\n),\nspending_with_group AS (\n    SELECT \n        cs.customerid,\n        cs.total_spent,\n        CASE \n            WHEN cg.groupname IS NOT NULL THEN cg.groupname \n            ELSE 'No Group' \n        END AS groupname\n    FROM customer_spendi...",
+          "score": 0.9462117805755397,
+          "similarity_max": 0.7075764388489209,
+          "tables_used": [
+            "spending_with_group",
+            "orders",
+            "od",
+            "customer_spending",
+            "group_stats",
+            "o",
+            "cs",
+            "customergroupthreshold",
+            "cg",
+            "order_details"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH customer_spending AS (\n    SELECT \n        c.customerid,\n        c.companyname,\n        SUM(od.unitprice * od.quantity) AS total_spent\n    FROM customers c\n    INNER JOIN orders o ON c.customerid = o.customerid\n    INNER JOIN order_details od ON o.orderid = od.orderid\n    WHERE strftime('%Y', o.orderdate) = '1998'\n    GROUP BY c.customerid, c.companyname\n),\nspending_groups AS (\n    SELECT \n        cs.customerid,\n        cs.companyname,\n        cs.total_spent,\n        cg.groupname\n    FROM c...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "orders",
+        "od",
+        "customer_spending",
+        "c",
+        "o",
+        "group_counts",
+        "cs",
+        "gc",
+        "order_details",
+        "customergroupthreshold",
+        "spending_groups",
+        "cg",
+        "customers"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.24
+  }
+}

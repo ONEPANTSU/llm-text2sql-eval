@@ -1,0 +1,153 @@
+{
+  "task_id": "tpcds_q54",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN customer ON ss_customer_sk = c_customer_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1998 AND d_moy = 12 LIMIT 1)\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM \n    store_sales\nJOIN \n    customer ON ss_customer_sk = c_customer_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 1998 \n    AND d_moy = 12\nGROUP BY \n    c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY \n    total_purchase_amount DESC\nLIMIT 100",
+          "score": 0.7025821596244133,
+          "similarity_max": 0.7948356807511736,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN customer ON ss_customer_sk = c_customer_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1998 AND d_moy = 12 LIMIT 1)\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(cs_ext_sales_price) AS total_purchase_amount\nFROM catalog_sales\nJOIN customer ON cs_bill_customer_sk = c_customer_sk\nJOIN date_dim ON cs_sold_date_sk = d_date_sk\nWHERE d_year = 1998 AND d_moy = 12\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+          "score": 0.7131578947368422,
+          "similarity_max": 0.7736842105263158,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM \n    store_sales\nJOIN \n    customer ON ss_customer_sk = c_customer_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 1998 \n    AND d_moy = 12\nGROUP BY \n    c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY \n    total_purchase_amount DESC\nLIMIT 100",
+          "score": 0.7025821596244133,
+          "similarity_max": 0.7948356807511736,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN customer ON ss_customer_sk = c_customer_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1998 AND d_moy = 12 LIMIT 1)\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(cs_ext_sales_price) AS total_purchase_amount\nFROM catalog_sales\nJOIN customer ON cs_bill_customer_sk = c_customer_sk\nJOIN date_dim ON cs_sold_date_sk = d_date_sk\nWHERE d_year = 1998 AND d_moy = 12\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+          "score": 0.7131578947368422,
+          "similarity_max": 0.7736842105263158,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM \n    store_sales\nJOIN \n    customer ON ss_customer_sk = c_customer_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 1998 \n    AND d_moy = 12\nGROUP BY \n    c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY \n    total_purchase_amount DESC\nLIMIT 100",
+          "score": 0.7025821596244133,
+          "similarity_max": 0.7948356807511736,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c_customer_sk, c_customer_id, c_first_name, c_last_name, SUM(ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN customer ON ss_customer_sk = c_customer_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1998 AND d_moy = 12 LIMIT 1)\nGROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"d_month\" not found in FROM clause!\nCandidate bi",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 33.55
+  }
+}

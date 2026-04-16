@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_391",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.faceName\nFROM cards c\nJOIN foreign_data f ON c.id = f.uuid\nWHERE c.colors = 'B'\n  AND f.language != 'English';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.id = fd.uuid\nWHERE c.colors LIKE '%B%'\n  AND fd.language != 'English';",
+          "score": 0.8354469854469854,
+          "similarity_max": 0.7291060291060292,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.faceName\nFROM cards c\nJOIN foreign_data f ON c.id = f.uuid\nWHERE c.colors = 'B'\n  AND f.language != 'English';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.id = fd.uuid\nWHERE c.colors LIKE '%B%'\n  AND fd.language != 'English';",
+          "score": 0.8354469854469854,
+          "similarity_max": 0.7291060291060292,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.faceName\nFROM cards c\nJOIN foreign_data f ON c.id = f.uuid\nWHERE c.colors = 'B'\n  AND f.language != 'English'\n  AND c.type LIKE '%Artifact%';",
+          "score": 0.8125223613595707,
+          "similarity_max": 0.7749552772808587,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.faceName\nFROM cards c\nJOIN foreign_data f ON c.id = f.uuid\nWHERE c.colors = 'B'\n  AND f.language != 'English';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.id = fd.uuid\nWHERE c.colors LIKE '%B%'\n  AND fd.language != 'English';",
+          "score": 0.8354469854469854,
+          "similarity_max": 0.7291060291060292,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.faceName\nFROM cards c\nJOIN foreign_data f ON c.uuid = f.uuid\nWHERE c.colors LIKE '%Black%'\n  AND f.language != 'English';",
+          "score": 0.8262162162162162,
+          "similarity_max": 0.7475675675675675,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT c.id, c.faceName\nFROM cards c\nJOIN foreign_data f ON c.id = f.uuid\nWHERE c.colors = 'B'\n  AND f.language != 'English';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "f",
+        "foreign_data",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 107.01
+  }
+}

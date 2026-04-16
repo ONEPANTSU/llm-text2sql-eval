@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_108",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3033.146416004456,
+  "execution_time_ms": 2226.1288330046227,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON a.account_id = t.account_id\nWHERE l.amount = (SELECT MAX(amount) FROM loan)\nORDER BY t.date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 515.3779169995687,
+      "result_signature": "a3da999315bd0a2d5623e90aa5b04ca21c4052589aa70a0a60d3690f0916bc9d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON t.account_id = a.account_id\nWHERE l.amount = (SELECT MAX(amount) FROM loan)\nORDER BY t.date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 403.14912499889033,
+      "result_signature": "a3da999315bd0a2d5623e90aa5b04ca21c4052589aa70a0a60d3690f0916bc9d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON t.account_id = a.account_id\nWHERE l.amount = (\n    SELECT MAX(amount)\n    FROM loan\n)\nAND t.date > a.date\nORDER BY t.date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 474.23641700152075,
+      "result_signature": "3ee93463fb6a3d6842aff117659a9a542e35001ce95316f229258e9ffc33a902",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON t.account_id = a.account_id\nWHERE l.amount = (SELECT MAX(amount) FROM loan)\nORDER BY t.date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 434.26691700005904,
+      "result_signature": "a3da999315bd0a2d5623e90aa5b04ca21c4052589aa70a0a60d3690f0916bc9d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON a.account_id = t.account_id\nWHERE l.amount = (SELECT MAX(amount) FROM loan)\nORDER BY t.date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 398.6228330031736,
+      "result_signature": "a3da999315bd0a2d5623e90aa5b04ca21c4052589aa70a0a60d3690f0916bc9d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT t.amount\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN trans t ON a.account_id = t.account_id\nWHERE l.amount = (SELECT MAX(amount) FROM loan)\nORDER BY t.date ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a3da999315bd0a2d5623e90aa5b04ca21c4052589aa70a0a60d3690f0916bc9d": 4,
+        "3ee93463fb6a3d6842aff117659a9a542e35001ce95316f229258e9ffc33a902": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2250.2977089970955,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7510.09774999693
+}

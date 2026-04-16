@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_515",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 5,
+  "generation_time_ms": 7005.049791005149,
+  "execution_time_ms": 630.9634169956553,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT sets.releaseDate, GROUP_CONCAT(legalities.format) AS legal_formats\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nJOIN sets ON cards.id = sets.id\nWHERE legalities.status = 'Legal'\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 336.6298749970156,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT sets.releaseDate, GROUP_CONCAT(DISTINCT legalities.format) AS legalFormats\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nJOIN sets ON cards.id = sets.id\nWHERE cards.availability = 'mythic'\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 63.62595799873816,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT sets.releaseDate, GROUP_CONCAT(DISTINCT legalities.format) AS legal_formats\nFROM cards\nJOIN legalities ON cards.id = legalities.uuid\nJOIN sets ON cards.id = sets.id\nWHERE legalities.status = 'Legal'\nAND sets.releaseDate IS NOT NULL\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 75.5132079939358,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT sets.releaseDate, GROUP_CONCAT(legalities.format) AS legal_formats\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nJOIN sets ON cards.id = sets.id\nWHERE legalities.status = 'Legal'\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 77.35737499751849,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT sets.releaseDate, GROUP_CONCAT(legalities.format) AS legal_formats\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nJOIN sets ON cards.id = sets.id\nWHERE legalities.status = 'Legal'\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 75.32804099901114,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 1
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT DISTINCT sets.releaseDate, GROUP_CONCAT(DISTINCT legalities.format) AS legalFormats\nFROM cards\nJOIN legalities ON legalities.uuid = cards.id\nJOIN sets ON cards.id = sets.id\nWHERE cards.availability = 'mythic'\nORDER BY sets.releaseDate ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7636.286166998616
+}

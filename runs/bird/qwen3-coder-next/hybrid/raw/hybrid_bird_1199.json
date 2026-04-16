@@ -1,0 +1,176 @@
+{
+  "task_id": "bird_1199",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 5,
+  "generation_time_ms": 2325.825457999599,
+  "execution_time_ms": 1.9170839950675145,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \n  AND Laboratory.UA-PRO > (SELECT U-PRO FROM Laboratory WHERE U-PRO <= 150 ORDER BY U-PRO DESC LIMIT 1);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: PRO",
+      "exec_time_ms": 0.8083749999059364,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \nAND Laboratory.UA-PRO > (SELECT AVG(U-PRO) FROM Laboratory WHERE U-PRO IS NOT NULL);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: PRO",
+      "exec_time_ms": 0.17387499974574894,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \nAND Laboratory.UA-PRO > (SELECT AVG(U-PRO) FROM Laboratory);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: PRO",
+      "exec_time_ms": 0.16612499894108623,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.Date LIKE '1997%' \nAND Laboratory.UA-PRO > 0.15",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: PRO",
+      "exec_time_ms": 0.1989169977605343,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.Date LIKE '1997%' \n  AND Laboratory.UA-PRO > (SELECT AVG(U-PRO) FROM Laboratory WHERE U-PRO IS NOT NULL);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: PRO",
+      "exec_time_ms": 0.15474999963771552,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 1
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \n  AND Laboratory.\"U-PRO\" > 150;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3cd4e44bfae4eccabe4c7f9fe2d82805a299c3633a1d27999443f5b6020f8c65": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such column: PRO",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \n  AND Laboratory.\"U-PRO\" > 150;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 10.876499996811617,
+        "result_signature": "3cd4e44bfae4eccabe4c7f9fe2d82805a299c3633a1d27999443f5b6020f8c65",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT COUNT(*)  \nFROM Laboratory  \nJOIN Patient ON Laboratory.ID = Patient.ID  \nWHERE Laboratory.Date LIKE '1997%'  \n  AND Laboratory.\"U-PRO\" > 150;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.257042004202958,
+        "result_signature": "3cd4e44bfae4eccabe4c7f9fe2d82805a299c3633a1d27999443f5b6020f8c65",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8989.861375004693
+}

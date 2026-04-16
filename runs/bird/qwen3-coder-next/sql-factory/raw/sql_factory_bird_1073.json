@@ -1,0 +1,175 @@
+{
+  "task_id": "bird_1073",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date >= '2008-08-01' \n  AND m.date <= '2008-10-31';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Germany 1. Bundesliga' \n  AND m.date BETWEEN '2008-08-01' AND '2008-10-31';",
+          "score": 0.8683928571428571,
+          "similarity_max": 0.6632142857142858,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date >= '2008-08-01' \n  AND m.date <= '2008-10-31';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date BETWEEN '2008-08-01' AND '2008-10-31';",
+          "score": 0.8944642857142858,
+          "similarity_max": 0.8110714285714284,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Germany 1. Bundesliga' \n  AND m.date BETWEEN '2008-08-01' AND '2008-10-31';",
+          "score": 0.8683928571428571,
+          "similarity_max": 0.6632142857142858,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date >= '2008-08-01' \n  AND m.date <= '2008-10-31';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date BETWEEN '2008-08-01' AND '2008-10-31';",
+          "score": 0.8944642857142858,
+          "similarity_max": 0.8110714285714284,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Germany 1. Bundesliga' \n  AND m.date BETWEEN '2008-08-01' AND '2008-10-31';",
+          "score": 0.8683928571428571,
+          "similarity_max": 0.6632142857142858,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Germany' \n  AND l.name = '1. Bundesliga'\n  AND m.date >= '2008-08-01' \n  AND m.date <= '2008-10-31';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "Country",
+        "m",
+        "l",
+        "League",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 82.04
+  }
+}

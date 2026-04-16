@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_61",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5989.174959002412,
+  "execution_time_ms": 5.398374996730126,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    b.BowlerID,\n    b.BowlerFirstName,\n    b.BowlerLastName,\n    bs.MatchID AS match_number,\n    bs.GameNumber AS game_number,\n    bs.HandiCapScore,\n    bs.MatchID AS tournament_date,  -- Note: MatchID used as proxy for tournament date; not ideal but schema lacks date field\n    CASE \n        WHEN bs.MatchID LIKE '%Thunderbird%' THEN 'Thunderbird Lanes'\n        WHEN bs.MatchID LIKE '%Totem%' THEN 'Totem Lanes'\n        WHEN bs.MatchID LIKE '%Bolero%' THEN 'Bolero Lanes'\n        ELSE 'Unknown Venue'\n    END AS location\nFROM Bowler_Scores bs\nJOIN Bowlers b ON bs.BowlerID = b.BowlerID\nWHERE bs.WonGame = 1\n  AND bs.HandiCapScore <= 190\n  AND (\n    bs.MatchID LIKE '%Thunderbird%' \n    OR bs.MatchID LIKE '%Totem%' \n    OR bs.MatchID LIKE '%Bolero%'\n  )\n  AND EXISTS (\n    SELECT 1 FROM Bowler_Scores bs2 \n    WHERE bs2.BowlerID = bs.BowlerID \n      AND bs2.WonGame = 1 \n      AND bs2.HandiCapScore <= 190 \n      AND bs2.MatchID LIKE '%Thunderbird%'\n  )\n  AND EXISTS (\n    SELECT 1 FROM Bowler_Scores bs3 \n    WHERE bs3.BowlerID = bs.BowlerID \n      AND bs3.WonGame = 1 \n      AND bs3.HandiCapScore <= 190 \n      AND bs3.MatchID LIKE '%Totem%'\n  )\n  AND EXISTS (\n    SELECT 1 FROM Bowler_Scores bs4 \n    WHERE bs4.BowlerID = bs.BowlerID \n      AND bs4.WonGame = 1 \n      AND bs4.HandiCapScore <= 190 \n      AND bs4.MatchID LIKE '%Bolero%'\n  )",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5849159972276539,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    b.BowlerID,\n    b.BowlerFirstName,\n    b.BowlerLastName,\n    s.MatchID AS MatchNumber,\n    s.GameNumber,\n    s.HandiCapScore,\n    m.TournamentDate,\n    m.Location\nFROM Bowler_Scores s\nJOIN Bowlers b ON s.BowlerID = b.BowlerID\nJOIN Matches m ON s.MatchID = m.MatchID\nWHERE s.WonGame = 1\n  AND s.HandiCapScore <= 190\n  AND m.Location IN ('Thunderbird Lanes', 'Totem Lanes', 'Bolero Lanes')\n  AND b.BowlerID IN (\n    SELECT BowlerID\n    FROM Bowler_Scores s2\n    JOIN Matches m2 ON s2.MatchID = m2.MatchID\n    WHERE s2.WonGame = 1\n      AND s2.HandiCapScore <= 190\n      AND m2.Location = 'Thunderbird Lanes'\n    INTERSECT\n    SELECT BowlerID\n    FROM Bowler_Scores s3\n    JOIN Matches m3 ON s3.MatchID = m3.MatchID\n    WHERE s3.WonGame = 1\n      AND s3.HandiCapScore <= 190\n      AND m3.Location = 'Totem Lanes'\n    INTERSECT\n    SELECT BowlerID\n    FROM Bowler_Scores s4\n    JOIN Matches m4 ON s4.MatchID = m4.MatchID\n    WHERE s4.WonGame = 1\n      AND s4.HandiCapScore <= 190\n      AND m4.Location = 'Bolero Lanes'\n  );",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: Matches",
+      "exec_time_ms": 0.5533329967875034,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    b.BowlerID,\n    b.BowlerFirstName,\n    b.BowlerLastName,\n    bs.MatchNumber,\n    bs.GameNumber,\n    bs.HandiCapScore,\n    m.TournamentDate,\n    m.Location\nFROM Bowler_Scores bs\nJOIN Bowlers b ON bs.BowlerID = b.BowlerID\nJOIN Matches m ON bs.MatchID = m.MatchID\nWHERE bs.WonGame = 1\n  AND bs.HandiCapScore <= 190\n  AND m.Location IN ('Thunderbird Lanes', 'Totem Lanes', 'Bolero Lanes')\nGROUP BY b.BowlerID\nHAVING COUNT(DISTINCT m.Location) = 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: Matches",
+      "exec_time_ms": 0.2809590077959001,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    b.BowlerID,\n    b.BowlerFirstName,\n    b.BowlerLastName,\n    s.MatchID AS MatchNumber,\n    s.GameNumber,\n    s.HandiCapScore,\n    m.TournamentDate,\n    m.Location\nFROM Bowler_Scores s\nJOIN Bowlers b ON s.BowlerID = b.BowlerID\nJOIN Matches m ON s.MatchID = m.MatchID\nWHERE s.WonGame = 1\n  AND s.HandiCapScore <= 190\n  AND m.Location IN ('Thunderbird Lanes', 'Totem Lanes', 'Bolero Lanes')\nGROUP BY b.BowlerID, s.MatchID, s.GameNumber\nHAVING COUNT(DISTINCT m.Location) = 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: Matches",
+      "exec_time_ms": 0.5287920066621155,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    b.BowlerID, \n    b.BowlerFirstName, \n    b.BowlerLastName, \n    s.MatchID AS match_number, \n    s.GameNumber AS game_number, \n    s.HandiCapScore, \n    'Tournament Date' AS tournament_date, \n    'Location' AS location\nFROM Bowler_Scores s\nJOIN Bowlers b ON s.BowlerID = b.BowlerID\nWHERE s.WonGame = 1 \n  AND s.HandiCapScore <= 190\n  AND s.MatchID IN (\n      SELECT MatchID \n      FROM Bowler_Scores \n      WHERE WonGame = 1 \n        AND HandiCapScore <= 190\n      GROUP BY MatchID\n      HAVING COUNT(DISTINCT CASE \n          WHEN Location = 'Thunderbird Lanes' THEN 1 \n          WHEN Location = 'Totem Lanes' THEN 2 \n          WHEN Location = 'Bolero Lanes' THEN 3 \n      END) = 3\n  );\n\n-- Note: The schema provided does not include a Location column or Tournament Date in either table. \n-- Since the question explicitly asks for location and tournament date, but those columns are not present \n-- in the schema, 'Location' and 'Tournament Date' are returned as placeholder strings. \n-- If Location data exists elsewhere, it would need to be joined or added.",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.809291988844052,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    b.BowlerID, \n    b.BowlerFirstName, \n    b.BowlerLastName, \n    s.MatchID AS match_number, \n    s.GameNumber AS game_number, \n    s.HandiCapScore, \n    'Tournament Date' AS tournament_date, \n    'Location' AS location\nFROM Bowler_Scores s\nJOIN Bowlers b ON s.BowlerID = b.BowlerID\nWHERE s.WonGame = 1 \n  AND s.HandiCapScore <= 190\n  AND s.MatchID IN (\n      SELECT MatchID \n      FROM Bowler_Scores \n      WHERE WonGame = 1 \n        AND HandiCapScore <= 190\n      GROUP BY MatchID\n      HAVING COUNT(DISTINCT CASE \n          WHEN Location = 'Thunderbird Lanes' THEN 1 \n          WHEN Location = 'Totem Lanes' THEN 2 \n          WHEN Location = 'Bolero Lanes' THEN 3 \n      END) = 3\n  );\n\n-- Note: The schema provided does not include a Location column or Tournament Date in either table. \n-- Since the question explicitly asks for location and tournament date, but those columns are not present \n-- in the schema, 'Location' and 'Tournament Date' are returned as placeholder strings. \n-- If Location data exists elsewhere, it would need to be joined or added.",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5994.814292003866
+}

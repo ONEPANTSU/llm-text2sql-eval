@@ -1,0 +1,168 @@
+{
+  "task_id": "tpcds_q07",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\nJOIN \n    customer_demographics ON ss_cdemo_sk = cd_demo_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nJOIN \n    item ON ss_item_sk = i_item_sk\nJOIN \n    promotion ON ss_promo_sk = p_promo_sk\nWHERE \n    cd_gender = 'M'\n    AND cd_marital_status = 'S'\n    AND cd_education_status = 'College'\n    AND (p_channel_email = 'N' ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "promotion",
+            "date_dim",
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\nJOIN \n    customer_demographics ON ss_cdemo_sk = cd_demo_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nJOIN \n    item ON ss_item_sk = i_item_sk\nJOIN \n    promotion ON ss_promo_sk = p_promo_sk\nWHERE \n    cd_gender = 'M'\n    AND cd_marital_status = 'S'\n    AND cd_education_status = 'College'\n    AND (p_channel_email = 'N' ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "promotion",
+            "date_dim",
+            "item",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH filtered_sales AS (\n    SELECT \n        i_item_id,\n        ss_quantity,\n        ss_list_price,\n        ss_coupon_amt,\n        ss_sales_price\n    FROM \n        store_sales\n    JOIN \n        customer_demographics ON ss_cdemo_sk = cd_demo_sk\n    JOIN \n        date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN \n        item ON ss_item_sk = i_item_sk\n    JOIN \n        promotion ON ss_promo_sk = p_promo_sk\n    WHERE \n        cd_gender = 'M'\n        AND cd_marital_status = 'S'\n        AND cd_educati...",
+          "score": 1.0557142857142856,
+          "similarity_max": 0.7885714285714286,
+          "tables_used": [
+            "filtered_sales",
+            "store_sales",
+            "promotion",
+            "date_dim",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH filtered_sales AS (\n    SELECT \n        i_item_id,\n        ss_quantity,\n        ss_list_price,\n        ss_coupon_amt,\n        ss_sales_price\n    FROM \n        store_sales ss\n    JOIN \n        customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN \n        date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    JOIN \n        item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN \n        promotion p ON ss.ss_promo_sk = p.p_promo_sk\n    WHERE \n        cd.cd_gender = 'M'\n        AND cd.cd_mari...",
+          "score": 0.9085714285714286,
+          "similarity_max": 0.6828571428571428,
+          "tables_used": [
+            "filtered_sales",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "customer_demographics",
+            "promotion",
+            "i",
+            "item",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\nJOIN \n    customer_demographics ON ss_cdemo_sk = cd_demo_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nJOIN \n    item ON ss_item_sk = i_item_sk\nJOIN \n    promotion ON ss_promo_sk = p_promo_sk\nWHERE \n    cd_gender = 'M'\n    AND cd_marital_status = 'S'\n    AND cd_education_status = 'College'\n    AND (p_channel_email = 'N' ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "promotion",
+            "date_dim",
+            "item",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH filtered_sales AS (\n    SELECT \n        i_item_id,\n        ss_quantity,\n        ss_list_price,\n        ss_coupon_amt,\n        ss_sales_price\n    FROM \n        store_sales\n    JOIN \n        customer_demographics ON ss_cdemo_sk = cd_demo_sk\n    JOIN \n        date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN \n        item ON ss_item_sk = i_item_sk\n    JOIN \n        promotion ON ss_promo_sk = p_promo_sk\n    WHERE \n        cd_gender = 'M'\n        AND cd_marital_status = 'S'\n        AND cd_educati...",
+          "score": 1.0557142857142856,
+          "similarity_max": 0.7885714285714286,
+          "tables_used": [
+            "filtered_sales",
+            "store_sales",
+            "promotion",
+            "date_dim",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH filtered_sales AS (\n    SELECT \n        i_item_id,\n        ss_quantity,\n        ss_list_price,\n        ss_coupon_amt,\n        ss_sales_price\n    FROM \n        store_sales ss\n    JOIN \n        customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN \n        date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    JOIN \n        item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN \n        promotion p ON ss.ss_promo_sk = p.p_promo_sk\n    WHERE \n        cd.cd_gender = 'M'\n        AND cd.cd_mari...",
+          "score": 0.9085714285714286,
+          "similarity_max": 0.6828571428571428,
+          "tables_used": [
+            "filtered_sales",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "customer_demographics",
+            "promotion",
+            "i",
+            "item",
+            "p"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\nJOIN \n    customer_demographics ON ss_cdemo_sk = cd_demo_sk\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nJOIN \n    item ON ss_item_sk = i_item_sk\nJOIN \n    promotion ON ss_promo_sk = p_promo_sk\nWHERE \n    cd_gender = 'M'\n    AND cd_marital_status = 'S'\n    AND cd_education_status = 'College'\n    AND (p_channel_email = 'N' ...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "promotion",
+        "date_dim",
+        "item",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 44.31
+  }
+}

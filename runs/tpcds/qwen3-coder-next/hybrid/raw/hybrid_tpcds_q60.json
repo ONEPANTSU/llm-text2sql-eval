@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q60",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6141.5143749909475,
+  "execution_time_ms": 94.78425000270363,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT\n    s_store_id,\n    s_state,\n    SUM(sr_return_amt) AS total_return_amount\nFROM\n    store_returns,\n    store,\n    date_dim\nWHERE\n    store_returns.sr_store_sk = store.s_store_sk\n    AND store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 1998\n    AND date_dim.d_moy = 9\nGROUP BY\n    s_store_id,\n    s_state\nORDER BY\n    total_return_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 35.5778749944875,
+      "result_signature": "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  s_store_id,\n  s_state,\n  SUM(sr_return_amt) AS total_return_amount\nFROM\n  store_returns,\n  store,\n  date_dim\nWHERE\n  store_returns.sr_store_sk = store.s_store_sk\n  AND store_returns.sr_returned_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 1998\n  AND date_dim.d_moy = 9\nGROUP BY\n  s_store_id,\n  s_state\nORDER BY\n  total_return_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.345875006867573,
+      "result_signature": "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT s_store_id, s_state, SUM(sr_return_amt) AS total_return_amount\nFROM store_returns\nJOIN store ON store_returns.sr_store_sk = store.s_store_sk\nJOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 9\nGROUP BY s_store_id, s_state\nORDER BY total_return_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.637917003710754,
+      "result_signature": "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT s_store_id, s_state, SUM(sr_return_amt) AS total_return_amount\nFROM store_returns\nJOIN store ON store_returns.sr_store_sk = store.s_store_sk\nJOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998 AND date_dim.d_moy = 9\nGROUP BY s_store_id, s_state\nORDER BY total_return_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.396958005614579,
+      "result_signature": "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n    s_store_id,\n    s_state,\n    SUM(sr_return_amt) AS total_return_amount\nFROM\n    store_returns,\n    store,\n    date_dim\nWHERE\n    store_returns.sr_store_sk = store.s_store_sk\n    AND store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 1998\n    AND date_dim.d_moy = 9\nGROUP BY\n    s_store_id,\n    s_state\nORDER BY\n    total_return_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.126499994541518,
+      "result_signature": "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT\n    s_store_id,\n    s_state,\n    SUM(sr_return_amt) AS total_return_amount\nFROM\n    store_returns,\n    store,\n    date_dim\nWHERE\n    store_returns.sr_store_sk = store.s_store_sk\n    AND store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 1998\n    AND date_dim.d_moy = 9\nGROUP BY\n    s_store_id,\n    s_state\nORDER BY\n    total_return_amount DESC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db2807f3a53ca6fb35d2962c09bac34c8115453995a05344bf6dedd1217b5397": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6236.452375000226
+}

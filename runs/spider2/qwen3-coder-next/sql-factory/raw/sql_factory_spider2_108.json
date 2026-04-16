@@ -1,0 +1,204 @@
+{
+  "task_id": "spider2_108",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "post_period",
+            "percentage_change",
+            "cleaned_weekly_sales",
+            "p1",
+            "pre_period",
+            "avg_by_attribute",
+            "p2"
+          ]
+        },
+        {
+          "sql": "WITH before_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_before\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-28' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\nafter_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_after\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' A...",
+          "score": 1.0323988806091569,
+          "similarity_max": 0.6352022387816862,
+          "tables_used": [
+            "after_sales",
+            "b",
+            "avg_by_attribute_type",
+            "combined",
+            "percent_changes",
+            "cleaned_weekly_sales",
+            "a",
+            "avg_by_attribute",
+            "before_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "post_period",
+            "percentage_change",
+            "cleaned_weekly_sales",
+            "p1",
+            "pre_period",
+            "avg_by_attribute",
+            "p2"
+          ]
+        },
+        {
+          "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+          "score": 1.0552670046340933,
+          "similarity_max": 0.5894659907318135,
+          "tables_used": [
+            "post_period",
+            "aggregated",
+            "percentages",
+            "merged",
+            "cleaned_weekly_sales",
+            "flattened",
+            "pre_period",
+            "po",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH before_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_before\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-28' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\nafter_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_after\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' A...",
+          "score": 1.0323988806091569,
+          "similarity_max": 0.6352022387816862,
+          "tables_used": [
+            "after_sales",
+            "b",
+            "avg_by_attribute_type",
+            "combined",
+            "percent_changes",
+            "cleaned_weekly_sales",
+            "a",
+            "avg_by_attribute",
+            "before_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "post_period",
+            "percentage_change",
+            "cleaned_weekly_sales",
+            "p1",
+            "pre_period",
+            "avg_by_attribute",
+            "p2"
+          ]
+        },
+        {
+          "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+          "score": 1.0552670046340933,
+          "similarity_max": 0.5894659907318135,
+          "tables_used": [
+            "post_period",
+            "aggregated",
+            "percentages",
+            "merged",
+            "cleaned_weekly_sales",
+            "flattened",
+            "pre_period",
+            "po",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH before_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_before\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-28' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\nafter_sales AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        AVG(sales) AS avg_sales_after\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' A...",
+          "score": 1.0323988806091569,
+          "similarity_max": 0.6352022387816862,
+          "tables_used": [
+            "after_sales",
+            "b",
+            "avg_by_attribute_type",
+            "combined",
+            "percent_changes",
+            "cleaned_weekly_sales",
+            "a",
+            "avg_by_attribute",
+            "before_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH pre_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-03-23' AND '2020-06-14'\n    GROUP BY region, platform, age_band, demographic, customer_type\n),\npost_period AS (\n    SELECT \n        region, platform, age_band, demographic, customer_type,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE week_date BETWEEN '2020-06-15' AND '2020-09-06...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "combined",
+        "post_period",
+        "percentage_change",
+        "cleaned_weekly_sales",
+        "p1",
+        "pre_period",
+        "avg_by_attribute",
+        "p2"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 11.71
+  }
+}

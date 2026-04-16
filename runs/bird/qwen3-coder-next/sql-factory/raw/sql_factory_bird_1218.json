@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_1218",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT MAX(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 END) AS REAL) * 100 / COUNT(CASE WHEN p.SEX = 'F' THEN 1 END) AS percentage\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F' \n    AND l.UA IS NOT NULL;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(\n        CAST(COUNT(CASE WHEN L.UA > (SELECT MAX(UA) FROM Laboratory) THEN 1 END) AS FLOAT) * 100 / COUNT(*), \n        2\n    ) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+          "score": 0.8915,
+          "similarity_max": 0.617,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "P",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT MAX(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 END) AS REAL) * 100 / COUNT(CASE WHEN p.SEX = 'F' THEN 1 END) AS percentage\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F' \n    AND l.UA IS NOT NULL;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(\n        CAST(COUNT(CASE WHEN L.UA > (SELECT MAX(UA) FROM Laboratory) THEN 1 END) AS FLOAT) * 100 / COUNT(*), \n        2\n    ) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+          "score": 0.8915,
+          "similarity_max": 0.617,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "P",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT AVG(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 ELSE 0 END) AS REAL) * 100 / \n    SUM(CASE WHEN p.SEX = 'F' AND l.UA IS NOT NULL THEN 1 ELSE 0 END) AS percentage\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F';",
+          "score": 0.8456493506493505,
+          "similarity_max": 0.7087012987012987,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT MAX(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 END) AS REAL) * 100 / COUNT(CASE WHEN p.SEX = 'F' THEN 1 END) AS percentage\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F' \n    AND l.UA IS NOT NULL;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(COUNT(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT AVG(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 END) AS REAL) * 100 / COUNT(CASE WHEN p.SEX = 'F' THEN 1 END), 2) AS percentage\nFROM \n    Patient p\nINNER JOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F' \n    AND l.UA IS NOT NULL;",
+          "score": 0.9250712701932214,
+          "similarity_max": 0.7498574596135572,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(\n        CAST(COUNT(CASE WHEN L.UA > (SELECT MAX(UA) FROM Laboratory) THEN 1 END) AS FLOAT) * 100 / COUNT(*), \n        2\n    ) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+          "score": 0.8915,
+          "similarity_max": 0.617,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "P",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN p.SEX = 'F' AND l.UA > (SELECT MAX(UA) FROM Laboratory WHERE UA IS NOT NULL) THEN 1 END) AS REAL) * 100 / COUNT(CASE WHEN p.SEX = 'F' THEN 1 END) AS percentage\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.SEX = 'F' \n    AND l.UA IS NOT NULL;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 10.53
+  }
+}

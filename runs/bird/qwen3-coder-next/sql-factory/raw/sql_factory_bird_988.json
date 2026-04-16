@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_988",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nHAVING \n    COUNT(ps.duration) > 0\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 0.7944805194805195,
+          "similarity_max": 0.811038961038961,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(CAST(ps.duration AS REAL)) AS avg_pit_stop_duration\nFROM \n    drivers d\nINNER JOIN \n    pitStops ps ON d.driverId = ps.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob >= '1980-01-01' \n    AND d.dob <= '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nHAVING \n    COUNT(ps.duration) >= 1\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 0.9350171232876713,
+          "similarity_max": 0.7299657534246575,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nHAVING \n    COUNT(ps.duration) > 0\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 0.7944805194805195,
+          "similarity_max": 0.811038961038961,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(CAST(ps.duration AS REAL)) AS avg_pit_stop_duration\nFROM \n    drivers d\nINNER JOIN \n    pitStops ps ON d.driverId = ps.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob >= '1980-01-01' \n    AND d.dob <= '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nHAVING \n    COUNT(ps.duration) >= 1\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+          "score": 0.9350171232876713,
+          "similarity_max": 0.7299657534246575,
+          "tables_used": [
+            "drivers",
+            "pitStops",
+            "ps",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.forename, \n    d.surname\nFROM drivers d\nJOIN pitStops p ON d.driverId = p.driverId\nWHERE d.nationality = 'German' \n  AND strftime('%Y', d.dob) BETWEEN '1980' AND '1985'\nGROUP BY d.driverId, d.forename, d.surname\nORDER BY AVG(p.duration) ASC\nLIMIT 3;",
+          "score": 0.8463621331128566,
+          "similarity_max": 0.7072757337742869,
+          "tables_used": [
+            "drivers",
+            "p",
+            "pitStops",
+            "d"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    d.forename,\n    d.surname,\n    AVG(ps.duration) AS avg_pit_stop_duration\nFROM \n    pitStops ps\nJOIN \n    drivers d ON ps.driverId = d.driverId\nWHERE \n    d.nationality = 'German'\n    AND d.dob BETWEEN '1980-01-01' AND '1985-12-31'\nGROUP BY \n    d.driverId, d.forename, d.surname\nORDER BY \n    avg_pit_stop_duration ASC\nLIMIT 3;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "drivers",
+        "pitStops",
+        "ps",
+        "d"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.66
+  }
+}

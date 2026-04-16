@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1391",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2512.9655839991756,
+  "execution_time_ms": 6.215249995875638,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN m.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN m.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member me\nJOIN major m ON me.link_to_major = m.major_id\nWHERE m.major_name IN ('Finance', 'Physics');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8449170024250634,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN major.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN major.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member\nJOIN major ON member.link_to_major = major.major_id\nWHERE major.major_name IN ('Finance', 'Physics');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.533791993802879,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN major.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN major.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member\nJOIN major ON member.link_to_major = major.major_id\nWHERE major.major_name IN ('Finance', 'Physics');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.43266600550850853,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN major.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN major.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member\nJOIN major ON member.link_to_major = major.major_id\nWHERE major.major_name IN ('Finance', 'Physics');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.40529199759475887,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN major.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN major.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member\nJOIN major ON member.link_to_major = major.major_id\nWHERE major.major_name IN ('Finance', 'Physics');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3848330015898682,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    CAST(SUM(CASE WHEN major.major_name = 'Finance' THEN 1 ELSE 0 END) AS REAL) / \n    SUM(CASE WHEN major.major_name = 'Physics' THEN 1 ELSE 0 END) AS finance_to_physics_ratio\nFROM member\nJOIN major ON member.link_to_major = major.major_id\nWHERE major.major_name IN ('Finance', 'Physics');",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2519.3992919957964
+}

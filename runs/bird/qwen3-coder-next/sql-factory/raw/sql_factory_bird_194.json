@@ -1,0 +1,207 @@
+{
+  "task_id": "bird_194",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND l.status IN ('A', 'B', 'C'); -- Assuming 'A', 'B', 'C' indicate active or eligible loan status",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "a",
+            "cd",
+            "loan",
+            "c",
+            "account",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE l.status = 'A';",
+          "score": 0.9223758865248227,
+          "similarity_max": 0.5552482269503547,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "loan",
+            "c",
+            "account",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND l.status IN ('A', 'B', 'C'); -- Assuming 'A', 'B', 'C' indicate active or eligible loan status",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "a",
+            "cd",
+            "loan",
+            "c",
+            "account",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND c.client_id IN (\n    SELECT DISTINCT d2.client_id\n    FROM disp d2\n    JOIN loan l ON d2.account_id = l.account_id\n    WHERE l.status IN ('A', 'B', 'C')\n  );",
+          "score": 1.0241126885536822,
+          "similarity_max": 0.6517746228926353,
+          "tables_used": [
+            "disp",
+            "d2",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "loan",
+            "c",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE l.status = 'A';",
+          "score": 0.9223758865248227,
+          "similarity_max": 0.5552482269503547,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "loan",
+            "c",
+            "account",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND l.status IN ('A', 'B', 'C'); -- Assuming 'A', 'B', 'C' indicate active or eligible loan status",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "a",
+            "cd",
+            "loan",
+            "c",
+            "account",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND c.client_id IN (\n    SELECT DISTINCT d2.client_id\n    FROM disp d2\n    JOIN loan l ON d2.account_id = l.account_id\n    WHERE l.status IN ('A', 'B', 'C')\n  );",
+          "score": 1.0241126885536822,
+          "similarity_max": 0.6517746228926353,
+          "tables_used": [
+            "disp",
+            "d2",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "loan",
+            "c",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nWHERE ca.type = 'high level';",
+          "score": 0.9809821428571429,
+          "similarity_max": 0.6380357142857143,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "c",
+            "card",
+            "ca"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.client_id, (strftime('%Y', 'now') - strftime('%Y', c.birth_date)) - (strftime('%m-%d', 'now') < strftime('%m-%d', c.birth_date)) AS age\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nJOIN card cd ON d.disp_id = cd.disp_id\nWHERE cd.type = 'high level'\n  AND l.status IN ('A', 'B', 'C'); -- Assuming 'A', 'B', 'C' indicate active or eligible loan status",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "card",
+        "a",
+        "cd",
+        "loan",
+        "c",
+        "account",
+        "l"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.23
+  }
+}

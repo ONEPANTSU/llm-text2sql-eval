@@ -1,0 +1,182 @@
+{
+  "task_id": "bird_981",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1900.3402089947485,
+  "execution_time_ms": 38.15704099542927,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT drivers.forename, drivers.surname, races.year, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n    SELECT MAX(dob)\n    FROM drivers\n    WHERE driverId IN (\n        SELECT DISTINCT driverId\n        FROM qualifying\n    )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.91062499594409,
+      "result_signature": "82330b7cd6b3e69fb90bf0f51b54106d6e524025ef9717430fe21c94ed636334",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT drivers.forename, drivers.surname, drivers.dob, races.year, races.name, races.date, races.time\nFROM drivers\nJOIN qualifying ON drivers.driverId = qualifying.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n  SELECT MAX(dob)\n  FROM drivers\n  WHERE driverId IN (\n    SELECT DISTINCT driverId\n    FROM qualifying\n  )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.4916660010349005,
+      "result_signature": "a6b7db0e6838f6100a97179957d1fe5840a2ef6412cc2ec997069ef6e1ab0a00",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT MIN(races.year) AS first_year, drivers.forename, drivers.surname, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nGROUP BY drivers.driverId, drivers.forename, drivers.surname, drivers.dob\nORDER BY drivers.dob DESC, first_year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.659207996970508,
+      "result_signature": "49b8383a275a4832110700a37a4f4965027807e92158fe518462f634f6feb14c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT drivers.forename, drivers.surname, drivers.dob, races.year, races.name, races.date, races.time\nFROM drivers\nJOIN qualifying ON drivers.driverId = qualifying.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n    SELECT MIN(dob)\n    FROM drivers\n    WHERE driverId IN (\n        SELECT DISTINCT driverId\n        FROM qualifying\n    )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.31137500324985,
+      "result_signature": "eb06b0a1173754808a3764f6a0b5b4fa54fda3dd92e29857ffcf835a56e9ca94",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT drivers.forename, drivers.surname, races.year, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n    SELECT MAX(dob)\n    FROM drivers\n    WHERE driverId IN (\n        SELECT DISTINCT driverId\n        FROM qualifying\n    )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.126499999780208,
+      "result_signature": "82330b7cd6b3e69fb90bf0f51b54106d6e524025ef9717430fe21c94ed636334",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT drivers.forename, drivers.surname, races.year, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n    SELECT MAX(dob)\n    FROM drivers\n    WHERE driverId IN (\n        SELECT DISTINCT driverId\n        FROM qualifying\n    )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "82330b7cd6b3e69fb90bf0f51b54106d6e524025ef9717430fe21c94ed636334": 3,
+        "a6b7db0e6838f6100a97179957d1fe5840a2ef6412cc2ec997069ef6e1ab0a00": 1,
+        "49b8383a275a4832110700a37a4f4965027807e92158fe518462f634f6feb14c": 3,
+        "eb06b0a1173754808a3764f6a0b5b4fa54fda3dd92e29857ffcf835a56e9ca94": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 2032.2063749990775,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT drivers.forename, drivers.surname, races.year, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (\n    SELECT MAX(dob)\n    FROM drivers\n    WHERE driverId IN (\n        SELECT driverId\n        FROM qualifying\n        GROUP BY driverId\n        HAVING COUNT(*) >= 1\n    )\n)\nORDER BY races.year ASC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.075624994584359,
+        "result_signature": "82330b7cd6b3e69fb90bf0f51b54106d6e524025ef9717430fe21c94ed636334",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT races.year AS first_year, drivers.forename, drivers.surname, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.dob = (SELECT MAX(dob) FROM drivers)\nORDER BY races.year ASC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.6692500032368116,
+        "result_signature": "49b8383a275a4832110700a37a4f4965027807e92158fe518462f634f6feb14c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT races.year, drivers.forename, drivers.surname, races.date, races.time\nFROM drivers\nJOIN qualifying ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.driverId = (\n  SELECT driverId\n  FROM drivers\n  ORDER BY dob DESC\n  LIMIT 1\n)\nORDER BY races.year ASC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.7837090015527792,
+        "result_signature": "49b8383a275a4832110700a37a4f4965027807e92158fe518462f634f6feb14c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3970.84583400283
+}

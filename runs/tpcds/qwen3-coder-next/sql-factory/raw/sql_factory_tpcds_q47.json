@@ -1,0 +1,147 @@
+{
+  "task_id": "tpcds_q47",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_quarter_name = '1999Q4'\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_quarter_name = '1999Q4'\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_year = 1999 \n    AND d_qoy = 4\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 0.8670405522001726,
+          "similarity_max": 0.7659188955996548,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_quarter_name = '1999Q4'\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_year = 1999 \n    AND d_qoy = 4\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 0.8670405522001726,
+          "similarity_max": 0.7659188955996548,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_year = 1999 \n    AND d_moy = 12\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+          "score": 0.8315789473684211,
+          "similarity_max": 0.8368421052631578,
+          "tables_used": [
+            "date_dim",
+            "store",
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_class,\n    s_store_id,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_quarter_name = '1999Q4'\nGROUP BY \n    i_class, s_store_id\nORDER BY \n    i_class, s_store_id\nLIMIT 100;",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "store",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"s_store_sk\" not found in FROM clause!\nCandidate",
+        "count": 1
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"d_quarter_of_year\" not found in FROM clause!\nCa",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 37.94
+  }
+}

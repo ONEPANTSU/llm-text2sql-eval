@@ -1,0 +1,88 @@
+{
+  "task_id": "bird_116",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH first_approved_loan AS (\n    SELECT account_id\n    FROM loan\n    WHERE date <= '1993-07-05'\n    ORDER BY date DESC\n    LIMIT 1\n),\nclient_accounts AS (\n    SELECT d.client_id, t.account_id\n    FROM disp d\n    JOIN trans t ON t.account_id = d.account_id\n    WHERE d.account_id = (SELECT account_id FROM first_approved_loan)\n),\nbalance_changes AS (\n    SELECT \n        client_id,\n        (SELECT balance FROM trans WHERE account_id = (SELECT account_id FROM first_approved_loan) AND date <= '1998-1...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "loan",
+            "d",
+            "t",
+            "client_accounts",
+            "trans",
+            "balance_changes"
+          ]
+        },
+        {
+          "sql": "WITH FirstApprovedLoan1993 AS (\n    SELECT \n        l.account_id,\n        l.date AS loan_date\n    FROM loan l\n    WHERE l.status = 'A' \n      AND l.date BETWEEN '1993-07-05' AND '1993-12-31'\n    ORDER BY l.date ASC\n    LIMIT 1\n),\nClientAccount AS (\n    SELECT \n        d.client_id,\n        t.account_id\n    FROM disp d\n    INNER JOIN FirstApprovedLoan1993 fal ON d.account_id = fal.account_id\n    INNER JOIN trans t ON t.account_id = fal.account_id\n),\nBalanceChange AS (\n    SELECT \n        ca.client...",
+          "score": 1.020986582478295,
+          "similarity_max": 0.4580268350434096,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "ca",
+            "loan",
+            "FirstApprovedLoan1993",
+            "fal",
+            "l",
+            "trans",
+            "ClientAccount",
+            "BalanceChange"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH first_approved_loan AS (\n    SELECT account_id\n    FROM loan\n    WHERE date <= '1993-07-05'\n    ORDER BY date DESC\n    LIMIT 1\n),\nclient_accounts AS (\n    SELECT d.client_id, t.account_id\n    FROM disp d\n    JOIN trans t ON t.account_id = d.account_id\n    WHERE d.account_id = (SELECT account_id FROM first_approved_loan)\n),\nbalance_changes AS (\n    SELECT \n        client_id,\n        (SELECT balance FROM trans WHERE account_id = (SELECT account_id FROM first_approved_loan) AND date <= '1998-1...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "loan",
+        "d",
+        "t",
+        "client_accounts",
+        "trans",
+        "balance_changes"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 59160.47
+  }
+}

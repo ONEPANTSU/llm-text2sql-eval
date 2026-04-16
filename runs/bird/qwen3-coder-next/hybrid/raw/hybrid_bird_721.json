@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_721",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1801.5849579969654,
+  "execution_time_ms": 2.50341699575074,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.colour = 'blue';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4401659936993383,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.colour = 'Blue';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.31874999694991857,
+      "result_signature": "68b437f8bcb37e374a8731503e6a4062a916e6da1c270ff58bed9ba498e660e1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.colour = 'Blue';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.22191699827089906,
+      "result_signature": "68b437f8bcb37e374a8731503e6a4062a916e6da1c270ff58bed9ba498e660e1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.colour = 'blue';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2021670006797649,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.id = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1642499992158264,
+      "result_signature": "82c290552fc6a3286b287a8a973f82426eba7a773f1d88323c809779428f699b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT COUNT(*) \nFROM superhero \nJOIN colour ON superhero.eye_colour_id = colour.id \nWHERE colour.colour = 'blue';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387": 2,
+        "68b437f8bcb37e374a8731503e6a4062a916e6da1c270ff58bed9ba498e660e1": 2,
+        "82c290552fc6a3286b287a8a973f82426eba7a773f1d88323c809779428f699b": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1344.8060419977992,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3148.9255409978796
+}

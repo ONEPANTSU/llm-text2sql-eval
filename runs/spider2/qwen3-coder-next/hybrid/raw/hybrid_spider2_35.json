@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_35",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3404.9214999977266,
+  "execution_time_ms": 32.797875013784505,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH product_sales_2021 AS (\n    SELECT \n        hp.division,\n        hp.product_code,\n        SUM(w.standard_qty + w.gloss_qty + w.poster_qty) AS total_qty_sold\n    FROM web_orders w\n    JOIN hardware_dim_product hp ON w.id = hp.product_code\n    WHERE w.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY hp.division, hp.product_code\n),\nranked_products AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rank\n    FROM product_sales_2021\n),\ntop_three_per_division AS (\n    SELECT \n        division,\n        total_qty_sold\n    FROM ranked_products\n    WHERE rank <= 3\n)\nSELECT \n    division,\n    AVG(total_qty_sold) AS avg_qty_sold\nFROM top_three_per_division\nGROUP BY division;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6117920060642064,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH product_sales AS (\n    SELECT \n        p.division,\n        p.product_code,\n        SUM(o.standard_qty + o.gloss_qty + o.poster_qty) AS total_qty_sold\n    FROM web_orders o\n    JOIN hardware_dim_product p ON o.id = p.product_code\n    WHERE o.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY p.division, p.product_code\n),\ntop_three_per_division AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rn\n    FROM product_sales\n),\ntop_three_avg AS (\n    SELECT \n        division,\n        AVG(total_qty_sold) AS avg_qty_sold\n    FROM top_three_per_division\n    WHERE rn <= 3\n    GROUP BY division\n)\nSELECT \n    division,\n    avg_qty_sold\nFROM top_three_avg;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7592499896418303,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH product_sales AS (\n    SELECT \n        hp.division,\n        hp.product_code,\n        SUM(wo.standard_qty + wo.gloss_qty + wo.poster_qty) AS total_qty_sold\n    FROM web_orders wo\n    JOIN hardware_dim_product hp ON wo.id = hp.product_code\n    WHERE wo.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY hp.division, hp.product_code\n),\ntop_three_per_division AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rn\n    FROM product_sales\n)\nSELECT \n    division,\n    AVG(total_qty_sold) AS avg_qty_sold\nFROM top_three_per_division\nWHERE rn <= 3\nGROUP BY division;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2830420018872246,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH product_sales_2021 AS (\n    SELECT \n        p.division,\n        p.product_code,\n        SUM(o.standard_qty + o.gloss_qty + o.poster_qty) AS total_qty_sold\n    FROM web_orders o\n    JOIN hardware_dim_product p ON o.id = p.product_code\n    WHERE o.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY p.division, p.product_code\n),\nranked_products AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rn\n    FROM product_sales_2021\n),\ntop3_products AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold\n    FROM ranked_products\n    WHERE rn <= 3\n)\nSELECT \n    division,\n    AVG(total_qty_sold) AS avg_qty_sold\nFROM top3_products\nGROUP BY division;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3718750085681677,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH product_sales AS (\n    SELECT \n        hp.division,\n        hp.product_code,\n        SUM(wo.standard_qty + wo.gloss_qty + wo.poster_qty) AS total_qty_sold\n    FROM web_orders wo\n    JOIN hardware_dim_product hp ON wo.id = hp.product_code\n    WHERE wo.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY hp.division, hp.product_code\n),\ntop_three_per_division AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rn\n    FROM product_sales\n),\ntop_three_aggregated AS (\n    SELECT \n        division,\n        AVG(total_qty_sold) AS avg_qty_sold\n    FROM top_three_per_division\n    WHERE rn <= 3\n    GROUP BY division\n)\nSELECT \n    division,\n    avg_qty_sold\nFROM top_three_aggregated;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4756660055136308,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH product_sales_2021 AS (\n    SELECT \n        p.division,\n        p.product_code,\n        SUM(o.standard_qty + o.gloss_qty + o.poster_qty) AS total_qty_sold\n    FROM web_orders o\n    JOIN hardware_dim_product p ON o.id = p.product_code\n    WHERE o.occurred_at BETWEEN '2021-01-01' AND '2021-12-31'\n    GROUP BY p.division, p.product_code\n),\nranked_products AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold,\n        ROW_NUMBER() OVER (PARTITION BY division ORDER BY total_qty_sold DESC) AS rn\n    FROM product_sales_2021\n),\ntop3_products AS (\n    SELECT \n        division,\n        product_code,\n        total_qty_sold\n    FROM ranked_products\n    WHERE rn <= 3\n)\nSELECT \n    division,\n    AVG(total_qty_sold) AS avg_qty_sold\nFROM top3_products\nGROUP BY division;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3437.8472919925116
+}

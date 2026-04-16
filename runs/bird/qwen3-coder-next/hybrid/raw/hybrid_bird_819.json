@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_819",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2157.664582999132,
+  "execution_time_ms": 2.362792001804337,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = (SELECT id FROM colour WHERE id IN ('blue', 'no eye color') LIMIT 1)\n  ) - \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = (SELECT id FROM colour WHERE id IN ('blue', 'no eye color') LIMIT 1 OFFSET 1)\n  ) AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7440000044880435,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (SELECT COUNT(s.id) \n     FROM superhero s \n     JOIN colour c ON s.eye_colour_id = c.id \n     WHERE s.weight_kg IS NULL AND c.id = 'blue') \n    - \n    (SELECT COUNT(s.id) \n     FROM superhero s \n     JOIN colour c ON s.eye_colour_id = c.id \n     WHERE s.weight_kg IS NULL AND c.id = 'no eye color') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.30987500213086605,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    COUNT(CASE WHEN c1.id = 'blue' THEN s.id END) AS blue_eyes_count,\n    COUNT(CASE WHEN c2.id = 'no eye color' THEN s.id END) AS no_eye_color_count\nFROM superhero s\nLEFT JOIN colour c1 ON s.eye_colour_id = c1.id\nLEFT JOIN colour c2 ON s.eye_colour_id = c2.id\nWHERE s.weight_kg IS NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7182090048445389,
+      "result_signature": "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (SELECT COUNT(s.id) \n     FROM superhero s \n     JOIN colour c ON s.eye_colour_id = c.id \n     WHERE s.weight_kg IS NULL AND c.id = 'blue') \n    - \n    (SELECT COUNT(s.id) \n     FROM superhero s \n     JOIN colour c ON s.eye_colour_id = c.id \n     WHERE s.weight_kg IS NULL AND c.id = 'no eye color') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2652909970493056,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = 'blue') \n  - \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = 'no eye color') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1378330052830279,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = 'blue') \n  - \n  (SELECT COUNT(s.id) \n   FROM superhero s \n   JOIN colour c ON s.eye_colour_id = c.id \n   WHERE s.weight_kg IS NULL AND c.id = 'no eye color') AS difference",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387": 6,
+        "54702df08034f226a491326f9db7df30b2ebd13cd1521bfb0633c1e73fa32123": 1,
+        "ec5183f764f81ac270455f3cc9a292208116b131dd77be58e4b0cb183297ae84": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 1559.518667003431,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n  COUNT(CASE WHEN c.id = 'blue' THEN 1 END) - \n  COUNT(CASE WHEN c.id = 'no eye color' THEN 1 END) AS difference\nFROM superhero s\nJOIN colour c ON s.eye_colour_id = c.id\nWHERE s.weight_kg IS NULL\n  AND c.id IN ('blue', 'no eye color');",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.8110839989967644,
+        "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n  COUNT(CASE WHEN c.id = 'blue' THEN 1 END) - \n  COUNT(CASE WHEN c.id = 'no eye color' THEN 1 END) AS difference\nFROM superhero s\nJOIN colour c ON s.eye_colour_id = c.id\nWHERE s.weight_kg IS NULL\n  AND c.id IN ('blue', 'no eye color');",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.38883300294401124,
+        "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    COUNT(CASE WHEN c.id = 'blue' THEN 1 END) AS blue_eyes_count,\n    COUNT(CASE WHEN c.id = 'no eye color' THEN 1 END) AS no_eye_color_count,\n    COUNT(CASE WHEN c.id = 'blue' THEN 1 END) - COUNT(CASE WHEN c.id = 'no eye color' THEN 1 END) AS difference\nFROM superhero s\nJOIN colour c ON s.eye_colour_id = c.id\nWHERE s.weight_kg IS NULL;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.37812499795109034,
+        "result_signature": "ec5183f764f81ac270455f3cc9a292208116b131dd77be58e4b0cb183297ae84",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3719.6355409978423
+}

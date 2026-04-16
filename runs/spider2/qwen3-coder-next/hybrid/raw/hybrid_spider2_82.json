@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_82",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2079.40374998725,
+  "execution_time_ms": 2.8285409935051575,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH team_max_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_goals AS (\n  SELECT max_goals,\n         ROW_NUMBER() OVER (ORDER BY max_goals) AS rn,\n         COUNT(*) OVER () AS total_count\n  FROM team_max_goals\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: seasons",
+      "exec_time_ms": 1.3011249975534156,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH max_goals_per_team AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_max_goals AS (\n  SELECT max_goals, ROW_NUMBER() OVER (ORDER BY max_goals) AS rn, COUNT(*) OVER () AS total_count\n  FROM max_goals_per_team\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_max_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: seasons",
+      "exec_time_ms": 0.4574579943437129,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH highest_season_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_goals AS (\n  SELECT max_goals,\n         ROW_NUMBER() OVER (ORDER BY max_goals) AS rn,\n         COUNT(*) OVER () AS total_count\n  FROM highest_season_goals\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: seasons",
+      "exec_time_ms": 0.38658401172142476,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH team_max_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_goals AS (\n  SELECT max_goals,\n         ROW_NUMBER() OVER (ORDER BY max_goals) AS rn,\n         COUNT(*) OVER () AS total_count\n  FROM team_max_goals\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: seasons",
+      "exec_time_ms": 0.2897079975809902,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH team_max_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_max_goals AS (\n  SELECT max_goals\n  FROM team_max_goals\n  ORDER BY max_goals\n),\nrow_numbers AS (\n  SELECT max_goals, ROW_NUMBER() OVER (ORDER BY max_goals) AS rn, COUNT(*) OVER () AS total_count\n  FROM ordered_max_goals\n)\nSELECT AVG(max_goals) AS median\nFROM row_numbers\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: seasons",
+      "exec_time_ms": 0.25983399245887995,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: seasons",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH team_max_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_goals AS (\n  SELECT max_goals,\n         ROW_NUMBER() OVER (ORDER BY max_goals) AS rn,\n         COUNT(*) OVER () AS total_count\n  FROM team_max_goals\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: seasons",
+        "exec_time_ms": 0.9507500071777031,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH team_max_goals AS (\n  SELECT team_id, MAX(goals_for) AS max_goals\n  FROM seasons\n  GROUP BY team_id\n),\nordered_goals AS (\n  SELECT max_goals,\n         ROW_NUMBER() OVER (ORDER BY max_goals) AS rn,\n         COUNT(*) OVER () AS total_count\n  FROM team_max_goals\n)\nSELECT AVG(max_goals) AS median\nFROM ordered_goals\nWHERE rn IN ((total_count + 1) / 2, (total_count + 2) / 2);",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: seasons",
+        "exec_time_ms": 1.1971250060014427,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 8132.847707995097
+}

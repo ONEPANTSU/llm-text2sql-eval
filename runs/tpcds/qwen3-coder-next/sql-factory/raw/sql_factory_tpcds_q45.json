@@ -1,0 +1,118 @@
+{
+  "task_id": "tpcds_q45",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON cs_item_sk = i_item_sk\n    JOIN date_dim ON cs_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+          "score": 0.7763043478260871,
+          "similarity_max": 0.8473913043478261,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON cs_item_sk = i_item_sk\n    JOIN date_dim ON cs_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+          "score": 0.7763043478260871,
+          "similarity_max": 0.8473913043478261,
+          "tables_used": [
+            "date_dim",
+            "catalog_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_category,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    i_category\nORDER BY \n    total_sales DESC\nLIMIT 100",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "catalog_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 31.93
+  }
+}

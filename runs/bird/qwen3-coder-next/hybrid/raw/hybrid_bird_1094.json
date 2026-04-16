@@ -1,0 +1,182 @@
+{
+  "task_id": "bird_1094",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4335.9643340008915,
+  "execution_time_ms": 394.91829100006726,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT ((SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Ariel Borysiuk')) - (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel'))) * 100.0 / (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel'));",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 61.335917001997586,
+      "result_signature": "e7d450106e345a0c82e8e86121984e668288f3d3c9ec4a663513df02c3194c99",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT ((SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Ariel Borysiuk')) - (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel'))) * 100.0 / (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel')) AS percentage_difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 49.545666995982174,
+      "result_signature": "e7d450106e345a0c82e8e86121984e668288f3d3c9ec4a663513df02c3194c99",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    ((MAX(CASE WHEN p.player_name = 'Ariel Borysiuk' THEN pa.overall_rating END) - \n      MAX(CASE WHEN p.player_name = 'Paulin Puel' THEN pa.overall_rating END)) * 100.0 / \n     MAX(CASE WHEN p.player_name = 'Paulin Puel' THEN pa.overall_rating END)) AS percentage_difference\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name IN ('Ariel Borysiuk', 'Paulin Puel');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 59.58883400307968,
+      "result_signature": "a94521bd316d2bf9140f94c738283c0d332c108cc8e5800b7889cb54540d263d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    ((SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Ariel Borysiuk')) - \n     (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel'))) * 100.0 / \n    (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel')) AS percentage_difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 44.25745899789035,
+      "result_signature": "e7d450106e345a0c82e8e86121984e668288f3d3c9ec4a663513df02c3194c99",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    ((SELECT MAX(pa.overall_rating) \n      FROM Player p \n      JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n      WHERE p.player_name = 'Ariel Borysiuk') \n     - (SELECT MAX(pa.overall_rating) \n        FROM Player p \n        JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n        WHERE p.player_name = 'Paulin Puel')) * 100.0 / \n    (SELECT MAX(pa.overall_rating) \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Paulin Puel') AS percentage_difference;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 179.76387499948032,
+      "result_signature": "a94521bd316d2bf9140f94c738283c0d332c108cc8e5800b7889cb54540d263d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    ((SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Ariel Borysiuk')) - \n     (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel'))) * 100.0 / \n    (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel')) AS percentage_difference",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e7d450106e345a0c82e8e86121984e668288f3d3c9ec4a663513df02c3194c99": 3,
+        "a94521bd316d2bf9140f94c738283c0d332c108cc8e5800b7889cb54540d263d": 2,
+        "30e52a9cc281a06eee9475c02b7474e7f949d7d992e76ba57d720cb77e780953": 1,
+        "cdeb7c05a0964529754c21cc14bac320ed1d761e3db3f47050a402bd8a32b883": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 4314.557792000414,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    (b.overall_rating - p.overall_rating) * 100.0 / p.overall_rating AS percentage_difference\nFROM \n    (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Ariel Borysiuk')) b,\n    (SELECT overall_rating FROM Player_Attributes WHERE player_api_id = (SELECT player_api_id FROM Player WHERE player_name = 'Paulin Puel')) p",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 136.98141699569533,
+        "result_signature": "30e52a9cc281a06eee9475c02b7474e7f949d7d992e76ba57d720cb77e780953",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    (b.overall_rating - p.overall_rating) * 100.0 / p.overall_rating AS percentage_difference\nFROM \n    Player b\n    JOIN Player_Attributes ba ON b.player_api_id = ba.player_api_id\n    JOIN Player p ON p.player_name = 'Paulin Puel'\n    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE \n    b.player_name = 'Ariel Borysiuk'\nLIMIT 1;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such column: b.overall_rating",
+        "exec_time_ms": 0.3667499986477196,
+        "result_signature": null,
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    (SELECT pa.overall_rating \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Ariel Borysiuk' \n     ORDER BY pa.date DESC LIMIT 1) \n    - \n    (SELECT pa.overall_rating \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Paulin Puel' \n     ORDER BY pa.date DESC LIMIT 1) \n    AS rating_difference;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 108.80700000416255,
+        "result_signature": "cdeb7c05a0964529754c21cc14bac320ed1d761e3db3f47050a402bd8a32b883",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9045.570250003948
+}

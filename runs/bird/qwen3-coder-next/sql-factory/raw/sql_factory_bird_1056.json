@@ -1,0 +1,140 @@
+{
+  "task_id": "bird_1056",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT name FROM League WHERE country_id = (SELECT id FROM Country WHERE name = 'Netherlands');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "League",
+            "Country"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT name FROM League WHERE country_id = (SELECT id FROM Country WHERE name = 'Netherlands');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "League",
+            "Country"
+          ]
+        },
+        {
+          "sql": "SELECT l.name FROM League l JOIN Country c ON l.country_id = c.id WHERE c.name = 'Netherlands';",
+          "score": 1.05,
+          "similarity_max": 0.5,
+          "tables_used": [
+            "l",
+            "c",
+            "League",
+            "Country"
+          ]
+        },
+        {
+          "sql": "SELECT name FROM League WHERE country_id IN (SELECT id FROM Country WHERE name = 'Netherlands');",
+          "score": 0.6782467532467533,
+          "similarity_max": 0.8435064935064935,
+          "tables_used": [
+            "League",
+            "Country"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT name FROM League WHERE country_id = (SELECT id FROM Country WHERE name = 'Netherlands');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "League",
+            "Country"
+          ]
+        },
+        {
+          "sql": "SELECT l.name FROM League l JOIN Country c ON l.country_id = c.id WHERE c.name = 'Netherlands';",
+          "score": 1.05,
+          "similarity_max": 0.5,
+          "tables_used": [
+            "l",
+            "c",
+            "League",
+            "Country"
+          ]
+        },
+        {
+          "sql": "SELECT l.name FROM League l, Country c WHERE l.country_id = c.id AND c.name = 'Netherlands';",
+          "score": 0.7595238095238096,
+          "similarity_max": 0.680952380952381,
+          "tables_used": [
+            "l",
+            "League"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT name FROM League WHERE country_id = (SELECT id FROM Country WHERE name = 'Netherlands');",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "League",
+        "Country"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.52
+  }
+}

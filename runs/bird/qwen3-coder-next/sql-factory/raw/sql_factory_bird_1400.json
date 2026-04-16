@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1400",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM event e\nWHERE e.event_date BETWEEN '2019-01-01' AND '2019-12-31'\n  AND EXISTS (\n      SELECT 1 \n      FROM attendance a \n      JOIN member m ON a.link_to_member = m.member_id \n      WHERE a.link_to_event = e.event_id \n        AND m.position = 'Student_Club'\n  );",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN LOWER(e.event_name) LIKE '%community service%' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE strftime('%Y', e.event_date) = '2019'\nAND m.position = 'Student_Club';",
+          "score": 1.0192513368983958,
+          "similarity_max": 0.5614973262032086,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM event e\nWHERE e.event_date BETWEEN '2019-01-01' AND '2019-12-31'\n  AND EXISTS (\n      SELECT 1 \n      FROM attendance a \n      JOIN member m ON a.link_to_member = m.member_id \n      WHERE a.link_to_event = e.event_id \n        AND m.position = 'Student_Club'\n  );",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) * 100.0 / COUNT(*), 2) AS percentage\nFROM event e\nWHERE e.event_date >= '2019-01-01' \n  AND e.event_date <= '2019-12-31'\n  AND e.event_id IN (\n      SELECT a.link_to_event \n      FROM attendance a\n      JOIN member m ON a.link_to_member = m.member_id\n      WHERE m.position = 'Student_Club'\n  );",
+          "score": 1.1940114848236258,
+          "similarity_max": 0.6119770303527481,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN LOWER(e.event_name) LIKE '%community service%' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE strftime('%Y', e.event_date) = '2019'\nAND m.position = 'Student_Club';",
+          "score": 1.0192513368983958,
+          "similarity_max": 0.5614973262032086,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM event e\nWHERE e.event_date BETWEEN '2019-01-01' AND '2019-12-31'\n  AND EXISTS (\n      SELECT 1 \n      FROM attendance a \n      JOIN member m ON a.link_to_member = m.member_id \n      WHERE a.link_to_event = e.event_id \n        AND m.position = 'Student_Club'\n  );",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) * 100.0 / COUNT(*), 2) AS percentage\nFROM event e\nWHERE e.event_date >= '2019-01-01' \n  AND e.event_date <= '2019-12-31'\n  AND e.event_id IN (\n      SELECT a.link_to_event \n      FROM attendance a\n      JOIN member m ON a.link_to_member = m.member_id\n      WHERE m.position = 'Student_Club'\n  );",
+          "score": 1.1940114848236258,
+          "similarity_max": 0.6119770303527481,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(\n        COUNT(CASE WHEN LOWER(e.event_name) LIKE '%community service%' THEN 1 END) * 100.0 \n        / NULLIF(COUNT(*), 0), \n        2\n    ) AS percentage\nFROM event e\nWHERE e.event_date LIKE '2019-%'\nAND e.event_id IN (\n    SELECT a.link_to_event \n    FROM attendance a\n    INNER JOIN member m ON a.link_to_member = m.member_id\n    WHERE m.position = 'Student_Club'\n);",
+          "score": 1.1323578595317727,
+          "similarity_max": 0.7352842809364548,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN e.event_name LIKE '%Community Service%' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM event e\nWHERE e.event_date BETWEEN '2019-01-01' AND '2019-12-31'\n  AND EXISTS (\n      SELECT 1 \n      FROM attendance a \n      JOIN member m ON a.link_to_member = m.member_id \n      WHERE a.link_to_event = e.event_id \n        AND m.position = 'Student_Club'\n  );",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "attendance",
+        "member",
+        "a",
+        "m",
+        "e",
+        "event"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.84
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_148",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2252.188500002376,
+  "execution_time_ms": 9.223542001564056,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN loan ON account.account_id = loan.account_id\nWHERE district.A2 = 'Tabor'\nGROUP BY account.account_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.373916002805345,
+      "result_signature": "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE d.A2 = 'Tabor';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3941249999334104,
+      "result_signature": "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN loan ON account.account_id = loan.account_id\nWHERE district.A2 = 'Tabor';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9809999974095263,
+      "result_signature": "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN loan ON account.account_id = loan.account_id\nWHERE district.A2 = 'Tabor'\nGROUP BY account.account_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8682909974595532,
+      "result_signature": "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN loan ON account.account_id = loan.account_id\nWHERE district.A2 = 'Tabor'\nGROUP BY account.account_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8073749995674007,
+      "result_signature": "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN loan ON account.account_id = loan.account_id\nWHERE district.A2 = 'Tabor'\nGROUP BY account.account_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "24613cde5c29d611a052c66c457a5aea40c88a314ab7269ffb776fcfe5f5476e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2261.7170000012266
+}

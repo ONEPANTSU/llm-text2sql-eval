@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_63",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2502.524750001612,
+  "execution_time_ms": 37.199708000116516,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT School, City FROM schools WHERE CharterNum = '00D2';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.950915999885183,
+      "result_signature": "2a8e8e3b52c7ef5f69928022dc9421a2f3342e631c3a69b11b440032f5f0c990",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT School, City, School AS AdministratorName\nFROM schools\nWHERE CharterNum = '00D2';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.329624994075857,
+      "result_signature": "550b5f396ca866125c6c42e3df7afb01b2c900c7a01dbcb230e706dd2726d5fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT School, City, School AS AdministratorName\nFROM schools\nWHERE CharterNum = '00D2';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.229333997704089,
+      "result_signature": "550b5f396ca866125c6c42e3df7afb01b2c900c7a01dbcb230e706dd2726d5fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT School, City FROM schools WHERE CharterNum = '00D2';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.430791999970097,
+      "result_signature": "2a8e8e3b52c7ef5f69928022dc9421a2f3342e631c3a69b11b440032f5f0c990",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT School, City, School AS AdministratorName\nFROM schools\nWHERE CharterNum = '00D2';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7455830024555326,
+      "result_signature": "550b5f396ca866125c6c42e3df7afb01b2c900c7a01dbcb230e706dd2726d5fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT School, City, School AS AdministratorName\nFROM schools\nWHERE CharterNum = '00D2';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2a8e8e3b52c7ef5f69928022dc9421a2f3342e631c3a69b11b440032f5f0c990": 2,
+        "550b5f396ca866125c6c42e3df7afb01b2c900c7a01dbcb230e706dd2726d5fb": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 1,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1412.9535410029348,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3952.8444160023355
+}

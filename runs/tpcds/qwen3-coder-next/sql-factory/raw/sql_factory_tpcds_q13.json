@@ -1,0 +1,216 @@
+{
+  "task_id": "tpcds_q13",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        },
+        {
+          "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+          "score": 0.7510869565217393,
+          "similarity_max": 0.6978260869565217,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        },
+        {
+          "sql": "SELECT \n    AVG(ss.ss_quantity) AS avg_quantity,\n    AVG(ss.ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss.ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss.ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN d...",
+          "score": 0.709516273514482,
+          "similarity_max": 0.7809674529710362,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        },
+        {
+          "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+          "score": 0.7510869565217393,
+          "similarity_max": 0.6978260869565217,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        },
+        {
+          "sql": "SELECT \n    AVG(ss.ss_quantity) AS avg_quantity,\n    AVG(ss.ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss.ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss.ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN d...",
+          "score": 0.709516273514482,
+          "similarity_max": 0.7809674529710362,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "cd",
+            "d",
+            "household_demographics",
+            "customer_demographics",
+            "hd",
+            "customer_address",
+            "ca"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    AVG(ss_quantity) AS avg_quantity,\n    AVG(ss_ext_sales_price) AS avg_sales_price,\n    AVG(ss_ext_wholesale_cost) AS avg_wholesale_cost,\n    SUM(ss_ext_wholesale_cost) AS sum_wholesale_cost\nFROM \n    store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\n    JOIN household_demographics hd ON ss.ss_hdemo_sk = hd.hd_demo_sk\n    JOIN customer_address ca ON ss.ss_addr_sk = ca.ca_address_sk\n    JOIN date_dim d ON...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "store",
+        "s",
+        "store_sales",
+        "ss",
+        "date_dim",
+        "cd",
+        "d",
+        "household_demographics",
+        "customer_demographics",
+        "hd",
+        "customer_address",
+        "ca"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 50.28
+  }
+}

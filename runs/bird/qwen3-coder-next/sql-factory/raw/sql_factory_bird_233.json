@@ -1,0 +1,150 @@
+{
+  "task_id": "bird_233",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT bond_type\nFROM bond\nWHERE molecule_id = (SELECT molecule_id FROM molecule WHERE label = 'TR006')\nORDER BY bond_type\nLIMIT 2;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH tr006_bonds AS (\n  SELECT b.bond_type\n  FROM bond b\n  JOIN molecule m ON b.molecule_id = m.molecule_id\n  WHERE m.label = 'TR006'\n)\nSELECT bond_type\nFROM tr006_bonds\nORDER BY bond_type\nLIMIT 2;",
+          "score": 1.1832093023255814,
+          "similarity_max": 0.5335813953488372,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b",
+            "tr006_bonds"
+          ]
+        },
+        {
+          "sql": "SELECT bond_type\nFROM bond\nWHERE molecule_id = (SELECT molecule_id FROM molecule WHERE label = 'TR006')\nORDER BY bond_type\nLIMIT 2;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_type\nFROM bond b\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE m.label = 'TR006'\nORDER BY b.bond_type\nLIMIT 2;",
+          "score": 0.8797674418604651,
+          "similarity_max": 0.6404651162790698,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH tr006_bonds AS (\n  SELECT b.bond_type\n  FROM bond b\n  JOIN molecule m ON b.molecule_id = m.molecule_id\n  WHERE m.label = 'TR006'\n)\nSELECT bond_type\nFROM tr006_bonds\nORDER BY bond_type\nLIMIT 2;",
+          "score": 1.1832093023255814,
+          "similarity_max": 0.5335813953488372,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b",
+            "tr006_bonds"
+          ]
+        },
+        {
+          "sql": "SELECT bond_type\nFROM bond\nWHERE molecule_id = (SELECT molecule_id FROM molecule WHERE label = 'TR006')\nORDER BY bond_type\nLIMIT 2;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond"
+          ]
+        },
+        {
+          "sql": "WITH tr006_bonds AS (\n  SELECT DISTINCT bond_type\n  FROM bond b\n  JOIN molecule m ON b.molecule_id = m.molecule_id\n  WHERE m.label = 'TR006'\n)\nSELECT bond_type\nFROM tr006_bonds\nORDER BY bond_type\nLIMIT 2",
+          "score": 1.0300536672629694,
+          "similarity_max": 0.8398926654740608,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b",
+            "tr006_bonds"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH tr006_bonds AS (\n  SELECT b.bond_type\n  FROM bond b\n  JOIN molecule m ON b.molecule_id = m.molecule_id\n  WHERE m.label = 'TR006'\n)\nSELECT bond_type\nFROM tr006_bonds\nORDER BY bond_type\nLIMIT 2;",
+    "meta": {
+      "score": 1.1832093023255814,
+      "similarity_max": 0.5335813953488372,
+      "tables_used": [
+        "molecule",
+        "bond",
+        "m",
+        "b",
+        "tr006_bonds"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.3
+  }
+}

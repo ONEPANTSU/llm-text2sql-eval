@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_25",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 10706.024499988416,
+  "execution_time_ms": 18.30258299014531,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH ordered_geolocation AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        LAG(geolocation_lat) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lat,\n        LAG(geolocation_lng) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lng,\n        LAG(geolocation_state) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_state,\n        LAG(geolocation_city) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_city\n    FROM olist_geolocation\n),\ndistances AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        prev_state,\n        prev_city,\n        CASE \n            WHEN prev_lat IS NULL OR prev_lng IS NULL THEN NULL\n            ELSE 6371 * 2 * ASIN(SQRT(\n                POWER(SIN((RADIANS(geolocation_lat) - RADIANS(prev_lat)) / 2), 2) +\n                COS(RADIANS(prev_lat)) * COS(RADIANS(geolocation_lat)) *\n                POWER(SIN((RADIANS(geolocation_lng) - RADIANS(prev_lng)) / 2), 2)\n            ))\n        END AS distance_km\n    FROM ordered_geolocation\n)\nSELECT \n    prev_state || ' - ' || prev_city || ' \u2192 ' || geolocation_state || ' - ' || geolocation_city AS consecutive_cities\nFROM distances\nWHERE distance_km IS NOT NULL\nORDER BY distance_km DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.6359590012580156,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH ordered_geolocation AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        LAG(geolocation_lat) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lat,\n        LAG(geolocation_lng) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lng,\n        LAG(geolocation_state) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_state,\n        LAG(geolocation_city) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_city\n    FROM olist_geolocation\n),\ndistances AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        prev_state,\n        prev_city,\n        CASE \n            WHEN prev_lat IS NOT NULL AND prev_lng IS NOT NULL THEN\n                6371 * 2 * ASIN(SQRT(\n                    POWER(SIN((RADIANS(geolocation_lat) - RADIANS(prev_lat)) / 2), 2) +\n                    COS(RADIANS(prev_lat)) * COS(RADIANS(geolocation_lat)) *\n                    POWER(SIN((RADIANS(geolocation_lng) - RADIANS(prev_lng)) / 2), 2)\n                ))\n            ELSE NULL\n        END AS distance_km\n    FROM ordered_geolocation\n)\nSELECT \n    prev_city || ' -> ' || geolocation_city AS consecutive_cities\nFROM distances\nWHERE distance_km IS NOT NULL\nORDER BY distance_km DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9879999997792765,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT t2.geolocation_city AS city1, t3.geolocation_city AS city2\nFROM (\n    SELECT \n        geolocation_state, \n        geolocation_city, \n        geolocation_zip_code_prefix, \n        geolocation_lat, \n        geolocation_lng,\n        ROW_NUMBER() OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS rn\n    FROM olist_geolocation\n) t2\nJOIN (\n    SELECT \n        geolocation_state, \n        geolocation_city, \n        geolocation_zip_code_prefix, \n        geolocation_lat, \n        geolocation_lng,\n        ROW_NUMBER() OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS rn\n    FROM olist_geolocation\n) t3 ON t3.rn = t2.rn + 1\nORDER BY \n    6371 * 2 * ASIN(SQRT(\n        POW(SIN((RADIANS(t3.geolocation_lat) - RADIANS(t2.geolocation_lat)) / 2), 2) +\n        COS(RADIANS(t2.geolocation_lat)) * COS(RADIANS(t3.geolocation_lat)) *\n        POW(SIN((RADIANS(t3.geolocation_lng) - RADIANS(t2.geolocation_lng)) / 2), 2)\n    )) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4520419897744432,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH ordered_geolocation AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        LAG(geolocation_state) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_state,\n        LAG(geolocation_city) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_city,\n        LAG(geolocation_lat) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lat,\n        LAG(geolocation_lng) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lng\n    FROM olist_geolocation\n),\ndistances AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        prev_state,\n        prev_city,\n        prev_lat,\n        prev_lng,\n        CASE \n            WHEN prev_lat IS NULL OR prev_lng IS NULL THEN NULL\n            ELSE 6371 * 2 * ASIN(SQRT(\n                POWER(SIN((RADIANS(geolocation_lat) - RADIANS(prev_lat)) / 2), 2) +\n                COS(RADIANS(prev_lat)) * COS(RADIANS(geolocation_lat)) *\n                POWER(SIN((RADIANS(geolocation_lng) - RADIANS(prev_lng)) / 2), 2)\n            ))\n        END AS distance_km\n    FROM ordered_geolocation\n)\nSELECT \n    prev_city || ' -> ' || geolocation_city AS consecutive_cities\nFROM distances\nWHERE distance_km IS NOT NULL\nORDER BY distance_km DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.46799999836366624,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH ordered_geolocation AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        LAG(geolocation_lat) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lat,\n        LAG(geolocation_lng) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_lng,\n        LAG(geolocation_state) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_state,\n        LAG(geolocation_city) OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS prev_city\n    FROM olist_geolocation\n),\ndistances AS (\n    SELECT \n        geolocation_state,\n        geolocation_city,\n        geolocation_zip_code_prefix,\n        geolocation_lat,\n        geolocation_lng,\n        prev_state,\n        prev_city,\n        CASE \n            WHEN prev_lat IS NULL THEN NULL\n            ELSE 6371 * 2 * ASIN(SQRT(\n                POW(SIN((RADIANS(geolocation_lat) - RADIANS(prev_lat)) / 2), 2) +\n                COS(RADIANS(prev_lat)) * COS(RADIANS(geolocation_lat)) *\n                POW(SIN((RADIANS(geolocation_lng) - RADIANS(prev_lng)) / 2), 2)\n            ))\n        END AS distance_km\n    FROM ordered_geolocation\n)\nSELECT \n    prev_state || ' - ' || prev_city AS prev_city_full,\n    geolocation_state || ' - ' || geolocation_city AS curr_city_full\nFROM distances\nWHERE distance_km IS NOT NULL\nORDER BY distance_km DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6393329967977479,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT t2.geolocation_city AS city1, t3.geolocation_city AS city2\nFROM (\n    SELECT \n        geolocation_state, \n        geolocation_city, \n        geolocation_zip_code_prefix, \n        geolocation_lat, \n        geolocation_lng,\n        ROW_NUMBER() OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS rn\n    FROM olist_geolocation\n) t2\nJOIN (\n    SELECT \n        geolocation_state, \n        geolocation_city, \n        geolocation_zip_code_prefix, \n        geolocation_lat, \n        geolocation_lng,\n        ROW_NUMBER() OVER (ORDER BY geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, geolocation_lng) AS rn\n    FROM olist_geolocation\n) t3 ON t3.rn = t2.rn + 1\nORDER BY \n    6371 * 2 * ASIN(SQRT(\n        POW(SIN((RADIANS(t3.geolocation_lat) - RADIANS(t2.geolocation_lat)) / 2), 2) +\n        COS(RADIANS(t2.geolocation_lat)) * COS(RADIANS(t3.geolocation_lat)) *\n        POW(SIN((RADIANS(t3.geolocation_lng) - RADIANS(t2.geolocation_lng)) / 2), 2)\n    )) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 10724.696541001322
+}

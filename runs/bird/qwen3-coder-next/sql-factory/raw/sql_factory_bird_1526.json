@@ -1,0 +1,175 @@
+{
+  "task_id": "bird_1526",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH customer_2012_2013 AS (\n    SELECT \n        ym1.CustomerID,\n        ym1.Consumption AS Consumption_2012,\n        ym2.Consumption AS Consumption_2013\n    FROM yearmonth ym1\n    LEFT JOIN yearmonth ym2 \n        ON ym1.CustomerID = ym2.CustomerID \n        AND SUBSTR(ym2.Date, 1, 4) = '2013'\n    WHERE SUBSTR(ym1.Date, 1, 4) = '2012'\n      AND ym1.CustomerID = (\n          SELECT CustomerID \n          FROM transactions_1k \n          WHERE Date = '2012-08-25' \n            AND Amount = 634.8\n      ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ym1",
+            "yearmonth",
+            "ym2",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH customer_consumption AS (\n    SELECT \n        y1.CustomerID,\n        y1.Consumption AS consumption_2012,\n        y2.Consumption AS consumption_2013\n    FROM yearmonth y1\n    LEFT JOIN yearmonth y2 \n        ON y1.CustomerID = y2.CustomerID \n        AND substr(y2.Date, 1, 4) = '2013'\n    WHERE substr(y1.Date, 1, 7) = '2012-08'\n),\ntarget_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-25' \n      AND Amount = 634.8\n)\nSELECT \n    (cc.consumption_2012 - cc.c...",
+          "score": 1.1538847117794486,
+          "similarity_max": 0.49223057644110274,
+          "tables_used": [
+            "target_customer",
+            "transactions_1k",
+            "y2",
+            "yearmonth",
+            "cc",
+            "customer_consumption",
+            "tc",
+            "y1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH customer_2012_2013 AS (\n    SELECT \n        ym1.CustomerID,\n        ym1.Consumption AS Consumption_2012,\n        ym2.Consumption AS Consumption_2013\n    FROM yearmonth ym1\n    LEFT JOIN yearmonth ym2 \n        ON ym1.CustomerID = ym2.CustomerID \n        AND SUBSTR(ym2.Date, 1, 4) = '2013'\n    WHERE SUBSTR(ym1.Date, 1, 4) = '2012'\n      AND ym1.CustomerID = (\n          SELECT CustomerID \n          FROM transactions_1k \n          WHERE Date = '2012-08-25' \n            AND Amount = 634.8\n      ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ym1",
+            "yearmonth",
+            "ym2",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-25' \n      AND Amount = 634.8\n),\nconsumption_data AS (\n    SELECT \n        y.CustomerID,\n        MAX(CASE WHEN substr(y.Date, 1, 4) = '2012' THEN y.Consumption END) AS consumption_2012,\n        MAX(CASE WHEN substr(y.Date, 1, 4) = '2013' THEN y.Consumption END) AS consumption_2013\n    FROM yearmonth y\n    JOIN target_customer tc ON y.CustomerID = tc.CustomerID\n    GROUP BY y.CustomerID\n)\nSELECT \n  ...",
+          "score": 1.2008658008658009,
+          "similarity_max": 0.5982683982683983,
+          "tables_used": [
+            "yearmonth",
+            "y",
+            "target_customer",
+            "transactions_1k",
+            "tc",
+            "consumption_data"
+          ]
+        },
+        {
+          "sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-25' AND Amount = 634.8\n),\nconsumption_2012 AS (\n    SELECT CustomerID, Consumption AS Consumption_2012\n    FROM yearmonth\n    WHERE SUBSTR(Date, 1, 4) = '2012'\n      AND CustomerID IN (SELECT CustomerID FROM target_customer)\n),\nconsumption_2013 AS (\n    SELECT CustomerID, Consumption AS Consumption_2013\n    FROM yearmonth\n    WHERE SUBSTR(Date, 1, 4) = '2013'\n      AND CustomerID IN (SELECT Custome...",
+          "score": 1.1599856115107914,
+          "similarity_max": 0.6800287769784172,
+          "tables_used": [
+            "yearmonth",
+            "c2013",
+            "c2012",
+            "transactions_1k",
+            "consumption_2013",
+            "consumption_2012"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH customer_2012_2013 AS (\n    SELECT \n        ym1.CustomerID,\n        ym1.Consumption AS Consumption_2012,\n        ym2.Consumption AS Consumption_2013\n    FROM yearmonth ym1\n    LEFT JOIN yearmonth ym2 \n        ON ym1.CustomerID = ym2.CustomerID \n        AND SUBSTR(ym2.Date, 1, 4) = '2013'\n    WHERE SUBSTR(ym1.Date, 1, 4) = '2012'\n      AND ym1.CustomerID = (\n          SELECT CustomerID \n          FROM transactions_1k \n          WHERE Date = '2012-08-25' \n            AND Amount = 634.8\n      ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ym1",
+            "yearmonth",
+            "ym2",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-25' \n      AND Amount = 634.8\n),\nconsumption_data AS (\n    SELECT \n        y.CustomerID,\n        MAX(CASE WHEN substr(y.Date, 1, 4) = '2012' THEN y.Consumption END) AS consumption_2012,\n        MAX(CASE WHEN substr(y.Date, 1, 4) = '2013' THEN y.Consumption END) AS consumption_2013\n    FROM yearmonth y\n    JOIN target_customer tc ON y.CustomerID = tc.CustomerID\n    GROUP BY y.CustomerID\n)\nSELECT \n  ...",
+          "score": 1.2008658008658009,
+          "similarity_max": 0.5982683982683983,
+          "tables_used": [
+            "yearmonth",
+            "y",
+            "target_customer",
+            "transactions_1k",
+            "tc",
+            "consumption_data"
+          ]
+        },
+        {
+          "sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-25' AND Amount = 634.8\n),\nconsumption_2012 AS (\n    SELECT CustomerID, Consumption AS Consumption_2012\n    FROM yearmonth\n    WHERE SUBSTR(Date, 1, 4) = '2012'\n      AND CustomerID IN (SELECT CustomerID FROM target_customer)\n),\nconsumption_2013 AS (\n    SELECT CustomerID, Consumption AS Consumption_2013\n    FROM yearmonth\n    WHERE SUBSTR(Date, 1, 4) = '2013'\n      AND CustomerID IN (SELECT Custome...",
+          "score": 1.1599856115107914,
+          "similarity_max": 0.6800287769784172,
+          "tables_used": [
+            "yearmonth",
+            "c2013",
+            "c2012",
+            "transactions_1k",
+            "consumption_2013",
+            "consumption_2012"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH customer_2012_2013 AS (\n    SELECT \n        ym1.CustomerID,\n        ym1.Consumption AS Consumption_2012,\n        ym2.Consumption AS Consumption_2013\n    FROM yearmonth ym1\n    LEFT JOIN yearmonth ym2 \n        ON ym1.CustomerID = ym2.CustomerID \n        AND SUBSTR(ym2.Date, 1, 4) = '2013'\n    WHERE SUBSTR(ym1.Date, 1, 4) = '2012'\n      AND ym1.CustomerID = (\n          SELECT CustomerID \n          FROM transactions_1k \n          WHERE Date = '2012-08-25' \n            AND Amount = 634.8\n      ...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ym1",
+        "yearmonth",
+        "ym2",
+        "transactions_1k"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 40.04
+  }
+}

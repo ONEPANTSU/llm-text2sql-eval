@@ -1,0 +1,134 @@
+{
+  "task_id": "bird_462",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 1,
+  "generation_time_ms": 1707.0505420051632,
+  "execution_time_ms": 583.4752500013565,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT st.translation\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.uuid = s.code\nJOIN set_translations st ON s.code = st.setCode\nWHERE c.faceName = 'Ancestor''s Chosen'\n  AND fd.language = 'Italian'\n  AND st.language = 'Italian';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 393.6476250019041,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT st.translation\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.uuid = s.code\nJOIN set_translations st ON s.code = st.setCode\nWHERE c.faceName = 'Ancestor''s Chosen'\n  AND fd.language = 'Italian'\n  AND st.language = 'Italian';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 63.24974999733968,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT st.translation\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.uuid = s.code\nJOIN set_translations st ON s.code = st.setCode\nWHERE c.faceName = 'Ancestor''s Chosen'\n  AND fd.language = 'Italian'\n  AND st.language = 'Italian';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 64.04104099783581,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT set_translations.translation\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nJOIN set_translations ON sets.code = set_translations.setCode\nWHERE cards.faceName = 'Ancestor''s Chosen'\n  AND foreign_data.language = 'Italian'\n  AND set_translations.language = 'Italian';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6002919981256127,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT st.translation\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.uuid = s.code\nJOIN set_translations st ON s.code = st.setCode\nWHERE c.faceName = 'Ancestor''s Chosen'\n  AND fd.language = 'Italian'\n  AND st.language = 'Italian';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 61.18895799590973,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT set_translations.translation\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nJOIN set_translations ON sets.code = set_translations.setCode\nWHERE cards.faceName = 'Ancestor''s Chosen'\n  AND foreign_data.language = 'Italian'\n  AND set_translations.language = 'Italian';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2290.6230410007993
+}

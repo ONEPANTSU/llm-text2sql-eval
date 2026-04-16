@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_943",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2050.328833000094,
+  "execution_time_ms": 73.67354199959664,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN r.laps = (SELECT MAX(laps) FROM results WHERE raceId = r.raceId) THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 \n  AND ra.name = 'Australian Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 33.49904099741252,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN r.laps = (SELECT MAX(laps) FROM results r2 JOIN races ra ON r2.raceId = ra.raceId WHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix') THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.722457998374011,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.laps = (SELECT MAX(laps) FROM results r2 JOIN races r3 ON r2.raceId = r3.raceId WHERE r3.year = 2008 AND r3.name = 'Australian Grand Prix') THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2008 AND races.name = 'Australian Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.094666001852602,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.laps = (SELECT MAX(laps) FROM results r2 JOIN races r3 ON r2.raceId = r3.raceId WHERE r3.year = 2008 AND r3.name = 'Australian Grand Prix') THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2008 AND races.name = 'Australian Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.722958995145746,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CAST(SUM(CASE WHEN r.laps = (SELECT MAX(laps) FROM results WHERE raceId = r.raceId) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.166458004387096,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    CAST(SUM(CASE WHEN results.laps = (SELECT MAX(laps) FROM results r2 JOIN races r3 ON r2.raceId = r3.raceId WHERE r3.year = 2008 AND r3.name = 'Australian Grand Prix') THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2008 AND races.name = 'Australian Grand Prix';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2124.084707997099
+}

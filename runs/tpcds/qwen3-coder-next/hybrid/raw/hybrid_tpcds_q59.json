@@ -1,0 +1,136 @@
+{
+  "task_id": "tpcds_q59",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3098.8643750024494,
+  "execution_time_ms": 91.29891700285953,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales,\n    customer,\n    customer_address,\n    date_dim\nWHERE \n    ws_bill_customer_sk = c_customer_sk\n    AND c_current_addr_sk = ca_address_sk\n    AND ws_sold_date_sk = d_date_sk\n    AND d_month_seq >= 1212\n    AND d_month_seq <= 1212\nGROUP BY \n    ws_item_sk,\n    ca_state\nORDER BY \n    ws_item_sk,\n    ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.683666998404078,
+      "result_signature": "528bbc9e8b9e0afeba0e044819af875fba0ba646bcd179ea73a4c6143be8402f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales\nJOIN \n    customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1212\n    AND date_dim.d_month_seq <= 1212\nGROUP BY \n    ws_item_sk, ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.752958006691188,
+      "result_signature": "278697e827e5411a36031a03249b1a7b5149148eedc46f1416afbc1df5b7b6b5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales\nJOIN \n    customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1212\n    AND date_dim.d_month_seq <= 1212\nGROUP BY \n    ws_item_sk, ca_state\nORDER BY \n    ws_item_sk, ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.736124991439283,
+      "result_signature": "528bbc9e8b9e0afeba0e044819af875fba0ba646bcd179ea73a4c6143be8402f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1212\n    AND date_dim.d_month_seq <= 1212\nGROUP BY \n    ws_item_sk,\n    ca_state\nORDER BY \n    ws_item_sk,\n    ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.35004199447576,
+      "result_signature": "528bbc9e8b9e0afeba0e044819af875fba0ba646bcd179ea73a4c6143be8402f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales,\n    customer,\n    customer_address,\n    date_dim\nWHERE \n    ws_bill_customer_sk = c_customer_sk\n    AND c_current_addr_sk = ca_address_sk\n    AND ws_sold_date_sk = d_date_sk\n    AND d_month_seq >= 1212\n    AND d_month_seq <= 1212\nGROUP BY \n    ws_item_sk,\n    ca_state\nORDER BY \n    ws_item_sk,\n    ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.723374999244697,
+      "result_signature": "528bbc9e8b9e0afeba0e044819af875fba0ba646bcd179ea73a4c6143be8402f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    ws_item_sk,\n    ca_state,\n    SUM(ws_ext_sales_price) AS total_sales\nFROM \n    web_sales,\n    customer,\n    customer_address,\n    date_dim\nWHERE \n    ws_bill_customer_sk = c_customer_sk\n    AND c_current_addr_sk = ca_address_sk\n    AND ws_sold_date_sk = d_date_sk\n    AND d_month_seq >= 1212\n    AND d_month_seq <= 1212\nGROUP BY \n    ws_item_sk,\n    ca_state\nORDER BY \n    ws_item_sk,\n    ca_state\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "528bbc9e8b9e0afeba0e044819af875fba0ba646bcd179ea73a4c6143be8402f": 4,
+        "278697e827e5411a36031a03249b1a7b5149148eedc46f1416afbc1df5b7b6b5": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1814.709166996181,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5005.007457992178
+}

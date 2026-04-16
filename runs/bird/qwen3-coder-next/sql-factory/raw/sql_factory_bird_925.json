@@ -1,0 +1,118 @@
+{
+  "task_id": "bird_925",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT circuits.url\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2009 AND races.name = 'Spanish Grand Prix';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT circuits.url\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2009 AND races.name = 'Spanish Grand Prix';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT c.url\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE r.year = 2009 AND r.name = 'Spanish Grand Prix';",
+          "score": 0.7967532467532468,
+          "similarity_max": 0.8064935064935064,
+          "tables_used": [
+            "r",
+            "c",
+            "circuits",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT circuits.url\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2009 AND races.name = 'Spanish Grand Prix';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT c.url\nFROM races r\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE r.year = 2009 AND r.name = 'Spanish Grand Prix';",
+          "score": 0.7967532467532468,
+          "similarity_max": 0.8064935064935064,
+          "tables_used": [
+            "r",
+            "c",
+            "circuits",
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT circuits.url\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2009 AND races.name = 'Spanish Grand Prix';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.6666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.92
+  }
+}

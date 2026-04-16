@@ -1,0 +1,137 @@
+{
+  "task_id": "spider2_102",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 10918.054791996838,
+  "execution_time_ms": 8.855666004819795,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, ending_inventory, min_required) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    201812 AS mth,\n    i.qty AS ending_inventory,\n    pm.qty_minimum AS min_required\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n\n  UNION ALL\n\n  -- Recursive case: monthly adjustments through 2019\n  SELECT \n    mi.product_id,\n    mi.mth + 1 AS mth,\n    CASE \n      WHEN mi.ending_inventory - COALESCE(ms.qty, 0) < mi.min_required \n      THEN mi.min_required  -- restock to minimum if below threshold\n      ELSE mi.ending_inventory - COALESCE(ms.qty, 0)\n    END AS ending_inventory,\n    mi.min_required\n  FROM monthly_inventory mi\n  LEFT JOIN monthly_sales ms \n    ON mi.product_id = ms.product_id \n    AND ms.mth = mi.mth + 1\n  WHERE mi.mth < 201912\n)\nSELECT \n  product_id,\n  mth,\n  ABS(ending_inventory - min_required) AS abs_diff\nFROM (\n  SELECT \n    product_id,\n    mth,\n    ending_inventory,\n    min_required,\n    ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY ABS(ending_inventory - min_required)) AS rn\n  FROM monthly_inventory\n  WHERE mth BETWEEN 201901 AND 201912\n) ranked\nWHERE rn = 1\nORDER BY product_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3723750055069104,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH RECURSIVE monthly_inventory(product_id, mth, ending_inventory, min_required) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    201812 AS mth,\n    i.qty AS ending_inventory,\n    pm.qty_minimum AS min_required\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n\n  UNION ALL\n\n  -- Recursive case: monthly adjustments through 2019\n  SELECT \n    mi.product_id,\n    mi.mth + 1 AS mth,\n    CASE \n      WHEN mi.ending_inventory - COALESCE(ms.qty, 0) < mi.min_required \n      THEN mi.min_required  -- restock to minimum if below threshold\n      ELSE mi.ending_inventory - COALESCE(ms.qty, 0)\n    END AS ending_inventory,\n    mi.min_required\n  FROM monthly_inventory mi\n  LEFT JOIN monthly_sales ms \n    ON mi.product_id = ms.product_id \n    AND ms.mth = mi.mth + 1\n  WHERE mi.mth < 201912\n)\nSELECT \n  product_id,\n  mth,\n  ABS(ending_inventory - min_required) AS abs_diff\nFROM (\n  SELECT \n    product_id,\n    mth,\n    ending_inventory,\n    min_required,\n    ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY ABS(ending_inventory - min_required)) AS rn\n  FROM monthly_inventory\n  WHERE mth BETWEEN 201901 AND 201912\n) ranked\nWHERE rn = 1\nORDER BY product_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 10927.066541000386
+}

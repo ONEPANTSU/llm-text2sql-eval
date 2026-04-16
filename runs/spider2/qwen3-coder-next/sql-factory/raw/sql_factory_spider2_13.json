@@ -1,0 +1,154 @@
+{
+  "task_id": "spider2_13",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT DISTINCT bm.striker, SUM(bs.runs_scored) AS total_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(total_runs) \nFROM striker_runs;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT DISTINCT bm.striker, SUM(bs.runs_scored) AS total_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(total_runs) \nFROM striker_runs;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        },
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT bm.striker, bs.match_id, SUM(bs.runs_scored) AS match_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm \n        ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(match_runs) \nFROM striker_runs;",
+          "score": 0.9789167686658506,
+          "similarity_max": 0.8421664626682985,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT DISTINCT bm.striker, SUM(bs.runs_scored) AS total_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(total_runs) \nFROM striker_runs;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        },
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT bm.striker, bs.match_id, SUM(bs.runs_scored) AS match_runs\n    FROM ball_by_ball bm\n    JOIN batsman_scored bs\n        ON bm.match_id = bs.match_id\n        AND bm.over_id = bs.over_id\n        AND bm.ball_id = bs.ball_id\n        AND bm.innings_no = bs.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT ROUND(AVG(match_runs), 2) AS avg_runs\nFROM striker_runs;",
+          "score": 0.9847435897435897,
+          "similarity_max": 0.8305128205128205,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        },
+        {
+          "sql": "WITH striker_runs AS (\n    SELECT bm.striker, bs.match_id, SUM(bs.runs_scored) AS match_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm \n        ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(match_runs) \nFROM striker_runs;",
+          "score": 0.9789167686658506,
+          "similarity_max": 0.8421664626682985,
+          "tables_used": [
+            "ball_by_ball",
+            "batsman_scored",
+            "bs",
+            "bm"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH striker_runs AS (\n    SELECT DISTINCT bm.striker, SUM(bs.runs_scored) AS total_runs\n    FROM batsman_scored bs\n    JOIN ball_by_ball bm ON bs.match_id = bm.match_id \n        AND bs.over_id = bm.over_id \n        AND bs.ball_id = bm.ball_id \n        AND bs.innings_no = bm.innings_no\n    WHERE bm.striker IS NOT NULL\n    GROUP BY bm.striker, bs.match_id\n    HAVING SUM(bs.runs_scored) > 50\n)\nSELECT AVG(total_runs) \nFROM striker_runs;",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ball_by_ball",
+        "batsman_scored",
+        "bs",
+        "bm"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: bs.striker",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such table: striker_over_50",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 1.61
+  }
+}

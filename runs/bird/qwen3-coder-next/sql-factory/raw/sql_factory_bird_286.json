@@ -1,0 +1,120 @@
+{
+  "task_id": "bird_286",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM bond WHERE bond_type = 'triple') * 100.0 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+          "score": 0.7760869565217392,
+          "similarity_max": 0.5478260869565217,
+          "tables_used": [
+            "bond"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN b.bond_type = 'triple' THEN 1 END) * 100.0 / COUNT(*)) AS triple_bond_percentage\nFROM bond b;",
+          "score": 0.7271739130434783,
+          "similarity_max": 0.6456521739130434,
+          "tables_used": [
+            "bond"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM bond WHERE bond_type = 'triple') * 100.0 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+          "score": 0.7760869565217392,
+          "similarity_max": 0.5478260869565217,
+          "tables_used": [
+            "bond"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST((SELECT COUNT(*) FROM bond WHERE bond_type = 'triple') AS FLOAT) * 100 / (SELECT COUNT(*) FROM bond) AS triple_bond_percentage",
+          "score": 0.75,
+          "similarity_max": 0.6,
+          "tables_used": [
+            "bond"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS triple_bond_percentage\nFROM bond;",
+    "meta": {
+      "score": 1.0,
+      "similarity_max": 0.0,
+      "tables_used": [],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.23
+  }
+}

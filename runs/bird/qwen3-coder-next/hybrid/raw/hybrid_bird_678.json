@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_678",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6696.095042003435,
+  "execution_time_ms": 581.35562499956,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT posts.Id, posts.Title\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Harvey Motulsky'\nORDER BY posts.ViewCount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 91.14783300174167,
+      "result_signature": "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Id, p.Title\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE u.DisplayName = 'Harvey Motulsky'\nORDER BY p.ViewCount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 93.77591700467747,
+      "result_signature": "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Id, p.Title\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE u.DisplayName = 'Harvey Motulsky'\nORDER BY p.ViewCount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 186.4029999997001,
+      "result_signature": "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.Id, p.Title\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE u.DisplayName = 'Harvey Motulsky'\nORDER BY p.ViewCount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 103.33441699913237,
+      "result_signature": "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT posts.Id, posts.Title\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Harvey Motulsky'\nORDER BY posts.ViewCount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 106.31308300071396,
+      "result_signature": "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT posts.Id, posts.Title\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Harvey Motulsky'\nORDER BY posts.ViewCount DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a0a90cade6759ea660e331dd9cfa578519669cbbec0ab2932eb6ee089d0750ed": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7277.49320800649
+}

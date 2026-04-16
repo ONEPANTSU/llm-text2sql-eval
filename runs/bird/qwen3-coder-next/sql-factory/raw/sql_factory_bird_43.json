@@ -1,0 +1,66 @@
+{
+  "task_id": "bird_43",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH school_avg_scores AS (\n    SELECT \n        s.CDSCode,\n        s.County,\n        AVG(sa.AvgScrMath) AS avg_math_score,\n        AVG((sa.AvgScrRead + sa.AvgScrMath + sa.AvgScrWrite) / 3.0) AS avg_total_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE sa.AvgScrMath IS NOT NULL\n      AND sa.AvgScrRead IS NOT NULL\n      AND sa.AvgScrWrite IS NOT NULL\n    GROUP BY s.CDSCode, s.County\n),\nlowest_avg_school AS (\n    SELECT \n        CDSCode,\n        County,\n        avg_ma...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: s.cds",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: f.County",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.67
+  }
+}

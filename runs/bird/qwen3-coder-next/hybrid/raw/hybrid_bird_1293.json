@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1293",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5063.539624999976,
+  "execution_time_ms": 14.562291995389387,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT MAX(Laboratory.IGG) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.CRE = 'normal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.637833998771384,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT MAX(Laboratory.IGG) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.CRE IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2476249941973947,
+      "result_signature": "986cf3378e5d6990bba11013cf30264ebc850c69ec770648633f8c8b1dc64351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT MAX(Laboratory.IGG) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.CRE = 'normal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1829159993794747,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT MAX(ANA) \nFROM Laboratory AS L\nJOIN Patient AS P ON L.ID = P.ID\nWHERE L.CRE IS NOT NULL AND L.CRE = (\n    SELECT AVG(CRE) \n    FROM Laboratory \n    WHERE CRE IS NOT NULL\n);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: ANA",
+      "exec_time_ms": 0.15825000446056947,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT MAX(ANA) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.CRE IS NOT NULL \n  AND Laboratory.CRE <= (SELECT AVG(CRE) FROM Laboratory WHERE CRE IS NOT NULL);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: ANA",
+      "exec_time_ms": 0.12429199705366045,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT MAX(Laboratory.IGG) \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.CRE = 'normal';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 3,
+        "986cf3378e5d6990bba11013cf30264ebc850c69ec770648633f8c8b1dc64351": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1863.3738749995246,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT MAX(Laboratory.IGG) \nFROM Laboratory, Patient \nWHERE Laboratory.ID = Patient.ID \n  AND Laboratory.CRE = 'normal';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.6309999991790392,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6941.5809999991325
+}

@@ -1,0 +1,174 @@
+{
+  "task_id": "bird_864",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId IN (\n    SELECT statusId \n    FROM status \n    WHERE status != 'Retired' AND status != 'Disqualified' AND status != 'Did not start' AND status != 'Did not qualify'\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId NOT IN (SELECT statusId FROM status WHERE status = 'DNF' OR status = 'Disqualified' OR status = 'Retired' OR status = 'Accident' OR status = 'Engine' OR status = 'Gearbox' OR status = 'Transmission' OR status = 'Clutch' OR status = 'Hydraulics' OR status = 'Electrical' OR status = '+1 Lap' OR status = '+2 Laps' OR status = '+3 Laps' OR status = '+4 Laps' OR status = '+5 Laps' OR sta...",
+          "score": 1.035849598163031,
+          "similarity_max": 0.42830080367393797,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId IN (\n    SELECT statusId \n    FROM status \n    WHERE status != 'Retired' AND status != 'Disqualified' AND status != 'Did not start' AND status != 'Did not qualify'\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId NOT IN (SELECT statusId FROM status WHERE status = 'DNF' OR status = 'Disqualified' OR status = 'Retired' OR status = 'Accident' OR status = 'Engine' OR status = 'Gearbox' OR status = 'Transmission' OR status = 'Clutch' OR status = 'Hydraulics' OR status = 'Electrical' OR status = '+1 Lap' OR status = '+2 Laps' OR status = '+3 Laps' OR status = '+4 Laps' OR status = '+5 Laps' OR sta...",
+          "score": 1.035849598163031,
+          "similarity_max": 0.42830080367393797,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN status s ON r.statusId = s.statusId\nWHERE ra.date = '2015-11-29' \nAND s.status NOT IN ('DNF', 'Disqualified', 'Retired', 'Accident', 'Engine', 'Gearbox', 'Transmission', 'Clutch', 'Hydraulics', 'Electrical', '+1 Lap', '+2 Laps', '+3 Laps', '+4 Laps', '+5 Laps', '+6 Laps', '+7 Laps', '+8 Laps', '+9 Laps');",
+          "score": 0.9665074626865673,
+          "similarity_max": 0.6669850746268656,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId IN (\n    SELECT statusId \n    FROM status \n    WHERE status != 'Retired' AND status != 'Disqualified' AND status != 'Did not start' AND status != 'Did not qualify'\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId NOT IN (SELECT statusId FROM status WHERE status = 'DNF' OR status = 'Disqualified' OR status = 'Retired' OR status = 'Accident' OR status = 'Engine' OR status = 'Gearbox' OR status = 'Transmission' OR status = 'Clutch' OR status = 'Hydraulics' OR status = 'Electrical' OR status = '+1 Lap' OR status = '+2 Laps' OR status = '+3 Laps' OR status = '+4 Laps' OR status = '+5 Laps' OR sta...",
+          "score": 1.035849598163031,
+          "similarity_max": 0.42830080367393797,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN status s ON r.statusId = s.statusId\nWHERE ra.date = '2015-11-29' \nAND s.status NOT IN ('DNF', 'Disqualified', 'Retired', 'Accident', 'Engine', 'Gearbox', 'Transmission', 'Clutch', 'Hydraulics', 'Electrical', '+1 Lap', '+2 Laps', '+3 Laps', '+4 Laps', '+5 Laps', '+6 Laps', '+7 Laps', '+8 Laps', '+9 Laps');",
+          "score": 0.9665074626865673,
+          "similarity_max": 0.6669850746268656,
+          "tables_used": [
+            "r",
+            "status",
+            "ra",
+            "races",
+            "results",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.date = '2015-11-29' \nAND r.statusId IN (\n    SELECT statusId \n    FROM status \n    WHERE status != 'Retired' AND status != 'Disqualified' AND status != 'Did not start' AND status != 'Did not qualify'\n);",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "status",
+        "ra",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 12.46
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "task_id": "spider2_44",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "j",
+            "cc",
+            "period_lengths",
+            "cities",
+            "capital_entries",
+            "consecutive_periods",
+            "c",
+            "country_days",
+            "cities_countries",
+            "t",
+            "longest_period",
+            "january_inserts",
+            "target_country",
+            "lp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "j",
+            "cc",
+            "period_lengths",
+            "cities",
+            "capital_entries",
+            "consecutive_periods",
+            "c",
+            "country_days",
+            "cities_countries",
+            "t",
+            "longest_period",
+            "january_inserts",
+            "target_country",
+            "lp"
+          ]
+        },
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 0.9109036090360902,
+          "similarity_max": 0.6781927819278193,
+          "tables_used": [
+            "daily_entries",
+            "grouped_periods",
+            "period_stats",
+            "cities",
+            "c",
+            "country_days",
+            "cities_countries",
+            "t",
+            "january_inserts",
+            "target_country",
+            "cc"
+          ]
+        },
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day,\n    c.capital\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9...",
+          "score": 0.7287500000000001,
+          "similarity_max": 0.7424999999999999,
+          "tables_used": [
+            "j",
+            "filtered_january",
+            "cities",
+            "consecutive_groups",
+            "longest_grps",
+            "c",
+            "lg",
+            "country_days",
+            "cities_countries",
+            "t",
+            "january_inserts",
+            "target_country",
+            "cc",
+            "entries_in_longest"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "j",
+            "cc",
+            "period_lengths",
+            "cities",
+            "capital_entries",
+            "consecutive_periods",
+            "c",
+            "country_days",
+            "cities_countries",
+            "t",
+            "longest_period",
+            "january_inserts",
+            "target_country",
+            "lp"
+          ]
+        },
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 0.9109036090360902,
+          "similarity_max": 0.6781927819278193,
+          "tables_used": [
+            "daily_entries",
+            "grouped_periods",
+            "period_stats",
+            "cities",
+            "c",
+            "country_days",
+            "cities_countries",
+            "t",
+            "january_inserts",
+            "target_country",
+            "cc"
+          ]
+        },
+        {
+          "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+          "score": 0.8359437751004015,
+          "similarity_max": 0.7281124497991968,
+          "tables_used": [
+            "filtered_cities",
+            "cities",
+            "grouped",
+            "periods",
+            "c",
+            "ordered_entries",
+            "country_days",
+            "cities_countries",
+            "t",
+            "january_inserts",
+            "target_country",
+            "cc"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH january_inserts AS (\n  SELECT \n    c.country_code_2,\n    cc.country_name,\n    DATE(c.insert_date) AS insert_day\n  FROM cities c\n  JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n  WHERE c.insert_date >= '2022-01-01' AND c.insert_date < '2022-02-01'\n),\ncountry_days AS (\n  SELECT \n    country_code_2,\n    country_name,\n    COUNT(DISTINCT insert_day) AS num_days\n  FROM january_inserts\n  GROUP BY country_code_2, country_name\n  HAVING COUNT(DISTINCT insert_day) = 9\n),\ntarget_coun...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "j",
+        "cc",
+        "period_lengths",
+        "cities",
+        "capital_entries",
+        "consecutive_periods",
+        "c",
+        "country_days",
+        "cities_countries",
+        "t",
+        "longest_period",
+        "january_inserts",
+        "target_country",
+        "lp"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"AS\": syntax error",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 2.28
+  }
+}

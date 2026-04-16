@@ -1,0 +1,183 @@
+{
+  "task_id": "bird_281",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7086.311082995962,
+  "execution_time_ms": 7635.954999997921,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.molecule_id IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE label LIKE '%carcinogenic%'\n)\nAND atom_id % 4 = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.500374998722691,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.atom_id % 4 = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.17716699425364,
+      "result_signature": "0dca5f6a244eeda2bcb7241580862b5287b6f0737b59e17eff166d3b9589b772",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom_id = (\n  SELECT atom_id\n  FROM atom AS a2\n  WHERE a2.molecule_id = atom.molecule_id\n  ORDER BY atom_id\n  LIMIT 1 OFFSET 3\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3803.694957998232,
+      "result_signature": "f257adb30e5085505b507c12017a21da5577ffe83bc1fb720a367e11b513b708",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE molecule.molecule_id IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE label LIKE '%carcinogenic%'\n)\nAND atom_id = (\n    SELECT atom_id\n    FROM atom AS a2\n    WHERE a2.molecule_id = atom.molecule_id\n    ORDER BY atom_id\n    LIMIT 1 OFFSET 3\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3801.724083998124,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM atom \nJOIN molecule ON atom.molecule_id = molecule.molecule_id \nWHERE atom.atom_id % 4 = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6890830011107028,
+      "result_signature": "7ecd7555561c7531fa088b97b13c498b3dc13b3eb68452edcd36e02880ce2615",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.molecule_id IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE label LIKE '%carcinogenic%'\n)\nAND atom_id % 4 = 0;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3,
+        "0dca5f6a244eeda2bcb7241580862b5287b6f0737b59e17eff166d3b9589b772": 1,
+        "f257adb30e5085505b507c12017a21da5577ffe83bc1fb720a367e11b513b708": 1,
+        "7ecd7555561c7531fa088b97b13c498b3dc13b3eb68452edcd36e02880ce2615": 1,
+        "1d9d493a56424b168fa33084640bf59bd6491c4fc1adb77bbd3c84e8db99ae3a": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 10536.188042002323,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT COUNT(*) \nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id \nWHERE a.atom_id = (\n    SELECT atom_id \n    FROM atom a2 \n    WHERE a2.molecule_id = a.molecule_id \n    ORDER BY atom_id \n    LIMIT 1 OFFSET 3\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3790.5315419993713,
+        "result_signature": "1d9d493a56424b168fa33084640bf59bd6491c4fc1adb77bbd3c84e8db99ae3a",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT element\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.molecule_id IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE label LIKE '%carcinogenic%'\n)\nAND ROW_NUMBER() OVER (PARTITION BY atom.molecule_id ORDER BY atom_id) = 4;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "misuse of window function ROW_NUMBER()",
+        "exec_time_ms": 0.3048330036108382,
+        "result_signature": null,
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT element\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE m.label LIKE '%carcinogenic%'\n  AND a.atom_id IN (\n    SELECT atom_id\n    FROM atom\n    WHERE molecule_id = a.molecule_id\n    ORDER BY atom_id\n    LIMIT 1 OFFSET 3\n  );",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5281.15895800147,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 25258.605000002717
+}

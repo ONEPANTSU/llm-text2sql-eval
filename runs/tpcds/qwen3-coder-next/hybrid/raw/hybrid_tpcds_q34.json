@@ -1,0 +1,183 @@
+{
+  "task_id": "tpcds_q34",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7741.8848750094185,
+  "execution_time_ms": 154.7593750001397,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH yearly_sales AS (\n  SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    date_dim.d_year,\n    SUM(store_sales.ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY customer.c_customer_sk, customer.c_customer_id, date_dim.d_year\n)\nSELECT\n  c_customer_sk,\n  c_customer_id\nFROM (\n  SELECT\n    y1.c_customer_sk,\n    y1.c_customer_id,\n    y1.d_year AS year,\n    y1.yearly_sales AS current_year_sales,\n    y2.yearly_sales AS next_year_sales\n  FROM yearly_sales y1\n  JOIN yearly_sales y2\n    ON y1.c_customer_sk = y2.c_customer_sk\n    AND y2.d_year = y1.d_year + 1\n) t\nWHERE current_year_sales > 0\n  AND next_year_sales >= 2 * current_year_sales\nGROUP BY c_customer_sk, c_customer_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 41.63904099550564,
+      "result_signature": "bf20cb11798463254bebdba54f0176b9b174450aa0890a8c74b68fae0e6bf3ff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH yearly_sales AS (\n  SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    date_dim.d_year,\n    SUM(store_sales.ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY customer.c_customer_sk, customer.c_customer_id, date_dim.d_year\n),\nyearly_with_prev AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    yearly_sales,\n    LAG(yearly_sales) OVER (PARTITION BY c_customer_sk ORDER BY d_year) AS prev_year_sales\n  FROM yearly_sales\n)\nSELECT\n  c_customer_id\nFROM yearly_with_prev\nWHERE prev_year_sales IS NOT NULL\n  AND yearly_sales >= 2 * prev_year_sales;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.021958001772873,
+      "result_signature": "60aa18c71db1f1616265dd4d95ebbf149edc65f69f578df6ed1421a604fc0316",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH yearly_sales AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    SUM(ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY c_customer_sk, c_customer_id, d_year\n),\nsales_comparison AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year AS current_year,\n    yearly_sales AS current_sales,\n    LAG(d_year) OVER (PARTITION BY c_customer_sk ORDER BY d_year) AS prev_year,\n    LAG(yearly_sales) OVER (PARTITION BY c_customer_sk ORDER BY d_year) AS prev_sales\n  FROM yearly_sales\n)\nSELECT\n  c_customer_id\nFROM sales_comparison\nWHERE prev_year = current_year - 1\n  AND prev_sales > 0\n  AND current_sales >= 2 * prev_sales\nORDER BY c_customer_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 26.063625002279878,
+      "result_signature": "3848a26c46c84e386ad14ded86fe32ee1191581590e9dbf360d497efc9e846aa",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH yearly_sales AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    SUM(ss_sales_price) AS yearly_sales\n  FROM\n    store_sales\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY\n    c_customer_sk,\n    c_customer_id,\n    d_year\n)\nSELECT\n  c_customer_sk,\n  c_customer_id\nFROM (\n  SELECT\n    y1.c_customer_sk,\n    y1.c_customer_id,\n    y1.d_year AS prev_year,\n    y2.d_year AS curr_year,\n    y1.yearly_sales AS prev_year_sales,\n    y2.yearly_sales AS curr_year_sales\n  FROM\n    yearly_sales y1\n    JOIN yearly_sales y2\n      ON y1.c_customer_sk = y2.c_customer_sk\n      AND y2.d_year = y1.d_year + 1\n  WHERE\n    y2.yearly_sales >= 2 * y1.yearly_sales\n) t\nGROUP BY\n  c_customer_sk,\n  c_customer_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.149124989984557,
+      "result_signature": "bf20cb11798463254bebdba54f0176b9b174450aa0890a8c74b68fae0e6bf3ff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH yearly_sales AS (\n  SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    date_dim.d_year,\n    SUM(store_sales.ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY customer.c_customer_sk, customer.c_customer_id, date_dim.d_year\n),\nyearly_with_prev AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    yearly_sales,\n    LAG(yearly_sales) OVER (PARTITION BY c_customer_sk ORDER BY d_year) AS prev_yearly_sales\n  FROM yearly_sales\n)\nSELECT\n  c_customer_sk,\n  c_customer_id\nFROM yearly_with_prev\nWHERE prev_yearly_sales IS NOT NULL\n  AND yearly_sales >= 2 * prev_yearly_sales\nORDER BY c_customer_sk, d_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.445832998026162,
+      "result_signature": "43f47031457cae9a677da437cb8291beec3b842df70bdf40447a7428955c795b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH yearly_sales AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    SUM(ss_sales_price) AS yearly_sales\n  FROM\n    store_sales\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY\n    c_customer_sk,\n    c_customer_id,\n    d_year\n)\nSELECT\n  c_customer_sk,\n  c_customer_id\nFROM (\n  SELECT\n    y1.c_customer_sk,\n    y1.c_customer_id,\n    y1.d_year AS prev_year,\n    y2.d_year AS curr_year,\n    y1.yearly_sales AS prev_year_sales,\n    y2.yearly_sales AS curr_year_sales\n  FROM\n    yearly_sales y1\n    JOIN yearly_sales y2\n      ON y1.c_customer_sk = y2.c_customer_sk\n      AND y2.d_year = y1.d_year + 1\n  WHERE\n    y2.yearly_sales >= 2 * y1.yearly_sales\n) t\nGROUP BY\n  c_customer_sk,\n  c_customer_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "bf20cb11798463254bebdba54f0176b9b174450aa0890a8c74b68fae0e6bf3ff": 4,
+        "60aa18c71db1f1616265dd4d95ebbf149edc65f69f578df6ed1421a604fc0316": 1,
+        "3848a26c46c84e386ad14ded86fe32ee1191581590e9dbf360d497efc9e846aa": 1,
+        "43f47031457cae9a677da437cb8291beec3b842df70bdf40447a7428955c795b": 1,
+        "9479613b686b41efa6bc584afb344808e08bd4fdc1ff8063094f7f8c2a4a990f": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 3474.3323330039857,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH yearly_sales AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    d_year,\n    SUM(ss_sales_price) AS yearly_sales\n  FROM\n    store_sales\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY\n    c_customer_sk,\n    c_customer_id,\n    d_year\n)\nSELECT\n  y1.c_customer_sk,\n  y1.c_customer_id\nFROM\n  yearly_sales y1\n  JOIN yearly_sales y2\n    ON y1.c_customer_sk = y2.c_customer_sk\n    AND y2.d_year = y1.d_year + 1\n    AND y2.yearly_sales >= 2 * y1.yearly_sales\nGROUP BY\n  y1.c_customer_sk,\n  y1.c_customer_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 42.26466600084677,
+        "result_signature": "bf20cb11798463254bebdba54f0176b9b174450aa0890a8c74b68fae0e6bf3ff",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH yearly_sales AS (\n  SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    date_dim.d_year,\n    SUM(store_sales.ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY customer.c_customer_sk, customer.c_customer_id, date_dim.d_year\n),\ndoubled_customers AS (\n  SELECT\n    y1.c_customer_sk,\n    y1.c_customer_id,\n    y1.d_year AS curr_year,\n    y1.yearly_sales AS curr_sales,\n    y2.yearly_sales AS prev_sales\n  FROM yearly_sales y1\n  JOIN yearly_sales y2\n    ON y1.c_customer_sk = y2.c_customer_sk\n    AND y1.d_year = y2.d_year + 1\n  WHERE y1.yearly_sales >= 2 * y2.yearly_sales\n)\nSELECT DISTINCT\n  c_customer_sk,\n  c_customer_id\nFROM doubled_customers\nORDER BY c_customer_sk, curr_year;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 27.50058300443925,
+        "result_signature": "bf20cb11798463254bebdba54f0176b9b174450aa0890a8c74b68fae0e6bf3ff",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH yearly_sales AS (\n  SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    date_dim.d_year,\n    SUM(store_sales.ss_sales_price) AS yearly_sales\n  FROM store_sales\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  GROUP BY customer.c_customer_sk, customer.c_customer_id, date_dim.d_year\n),\ncustomer_year_pairs AS (\n  SELECT\n    y1.c_customer_sk,\n    y1.c_customer_id,\n    y1.d_year AS curr_year,\n    y2.d_year AS prev_year,\n    y1.yearly_sales AS curr_sales,\n    y2.yearly_sales AS prev_sales\n  FROM yearly_sales y1\n  JOIN yearly_sales y2\n    ON y1.c_customer_sk = y2.c_customer_sk\n   AND y1.d_year = y2.d_year + 1\n)\nSELECT\n  c_customer_sk,\n  c_customer_id\nFROM customer_year_pairs\nWHERE prev_sales IS NOT NULL\n  AND curr_sales >= 2 * prev_sales\nORDER BY c_customer_sk, curr_year;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 20.13295900542289,
+        "result_signature": "9479613b686b41efa6bc584afb344808e08bd4fdc1ff8063094f7f8c2a4a990f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11371.041541002342
+}

@@ -1,0 +1,134 @@
+{
+  "task_id": "spider2_111",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4601.01399999985,
+  "execution_time_ms": 10.234540997771546,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT read_log.url, COUNT(*) AS count\nFROM read_log\nJOIN read_log AS prev1 ON read_log.session = prev1.session AND read_log.stamp > prev1.stamp\nJOIN read_log AS prev2 ON prev1.session = prev2.session AND prev1.stamp > prev2.stamp\nWHERE prev2.url = '/detail'\n  AND prev1.url = '/detail'\n  AND read_log.url != '/detail'\nGROUP BY read_log.url\nORDER BY count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8864590130979195,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    r3.url AS third_page_visit,\n    COUNT(*) AS occurrence_count\nFROM \n    read_log r1\nJOIN \n    read_log r2 \n    ON r1.session = r2.session \n    AND r2.stamp > r1.stamp\nJOIN \n    read_log r3 \n    ON r2.session = r3.session \n    AND r3.stamp > r2.stamp\nWHERE \n    r1.url = '/detail'\n    AND r2.url = '/detail'\n    AND NOT EXISTS (\n        SELECT 1 \n        FROM read_log r4 \n        WHERE r4.session = r1.session \n          AND r4.stamp > r2.stamp \n          AND r4.stamp < r3.stamp\n    )\nGROUP BY \n    r3.url\nORDER BY \n    occurrence_count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.498499994748272,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT read_log.url, COUNT(*) AS count\nFROM read_log\nWHERE read_log.url IN (\n    SELECT r3.url\n    FROM read_log r1\n    JOIN read_log r2 ON r1.session = r2.session AND r2.stamp > r1.stamp\n    JOIN read_log r3 ON r2.session = r3.session AND r3.stamp > r2.stamp\n    WHERE r1.url = '/detail'\n      AND r2.url = '/detail'\n      AND r3.url != '/detail'\n)\nGROUP BY read_log.url\nORDER BY count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3067910078680143,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT read_log.url, COUNT(*) AS count\nFROM read_log\nWHERE read_log.session IN (\n    SELECT session\n    FROM read_log\n    WHERE url = '/detail'\n    GROUP BY session\n    HAVING COUNT(CASE WHEN url = '/detail' THEN 1 END) >= 2\n)\nAND read_log.url != '/detail'\nGROUP BY read_log.url\nORDER BY count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9592910064384341,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT read_log.url, COUNT(*) AS count\nFROM read_log\nWHERE read_log.session IN (\n    SELECT session\n    FROM read_log\n    WHERE url = '/detail'\n    GROUP BY session\n    HAVING COUNT(CASE WHEN url = '/detail' THEN 1 END) >= 2\n)\nAND read_log.url != '/detail'\nGROUP BY read_log.url\nORDER BY count DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4611.341625000932
+}

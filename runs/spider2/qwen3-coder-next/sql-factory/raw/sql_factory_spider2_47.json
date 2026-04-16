@@ -1,0 +1,210 @@
+{
+  "task_id": "spider2_47",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH order_toppings AS (\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "pizza_toppings",
+            "extras_toppings",
+            "pizza_recipes",
+            "all_used_toppings",
+            "t",
+            "order_toppings",
+            "e",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "WITH recipe_toppings AS (\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  WHERE LENGTH(pr.toppings) > 1\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 5, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  WHERE LENGTH(pr.toppings) > 3\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SU...",
+          "score": 1.0011460706150341,
+          "similarity_max": 0.4977078587699316,
+          "tables_used": [
+            "all_toppings_used",
+            "pizza_toppings",
+            "recipe_toppings",
+            "pizza_recipes",
+            "pt",
+            "atu",
+            "pizza_customer_orders",
+            "pr",
+            "pco",
+            "rt",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH order_toppings AS (\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "pizza_toppings",
+            "extras_toppings",
+            "pizza_recipes",
+            "all_used_toppings",
+            "t",
+            "order_toppings",
+            "e",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE recipe_toppings AS (\n  SELECT \n    pizza_id,\n    toppings,\n    1 AS pos,\n    CAST(SUBSTR(toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes\n  WHERE LENGTH(toppings) >= 1\n  UNION ALL\n  SELECT \n    pizza_id,\n    toppings,\n    pos + 2,\n    CAST(SUBSTR(toppings, pos + 1, 1) AS INTEGER)\n  FROM recipe_toppings\n  WHERE pos + 1 <= LENGTH(toppings) AND SUBSTR(toppings, pos + 1, 1) != ','\n),\nextras_toppings AS (\n  SELECT \n    extras,\n    1 AS pos,\n    CAST(SUBSTR(extras, 1, 1) A...",
+          "score": 1.1401265080428953,
+          "similarity_max": 0.5197469839142091,
+          "tables_used": [
+            "pizza_toppings",
+            "recipe_toppings",
+            "extras_toppings",
+            "aut",
+            "pizza_recipes",
+            "pt",
+            "all_used_toppings",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "WITH recipe_toppings AS (\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  WHERE LENGTH(pr.toppings) > 1\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SUBSTR(pr.toppings, 5, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes pr\n  WHERE LENGTH(pr.toppings) > 3\n  UNION ALL\n  SELECT \n    pr.pizza_id,\n    CAST(SU...",
+          "score": 1.0011460706150341,
+          "similarity_max": 0.4977078587699316,
+          "tables_used": [
+            "all_toppings_used",
+            "pizza_toppings",
+            "recipe_toppings",
+            "pizza_recipes",
+            "pt",
+            "atu",
+            "pizza_customer_orders",
+            "pr",
+            "pco",
+            "rt",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH order_toppings AS (\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "pizza_toppings",
+            "extras_toppings",
+            "pizza_recipes",
+            "all_used_toppings",
+            "t",
+            "order_toppings",
+            "e",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE recipe_toppings AS (\n  SELECT \n    pizza_id,\n    toppings,\n    1 AS pos,\n    CAST(SUBSTR(toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes\n  WHERE LENGTH(toppings) >= 1\n  UNION ALL\n  SELECT \n    pizza_id,\n    toppings,\n    pos + 2,\n    CAST(SUBSTR(toppings, pos + 1, 1) AS INTEGER)\n  FROM recipe_toppings\n  WHERE pos + 1 <= LENGTH(toppings) AND SUBSTR(toppings, pos + 1, 1) != ','\n),\nextras_toppings AS (\n  SELECT \n    extras,\n    1 AS pos,\n    CAST(SUBSTR(extras, 1, 1) A...",
+          "score": 1.1401265080428953,
+          "similarity_max": 0.5197469839142091,
+          "tables_used": [
+            "pizza_toppings",
+            "recipe_toppings",
+            "extras_toppings",
+            "aut",
+            "pizza_recipes",
+            "pt",
+            "all_used_toppings",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "WITH order_toppings AS (\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 1 + 2 * (n - 1), 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 1 + 2 * (n - 1), 1) AS INTEGER)\n  CROSS JOIN (\n    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 \n    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 \n    UNION ALL SELECT 9 UNION ALL SELECT 10\n  ) nums\n  WHERE SUBSTR(r.toppings,...",
+          "score": 1.0845282340246971,
+          "similarity_max": 0.5309435319506054,
+          "tables_used": [
+            "r",
+            "pizza_toppings",
+            "extras_toppings",
+            "pizza_recipes",
+            "all_used_toppings",
+            "t",
+            "order_toppings",
+            "e",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH order_toppings AS (\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 1, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER) AS topping_id\n  FROM pizza_recipes r\n  JOIN pizza_toppings t ON t.topping_id = CAST(SUBSTR(r.toppings, 3, 1) AS INTEGER)\n  UNION ALL\n  SELECT \n    t.topping_name,\n    CAST(SUBSTR(r.toppings,...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "pizza_toppings",
+        "extras_toppings",
+        "pizza_recipes",
+        "all_used_toppings",
+        "t",
+        "order_toppings",
+        "e",
+        "pizza_get_extras"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.25
+  }
+}

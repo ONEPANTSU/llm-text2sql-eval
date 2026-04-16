@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1462",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1414.3182080006227,
+  "execution_time_ms": 5.3200830006971955,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT budget.category, budget.amount\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6313329944969155,
+      "result_signature": "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT budget.category, budget.amount\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8088750037131831,
+      "result_signature": "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT budget.category, budget.amount\nFROM event\nJOIN budget ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4755420013680123,
+      "result_signature": "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT budget.category, budget.amount\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.42595799459377304,
+      "result_signature": "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT budget.category, budget.amount\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.40341700514545664,
+      "result_signature": "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT budget.category, budget.amount\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.event_name = 'January Speaker';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e61ab0b5132f377ceebe66d063aa4e6e1bd41ffebe8a2fcf0fe221610fa16906": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1419.8238750032033
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "tpcds_q90",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7265.724333003163,
+  "execution_time_ms": 20.752208001795225,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT customer_demographics.cd_demo_sk, date_dim.d_year, date_dim.d_moy, SUM(web_sales.ws_ext_sales_price) AS total_web_sales\nFROM web_sales\nJOIN customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE customer_demographics.cd_dep_count = 6\nGROUP BY customer_demographics.cd_demo_sk, date_dim.d_year, date_dim.d_moy\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.464291996555403,
+      "result_signature": "06c33d581aaae90266dca6b28a87b5bd12a98ea755cfef3261e41a3ee59b2d06",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  customer_demographics.cd_demo_sk,\n  date_dim.d_year,\n  date_dim.d_moy,\n  SUM(web_sales.ws_ext_sales_price) AS total_web_sales\nFROM \n  web_sales\n  JOIN customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n  customer_demographics.cd_dep_count = 6\nGROUP BY \n  customer_demographics.cd_demo_sk,\n  date_dim.d_year,\n  date_dim.d_moy\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.235166998114437,
+      "result_signature": "06c33d581aaae90266dca6b28a87b5bd12a98ea755cfef3261e41a3ee59b2d06",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT customer_demographics.cd_demo_sk, date_dim.d_year, date_dim.d_moy, SUM(web_sales.ws_ext_sales_price) AS total_web_sales\nFROM web_sales\nJOIN customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE customer_demographics.cd_dep_count = 6\nGROUP BY customer_demographics.cd_demo_sk, date_dim.d_year, date_dim.d_moy\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8031669973861426,
+      "result_signature": "5463c36f9c1dfedc21270e63a3089c316762808fc72d730a2a5c78f9c4594695",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    customer_demographics.cd_demo_sk, \n    date_dim.d_year, \n    date_dim.d_moy, \n    SUM(web_sales.ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\nJOIN \n    customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    customer_demographics.cd_dep_count = 6\nGROUP BY \n    customer_demographics.cd_demo_sk, \n    date_dim.d_year, \n    date_dim.d_moy\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.610208004829474,
+      "result_signature": "06c33d581aaae90266dca6b28a87b5bd12a98ea755cfef3261e41a3ee59b2d06",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    cd_demo_sk,\n    d_year,\n    d_moy,\n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\nJOIN \n    customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    customer_demographics.cd_dep_count = 6\nGROUP BY \n    customer_demographics.cd_demo_sk,\n    date_dim.d_year,\n    date_dim.d_moy\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.5288749932078645,
+      "result_signature": "06c33d581aaae90266dca6b28a87b5bd12a98ea755cfef3261e41a3ee59b2d06",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    cd_demo_sk,\n    d_year,\n    d_moy,\n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\nJOIN \n    customer_demographics ON web_sales.ws_bill_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    customer_demographics.cd_dep_count = 6\nGROUP BY \n    customer_demographics.cd_demo_sk,\n    date_dim.d_year,\n    date_dim.d_moy\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "06c33d581aaae90266dca6b28a87b5bd12a98ea755cfef3261e41a3ee59b2d06": 4,
+        "5463c36f9c1dfedc21270e63a3089c316762808fc72d730a2a5c78f9c4594695": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 3667.2644579957705,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 10953.829042002326
+}

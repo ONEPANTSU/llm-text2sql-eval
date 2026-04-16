@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_1505",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM customers c\nINNER JOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Currency = 'Euro' AND y.Consumption > 1000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM customers c\nINNER JOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Currency = 'Euro' AND y.Consumption > 1000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "sql": "WITH euro_customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n)\nSELECT COUNT(DISTINCT y.CustomerID)\nFROM yearmonth y\nINNER JOIN euro_customers e ON y.CustomerID = e.CustomerID\nWHERE y.Consumption > 1000;",
+          "score": 1.1475313479623823,
+          "similarity_max": 0.604937304075235,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "y",
+            "e",
+            "euro_customers"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT c.CustomerID) \nFROM customers c\nJOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Currency = 'Euro' AND y.Consumption > 1000;",
+          "score": 0.8031428571428572,
+          "similarity_max": 0.7937142857142857,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM customers c\nINNER JOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Currency = 'Euro' AND y.Consumption > 1000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "sql": "WITH euro_customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n)\nSELECT COUNT(DISTINCT y.CustomerID)\nFROM yearmonth y\nINNER JOIN euro_customers e ON y.CustomerID = e.CustomerID\nWHERE y.Consumption > 1000;",
+          "score": 1.1475313479623823,
+          "similarity_max": 0.604937304075235,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "y",
+            "e",
+            "euro_customers"
+          ]
+        },
+        {
+          "sql": "WITH euro_customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n)\nSELECT COUNT(*)\nFROM (\n    SELECT DISTINCT y.CustomerID\n    FROM yearmonth y\n    INNER JOIN euro_customers e ON y.CustomerID = e.CustomerID\n    WHERE y.Consumption > 1000\n) AS distinct_customers;",
+          "score": 1.1234285714285714,
+          "similarity_max": 0.6531428571428571,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "y",
+            "e",
+            "euro_customers"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM customers c\nINNER JOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Currency = 'Euro' AND y.Consumption > 1000;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "yearmonth",
+        "c",
+        "y"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 54.07
+  }
+}

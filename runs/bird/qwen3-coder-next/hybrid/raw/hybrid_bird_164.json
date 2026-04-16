@@ -1,0 +1,171 @@
+{
+  "task_id": "bird_164",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 12171.731750000617,
+  "execution_time_ms": 4.672791998018511,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM order\nJOIN account ON order.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE order.order_id = 32423;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 3.24949999776436,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT client.gender, client.birth_date\nFROM order\nJOIN account ON order.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE order.order_id = 32423;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.32308300433214754,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM order\nJOIN account ON order.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE order.order_id = 32423;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.21158299932722002,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT client.gender, client.birth_date\nFROM order\nJOIN account ON order.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE order.order_id = 32423;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.20850000146310776,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM order\nJOIN account ON order.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE order.order_id = 32423;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.19720800628419966,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM `order`\nJOIN account ON `order`.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE `order`.order_id = 32423;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d7a6abbfe375b5e36702b6e8dfd070b086631e628adef98b2ac43ffd977ffc3a": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "near \"order\": syntax error",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM `order`\nJOIN account ON `order`.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE `order`.order_id = 32423;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.9480420057079755,
+        "result_signature": "d7a6abbfe375b5e36702b6e8dfd070b086631e628adef98b2ac43ffd977ffc3a",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT client.client_id, client.gender, client.birth_date\nFROM `order`\nJOIN account ON `order`.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE `order`.order_id = 32423;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.555541999754496,
+        "result_signature": "d7a6abbfe375b5e36702b6e8dfd070b086631e628adef98b2ac43ffd977ffc3a",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 14828.127041997504
+}

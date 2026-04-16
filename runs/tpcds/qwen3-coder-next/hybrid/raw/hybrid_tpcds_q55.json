@@ -1,0 +1,136 @@
+{
+  "task_id": "tpcds_q55",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 9036.492125000223,
+  "execution_time_ms": 100.20816599717364,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT\n  c_birth_year,\n  ca_state,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales,\n  customer,\n  customer_address,\n  date_dim\nWHERE\n  catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  AND catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n  AND customer.c_current_addr_sk = customer_address.ca_address_sk\n  AND date_dim.d_moy = 11\n  AND date_dim.d_year = 1999\nGROUP BY\n  c_birth_year,\n  ca_state\nORDER BY\n  c_birth_year,\n  ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 36.31825000047684,
+      "result_signature": "736a65a79e5eaa943b5ac16e7946d53016653498481d91c61cde808eca476fe1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  c_birth_year,\n  ca_state,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n  JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nWHERE\n  date_dim.d_moy = 11\n  AND date_dim.d_year = 1999\nGROUP BY\n  c_birth_year,\n  ca_state\nORDER BY\n  c_birth_year,\n  ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.825000002630986,
+      "result_signature": "736a65a79e5eaa943b5ac16e7946d53016653498481d91c61cde808eca476fe1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c_birth_year, ca_state, SUM(cs_ext_sales_price) AS total_sales\nFROM catalog_sales\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nWHERE date_dim.d_moy = 11\n  AND date_dim.d_year = 1999\nGROUP BY c_birth_year, ca_state\nORDER BY c_birth_year, ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.779124994878657,
+      "result_signature": "736a65a79e5eaa943b5ac16e7946d53016653498481d91c61cde808eca476fe1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    c_birth_year,\n    ca_state,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nWHERE \n    date_dim.d_moy = 11\n    AND date_dim.d_year = 1999\nGROUP BY \n    c_birth_year, ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.369667002232745,
+      "result_signature": "ae6d87914ee938939280aa17b147f0cd9c45a20c0f7769f18571e4eb104f7c47",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n  c_birth_year,\n  ca_state,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales,\n  customer,\n  customer_address,\n  date_dim\nWHERE\n  catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  AND catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n  AND customer.c_current_addr_sk = customer_address.ca_address_sk\n  AND date_dim.d_moy = 11\n  AND date_dim.d_year = 1999\nGROUP BY\n  c_birth_year,\n  ca_state\nORDER BY\n  c_birth_year,\n  ca_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.664750003954396,
+      "result_signature": "736a65a79e5eaa943b5ac16e7946d53016653498481d91c61cde808eca476fe1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT\n  c_birth_year,\n  ca_state,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales,\n  customer,\n  customer_address,\n  date_dim\nWHERE\n  catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  AND catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n  AND customer.c_current_addr_sk = customer_address.ca_address_sk\n  AND date_dim.d_moy = 11\n  AND date_dim.d_year = 1999\nGROUP BY\n  c_birth_year,\n  ca_state\nORDER BY\n  c_birth_year,\n  ca_state\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "736a65a79e5eaa943b5ac16e7946d53016653498481d91c61cde808eca476fe1": 4,
+        "ae6d87914ee938939280aa17b147f0cd9c45a20c0f7769f18571e4eb104f7c47": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2325.708750009653,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11462.477166001918
+}

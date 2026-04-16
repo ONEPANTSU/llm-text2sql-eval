@@ -1,0 +1,72 @@
+{
+  "task_id": "bird_1131",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE player_api_id IN (\n    SELECT DISTINCT home_player_1 \n    FROM Match \n    WHERE home_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    )\n    UNION\n    SELECT DISTINCT home_player_2 \n    FROM Match \n    WHERE home_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    )\n    UNION\n    SELECT DISTINCT home_player_3 \n    FROM Match \n    WHERE home_team_a...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "Team",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE player_api_id IN (\n    SELECT DISTINCT player_api_id \n    FROM Match \n    WHERE home_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    ) \n    OR away_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    )\n);",
+          "score": 1.099721706864564,
+          "similarity_max": 0.30055658627087195,
+          "tables_used": [
+            "Player",
+            "Team",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(height) \nFROM Player \nWHERE player_api_id IN (\n    SELECT DISTINCT home_player_1 \n    FROM Match \n    WHERE home_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    )\n    UNION\n    SELECT DISTINCT home_player_2 \n    FROM Match \n    WHERE home_team_api_id IN (\n        SELECT team_api_id \n        FROM Team \n        WHERE team_long_name = 'Italy'\n    )\n    UNION\n    SELECT DISTINCT home_player_3 \n    FROM Match \n    WHERE home_team_a...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player",
+        "Team",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 87690.58
+  }
+}

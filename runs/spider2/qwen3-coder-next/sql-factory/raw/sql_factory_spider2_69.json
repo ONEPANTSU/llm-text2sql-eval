@@ -1,0 +1,61 @@
+{
+  "task_id": "spider2_69",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH bitcoin_purchases AS (\n    SELECT \n        strftime('%Y', bt.txn_date) AS year,\n        cr.region_name AS region,\n        bt.quantity,\n        bt.txn_amount\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members bm ON bt.member_id = bm.member_id\n    JOIN customer_regions cr ON bm.region = cr.region_id\n    WHERE bt.txn_type = 'BUY'\n),\nannual_avg_price AS (\n    SELECT \n        year,\n        region,\n        SUM(txn_amount) / SUM(quantity) AS avg_price_per_btc\n    FROM bitcoin_purchases\n    ...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: bt.txn_amount",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 1.31
+  }
+}

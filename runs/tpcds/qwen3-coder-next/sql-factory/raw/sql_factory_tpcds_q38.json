@@ -1,0 +1,120 @@
+{
+  "task_id": "tpcds_q38",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH channel_sales AS (\n  SELECT \n    ss_customer_sk AS customer_sk,\n    'store' AS channel\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    ws_bill_customer_sk AS customer_sk,\n    'web' AS channel\n  FROM web_sales\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    cs_bill_customer_sk AS customer_sk,\n    'catalog' AS channel\n  FROM catalog_sales...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "channel_sales",
+            "store_sales",
+            "customer_channels",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH channel_sales AS (\n  SELECT \n    ss_customer_sk AS customer_sk,\n    'store' AS channel\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    ws_bill_customer_sk AS customer_sk,\n    'web' AS channel\n  FROM web_sales\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    cs_bill_customer_sk AS customer_sk,\n    'catalog' AS channel\n  FROM catalog_sales...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "channel_sales",
+            "store_sales",
+            "customer_channels",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH channel_sales AS (\n  SELECT \n    ss_customer_sk AS customer_sk,\n    'store' AS channel\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    ws_bill_customer_sk AS customer_sk,\n    'web' AS channel\n  FROM web_sales\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    cs_bill_customer_sk AS customer_sk,\n    'catalog' AS channel\n  FROM catalog_sales...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "channel_sales",
+            "store_sales",
+            "customer_channels",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH channel_sales AS (\n  SELECT \n    ss_customer_sk AS customer_sk,\n    'store' AS channel\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    ws_bill_customer_sk AS customer_sk,\n    'web' AS channel\n  FROM web_sales\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_month_seq BETWEEN 1200 AND 1200\n\n  UNION ALL\n\n  SELECT \n    cs_bill_customer_sk AS customer_sk,\n    'catalog' AS channel\n  FROM catalog_sales...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "channel_sales",
+        "store_sales",
+        "customer_channels",
+        "catalog_sales",
+        "web_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.25,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"ss_bill_customer_sk\" not found in FROM clause!\n",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 35.96
+  }
+}

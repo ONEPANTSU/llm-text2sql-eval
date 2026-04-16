@@ -1,0 +1,193 @@
+{
+  "task_id": "tpcds_q16",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs.cs_ship_addr_sk = ca.ca_address_sk\nJOIN call_center cc ON cs.cs_call_center_sk = cc.cc_call_center_sk\nWHERE d.d_date BETWEEN '2002-02-01' AND '2002-04-02'\n  AND ca.ca_state = 'GA'\n  AND cc.cc_county = 'Williamson County'\n  AND EXISTS (\n      SEL...",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cs",
+            "date_dim",
+            "d",
+            "catalog_sales",
+            "call_center",
+            "catalog_returns",
+            "cs2",
+            "customer_address",
+            "cc",
+            "ca",
+            "cr"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs.cs_ship_addr_sk = ca.ca_address_sk\nJOIN call_center cc ON cs.cs_call_center_sk = cc.cc_call_center_sk\nWHERE d.d_date BETWEEN '2002-02-01' AND '2002-04-02'\n  AND ca.ca_state = 'GA'\n  AND cc.cc_county = 'Williamson County'\n  AND EXISTS (\n      SEL...",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cs",
+            "date_dim",
+            "d",
+            "catalog_sales",
+            "call_center",
+            "catalog_returns",
+            "cs2",
+            "customer_address",
+            "cc",
+            "ca",
+            "cr"
+          ]
+        },
+        {
+          "sql": "WITH multi_warehouse_orders AS (\n    SELECT cs_order_number\n    FROM catalog_sales\n    GROUP BY cs_order_number\n    HAVING COUNT(DISTINCT cs_warehouse_sk) > 1\n),\nreturned_orders AS (\n    SELECT DISTINCT cr_order_number\n    FROM catalog_returns\n)\nSELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs...",
+          "score": 0.9972236718505375,
+          "similarity_max": 0.7055526562989249,
+          "tables_used": [
+            "date_dim",
+            "d",
+            "catalog_sales",
+            "catalog_returns",
+            "call_center",
+            "customer_address",
+            "cc",
+            "ca",
+            "cs"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs.cs_ship_addr_sk = ca.ca_address_sk\nJOIN call_center cc ON cs.cs_call_center_sk = cc.cc_call_center_sk\nWHERE d.d_date BETWEEN '2002-02-01' AND '2002-04-02'\n  AND ca.ca_state = 'GA'\n  AND cc.cc_county = 'Williamson County'\n  AND EXISTS (\n      SEL...",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cs",
+            "date_dim",
+            "d",
+            "catalog_sales",
+            "call_center",
+            "catalog_returns",
+            "cs2",
+            "customer_address",
+            "cc",
+            "ca",
+            "cr"
+          ]
+        },
+        {
+          "sql": "WITH multi_warehouse_orders AS (\n    SELECT cs_order_number\n    FROM catalog_sales\n    GROUP BY cs_order_number\n    HAVING COUNT(DISTINCT cs_warehouse_sk) > 1\n),\nreturned_orders AS (\n    SELECT DISTINCT cr_order_number\n    FROM catalog_returns\n)\nSELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs...",
+          "score": 0.9972236718505375,
+          "similarity_max": 0.7055526562989249,
+          "tables_used": [
+            "date_dim",
+            "d",
+            "catalog_sales",
+            "catalog_returns",
+            "call_center",
+            "customer_address",
+            "cc",
+            "ca",
+            "cs"
+          ]
+        },
+        {
+          "sql": "WITH multi_warehouse_orders AS (\n  SELECT cs_order_number\n  FROM catalog_sales\n  GROUP BY cs_order_number\n  HAVING COUNT(DISTINCT cs_warehouse_sk) > 1\n),\nnon_returned_orders AS (\n  SELECT cs_order_number\n  FROM catalog_sales\n  EXCEPT\n  SELECT cr_order_number\n  FROM catalog_returns\n)\nSELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_...",
+          "score": 0.8937993762993763,
+          "similarity_max": 0.8124012474012474,
+          "tables_used": [
+            "date_dim",
+            "EXCEPT",
+            "d",
+            "catalog_sales",
+            "catalog_returns",
+            "call_center",
+            "customer_address",
+            "cc",
+            "ca",
+            "cs"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    COUNT(DISTINCT cs.cs_order_number) AS order_count,\n    SUM(cs.cs_ext_ship_cost) AS shipping_cost,\n    SUM(cs.cs_net_profit) AS net_profit\nFROM catalog_sales cs\nJOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\nJOIN customer_address ca ON cs.cs_ship_addr_sk = ca.ca_address_sk\nJOIN call_center cc ON cs.cs_call_center_sk = cc.cc_call_center_sk\nWHERE d.d_date BETWEEN '2002-02-01' AND '2002-04-02'\n  AND ca.ca_state = 'GA'\n  AND cc.cc_county = 'Williamson County'\n  AND EXISTS (\n      SEL...",
+    "meta": {
+      "score": 1.1500000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "cs",
+        "date_dim",
+        "d",
+        "catalog_sales",
+        "call_center",
+        "catalog_returns",
+        "cs2",
+        "customer_address",
+        "cc",
+        "ca",
+        "cr"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: GROUP BY clause cannot contain aggregates!\n\nLINE 2:     COUNT(DIST",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 36.61
+  }
+}

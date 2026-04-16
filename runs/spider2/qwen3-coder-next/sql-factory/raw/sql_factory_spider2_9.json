@@ -1,0 +1,227 @@
+{
+  "task_id": "spider2_9",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH yearly_violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS violation_count\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntotal_accidents_per_year AS (\n    SELECT \n        db_year,\n        SUM(violation_count) AS total_accidents\n    FROM yearly_violation_counts\n    GROUP BY db_year\n),\nvi...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "violation_shares",
+            "yearly_violation_counts",
+            "top_violations",
+            "yv",
+            "c",
+            "case_ids",
+            "ta",
+            "parties",
+            "total_accidents_per_year",
+            "p",
+            "top_violation_trends"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH yearly_violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS violation_count\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntotal_accidents_per_year AS (\n    SELECT \n        db_year,\n        SUM(violation_count) AS total_accidents\n    FROM yearly_violation_counts\n    GROUP BY db_year\n),\nvi...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "violation_shares",
+            "yearly_violation_counts",
+            "top_violations",
+            "yv",
+            "c",
+            "case_ids",
+            "ta",
+            "parties",
+            "total_accidents_per_year",
+            "p",
+            "top_violation_trends"
+          ]
+        },
+        {
+          "sql": "WITH violation_counts_2011_2021 AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS cnt\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nyearly_totals AS (\n    SELECT \n        db_year,\n        SUM(cnt) AS total_cnt\n    FROM violation_counts_2011_2021\n    GROUP BY db_year\n),\nviolation_shares AS (\n    SELECT \n   ...",
+          "score": 0.8996676067687348,
+          "similarity_max": 0.7006647864625302,
+          "tables_used": [
+            "y",
+            "v",
+            "violation_shares",
+            "yearly_totals",
+            "top_violation_trend",
+            "violation_counts_2011_2021",
+            "c",
+            "case_ids",
+            "parties",
+            "top_violation_per_year",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS cnt\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nyear_totals AS (\n    SELECT \n        db_year,\n        SUM(cnt) AS total\n    FROM violation_counts\n    GROUP BY db_year\n),\nshares AS (\n    SELECT \n        vc.db_year,\n        vc.oaf_viol...",
+          "score": 0.7385882483002599,
+          "similarity_max": 0.5228235033994804,
+          "tables_used": [
+            "year_totals",
+            "ct",
+            "violation_counts",
+            "c",
+            "case_ids",
+            "s",
+            "parties",
+            "vc",
+            "yt",
+            "p",
+            "top_2011",
+            "t1",
+            "common_top",
+            "shares",
+            "t2",
+            "top_2021"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH yearly_violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS violation_count\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntotal_accidents_per_year AS (\n    SELECT \n        db_year,\n        SUM(violation_count) AS total_accidents\n    FROM yearly_violation_counts\n    GROUP BY db_year\n),\nvi...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "violation_shares",
+            "yearly_violation_counts",
+            "top_violations",
+            "yv",
+            "c",
+            "case_ids",
+            "ta",
+            "parties",
+            "total_accidents_per_year",
+            "p",
+            "top_violation_trends"
+          ]
+        },
+        {
+          "sql": "WITH violation_counts_2011_2021 AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS cnt\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nyearly_totals AS (\n    SELECT \n        db_year,\n        SUM(cnt) AS total_cnt\n    FROM violation_counts_2011_2021\n    GROUP BY db_year\n),\nviolation_shares AS (\n    SELECT \n   ...",
+          "score": 0.8996676067687348,
+          "similarity_max": 0.7006647864625302,
+          "tables_used": [
+            "y",
+            "v",
+            "violation_shares",
+            "yearly_totals",
+            "top_violation_trend",
+            "violation_counts_2011_2021",
+            "c",
+            "case_ids",
+            "parties",
+            "top_violation_per_year",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH yearly_violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS violation_count\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nannual_totals AS (\n    SELECT \n        db_year,\n        SUM(violation_count) AS total_violations\n    FROM yearly_violation_counts\n    GROUP BY db_year\n),\nviolation_pe...",
+          "score": 0.8824958323410335,
+          "similarity_max": 0.6350083353179329,
+          "tables_used": [
+            "top_2011_2021",
+            "atot",
+            "top_category_per_year",
+            "yearly_violation_counts",
+            "trend_comparison",
+            "c",
+            "case_ids",
+            "annual_totals",
+            "parties",
+            "p",
+            "yv",
+            "violation_percentages"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH yearly_violation_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category,\n        COUNT(*) AS violation_count\n    FROM case_ids c\n    JOIN parties p ON c.case_id = p.case_id\n    WHERE c.db_year IN (2011, 2021)\n      AND p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntotal_accidents_per_year AS (\n    SELECT \n        db_year,\n        SUM(violation_count) AS total_accidents\n    FROM yearly_violation_counts\n    GROUP BY db_year\n),\nvi...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "violation_shares",
+        "yearly_violation_counts",
+        "top_violations",
+        "yv",
+        "c",
+        "case_ids",
+        "ta",
+        "parties",
+        "total_accidents_per_year",
+        "p",
+        "top_violation_trends"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: c.db_year",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"AS\": syntax error",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.89
+  }
+}

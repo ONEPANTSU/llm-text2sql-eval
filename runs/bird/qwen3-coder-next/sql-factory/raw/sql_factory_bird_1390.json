@@ -1,0 +1,189 @@
+{
+  "task_id": "bird_1390",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    ROUND(\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id\n         JOIN event ev ON b.link_to_event = ev.event_id\n         WHERE ev.event_name = 'Yearly Kickoff') * 100.0 /\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id), 2) AS percentage_cost",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ev",
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        },
+        {
+          "sql": "WITH total_cost AS (\n    SELECT \n        e.event_id,\n        e.event_name,\n        COALESCE(SUM(exp.cost), 0) AS total_expense\n    FROM event e\n    LEFT JOIN budget b ON e.event_id = b.link_to_event\n    LEFT JOIN expense exp ON b.budget_id = exp.link_to_budget\n    GROUP BY e.event_id, e.event_name\n),\ntotal_all_events AS (\n    SELECT SUM(total_expense) AS grand_total\n    FROM total_cost\n),\nkickoff_cost AS (\n    SELECT total_expense AS kickoff_total\n    FROM total_cost\n    WHERE event_name = 'Year...",
+          "score": 1.1560982191041553,
+          "similarity_max": 0.48780356179168916,
+          "tables_used": [
+            "total_cost",
+            "exp",
+            "e",
+            "event",
+            "total_all_events",
+            "expense",
+            "budget",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    ROUND(\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id\n         JOIN event ev ON b.link_to_event = ev.event_id\n         WHERE ev.event_name = 'Yearly Kickoff') * 100.0 /\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id), 2) AS percentage_cost",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ev",
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        },
+        {
+          "sql": "WITH total_cost AS (\n    SELECT \n        e.event_id,\n        e.event_name,\n        COALESCE(SUM(exp.cost), 0) AS total_expense\n    FROM event e\n    LEFT JOIN budget b ON e.event_id = b.link_to_event\n    LEFT JOIN expense exp ON b.budget_id = exp.link_to_budget\n    GROUP BY e.event_id, e.event_name\n),\ntotal_all_events AS (\n    SELECT SUM(total_expense) AS grand_total\n    FROM total_cost\n),\nkickoff_cost AS (\n    SELECT total_expense AS kickoff_total\n    FROM total_cost\n    WHERE event_name = 'Year...",
+          "score": 1.1560982191041553,
+          "similarity_max": 0.48780356179168916,
+          "tables_used": [
+            "total_cost",
+            "exp",
+            "e",
+            "event",
+            "total_all_events",
+            "expense",
+            "budget",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH event_expenses AS (\n    SELECT \n        e.event_id,\n        e.event_name,\n        COALESCE(SUM(exp.cost), 0) AS event_total_cost\n    FROM event e\n    LEFT JOIN budget b ON e.event_id = b.link_to_event\n    LEFT JOIN expense exp ON b.budget_id = exp.link_to_budget\n    GROUP BY e.event_id, e.event_name\n),\nsummary AS (\n    SELECT \n        SUM(event_total_cost) AS grand_total,\n        MAX(CASE WHEN event_name = 'Yearly Kickoff' THEN event_total_cost ELSE 0 END) AS kickoff_cost\n    FROM event_exp...",
+          "score": 1.0875729774812344,
+          "similarity_max": 0.7248540450375313,
+          "tables_used": [
+            "exp",
+            "budget",
+            "event_expenses",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    ROUND(\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id\n         JOIN event ev ON b.link_to_event = ev.event_id\n         WHERE ev.event_name = 'Yearly Kickoff') * 100.0 /\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id), 2) AS percentage_cost",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ev",
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        },
+        {
+          "sql": "WITH total_cost AS (\n    SELECT \n        e.event_id,\n        e.event_name,\n        COALESCE(SUM(exp.cost), 0) AS total_expense\n    FROM event e\n    LEFT JOIN budget b ON e.event_id = b.link_to_event\n    LEFT JOIN expense exp ON b.budget_id = exp.link_to_budget\n    GROUP BY e.event_id, e.event_name\n),\ntotal_all_events AS (\n    SELECT SUM(total_expense) AS grand_total\n    FROM total_cost\n),\nkickoff_cost AS (\n    SELECT total_expense AS kickoff_total\n    FROM total_cost\n    WHERE event_name = 'Year...",
+          "score": 1.1560982191041553,
+          "similarity_max": 0.48780356179168916,
+          "tables_used": [
+            "total_cost",
+            "exp",
+            "e",
+            "event",
+            "total_all_events",
+            "expense",
+            "budget",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH event_expenses AS (\n    SELECT \n        e.event_id,\n        e.event_name,\n        COALESCE(SUM(exp.cost), 0) AS event_total_cost\n    FROM event e\n    LEFT JOIN budget b ON e.event_id = b.link_to_event\n    LEFT JOIN expense exp ON b.budget_id = exp.link_to_budget\n    GROUP BY e.event_id, e.event_name\n),\nsummary AS (\n    SELECT \n        SUM(event_total_cost) AS grand_total,\n        MAX(CASE WHEN event_name = 'Yearly Kickoff' THEN event_total_cost ELSE 0 END) AS kickoff_cost\n    FROM event_exp...",
+          "score": 1.0875729774812344,
+          "similarity_max": 0.7248540450375313,
+          "tables_used": [
+            "exp",
+            "budget",
+            "event_expenses",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    ROUND(\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id\n         JOIN event ev ON b.link_to_event = ev.event_id\n         WHERE ev.event_name = 'Yearly Kickoff') * 100.0 /\n        (SELECT SUM(e.cost) \n         FROM expense e\n         JOIN budget b ON e.link_to_budget = b.budget_id), 2) AS percentage_cost",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ev",
+        "budget",
+        "e",
+        "event",
+        "b",
+        "expense"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.79
+  }
+}

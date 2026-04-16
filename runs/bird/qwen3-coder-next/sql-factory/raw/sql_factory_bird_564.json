@@ -1,0 +1,132 @@
+{
+  "task_id": "bird_564",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId = 107829 LIMIT 1;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId = 107829 LIMIT 1;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId IN (SELECT Id FROM posts WHERE ParentId = 107829) LIMIT 1;",
+          "score": 0.8246323529411765,
+          "similarity_max": 0.5507352941176471,
+          "tables_used": [
+            "posts",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId = (SELECT Id FROM posts WHERE ParentId = 107829 LIMIT 1) LIMIT 1;",
+          "score": 0.6849547511312218,
+          "similarity_max": 0.8300904977375565,
+          "tables_used": [
+            "posts",
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId = 107829 LIMIT 1;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId IN (SELECT Id FROM posts WHERE ParentId = 107829) LIMIT 1;",
+          "score": 0.8246323529411765,
+          "similarity_max": 0.5507352941176471,
+          "tables_used": [
+            "posts",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT Text FROM comments WHERE PostId = (SELECT Id FROM posts WHERE ParentId = 107829 LIMIT 1) LIMIT 1;",
+          "score": 0.6849547511312218,
+          "similarity_max": 0.8300904977375565,
+          "tables_used": [
+            "posts",
+            "comments"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT Text FROM comments WHERE PostId = 107829 LIMIT 1;",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "comments"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 52.2
+  }
+}

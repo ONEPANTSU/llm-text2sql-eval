@@ -1,0 +1,151 @@
+{
+  "task_id": "bird_1510",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(Amount * Price) \nFROM transactions_1k \nJOIN gasstations ON transactions_1k.GasStationID = gasstations.GasStationID \nWHERE gasstations.Country = 'Czech Republic';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(t.Amount * t.Price) AS average_total_price\nFROM transactions_1k t\nJOIN gasstations g ON t.GasStationID = g.GasStationID\nWHERE g.Country = 'Czech Republic';",
+          "score": 0.8573529411764705,
+          "similarity_max": 0.6852941176470588,
+          "tables_used": [
+            "t",
+            "gasstations",
+            "g",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(Amount * Price) \nFROM transactions_1k \nJOIN gasstations ON transactions_1k.GasStationID = gasstations.GasStationID \nWHERE gasstations.Country = 'Czech Republic';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH czech_transactions AS (\n    SELECT t.Amount * t.Price AS total_price\n    FROM transactions_1k t\n    JOIN gasstations g ON t.GasStationID = g.GasStationID\n    WHERE g.Country = 'Czech Republic'\n)\nSELECT AVG(total_price) AS average_total_price\nFROM czech_transactions;",
+          "score": 1.0420289855072462,
+          "similarity_max": 0.7159420289855072,
+          "tables_used": [
+            "t",
+            "gasstations",
+            "g",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(t.Amount * t.Price) AS average_total_price\nFROM transactions_1k t\nJOIN gasstations g ON t.GasStationID = g.GasStationID\nWHERE g.Country = 'Czech Republic';",
+          "score": 0.8573529411764705,
+          "similarity_max": 0.6852941176470588,
+          "tables_used": [
+            "t",
+            "gasstations",
+            "g",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT AVG(Amount * Price) \nFROM transactions_1k \nJOIN gasstations ON transactions_1k.GasStationID = gasstations.GasStationID \nWHERE gasstations.Country = 'Czech Republic';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH czech_transactions AS (\n    SELECT t.Amount * t.Price AS total_price\n    FROM transactions_1k t\n    JOIN gasstations g ON t.GasStationID = g.GasStationID\n    WHERE g.Country = 'Czech Republic'\n)\nSELECT AVG(total_price) AS average_total_price\nFROM czech_transactions;",
+          "score": 1.0420289855072462,
+          "similarity_max": 0.7159420289855072,
+          "tables_used": [
+            "t",
+            "gasstations",
+            "g",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH czech_transactions AS (\n    SELECT t.TransactionID, t.Amount * t.Price AS total_price\n    FROM transactions_1k t\n    INNER JOIN gasstations g ON t.GasStationID = g.GasStationID\n    WHERE g.Country = 'Czech Republic'\n)\nSELECT AVG(total_price) AS average_total_price\nFROM czech_transactions;",
+          "score": 0.9891836734693876,
+          "similarity_max": 0.8216326530612246,
+          "tables_used": [
+            "t",
+            "gasstations",
+            "g",
+            "transactions_1k"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(Amount * Price) \nFROM transactions_1k \nJOIN gasstations ON transactions_1k.GasStationID = gasstations.GasStationID \nWHERE gasstations.Country = 'Czech Republic';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "transactions_1k"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.01
+  }
+}

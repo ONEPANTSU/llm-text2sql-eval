@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_673",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1911.0674999974435,
+  "execution_time_ms": 278.2363330043154,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id IN (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 52.82258300576359,
+      "result_signature": "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id IN (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n) AS oldest_user_posts;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 46.082625005510636,
+      "result_signature": "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id AS user_id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id IN (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n) AS oldest_user_posts;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 77.03154100454412,
+      "result_signature": "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id AS user_id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id = (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 52.15483299980406,
+      "result_signature": "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id IN (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n) AS oldest_user_posts;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 49.79020899918396,
+      "result_signature": "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT AVG(posts_count) AS avg_posts\nFROM (\n    SELECT u.Id, COUNT(p.Id) AS posts_count\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Id IN (\n        SELECT Id\n        FROM users\n        ORDER BY CreationDate ASC\n        LIMIT 1\n    )\n    GROUP BY u.Id\n) AS oldest_user_posts;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "84c81021199d05738e835f95b140c63ca46c967c80fa225fb79bede406d318ba": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2189.3422919965815
+}

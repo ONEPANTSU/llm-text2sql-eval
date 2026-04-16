@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_107",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7513.602082995931,
+  "execution_time_ms": 23.745874990709126,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH weekly_sales_around_mid_june AS (\n    SELECT \n        calendar_year,\n        week_date,\n        sales,\n        CASE \n            WHEN week_date < date('2018-06-15') THEN 'before'\n            ELSE 'after'\n        END AS period\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-05-18') AND date('2020-07-13')\n),\nsales_by_period AS (\n    SELECT \n        calendar_year,\n        period,\n        SUM(sales) AS total_sales\n    FROM weekly_sales_around_mid_june\n    GROUP BY calendar_year, period\n),\nsales_comparison AS (\n    SELECT \n        b.calendar_year,\n        b.total_sales AS sales_before,\n        a.total_sales AS sales_after\n    FROM sales_by_period b\n    JOIN sales_by_period a ON b.calendar_year = a.calendar_year\n    WHERE b.period = 'before' AND a.period = 'after'\n)\nSELECT \n    calendar_year,\n    ROUND((sales_after - sales_before) * 100.0 / sales_before, 2) AS percentage_change\nFROM sales_comparison\nORDER BY calendar_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7375829997472465,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH pre_june15 AS (\n  SELECT \n    calendar_year,\n    SUM(sales) AS sales_pre\n  FROM cleaned_weekly_sales\n  WHERE calendar_year IN (2018, 2019, 2020)\n    AND week_date BETWEEN date('2018-05-18') AND date('2018-06-14')\n  GROUP BY calendar_year\n),\npost_june15 AS (\n  SELECT \n    calendar_year,\n    SUM(sales) AS sales_post\n  FROM cleaned_weekly_sales\n  WHERE calendar_year IN (2018, 2019, 2020)\n    AND week_date BETWEEN date('2018-06-15') AND date('2018-07-13')\n  GROUP BY calendar_year\n)\nSELECT \n  p18.calendar_year,\n  ROUND((p18.sales_post - p18.sales_pre) * 100.0 / p18.sales_pre, 2) AS pct_change\nFROM (\n  SELECT \n    COALESCE(pre.calendar_year, post.calendar_year) AS calendar_year,\n    pre.sales_pre,\n    post.sales_post\n  FROM pre_june15 pre\n  FULL OUTER JOIN post_june15 post ON pre.calendar_year = post.calendar_year\n) p18\nORDER BY p18.calendar_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1556250101421028,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH pre_june15 AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-05-18') AND date('2018-06-14')\n    GROUP BY calendar_year\n),\npost_june15 AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-06-15') AND date('2020-07-13')\n    GROUP BY calendar_year\n)\nSELECT \n    p.calendar_year,\n    ROUND((post_sales - pre_sales) * 100.0 / pre_sales, 2) AS percentage_change\nFROM pre_june15 p\nJOIN post_june15 po ON p.calendar_year = po.calendar_year\nORDER BY p.calendar_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6842919974587858,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH sales_periods AS (\n    SELECT \n        calendar_year,\n        sales,\n        CASE \n            WHEN week_date < date(calendar_year || '-06-15') THEN 'pre_june15'\n            ELSE 'post_june15'\n        END AS period\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-05-18') AND date('2020-07-13')\n),\nweekly_sales_summary AS (\n    SELECT \n        calendar_year,\n        period,\n        SUM(sales) AS total_sales\n    FROM sales_periods\n    GROUP BY calendar_year, period\n),\npre_post_sales AS (\n    SELECT \n        calendar_year,\n        MAX(CASE WHEN period = 'pre_june15' THEN total_sales END) AS pre_sales,\n        MAX(CASE WHEN period = 'post_june15' THEN total_sales END) AS post_sales\n    FROM weekly_sales_summary\n    GROUP BY calendar_year\n)\nSELECT \n    calendar_year,\n    ROUND((post_sales - pre_sales) * 100.0 / pre_sales, 2) AS percentage_change\nFROM pre_post_sales\nORDER BY calendar_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3806249878834933,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH pre_june15 AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS pre_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-05-18') AND date('2018-06-14')\n    GROUP BY calendar_year\n),\npost_june15 AS (\n    SELECT \n        calendar_year,\n        SUM(sales) AS post_sales\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-06-15') AND date('2018-07-13')\n    GROUP BY calendar_year\n)\nSELECT \n    p.calendar_year,\n    p.pre_sales,\n    po.post_sales,\n    ROUND((po.post_sales - p.pre_sales) * 100.0 / p.pre_sales, 2) AS pct_change\nFROM pre_june15 p\nJOIN post_june15 po ON p.calendar_year = po.calendar_year\nORDER BY p.calendar_year;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5506659945240244,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH sales_periods AS (\n    SELECT \n        calendar_year,\n        sales,\n        CASE \n            WHEN week_date < date(calendar_year || '-06-15') THEN 'pre_june15'\n            ELSE 'post_june15'\n        END AS period\n    FROM cleaned_weekly_sales\n    WHERE calendar_year IN (2018, 2019, 2020)\n      AND week_date BETWEEN date('2018-05-18') AND date('2020-07-13')\n),\nweekly_sales_summary AS (\n    SELECT \n        calendar_year,\n        period,\n        SUM(sales) AS total_sales\n    FROM sales_periods\n    GROUP BY calendar_year, period\n),\npre_post_sales AS (\n    SELECT \n        calendar_year,\n        MAX(CASE WHEN period = 'pre_june15' THEN total_sales END) AS pre_sales,\n        MAX(CASE WHEN period = 'post_june15' THEN total_sales END) AS post_sales\n    FROM weekly_sales_summary\n    GROUP BY calendar_year\n)\nSELECT \n    calendar_year,\n    ROUND((post_sales - pre_sales) * 100.0 / pre_sales, 2) AS percentage_change\nFROM pre_post_sales\nORDER BY calendar_year;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7537.535665993346
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_947",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1141.2838329997612,
+  "execution_time_ms": 7.913834000646602,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) AS count\nFROM drivers\nWHERE nationality = 'British' AND dob > '1980-01-01';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.9659159956499934,
+      "result_signature": "a9aa85acf18adf4f2e42f1cb876a854cf82b70587922457d888db0e2df100099",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) AS count FROM drivers WHERE nationality = 'British' AND dob > '1980';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.92666700220434,
+      "result_signature": "0595f7581126f2bd55899ee3d4acc5c18aaa0c4a292cd914b73b3467db5f15c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) AS count FROM drivers WHERE nationality = 'British' AND dob > '1980';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9194579979521222,
+      "result_signature": "0595f7581126f2bd55899ee3d4acc5c18aaa0c4a292cd914b73b3467db5f15c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) AS count  \nFROM drivers  \nWHERE nationality = 'British' AND dob > '1980';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7183330017141998,
+      "result_signature": "0595f7581126f2bd55899ee3d4acc5c18aaa0c4a292cd914b73b3467db5f15c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) AS count\nFROM drivers\nWHERE nationality = 'British' AND dob > '1980';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9366660015075468,
+      "result_signature": "0595f7581126f2bd55899ee3d4acc5c18aaa0c4a292cd914b73b3467db5f15c1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT COUNT(*) AS count  \nFROM drivers  \nWHERE nationality = 'British' AND dob > '1980';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a9aa85acf18adf4f2e42f1cb876a854cf82b70587922457d888db0e2df100099": 1,
+        "0595f7581126f2bd55899ee3d4acc5c18aaa0c4a292cd914b73b3467db5f15c1": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1060.9466659952886,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2210.3476659976877
+}

@@ -1,0 +1,181 @@
+{
+  "task_id": "spider2_72",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_counts AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "skills_job_dim",
+            "rj",
+            "sjd",
+            "job_postings_fact"
+          ]
+        },
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM \n        job_postings_fact jpf\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n),\nskill_counts AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    JOIN \n        skills_dim sd O...",
+          "score": 1.0031966377992867,
+          "similarity_max": 0.6936067244014263,
+          "tables_used": [
+            "skill_counts",
+            "skills_job_dim",
+            "jpf",
+            "skills_dim",
+            "job_postings_fact",
+            "remote_data_analyst_jobs",
+            "rj",
+            "sjd",
+            "sd"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_counts AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "skills_job_dim",
+            "rj",
+            "sjd",
+            "job_postings_fact"
+          ]
+        },
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_frequency AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS freq\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n    ...",
+          "score": 1.054087346024636,
+          "similarity_max": 0.7918253079507278,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "skills_job_dim",
+            "rj",
+            "sjd",
+            "job_postings_fact"
+          ]
+        },
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM \n        job_postings_fact jpf\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n),\nskill_frequency AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS freq\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    JOIN \n        skills_dim sd ON sj...",
+          "score": 1.0042919001528272,
+          "similarity_max": 0.7914161996943454,
+          "tables_used": [
+            "skills_job_dim",
+            "jpf",
+            "skills_dim",
+            "job_postings_fact",
+            "remote_data_analyst_jobs",
+            "rj",
+            "sjd",
+            "sd"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_counts AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "skills_job_dim",
+            "rj",
+            "sjd",
+            "job_postings_fact"
+          ]
+        },
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id, \n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_counts AS (\n    SELECT \n        s.skills,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs r\n    JOIN \n        skills_job_dim sj ON r.job_id = sj.job_id\n    JOIN \n        skills_dim s ON sj.skill_id = s.skill_...",
+          "score": 1.0728896103896104,
+          "similarity_max": 0.7542207792207791,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "r",
+            "skills_job_dim",
+            "sj",
+            "job_postings_fact",
+            "skills_dim",
+            "s"
+          ]
+        },
+        {
+          "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_frequency AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS freq\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n    ...",
+          "score": 1.054087346024636,
+          "similarity_max": 0.7918253079507278,
+          "tables_used": [
+            "remote_data_analyst_jobs",
+            "skills_job_dim",
+            "rj",
+            "sjd",
+            "job_postings_fact"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH remote_data_analyst_jobs AS (\n    SELECT \n        job_id,\n        salary_year_avg\n    FROM \n        job_postings_fact\n    WHERE \n        job_title_short = 'Data Analyst'\n        AND salary_year_avg IS NOT NULL\n        AND job_work_from_home = 'True'\n),\nskill_counts AS (\n    SELECT \n        sjd.skill_id,\n        COUNT(*) AS skill_count\n    FROM \n        remote_data_analyst_jobs rj\n    JOIN \n        skills_job_dim sjd ON rj.job_id = sjd.job_id\n    GROUP BY \n        sjd.skill_id\n    ORDER BY \n...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "remote_data_analyst_jobs",
+        "skills_job_dim",
+        "rj",
+        "sjd",
+        "job_postings_fact"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.62
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "task_id": "bird_496",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT totalSetSize FROM sets WHERE name = 'Rinascita di Alara';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sets"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT totalSetSize FROM sets WHERE name = 'Rinascita di Alara';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sets"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) FROM cards WHERE setCode IN (SELECT code FROM sets WHERE name = 'Rinascita di Alara');",
+          "score": 0.8671052631578948,
+          "similarity_max": 0.46578947368421053,
+          "tables_used": [
+            "sets",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT totalSetSize FROM sets WHERE name = 'Rinascita di Alara';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sets"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) FROM cards WHERE setCode IN (SELECT code FROM sets WHERE name = 'Rinascita di Alara');",
+          "score": 0.8671052631578948,
+          "similarity_max": 0.46578947368421053,
+          "tables_used": [
+            "sets",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) FROM cards WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = (SELECT code FROM sets WHERE name = 'Rinascita di Alara'));",
+          "score": 0.7157894736842106,
+          "similarity_max": 0.7684210526315789,
+          "tables_used": [
+            "sets",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT totalSetSize FROM sets WHERE name = 'Rinascita di Alara';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "sets"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 56.64
+  }
+}

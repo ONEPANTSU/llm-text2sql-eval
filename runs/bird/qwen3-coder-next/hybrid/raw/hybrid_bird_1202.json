@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1202",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3101.779832999455,
+  "execution_time_ms": 2.9177499964134768,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.`Examination Date` BETWEEN '1995-01-01' AND '1997-12-31'\n  AND Patient.Admission IS NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.75012499676086,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.Examination Date BETWEEN '1995-01-01' AND '1997-12-31'\n  AND Patient.Admission IS NULL;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.1815409996197559,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.`Examination Date` BETWEEN '1995-01-01' AND '1997-12-31'\n  AND Patient.Admission IS NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.18183399515692145,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.`Examination Date` BETWEEN '1995' AND '1997'\n  AND Patient.Admission IS NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.170667000929825,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.`Examination Date` BETWEEN '1995-01-01' AND '1997-12-31'\n  AND Patient.Admission IS NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.16583400429226458,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(Patient.ID) AS count\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nWHERE Patient.SEX = 'male'\n  AND Examination.Diagnosis = 'Behcet disease'\n  AND Examination.`Examination Date` BETWEEN '1995-01-01' AND '1997-12-31'\n  AND Patient.Admission IS NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3104.7666250015027
+}

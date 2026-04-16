@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1249",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > (SELECT AVG(\"U-PRO\") FROM Laboratory);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > (SELECT AVG(\"U-PRO\") FROM Laboratory);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > 'normal_threshold'\nAND l.\"U-PRO\" IS NOT NULL;",
+          "score": 0.9795899347623486,
+          "similarity_max": 0.640820130475303,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > 0.15;  -- Assuming >0.15 g/L is considered higher than normal for U-PRO",
+          "score": 0.8949324324324324,
+          "similarity_max": 0.6101351351351352,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > (SELECT AVG(\"U-PRO\") FROM Laboratory);",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > 'normal_threshold'\nAND l.\"U-PRO\" IS NOT NULL;",
+          "score": 0.9795899347623486,
+          "similarity_max": 0.640820130475303,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > (SELECT MAX(\"U-PRO\") * 0.9 FROM Laboratory);",
+          "score": 0.920940170940171,
+          "similarity_max": 0.7581196581196581,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT p.Diagnosis AS disease_name\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.\"U-PRO\" > (SELECT AVG(\"U-PRO\") FROM Laboratory);",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 12.1
+  }
+}

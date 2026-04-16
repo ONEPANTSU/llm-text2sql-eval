@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1482",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 9371.596000004502,
+  "execution_time_ms": 896.414625000034,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    customers.Segment,\n    (MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2013' THEN yearmonth.Consumption END) - \n     MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2012' THEN yearmonth.Consumption END)) * 100.0 / \n    NULLIF(MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2012' THEN yearmonth.Consumption END), 0) AS pct_increase\nFROM customers\nJOIN yearmonth ON customers.CustomerID = yearmonth.CustomerID\nWHERE customers.Segment IN ('SME', 'LAM', 'KAM')\n  AND substr(yearmonth.Date, 1, 4) IN ('2012', '2013')\nGROUP BY customers.Segment\nORDER BY pct_increase DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 314.013832998171,
+      "result_signature": "e8dc1ab253e966bf906cdbdce981af7d73e267c3e4dc91c02358e70d990f3929",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    customers.Segment,\n    (MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2013' THEN yearmonth.Consumption END) - \n     MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2012' THEN yearmonth.Consumption END)) * 100.0 / \n     MAX(CASE WHEN substr(yearmonth.Date, 1, 4) = '2012' THEN yearmonth.Consumption END) AS pct_increase\nFROM customers\nJOIN yearmonth ON customers.CustomerID = yearmonth.CustomerID\nWHERE customers.Segment IN ('SME', 'LAM', 'KAM')\n  AND substr(yearmonth.Date, 1, 4) IN ('2012', '2013')\nGROUP BY customers.Segment\nORDER BY pct_increase DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 185.56683299539145,
+      "result_signature": "e8dc1ab253e966bf906cdbdce981af7d73e267c3e4dc91c02358e70d990f3929",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH consumption_2012 AS (\n    SELECT \n        c.Segment,\n        SUM(ym.Consumption) AS total_consumption_2012\n    FROM customers c\n    JOIN yearmonth ym ON c.CustomerID = ym.CustomerID\n    WHERE strftime('%Y', ym.Date) = '2012'\n    GROUP BY c.Segment\n),\nconsumption_2013 AS (\n    SELECT \n        c.Segment,\n        SUM(ym.Consumption) AS total_consumption_2013\n    FROM customers c\n    JOIN yearmonth ym ON c.CustomerID = ym.CustomerID\n    WHERE strftime('%Y', ym.Date) = '2013'\n    GROUP BY c.Segment\n),\npct_increase AS (\n    SELECT \n        COALESCE(c2012.Segment, c2013.Segment) AS Segment,\n        COALESCE(c2012.total_consumption_2012, 0) AS consumption_2012,\n        COALESCE(c2013.total_consumption_2013, 0) AS consumption_2013,\n        CASE \n            WHEN COALESCE(c2012.total_consumption_2012, 0) = 0 THEN NULL\n            ELSE (COALESCE(c2013.total_consumption_2013, 0) - COALESCE(c2012.total_consumption_2012, 0)) * 100.0 / COALESCE(c2012.total_consumption_2012, 0)\n        END AS pct_increase\n    FROM consumption_2012 c2012\n    FULL OUTER JOIN consumption_2013 c2013 ON c2012.Segment = c2013.Segment\n)\nSELECT \n    Segment,\n    pct_increase\nFROM pct_increase\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 131.98941700102296,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH consumption_2012 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2012\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2012'\n    GROUP BY c.Segment\n),\nconsumption_2013 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2013\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2013'\n    GROUP BY c.Segment\n),\nsegment_comparison AS (\n    SELECT \n        COALESCE(c2012.Segment, c2013.Segment) AS Segment,\n        COALESCE(c2012.total_consumption_2012, 0) AS consumption_2012,\n        COALESCE(c2013.total_consumption_2013, 0) AS consumption_2013,\n        CASE \n            WHEN COALESCE(c2012.total_consumption_2012, 0) = 0 THEN NULL\n            ELSE (COALESCE(c2013.total_consumption_2013, 0) - COALESCE(c2012.total_consumption_2012, 0)) * 100.0 / COALESCE(c2012.total_consumption_2012, 0)\n        END AS pct_increase\n    FROM consumption_2012 c2012\n    FULL OUTER JOIN consumption_2013 c2013 ON c2012.Segment = c2013.Segment\n)\nSELECT \n    Segment,\n    pct_increase\nFROM segment_comparison\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 131.0009170047124,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH consumption_2012 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2012\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2012'\n    GROUP BY c.Segment\n),\nconsumption_2013 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2013\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2013'\n    GROUP BY c.Segment\n),\npct_increase AS (\n    SELECT \n        COALESCE(c2012.Segment, c2013.Segment) AS Segment,\n        COALESCE(c2012.total_consumption_2012, 0) AS consumption_2012,\n        COALESCE(c2013.total_consumption_2013, 0) AS consumption_2013,\n        CASE \n            WHEN COALESCE(c2012.total_consumption_2012, 0) = 0 THEN NULL\n            ELSE (COALESCE(c2013.total_consumption_2013, 0) - COALESCE(c2012.total_consumption_2012, 0)) * 100.0 / COALESCE(c2012.total_consumption_2012, 0)\n        END AS pct_increase\n    FROM consumption_2012 c2012\n    FULL OUTER JOIN consumption_2013 c2013 ON c2012.Segment = c2013.Segment\n)\nSELECT \n    Segment,\n    pct_increase\nFROM pct_increase\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 131.43112500256393,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH consumption_2012 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2012\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2012'\n    GROUP BY c.Segment\n),\nconsumption_2013 AS (\n    SELECT \n        c.Segment,\n        SUM(y.Consumption) AS total_consumption_2013\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE strftime('%Y', y.Date) = '2013'\n    GROUP BY c.Segment\n),\nsegment_comparison AS (\n    SELECT \n        COALESCE(c2012.Segment, c2013.Segment) AS Segment,\n        COALESCE(c2012.total_consumption_2012, 0) AS consumption_2012,\n        COALESCE(c2013.total_consumption_2013, 0) AS consumption_2013,\n        CASE \n            WHEN COALESCE(c2012.total_consumption_2012, 0) = 0 THEN NULL\n            ELSE (COALESCE(c2013.total_consumption_2013, 0) - COALESCE(c2012.total_consumption_2012, 0)) * 100.0 / COALESCE(c2012.total_consumption_2012, 0)\n        END AS pct_increase\n    FROM consumption_2012 c2012\n    FULL OUTER JOIN consumption_2013 c2013 ON c2012.Segment = c2013.Segment\n)\nSELECT \n    Segment,\n    pct_increase\nFROM segment_comparison\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e8dc1ab253e966bf906cdbdce981af7d73e267c3e4dc91c02358e70d990f3929": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4,
+        "238f9643cb49297d9f601cc15a2797260228a0a21df1a92c9c119a3bbbd9a019": 2
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 4427.627957993536,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH consumption_by_segment AS (\n    SELECT \n        c.Segment,\n        SUM(CASE WHEN strftime('%Y', y.Date) = '2012' THEN y.Consumption ELSE 0 END) AS consumption_2012,\n        SUM(CASE WHEN strftime('%Y', y.Date) = '2013' THEN y.Consumption ELSE 0 END) AS consumption_2013\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE c.Segment IN ('SME', 'LAM', 'KAM')\n    GROUP BY c.Segment\n)\nSELECT \n    Segment,\n    CASE \n        WHEN consumption_2012 = 0 THEN NULL\n        ELSE (consumption_2013 - consumption_2012) * 100.0 / consumption_2012\n    END AS pct_increase\nFROM consumption_by_segment\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 289.110375000746,
+        "result_signature": "238f9643cb49297d9f601cc15a2797260228a0a21df1a92c9c119a3bbbd9a019",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH consumption_by_segment AS (\n    SELECT \n        c.Segment,\n        SUM(CASE WHEN strftime('%Y', y.Date) = '2012' THEN y.Consumption ELSE 0 END) AS consumption_2012,\n        SUM(CASE WHEN strftime('%Y', y.Date) = '2013' THEN y.Consumption ELSE 0 END) AS consumption_2013\n    FROM customers c\n    JOIN yearmonth y ON c.CustomerID = y.CustomerID\n    WHERE c.Segment IN ('SME', 'LAM', 'KAM')\n    GROUP BY c.Segment\n)\nSELECT \n    Segment,\n    CASE \n        WHEN consumption_2012 = 0 THEN NULL\n        ELSE (consumption_2013 - consumption_2012) * 100.0 / consumption_2012\n    END AS pct_increase\nFROM consumption_by_segment\nWHERE Segment IN ('SME', 'LAM', 'KAM')\nORDER BY pct_increase DESC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 263.7775419934769,
+        "result_signature": "238f9643cb49297d9f601cc15a2797260228a0a21df1a92c9c119a3bbbd9a019",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    customers.Segment,\n    (SUM(CASE WHEN substr(yearmonth.Date, 1, 7) BETWEEN '2013-01' AND '2013-12' THEN yearmonth.Consumption END) - \n     SUM(CASE WHEN substr(yearmonth.Date, 1, 7) BETWEEN '2012-01' AND '2012-12' THEN yearmonth.Consumption END)) * 100.0 / \n     SUM(CASE WHEN substr(yearmonth.Date, 1, 7) BETWEEN '2012-01' AND '2012-12' THEN yearmonth.Consumption END) AS pct_increase\nFROM customers\nJOIN yearmonth ON customers.CustomerID = yearmonth.CustomerID\nWHERE customers.Segment IN ('SME', 'LAM', 'KAM')\nGROUP BY customers.Segment\nHAVING pct_increase IS NOT NULL\nORDER BY pct_increase DESC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 164.35000000637956,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 14695.832792000147
+}

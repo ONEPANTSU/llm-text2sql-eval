@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1357",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT income.date_received\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE member.first_name = 'Connor' AND member.last_name = 'Hilton' AND income.source = 'dues';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT i.date_received\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.first_name = 'Connor' AND m.last_name = 'Hilton' AND i.source = 'dues';",
+          "score": 0.7926573426573427,
+          "similarity_max": 0.8146853146853146,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT income.date_received\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE member.first_name = 'Connor' AND member.last_name = 'Hilton' AND income.source = 'dues';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT i.date_received\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.first_name = 'Connor' AND m.last_name = 'Hilton' AND i.source = 'dues';",
+          "score": 0.7926573426573427,
+          "similarity_max": 0.8146853146853146,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT income.date_received\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE member.first_name = 'Connor' AND member.last_name = 'Hilton' AND income.source = 'dues';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT i.date_received\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nWHERE m.first_name = 'Connor' AND m.last_name = 'Hilton' AND i.source = 'dues';",
+          "score": 0.7926573426573427,
+          "similarity_max": 0.8146853146853146,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT income.date_received\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE member.first_name = 'Connor' AND member.last_name = 'Hilton' AND income.notes LIKE '%dues%';",
+          "score": 0.6451948051948052,
+          "similarity_max": 0.8096103896103897,
+          "tables_used": [
+            "member"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT income.date_received\nFROM member\nJOIN income ON member.member_id = income.link_to_member\nWHERE member.first_name = 'Connor' AND member.last_name = 'Hilton' AND income.source = 'dues';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "member"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.2
+  }
+}

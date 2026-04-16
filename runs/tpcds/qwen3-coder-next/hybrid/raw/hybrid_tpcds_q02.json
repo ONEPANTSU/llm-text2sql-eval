@@ -1,0 +1,152 @@
+{
+  "task_id": "tpcds_q02",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 22401.014332994237,
+  "execution_time_ms": 161.60954099905211,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH sales_by_week AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT ws_sold_date_sk AS sold_date_sk, ws_ext_sales_price AS ext_sales_price FROM web_sales\n    UNION ALL\n    SELECT cs_sold_date_sk AS sold_date_sk, cs_ext_sales_price AS ext_sales_price FROM catalog_sales\n  ) sales\n  JOIN date_dim ON sales.sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivot_sales AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_week\n  GROUP BY d_week_seq, d_year\n),\nyear_2001 AS (\n  SELECT\n    d_week_seq AS d_week_seq1,\n    sun_sales AS sun_sales1,\n    mon_sales AS mon_sales1,\n    tue_sales AS tue_sales1,\n    wed_sales AS wed_sales1,\n    thu_sales AS thu_sales1,\n    fri_sales AS fri_sales1,\n    sat_sales AS sat_sales1\n  FROM pivot_sales\n  WHERE d_year = 2001\n),\nyear_2002 AS (\n  SELECT\n    d_week_seq AS d_week_seq2,\n    sun_sales AS sun_sales2,\n    mon_sales AS mon_sales2,\n    tue_sales AS tue_sales2,\n    wed_sales AS wed_sales2,\n    thu_sales AS thu_sales2,\n    fri_sales AS fri_sales2,\n    sat_sales AS sat_sales2\n  FROM pivot_sales\n  WHERE d_year = 2002\n)\nSELECT\n  y1.d_week_seq1 AS d_week_seq,\n  ROUND(y1.sun_sales1 / NULLIF(y2.sun_sales2, 0), 2) AS sun_sales_ratio,\n  ROUND(y1.mon_sales1 / NULLIF(y2.mon_sales2, 0), 2) AS mon_sales_ratio,\n  ROUND(y1.tue_sales1 / NULLIF(y2.tue_sales2, 0), 2) AS tue_sales_ratio,\n  ROUND(y1.wed_sales1 / NULLIF(y2.wed_sales2, 0), 2) AS wed_sales_ratio,\n  ROUND(y1.thu_sales1 / NULLIF(y2.thu_sales2, 0), 2) AS thu_sales_ratio,\n  ROUND(y1.fri_sales1 / NULLIF(y2.fri_sales2, 0), 2) AS fri_sales_ratio,\n  ROUND(y1.sat_sales1 / NULLIF(y2.sat_sales2, 0), 2) AS sat_sales_ratio\nFROM year_2001 y1\nJOIN year_2002 y2 ON y1.d_week_seq1 = y2.d_week_seq2 - 53\nORDER BY d_week_seq ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.93816699949093,
+      "result_signature": "5384293226487f14632eaf1b0300309a8a5b51d567d0fcf0059d1f7be98e1b41",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH sales_by_day AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT\n      ws_sold_date_sk AS sold_date_sk,\n      ws_ext_sales_price AS ext_sales_price,\n      'web' AS source\n    FROM web_sales\n    UNION ALL\n    SELECT\n      cs_sold_date_sk AS sold_date_sk,\n      cs_ext_sales_price AS ext_sales_price,\n      'catalog' AS source\n    FROM catalog_sales\n  ) AS combined_sales\n  JOIN date_dim ON combined_sales.sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivoted AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_day\n  GROUP BY d_week_seq, d_year\n),\nsales_2001 AS (\n  SELECT\n    d_week_seq AS d_week_seq1,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted\n  WHERE d_year = 2001\n),\nsales_2002 AS (\n  SELECT\n    d_week_seq AS d_week_seq2,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted\n  WHERE d_year = 2002\n),\naligned AS (\n  SELECT\n    s2001.d_week_seq1 AS d_week_seq,\n    s2001.sun_sales AS sun_sales_2001,\n    s2001.mon_sales AS mon_sales_2001,\n    s2001.tue_sales AS tue_sales_2001,\n    s2001.wed_sales AS wed_sales_2001,\n    s2001.thu_sales AS thu_sales_2001,\n    s2001.fri_sales AS fri_sales_2001,\n    s2001.sat_sales AS sat_sales_2001,\n    s2002.sun_sales AS sun_sales_2002,\n    s2002.mon_sales AS mon_sales_2002,\n    s2002.tue_sales AS tue_sales_2002,\n    s2002.wed_sales AS wed_sales_2002,\n    s2002.thu_sales AS thu_sales_2002,\n    s2002.fri_sales AS fri_sales_2002,\n    s2002.sat_sales AS sat_sales_2002\n  FROM sales_2001 s2001\n  JOIN sales_2002 s2002\n    ON s2001.d_week_seq1 = s2002.d_week_seq2 - 53\n)\nSELECT\n  d_week_seq,\n  ROUND(CAST(sun_sales_2001 AS DECIMAL) / NULLIF(sun_sales_2002, 0), 2) AS sun_ratio,\n  ROUND(CAST(mon_sales_2001 AS DECIMAL) / NULLIF(mon_sales_2002, 0), 2) AS mon_ratio,\n  ROUND(CAST(tue_sales_2001 AS DECIMAL) / NULLIF(tue_sales_2002, 0), 2) AS tue_ratio,\n  ROUND(CAST(wed_sales_2001 AS DECIMAL) / NULLIF(wed_sales_2002, 0), 2) AS wed_ratio,\n  ROUND(CAST(thu_sales_2001 AS DECIMAL) / NULLIF(thu_sales_2002, 0), 2) AS thu_ratio,\n  ROUND(CAST(fri_sales_2001 AS DECIMAL) / NULLIF(fri_sales_2002, 0), 2) AS fri_ratio,\n  ROUND(CAST(sat_sales_2001 AS DECIMAL) / NULLIF(sat_sales_2002, 0), 2) AS sat_ratio\nFROM aligned\nORDER BY d_week_seq;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 22.34079100890085,
+      "result_signature": "5384293226487f14632eaf1b0300309a8a5b51d567d0fcf0059d1f7be98e1b41",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH sales_by_week AS (\n  SELECT \n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT \n      ws_sold_date_sk AS date_sk,\n      ws_ext_sales_price AS ext_sales_price,\n      'web' AS source\n    FROM web_sales\n    UNION ALL\n    SELECT \n      cs_sold_date_sk AS date_sk,\n      cs_ext_sales_price AS ext_sales_price,\n      'catalog' AS source\n    FROM catalog_sales\n  ) AS combined_sales\n  JOIN date_dim ON combined_sales.date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivoted_sales AS (\n  SELECT \n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_week\n  GROUP BY d_week_seq, d_year\n),\nsales_2001 AS (\n  SELECT \n    d_week_seq AS d_week_seq1,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted_sales\n  WHERE d_year = 2001\n),\nsales_2002 AS (\n  SELECT \n    d_week_seq AS d_week_seq2,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted_sales\n  WHERE d_year = 2002\n)\nSELECT \n  s1.d_week_seq1 AS d_week_seq,\n  ROUND(s1.sun_sales / s2.sun_sales, 2) AS sun_sales_ratio,\n  ROUND(s1.mon_sales / s2.mon_sales, 2) AS mon_sales_ratio,\n  ROUND(s1.tue_sales / s2.tue_sales, 2) AS tue_sales_ratio,\n  ROUND(s1.wed_sales / s2.wed_sales, 2) AS wed_sales_ratio,\n  ROUND(s1.thu_sales / s2.thu_sales, 2) AS thu_sales_ratio,\n  ROUND(s1.fri_sales / s2.fri_sales, 2) AS fri_sales_ratio,\n  ROUND(s1.sat_sales / s2.sat_sales, 2) AS sat_sales_ratio\nFROM sales_2001 s1\nJOIN sales_2002 s2 ON s1.d_week_seq1 = s2.d_week_seq2 - 53\nORDER BY d_week_seq ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.2297919964185,
+      "result_signature": "7f3b9d074adec76ad3e355f7d1919aadf2107beec492e52f7f88518b23185bf0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH sales_by_week AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT\n      ws_sold_date_sk AS sold_date_sk,\n      ws_ext_sales_price AS ext_sales_price\n    FROM web_sales\n    UNION ALL\n    SELECT\n      cs_sold_date_sk AS sold_date_sk,\n      cs_ext_sales_price AS ext_sales_price\n    FROM catalog_sales\n  ) AS all_sales\n  JOIN date_dim ON all_sales.sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivot_sales AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_week\n  GROUP BY d_week_seq, d_year\n),\nsales_2001 AS (\n  SELECT\n    d_week_seq,\n    sun_sales,\n    mon_sales,\n    tue_sales,\n    wed_sales,\n    thu_sales,\n    fri_sales,\n    sat_sales\n  FROM pivot_sales\n  WHERE d_year = 2001\n),\nsales_2002 AS (\n  SELECT\n    d_week_seq - 53 AS d_week_seq,\n    sun_sales AS sun_sales_2002,\n    mon_sales AS mon_sales_2002,\n    tue_sales AS tue_sales_2002,\n    wed_sales AS wed_sales_2002,\n    thu_sales AS thu_sales_2002,\n    fri_sales AS fri_sales_2002,\n    sat_sales AS sat_sales_2002\n  FROM pivot_sales\n  WHERE d_year = 2002\n)\nSELECT\n  COALESCE(s1.d_week_seq, s2.d_week_seq) AS d_week_seq,\n  ROUND(s1.sun_sales / s2.sun_sales_2002, 2) AS sun_sales_ratio,\n  ROUND(s1.mon_sales / s2.mon_sales_2002, 2) AS mon_sales_ratio,\n  ROUND(s1.tue_sales / s2.tue_sales_2002, 2) AS tue_sales_ratio,\n  ROUND(s1.wed_sales / s2.wed_sales_2002, 2) AS wed_sales_ratio,\n  ROUND(s1.thu_sales / s2.thu_sales_2002, 2) AS thu_sales_ratio,\n  ROUND(s1.fri_sales / s2.fri_sales_2002, 2) AS fri_sales_ratio,\n  ROUND(s1.sat_sales / s2.sat_sales_2002, 2) AS sat_sales_ratio\nFROM sales_2001 s1\nFULL OUTER JOIN sales_2002 s2 ON s1.d_week_seq = s2.d_week_seq\nORDER BY d_week_seq ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.985833000740968,
+      "result_signature": "7f3b9d074adec76ad3e355f7d1919aadf2107beec492e52f7f88518b23185bf0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH sales_by_week AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ws_ext_sales_price) AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Sunday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    SUM(ws_ext_sales_price) AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Monday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    SUM(ws_ext_sales_price) AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Tuesday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    SUM(ws_ext_sales_price) AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Wednesday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    SUM(ws_ext_sales_price) AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Thursday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    SUM(ws_ext_sales_price) AS fri_sales,\n    0 AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Friday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    SUM(ws_ext_sales_price) AS sat_sales\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Saturday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(cs_ext_sales_price) AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Sunday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    SUM(cs_ext_sales_price) AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Monday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    SUM(cs_ext_sales_price) AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Tuesday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    SUM(cs_ext_sales_price) AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Wednesday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    SUM(cs_ext_sales_price) AS thu_sales,\n    0 AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Thursday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    SUM(cs_ext_sales_price) AS fri_sales,\n    0 AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Friday'\n  GROUP BY d_week_seq, d_year, d_day_name\n\n  UNION ALL\n\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    0 AS sun_sales,\n    0 AS mon_sales,\n    0 AS tue_sales,\n    0 AS wed_sales,\n    0 AS thu_sales,\n    0 AS fri_sales,\n    SUM(cs_ext_sales_price) AS sat_sales\n  FROM catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE d_year IN (2001, 2002)\n    AND d_day_name = 'Saturday'\n  GROUP BY d_week_seq, d_year, d_day_name\n),\naggregated_sales AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    SUM(sun_sales) AS sun_sales,\n    SUM(mon_sales) AS mon_sales,\n    SUM(tue_sales) AS tue_sales,\n    SUM(wed_sales) AS wed_sales,\n    SUM(thu_sales) AS thu_sales,\n    SUM(fri_sales) AS fri_sales,\n    SUM(sat_sales) AS sat_sales\n  FROM sales_by_week\n  GROUP BY d_week_seq, d_year\n),\nsales_2001 AS (\n  SELECT\n    d_week_seq,\n    sun_sales,\n    mon_sales,\n    tue_sales,\n    wed_sales,\n    thu_sales,\n    fri_sales,\n    sat_sales\n  FROM aggregated_sales\n  WHERE d_year = 2001\n),\nsales_2002 AS (\n  SELECT\n    d_week_seq - 53 AS d_week_seq,\n    sun_sales,\n    mon_sales,\n    tue_sales,\n    wed_sales,\n    thu_sales,\n    fri_sales,\n    sat_sales\n  FROM aggregated_sales\n  WHERE d_year = 2002\n)\nSELECT\n  s2001.d_week_seq,\n  ROUND(s2001.sun_sales / NULLIF(s2002.sun_sales, 0), 2) AS sun_sales_ratio,\n  ROUND(s2001.mon_sales / NULLIF(s2002.mon_sales, 0), 2) AS mon_sales_ratio,\n  ROUND(s2001.tue_sales / NULLIF(s2002.tue_sales, 0), 2) AS tue_sales_ratio,\n  ROUND(s2001.wed_sales / NULLIF(s2002.wed_sales, 0), 2) AS wed_sales_ratio,\n  ROUND(s2001.thu_sales / NULLIF(s2002.thu_sales, 0), 2) AS thu_sales_ratio,\n  ROUND(s2001.fri_sales / NULLIF(s2002.fri_sales, 0), 2) AS fri_sales_ratio,\n  ROUND(s2001.sat_sales / NULLIF(s2002.sat_sales, 0), 2) AS sat_sales_ratio\nFROM sales_2001 s2001\nJOIN sales_2002 s2002 ON s2001.d_week_seq = s2002.d_week_seq\nORDER BY s2001.d_week_seq ASC",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 44.9451660097111,
+      "result_signature": "5384293226487f14632eaf1b0300309a8a5b51d567d0fcf0059d1f7be98e1b41",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "WITH sales_by_day AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT\n      ws_sold_date_sk AS sold_date_sk,\n      ws_ext_sales_price AS ext_sales_price,\n      'web' AS source\n    FROM web_sales\n    UNION ALL\n    SELECT\n      cs_sold_date_sk AS sold_date_sk,\n      cs_ext_sales_price AS ext_sales_price,\n      'catalog' AS source\n    FROM catalog_sales\n  ) AS combined_sales\n  JOIN date_dim ON combined_sales.sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivoted AS (\n  SELECT\n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_day\n  GROUP BY d_week_seq, d_year\n),\nsales_2001 AS (\n  SELECT\n    d_week_seq AS d_week_seq1,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted\n  WHERE d_year = 2001\n),\nsales_2002 AS (\n  SELECT\n    d_week_seq AS d_week_seq2,\n    sun_sales, mon_sales, tue_sales, wed_sales, thu_sales, fri_sales, sat_sales\n  FROM pivoted\n  WHERE d_year = 2002\n),\naligned AS (\n  SELECT\n    s2001.d_week_seq1 AS d_week_seq,\n    s2001.sun_sales AS sun_sales_2001,\n    s2001.mon_sales AS mon_sales_2001,\n    s2001.tue_sales AS tue_sales_2001,\n    s2001.wed_sales AS wed_sales_2001,\n    s2001.thu_sales AS thu_sales_2001,\n    s2001.fri_sales AS fri_sales_2001,\n    s2001.sat_sales AS sat_sales_2001,\n    s2002.sun_sales AS sun_sales_2002,\n    s2002.mon_sales AS mon_sales_2002,\n    s2002.tue_sales AS tue_sales_2002,\n    s2002.wed_sales AS wed_sales_2002,\n    s2002.thu_sales AS thu_sales_2002,\n    s2002.fri_sales AS fri_sales_2002,\n    s2002.sat_sales AS sat_sales_2002\n  FROM sales_2001 s2001\n  JOIN sales_2002 s2002\n    ON s2001.d_week_seq1 = s2002.d_week_seq2 - 53\n)\nSELECT\n  d_week_seq,\n  ROUND(CAST(sun_sales_2001 AS DECIMAL) / NULLIF(sun_sales_2002, 0), 2) AS sun_ratio,\n  ROUND(CAST(mon_sales_2001 AS DECIMAL) / NULLIF(mon_sales_2002, 0), 2) AS mon_ratio,\n  ROUND(CAST(tue_sales_2001 AS DECIMAL) / NULLIF(tue_sales_2002, 0), 2) AS tue_ratio,\n  ROUND(CAST(wed_sales_2001 AS DECIMAL) / NULLIF(wed_sales_2002, 0), 2) AS wed_ratio,\n  ROUND(CAST(thu_sales_2001 AS DECIMAL) / NULLIF(thu_sales_2002, 0), 2) AS thu_ratio,\n  ROUND(CAST(fri_sales_2001 AS DECIMAL) / NULLIF(fri_sales_2002, 0), 2) AS fri_ratio,\n  ROUND(CAST(sat_sales_2001 AS DECIMAL) / NULLIF(sat_sales_2002, 0), 2) AS sat_ratio\nFROM aligned\nORDER BY d_week_seq;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "5384293226487f14632eaf1b0300309a8a5b51d567d0fcf0059d1f7be98e1b41": 3,
+        "7f3b9d074adec76ad3e355f7d1919aadf2107beec492e52f7f88518b23185bf0": 3
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 1,
+    "expansion_time_ms": 20782.62483299477,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH sales_by_week AS (\n  SELECT \n    d_week_seq,\n    d_year,\n    d_day_name,\n    SUM(ext_sales_price) AS day_sales\n  FROM (\n    SELECT \n      ws_sold_date_sk AS date_sk,\n      ws_ext_sales_price AS ext_sales_price,\n      'web' AS source\n    FROM web_sales\n    UNION ALL\n    SELECT \n      cs_sold_date_sk AS date_sk,\n      cs_ext_sales_price AS ext_sales_price,\n      'catalog' AS source\n    FROM catalog_sales\n  ) AS combined_sales\n  JOIN date_dim ON combined_sales.date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_year IN (2001, 2002)\n  GROUP BY d_week_seq, d_year, d_day_name\n),\npivoted_sales AS (\n  SELECT \n    d_week_seq,\n    d_year,\n    SUM(CASE WHEN d_day_name = 'Sunday' THEN day_sales ELSE 0 END) AS sun_sales,\n    SUM(CASE WHEN d_day_name = 'Monday' THEN day_sales ELSE 0 END) AS mon_sales,\n    SUM(CASE WHEN d_day_name = 'Tuesday' THEN day_sales ELSE 0 END) AS tue_sales,\n    SUM(CASE WHEN d_day_name = 'Wednesday' THEN day_sales ELSE 0 END) AS wed_sales,\n    SUM(CASE WHEN d_day_name = 'Thursday' THEN day_sales ELSE 0 END) AS thu_sales,\n    SUM(CASE WHEN d_day_name = 'Friday' THEN day_sales ELSE 0 END) AS fri_sales,\n    SUM(CASE WHEN d_day_name = 'Saturday' THEN day_sales ELSE 0 END) AS sat_sales\n  FROM sales_by_week\n  GROUP BY d_week_seq, d_year\n),\naligned_sales AS (\n  SELECT \n    s2001.d_week_seq AS d_week_seq,\n    s2001.sun_sales AS sun_sales_2001,\n    s2001.mon_sales AS mon_sales_2001,\n    s2001.tue_sales AS tue_sales_2001,\n    s2001.wed_sales AS wed_sales_2001,\n    s2001.thu_sales AS thu_sales_2001,\n    s2001.fri_sales AS fri_sales_2001,\n    s2001.sat_sales AS sat_sales_2001,\n    s2002.sun_sales AS sun_sales_2002,\n    s2002.mon_sales AS mon_sales_2002,\n    s2002.tue_sales AS tue_sales_2002,\n    s2002.wed_sales AS wed_sales_2002,\n    s2002.thu_sales AS thu_sales_2002,\n    s2002.fri_sales AS fri_sales_2002,\n    s2002.sat_sales AS sat_sales_2002\n  FROM pivoted_sales s2001\n  JOIN pivoted_sales s2002 \n    ON s2001.d_week_seq = s2002.d_week_seq - 53\n  WHERE s2001.d_year = 2001 AND s2002.d_year = 2002\n)\nSELECT \n  d_week_seq,\n  ROUND(sun_sales_2001 / sun_sales_2002, 2) AS sun_sales_ratio,\n  ROUND(mon_sales_2001 / mon_sales_2002, 2) AS mon_sales_ratio,\n  ROUND(tue_sales_2001 / tue_sales_2002, 2) AS tue_sales_ratio,\n  ROUND(wed_sales_2001 / wed_sales_2002, 2) AS wed_sales_ratio,\n  ROUND(thu_sales_2001 / thu_sales_2002, 2) AS thu_sales_ratio,\n  ROUND(fri_sales_2001 / fri_sales_2002, 2) AS fri_sales_ratio,\n  ROUND(sat_sales_2001 / sat_sales_2002, 2) AS sat_sales_ratio\nFROM aligned_sales\nORDER BY d_week_seq ASC;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 47.87683399626985,
+        "result_signature": "7f3b9d074adec76ad3e355f7d1919aadf2107beec492e52f7f88518b23185bf0",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 43345.4458329943
+}

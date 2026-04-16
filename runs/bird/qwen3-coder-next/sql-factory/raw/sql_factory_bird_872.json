@@ -1,0 +1,149 @@
+{
+  "task_id": "bird_872",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT d.code\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.raceId = 45 AND q.q3 = '0:01:33';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT d.code\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.raceId = 45 AND q.q3 = '0:01:33';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT d.code\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nWHERE q.raceId = 45 AND q.q3 = '0:01:33';",
+          "score": 0.8160869565217391,
+          "similarity_max": 0.7678260869565217,
+          "tables_used": [
+            "drivers",
+            "qualifying",
+            "q",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT d.code\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.raceId = 45 AND q.q3 = '0:01:33';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT d.code\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nWHERE q.raceId = 45 AND q.q3 = '0:01:33';",
+          "score": 0.8160869565217391,
+          "similarity_max": 0.7678260869565217,
+          "tables_used": [
+            "drivers",
+            "qualifying",
+            "q",
+            "d"
+          ]
+        },
+        {
+          "sql": "SELECT d.code\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nWHERE q.raceId = 45 AND TRIM(q.q3) = '0:01:33';",
+          "score": 0.7963235294117647,
+          "similarity_max": 0.8073529411764706,
+          "tables_used": [
+            "drivers",
+            "qualifying",
+            "q",
+            "d"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT d.code\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.raceId = 45 AND q.q3 = '0:01:33';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "drivers",
+        "d",
+        "q",
+        "races",
+        "qualifying"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.12
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_888",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1534.9767500010785,
+  "execution_time_ms": 2.861417000531219,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT circuits.name, circuits.location, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1600840007304214,
+      "result_signature": "e3e218bf689752ff1fb3190f02e2e434ac6f0f1477bc5fb168bf182190abb37a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT circuits.country, circuits.name, circuits.location\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3375000014784746,
+      "result_signature": "aed7af076d91371b8eabf318c447f95462bea6ec6fe1dbb852cf97759f7da005",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT circuits.name, circuits.location, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5863330006832257,
+      "result_signature": "e3e218bf689752ff1fb3190f02e2e434ac6f0f1477bc5fb168bf182190abb37a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT circuits.name, circuits.location, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2565419999882579,
+      "result_signature": "e3e218bf689752ff1fb3190f02e2e434ac6f0f1477bc5fb168bf182190abb37a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT circuits.name, circuits.location, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3521659964462742,
+      "result_signature": "e3e218bf689752ff1fb3190f02e2e434ac6f0f1477bc5fb168bf182190abb37a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT circuits.name, circuits.location, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.name = 'European Grand Prix'\nORDER BY races.year ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e3e218bf689752ff1fb3190f02e2e434ac6f0f1477bc5fb168bf182190abb37a": 4,
+        "aed7af076d91371b8eabf318c447f95462bea6ec6fe1dbb852cf97759f7da005": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1667.70245799853,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3205.59970800241
+}

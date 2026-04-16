@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q64",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5738.633792003384,
+  "execution_time_ms": 418.37833300814964,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    i_brand,\n    ca_state,\n    SUM(ss_net_profit) AS total_profit\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    i_brand,\n    ca_state\nORDER BY \n    i_brand,\n    ca_state;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 67.48620899452362,
+      "result_signature": "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_brand,\n    ca_state,\n    SUM(ss_net_profit) AS total_profit\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    i_brand,\n    ca_state",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.00545899907593,
+      "result_signature": "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT i_brand, ca_state, SUM(ss_net_profit) AS total_profit\nFROM store_sales\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY i_brand, ca_state",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.85425000428222,
+      "result_signature": "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    i_brand,\n    ca_state,\n    SUM(ss_net_profit) AS total_profit\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    i_brand,\n    ca_state",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.38558298978023,
+      "result_signature": "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_brand,\n    ca_state,\n    SUM(ss_net_profit) AS total_profit\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    i_brand,\n    ca_state",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.98825000983197,
+      "result_signature": "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    i_brand,\n    ca_state,\n    SUM(ss_net_profit) AS total_profit\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    i_brand,\n    ca_state",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "732f4c20c2c1d1400437859310faad69018cc46fd20981100dba4e839a6709d7": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6157.088790991111
+}

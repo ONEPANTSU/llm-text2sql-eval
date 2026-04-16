@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_730",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1354.0701669990085,
+  "execution_time_ms": 5.944249998719897,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4257079965318553,
+      "result_signature": "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3839999955962412,
+      "result_signature": "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8448750013485551,
+      "result_signature": "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8292909988085739,
+      "result_signature": "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.820708999526687,
+      "result_signature": "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE p.publisher_name = 'Marvel Comics'\n  AND sp.power_name = 'Super Strength';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "7aee7d4bdbda4e2fd2289681595d2597134380a3f408560da751b12fd5c0a85f": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1360.0478329972248
+}

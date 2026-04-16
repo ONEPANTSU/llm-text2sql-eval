@@ -1,0 +1,162 @@
+{
+  "task_id": "spider2_51",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m-01', ct.txn_date) AS month_start,\n        SUM(CASE WHEN ct.txn_type = 'deposit' THEN ct.txn_amount ELSE 0 END) -\n        SUM(CASE WHEN ct.txn_type = 'withdrawal' THEN ct.txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m-01', ct.txn_date)\n),\nmonthly_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ct",
+            "latest_balances",
+            "customer_transactions",
+            "monthly_balances",
+            "monthly_net",
+            "mb2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m-01', ct.txn_date) AS month_start,\n        SUM(CASE WHEN ct.txn_type = 'deposit' THEN ct.txn_amount ELSE 0 END) -\n        SUM(CASE WHEN ct.txn_type = 'withdrawal' THEN ct.txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m-01', ct.txn_date)\n),\nmonthly_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ct",
+            "latest_balances",
+            "customer_transactions",
+            "monthly_balances",
+            "monthly_net",
+            "mb2"
+          ]
+        },
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        customer_id,\n        date(txn_date, 'start of month') AS month_start,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions\n    GROUP BY customer_id, month_start\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net_amount) OVER (\n            PARTITION BY ...",
+          "score": 1.209908536585366,
+          "similarity_max": 0.4801829268292683,
+          "tables_used": [
+            "latest_with_prev",
+            "customer_transactions",
+            "ranked_months",
+            "monthly_net",
+            "cumulative_balances"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m-01', ct.txn_date) AS month_start,\n        SUM(CASE WHEN ct.txn_type = 'deposit' THEN ct.txn_amount ELSE 0 END) -\n        SUM(CASE WHEN ct.txn_type = 'withdrawal' THEN ct.txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m-01', ct.txn_date)\n),\nmonthly_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ct",
+            "latest_balances",
+            "customer_transactions",
+            "monthly_balances",
+            "monthly_net",
+            "mb2"
+          ]
+        },
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        customer_id,\n        date(txn_date, 'start of month') AS month_start,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions\n    GROUP BY customer_id, month_start\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net_amount) OVER (\n            PARTITION BY ...",
+          "score": 1.209908536585366,
+          "similarity_max": 0.4801829268292683,
+          "tables_used": [
+            "latest_with_prev",
+            "customer_transactions",
+            "ranked_months",
+            "monthly_net",
+            "cumulative_balances"
+          ]
+        },
+        {
+          "sql": "WITH monthly_net AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m-01', txn_date) AS month_start,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions\n    GROUP BY customer_id, month_start\n),\ncumulative_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net_amount) OVER (\n            PARTITION BY cu...",
+          "score": 1.1401428571428571,
+          "similarity_max": 0.6197142857142857,
+          "tables_used": [
+            "latest_balances",
+            "latest_month",
+            "lm",
+            "customer_transactions",
+            "monthly_net",
+            "cumulative_balances",
+            "cb"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH monthly_net AS (\n    SELECT \n        ct.customer_id,\n        strftime('%Y-%m-01', ct.txn_date) AS month_start,\n        SUM(CASE WHEN ct.txn_type = 'deposit' THEN ct.txn_amount ELSE 0 END) -\n        SUM(CASE WHEN ct.txn_type = 'withdrawal' THEN ct.txn_amount ELSE 0 END) AS net_amount\n    FROM customer_transactions ct\n    GROUP BY ct.customer_id, strftime('%Y-%m-01', ct.txn_date)\n),\nmonthly_balances AS (\n    SELECT \n        customer_id,\n        month_start,\n        net_amount,\n        SUM(net...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ct",
+        "latest_balances",
+        "customer_transactions",
+        "monthly_balances",
+        "monthly_net",
+        "mb2"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "misuse of window function SUM()",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 2.04
+  }
+}

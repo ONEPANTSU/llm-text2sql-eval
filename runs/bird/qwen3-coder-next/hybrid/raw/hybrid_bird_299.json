@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_299",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2562.2836670008837,
+  "execution_time_ms": 3.1505000006291084,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT 'No information available in schema to determine carcinogenicity' AS result;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8082089989329688,
+      "result_signature": "42e2e864b60235aeeecaf94d0928731738d30f8e3399101465750db2e3b83ee1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT label FROM molecule WHERE label = 'TR124';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0360000014770776,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT 'No data available to determine carcinogenicity' AS result;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.29379199986578897,
+      "result_signature": "97ac8593466d1df461464859ba9f09119e9afaba112b7eabb6028983ae30908e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS is_carcinogenic\nFROM molecule\nWHERE label = 'TR124';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.42341699736425653,
+      "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT 'No information available' AS is_carcinogenic;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.18558299780124798,
+      "result_signature": "4ed4939d90ec6c6fba50bc53949e9055d9ac1a756cb3a33dd000c4956b00411b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT label FROM molecule WHERE label = 'TR124';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "42e2e864b60235aeeecaf94d0928731738d30f8e3399101465750db2e3b83ee1": 1,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2,
+        "97ac8593466d1df461464859ba9f09119e9afaba112b7eabb6028983ae30908e": 1,
+        "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf": 1,
+        "4ed4939d90ec6c6fba50bc53949e9055d9ac1a756cb3a33dd000c4956b00411b": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 1,
+    "variations_accepted": 1,
+    "expansion_time_ms": 2528.9668750046985,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT 'No information available' AS is_carcinogenic FROM molecule WHERE label = 'TR124';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.052583997079637,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5094.663458003197
+}

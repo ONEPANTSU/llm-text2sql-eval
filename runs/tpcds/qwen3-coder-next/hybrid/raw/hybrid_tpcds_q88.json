@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q88",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6515.452042003744,
+  "execution_time_ms": 3.915958004654385,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    i_category,\n    s_store_name,\n    d_quarter,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    household_demographics.hd_dep_count = 4\n    AND store.s_store_name = 'ese'\n    AND date_dim.d_year = 2001\n    AND store_sales.ss_sold_time_sk IN (\n        SELECT t_time_sk \n        FROM time_dim \n        WHERE t_hour = 8 AND t_minute >= 30\n    )\nGROUP BY \n    i_category,\n    s_store_name,\n    d_quarter\nORDER BY \n    i_category,\n    s_store_name,\n    d_quarter\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"d_quarter\" not found in FROM clause!\nCandidate bindings: \"d_quarter_seq\", \"d_quarter_name\", \"d_fy_quarter_seq\", \"d_date\", \"d_current_day\"\n\nLINE 25:     d_quarter\n             ^",
+      "exec_time_ms": 1.1272089905105531,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_category,\n    s_store_name,\n    d_quarter,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    household_demographics.hd_dep_count = 4\n    AND store.s_store_name = 'ese'\n    AND date_dim.d_year = 2001  -- Assuming year 2001 as the given year; adjust as needed\n    AND store_sales.ss_sold_time_sk IN (\n        SELECT t_time_sk \n        FROM time_dim \n        WHERE t_hour = 8 AND t_minute >= 30\n    )\nGROUP BY \n    i_category,\n    s_store_name,\n    d_quarter\nORDER BY \n    i_category,\n    s_store_name,\n    d_quarter;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"d_quarter\" not found in FROM clause!\nCandidate bindings: \"d_quarter_seq\", \"d_quarter_name\", \"d_fy_quarter_seq\", \"d_date\", \"d_current_day\"\n\nLINE 25:     d_quarter\n             ^",
+      "exec_time_ms": 0.5871660105185583,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i_category, \n    s_store_name, \n    d_quarter, \n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    household_demographics.hd_dep_count = 4\n    AND store.s_store_name = 'ese'\n    AND date_dim.d_year = 2001  -- Assuming year 2001 as default; adjust as needed\nGROUP BY \n    i_category, \n    s_store_name, \n    d_quarter\nORDER BY \n    i_category, \n    s_store_name, \n    d_quarter;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"d_quarter\" not found in FROM clause!\nCandidate bindings: \"d_quarter_seq\", \"d_quarter_name\", \"d_fy_quarter_seq\", \"d_date\", \"d_current_day\"\n\nLINE 20:     d_quarter\n             ^",
+      "exec_time_ms": 0.5266670050332323,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    i_category,\n    s_store_name,\n    d_quarter,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    hd_dep_count = 4\n    AND s_store_name = 'ese'\n    AND date_dim.d_year = 2001  -- Assuming year 2001 as the given year\n    AND store_sales.ss_sold_time_sk IN (\n        SELECT t_time_sk \n        FROM time_dim \n        WHERE t_hour = 8 AND t_minute >= 30\n    )\nGROUP BY \n    i_category,\n    s_store_name,\n    d_quarter\nORDER BY \n    i_category,\n    s_store_name,\n    d_quarter",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"d_quarter\" not found in FROM clause!\nCandidate bindings: \"d_quarter_seq\", \"d_quarter_name\", \"d_fy_quarter_seq\", \"d_date\", \"d_current_day\"\n\nLINE 25:     d_quarter\n             ^",
+      "exec_time_ms": 0.6358749960782006,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_category,\n    s_store_name,\n    d_quarter,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\n    JOIN time_dim ON store_sales.ss_sold_time_sk = time_dim.t_time_sk\nWHERE \n    hd_dep_count = 4\n    AND s_store_name = 'ese'\n    AND t_hour = 8\n    AND t_minute >= 30\nGROUP BY \n    i_category,\n    s_store_name,\n    d_quarter\nORDER BY \n    i_category,\n    s_store_name,\n    d_quarter;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"d_quarter\" not found in FROM clause!\nCandidate bindings: \"d_quarter_seq\", \"d_quarter_name\", \"d_fy_quarter_seq\", \"d_date\", \"d_current_day\"\n\nLINE 22:     d_quarter\n             ^",
+      "exec_time_ms": 0.6597500032512471,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 6519.468124999548
+}

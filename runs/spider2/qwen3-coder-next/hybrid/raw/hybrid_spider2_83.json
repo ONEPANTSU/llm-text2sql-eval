@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_83",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8101.510749998852,
+  "execution_time_ms": 7.380333001492545,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH team_wins AS (\n    SELECT \n        l.id AS league_id,\n        l.name AS league_name,\n        t.id AS team_id,\n        t.name AS team_name,\n        SUM(CASE \n            WHEN (t.id = m.home_team_id AND m.home_goals > m.away_goals) \n                 OR (t.id = m.away_team_id AND m.away_goals > m.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches m\n    JOIN teams t ON m.home_team_id = t.id OR m.away_team_id = t.id\n    JOIN leagues l ON t.league_id = l.id\n    GROUP BY l.id, t.id, t.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        league_name,\n        team_id,\n        team_name,\n        total_wins,\n        ROW_NUMBER() OVER (PARTITION BY league_id ORDER BY total_wins ASC, team_name ASC) AS rn\n    FROM team_wins\n)\nSELECT \n    league_name,\n    team_name\nFROM min_wins_per_league\nWHERE rn = 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: matches",
+      "exec_time_ms": 3.5787919914582744,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH team_wins AS (\n    SELECT \n        leagues.id AS league_id,\n        teams.id AS team_id,\n        teams.name AS team_name,\n        SUM(CASE \n            WHEN (teams.id = matches.home_team_id AND matches.home_goals > matches.away_goals) \n                 OR (teams.id = matches.away_team_id AND matches.away_goals > matches.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches\n    JOIN teams ON matches.home_team_id = teams.id OR matches.away_team_id = teams.id\n    JOIN leagues ON teams.league_id = leagues.id\n    GROUP BY leagues.id, teams.id, teams.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        MIN(total_wins) AS min_wins\n    FROM team_wins\n    GROUP BY league_id\n)\nSELECT \n    tw.team_name\nFROM team_wins tw\nJOIN min_wins_per_league mw ON tw.league_id = mw.league_id AND tw.total_wins = mw.min_wins\nORDER BY tw.league_id ASC, tw.team_name ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: matches",
+      "exec_time_ms": 0.5042499979026616,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH team_wins AS (\n    SELECT \n        l.id AS league_id,\n        l.name AS league_name,\n        t.id AS team_id,\n        t.name AS team_name,\n        SUM(\n            CASE \n                WHEN (t.id = m.home_team_id AND m.home_goals > m.away_goals) \n                     OR (t.id = m.away_team_id AND m.away_goals > m.home_goals) \n                THEN 1 \n                ELSE 0 \n            END\n        ) AS total_wins\n    FROM matches m\n    JOIN teams t ON m.home_team_id = t.id OR m.away_team_id = t.id\n    JOIN leagues l ON t.league_id = l.id\n    GROUP BY l.id, t.id, t.name\n),\nranked_teams AS (\n    SELECT \n        league_id,\n        league_name,\n        team_id,\n        team_name,\n        total_wins,\n        ROW_NUMBER() OVER (\n            PARTITION BY league_id \n            ORDER BY total_wins ASC, team_name ASC\n        ) AS rn\n    FROM team_wins\n)\nSELECT \n    league_name,\n    team_name\nFROM ranked_teams\nWHERE rn = 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: matches",
+      "exec_time_ms": 0.7308750064112246,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH team_wins AS (\n    SELECT \n        leagues.id AS league_id,\n        leagues.name AS league_name,\n        teams.id AS team_id,\n        teams.name AS team_name,\n        SUM(CASE \n            WHEN (teams.id = matches.home_team_id AND matches.home_goals > matches.away_goals) \n                 OR (teams.id = matches.away_team_id AND matches.away_goals > matches.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches\n    JOIN teams ON matches.home_team_id = teams.id OR matches.away_team_id = teams.id\n    JOIN leagues ON teams.league_id = leagues.id\n    GROUP BY leagues.id, teams.id, teams.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        MIN(total_wins) AS min_wins\n    FROM team_wins\n    GROUP BY league_id\n)\nSELECT \n    tw.team_name\nFROM team_wins tw\nJOIN min_wins_per_league mw ON tw.league_id = mw.league_id AND tw.total_wins = mw.min_wins\nORDER BY tw.league_id ASC, tw.team_name ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: matches",
+      "exec_time_ms": 0.7815830031177029,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH team_wins AS (\n    SELECT \n        leagues.id AS league_id,\n        teams.id AS team_id,\n        teams.name AS team_name,\n        SUM(CASE \n            WHEN (teams.id = matches.home_team_id AND matches.home_goals > matches.away_goals) \n                 OR (teams.id = matches.away_team_id AND matches.away_goals > matches.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches\n    JOIN teams ON matches.home_team_id = teams.id OR matches.away_team_id = teams.id\n    JOIN leagues ON teams.league_id = leagues.id\n    GROUP BY leagues.id, teams.id, teams.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        MIN(total_wins) AS min_wins\n    FROM team_wins\n    GROUP BY league_id\n)\nSELECT \n    tw.team_name\nFROM team_wins tw\nJOIN min_wins_per_league mw ON tw.league_id = mw.league_id AND tw.total_wins = mw.min_wins\nORDER BY tw.league_id ASC, tw.team_name ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: matches",
+      "exec_time_ms": 1.6496659955009818,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: matches",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH team_wins AS (\n    SELECT \n        l.id AS league_id,\n        l.name AS league_name,\n        t.id AS team_id,\n        t.name AS team_name,\n        SUM(CASE \n            WHEN (t.id = m.home_team_id AND m.home_goals > m.away_goals) \n                 OR (t.id = m.away_team_id AND m.away_goals > m.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches m\n    JOIN teams t ON (m.home_team_id = t.id OR m.away_team_id = t.id)\n    JOIN leagues l ON t.league_id = l.id\n    GROUP BY l.id, t.id, t.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        league_name,\n        team_id,\n        team_name,\n        total_wins,\n        ROW_NUMBER() OVER (PARTITION BY league_id ORDER BY total_wins ASC, team_name ASC) AS rn\n    FROM team_wins\n)\nSELECT \n    league_name,\n    team_name\nFROM min_wins_per_league\nWHERE rn = 1;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: matches",
+        "exec_time_ms": 4.76850000268314,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH team_wins AS (\n    SELECT \n        l.id AS league_id,\n        l.name AS league_name,\n        t.id AS team_id,\n        t.name AS team_name,\n        SUM(CASE \n            WHEN (t.id = m.home_team_id AND m.home_goals > m.away_goals) \n                 OR (t.id = m.away_team_id AND m.away_goals > m.home_goals) \n            THEN 1 \n            ELSE 0 \n        END) AS total_wins\n    FROM matches m\n    JOIN teams t ON (m.home_team_id = t.id OR m.away_team_id = t.id)\n    JOIN leagues l ON t.league_id = l.id\n    GROUP BY l.id, t.id, t.name\n),\nmin_wins_per_league AS (\n    SELECT \n        league_id,\n        league_name,\n        team_id,\n        team_name,\n        total_wins,\n        ROW_NUMBER() OVER (PARTITION BY league_id ORDER BY total_wins ASC, team_name ASC) AS rn\n    FROM team_wins\n)\nSELECT \n    league_name,\n    team_name\nFROM min_wins_per_league\nWHERE rn = 1;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: matches",
+        "exec_time_ms": 5.284457991365343,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 15068.204999988666
+}

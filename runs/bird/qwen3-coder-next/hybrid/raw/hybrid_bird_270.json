@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_270",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3033.6465840009623,
+  "execution_time_ms": 10.158999997656792,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(*) FILTER (WHERE element = 'Ca') > 0 THEN \n            CASE \n                WHEN COUNT(*) FILTER (WHERE element = 'Ca' AND label LIKE '%carcinogen%') > COUNT(*) FILTER (WHERE element = 'Ca' AND label NOT LIKE '%carcinogen%') \n                THEN 'mostly carcinogenic'\n                ELSE 'mostly non carcinogenic'\n            END\n        ELSE 'no molecules with Calcium'\n    END AS carcinogenicity_status\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.226625002047513,
+      "result_signature": "e17355af568ef40fc01f8a0eb5f10f0cf0415f9841571c3770ac2caafc267c8e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) > 0 THEN 'carcinogenic'\n        ELSE 'non carcinogenic'\n    END AS classification\nFROM atom a\nLEFT JOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7998330004047602,
+      "result_signature": "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) > 0 \n        THEN 'carcinogenic' \n        ELSE 'non carcinogenic' \n    END AS classification\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4402500019059516,
+      "result_signature": "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) > 0 THEN 'carcinogenic'\n        ELSE 'non carcinogenic'\n    END AS carcinogenic_status\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.189499998872634,
+      "result_signature": "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(CASE WHEN m.label LIKE '%carcinogenic%' THEN 1 END) > \n             COUNT(CASE WHEN m.label NOT LIKE '%carcinogenic%' THEN 1 END) \n        THEN 'mostly carcinogenic' \n        ELSE 'non carcinogenic' \n    END AS classification\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1105830053566024,
+      "result_signature": "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    CASE \n        WHEN COUNT(CASE WHEN m.label LIKE '%carcinogenic%' THEN 1 END) > \n             COUNT(CASE WHEN m.label NOT LIKE '%carcinogenic%' THEN 1 END) \n        THEN 'mostly carcinogenic' \n        ELSE 'non carcinogenic' \n    END AS classification\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e17355af568ef40fc01f8a0eb5f10f0cf0415f9841571c3770ac2caafc267c8e": 1,
+        "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320": 5
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1823.2107090007048,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM atom a \n            JOIN molecule m ON a.molecule_id = m.molecule_id \n            WHERE a.element = 'Ca'\n        ) THEN 'carcinogenic'\n        ELSE 'non carcinogenic'\n    END AS carcinogenic_status;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.7900420027435757,
+        "result_signature": "e5160a0453181a06086da47c40b4d675ebed925906e743c6c569438ad35ab320",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4867.235957994126
+}

@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_1499",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT MAX(y.Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth y\nJOIN customers c ON y.CustomerID = c.CustomerID\nWHERE c.Currency = 'Euro';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(y.Consumption) AS biggest_monthly_consumption\nFROM yearmonth y\nJOIN customers c ON y.CustomerID = c.CustomerID\nWHERE c.Currency = 'Euro';",
+          "score": 0.7772727272727272,
+          "similarity_max": 0.8454545454545455,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT MAX(y.Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth y\nJOIN customers c ON y.CustomerID = c.CustomerID\nWHERE c.Currency = 'Euro';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "sql": "WITH euro_customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n)\nSELECT MAX(Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth\nWHERE CustomerID IN (SELECT CustomerID FROM euro_customers);",
+          "score": 1.0314285714285716,
+          "similarity_max": 0.5371428571428571,
+          "tables_used": [
+            "customers",
+            "yearmonth"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(Consumption) AS biggest_monthly_consumption\nFROM yearmonth\nWHERE CustomerID IN (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n);",
+          "score": 0.852857142857143,
+          "similarity_max": 0.6942857142857143,
+          "tables_used": [
+            "customers",
+            "yearmonth"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT MAX(y.Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth y\nJOIN customers c ON y.CustomerID = c.CustomerID\nWHERE c.Currency = 'Euro';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "sql": "WITH euro_customers AS (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n)\nSELECT MAX(Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth\nWHERE CustomerID IN (SELECT CustomerID FROM euro_customers);",
+          "score": 1.0314285714285716,
+          "similarity_max": 0.5371428571428571,
+          "tables_used": [
+            "customers",
+            "yearmonth"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(Consumption) AS biggest_monthly_consumption\nFROM yearmonth\nWHERE CustomerID IN (\n    SELECT CustomerID\n    FROM customers\n    WHERE Currency = 'Euro'\n);",
+          "score": 0.852857142857143,
+          "similarity_max": 0.6942857142857143,
+          "tables_used": [
+            "customers",
+            "yearmonth"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT MAX(y.Consumption) AS BiggestMonthlyConsumption\nFROM yearmonth y\nJOIN customers c ON y.CustomerID = c.CustomerID\nWHERE c.Currency = 'Euro';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "yearmonth",
+        "c",
+        "y"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 52.05
+  }
+}

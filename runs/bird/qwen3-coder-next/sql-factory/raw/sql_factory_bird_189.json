@@ -1,0 +1,85 @@
+{
+  "task_id": "bird_189",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT a.account_id\nFROM account a\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.gender = 'F'\n  AND c.birth_date = (\n    SELECT MIN(birth_date)\n    FROM client\n    WHERE gender = 'F'\n  )\n  AND a.account_id IN (\n    SELECT account_id\n    FROM (\n      SELECT account_id, AVG(amount) AS avg_salary\n      FROM trans\n      WHERE type = 'salary' AND operation = 'credit'\n      GROUP BY account_id\n    )\n    WHERE avg_salary = (\n      SELECT MIN(avg_salary)\n ...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT a.account_id\nFROM account a\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.gender = 'F'\nORDER BY c.birth_date ASC, (\n    SELECT AVG(t.amount)\n    FROM trans t\n    WHERE t.account_id = a.account_id\n) ASC\nLIMIT 1;",
+          "score": 1.0518820818129442,
+          "similarity_max": 0.4962358363741118,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT a.account_id\nFROM account a\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.gender = 'F'\n  AND c.birth_date = (\n    SELECT MIN(birth_date)\n    FROM client\n    WHERE gender = 'F'\n  )\n  AND a.account_id IN (\n    SELECT account_id\n    FROM (\n      SELECT account_id, AVG(amount) AS avg_salary\n      FROM trans\n      WHERE type = 'salary' AND operation = 'credit'\n      GROUP BY account_id\n    )\n    WHERE avg_salary = (\n      SELECT MIN(avg_salary)\n ...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "c",
+        "a",
+        "account",
+        "trans"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 47989.22
+  }
+}

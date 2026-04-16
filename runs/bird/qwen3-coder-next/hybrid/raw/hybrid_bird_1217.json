@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_1217",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4587.163584001246,
+  "execution_time_ms": 20.50687500013737,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS Albumin_Status\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday LIKE '1982%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.392458997259382,
+      "result_signature": "e9f2c1fce7d1a2c6dc1c7e13e4fe7bff69b137d7273de52552f9b58bd7398900",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS Albumin_Status\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    p.Birthday LIKE '1982%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9842080000671558,
+      "result_signature": "e9f2c1fce7d1a2c6dc1c7e13e4fe7bff69b137d7273de52552f9b58bd7398900",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS Albumin_Status\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday LIKE '1982%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6667079980834387,
+      "result_signature": "e9f2c1fce7d1a2c6dc1c7e13e4fe7bff69b137d7273de52552f9b58bd7398900",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS AlbuminStatus\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday LIKE '1982%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5278749997378327,
+      "result_signature": "e9f2c1fce7d1a2c6dc1c7e13e4fe7bff69b137d7273de52552f9b58bd7398900",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    p.ID,\n    p.Birthday,\n    l.ALB,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS Albumin_Status\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday LIKE '1982%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.586207996297162,
+      "result_signature": "7ada2b25ed2b86b2d779cc0f39e2e375f1791efa02bc75aac2c1c236e274226b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    p.ID,\n    CASE \n        WHEN l.ALB BETWEEN 3.5 AND 5.0 THEN 'Within normal range'\n        ELSE 'Outside normal range'\n    END AS AlbuminStatus\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Birthday LIKE '1982%';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e9f2c1fce7d1a2c6dc1c7e13e4fe7bff69b137d7273de52552f9b58bd7398900": 4,
+        "7ada2b25ed2b86b2d779cc0f39e2e375f1791efa02bc75aac2c1c236e274226b": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 8894.194707994757,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 13502.002291999815
+}

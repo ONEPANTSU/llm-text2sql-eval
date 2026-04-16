@@ -1,0 +1,220 @@
+{
+  "task_id": "tpcds_q25",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss_net_profit) AS store_sales_profit,\n    SUM(sr_net_loss) AS store_returns_loss,\n    SUM(cs_net_profit) AS catalog_sales_profit\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN store ON ss_store_sk = s_store_sk\nJOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\nLEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n    AND ss_item_sk = sr_item_sk\n    AND ss_ticket_number = sr_ticket_number\nLEFT JOIN da...",
+          "score": 0.9528251599147123,
+          "similarity_max": 0.6943496801705756,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss.ss_net_profit) AS store_sales_profit,\n    SUM(sr.sr_net_loss) AS store_returns_loss,\n    SUM(cs.cs_net_paid) AS catalog_sales_profit\nFROM store_sales ss\nJOIN store_returns sr\n    ON ss.ss_customer_sk = sr.sr_customer_sk\n    AND ss.ss_item_sk = sr.sr_item_sk\n    AND ss.ss_ticket_number = sr.sr_ticket_number\nJOIN catalog_sales cs\n    ON sr.sr_customer_sk = cs.cs_bill_customer_sk\n    AND sr.sr_item_sk = cs.cs_item_s...",
+          "score": 0.9,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "cs",
+            "ss",
+            "date_dim",
+            "catalog_sales",
+            "d2",
+            "d3",
+            "store_returns",
+            "i",
+            "sr",
+            "item",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH sales_data AS (\n    SELECT\n        i_item_id,\n        i_item_desc,\n        s_store_id,\n        s_store_name,\n        ss_net_profit,\n        sr_net_loss,\n        cs_net_profit\n    FROM store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    LEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n        AND ss_item_sk = sr_item_sk\n        AND ss_ticket_number = sr_ticket_number\n    LEFT JOIN ...",
+          "score": 0.9972079918032787,
+          "similarity_max": 0.7055840163934426,
+          "tables_used": [
+            "sales_data",
+            "store",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss_net_profit) AS store_sales_profit,\n    SUM(sr_net_loss) AS store_returns_loss,\n    SUM(cs_net_profit) AS catalog_sales_profit\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN store ON ss_store_sk = s_store_sk\nJOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\nLEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n    AND ss_item_sk = sr_item_sk\n    AND ss_ticket_number = sr_ticket_number\nLEFT JOIN da...",
+          "score": 0.9528251599147123,
+          "similarity_max": 0.6943496801705756,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss.ss_net_profit) AS store_sales_profit,\n    SUM(sr.sr_net_loss) AS store_returns_loss,\n    SUM(cs.cs_net_paid) AS catalog_sales_profit\nFROM store_sales ss\nJOIN store_returns sr\n    ON ss.ss_customer_sk = sr.sr_customer_sk\n    AND ss.ss_item_sk = sr.sr_item_sk\n    AND ss.ss_ticket_number = sr.sr_ticket_number\nJOIN catalog_sales cs\n    ON sr.sr_customer_sk = cs.cs_bill_customer_sk\n    AND sr.sr_item_sk = cs.cs_item_s...",
+          "score": 0.9,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "cs",
+            "ss",
+            "date_dim",
+            "catalog_sales",
+            "d2",
+            "d3",
+            "store_returns",
+            "i",
+            "sr",
+            "item",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH sales_data AS (\n    SELECT\n        i_item_id,\n        i_item_desc,\n        s_store_id,\n        s_store_name,\n        ss_net_profit,\n        sr_net_loss,\n        cs_net_profit\n    FROM store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    LEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n        AND ss_item_sk = sr_item_sk\n        AND ss_ticket_number = sr_ticket_number\n    LEFT JOIN ...",
+          "score": 0.9972079918032787,
+          "similarity_max": 0.7055840163934426,
+          "tables_used": [
+            "sales_data",
+            "store",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss_net_profit) AS store_sales_profit,\n    SUM(sr_net_loss) AS store_returns_loss,\n    SUM(cs_net_profit) AS catalog_sales_profit\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN store ON ss_store_sk = s_store_sk\nJOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\nLEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n    AND ss_item_sk = sr_item_sk\n    AND ss_ticket_number = sr_ticket_number\nLEFT JOIN da...",
+          "score": 0.9528251599147123,
+          "similarity_max": 0.6943496801705756,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT\n    i_item_id,\n    i_item_desc,\n    s_store_id,\n    s_store_name,\n    SUM(ss.ss_net_profit) AS store_sales_profit,\n    SUM(sr.sr_net_loss) AS store_returns_loss,\n    SUM(cs.cs_net_paid) AS catalog_sales_profit\nFROM store_sales ss\nJOIN store_returns sr\n    ON ss.ss_customer_sk = sr.sr_customer_sk\n    AND ss.ss_item_sk = sr.sr_item_sk\n    AND ss.ss_ticket_number = sr.sr_ticket_number\nJOIN catalog_sales cs\n    ON sr.sr_customer_sk = cs.cs_bill_customer_sk\n    AND sr.sr_item_sk = cs.cs_item_s...",
+          "score": 0.9,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "s",
+            "store_sales",
+            "cs",
+            "ss",
+            "date_dim",
+            "catalog_sales",
+            "d2",
+            "d3",
+            "store_returns",
+            "i",
+            "sr",
+            "item",
+            "d1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH sales_data AS (\n    SELECT\n        i_item_id,\n        i_item_desc,\n        s_store_id,\n        s_store_name,\n        ss_net_profit,\n        sr_net_loss,\n        cs_net_profit\n    FROM store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    LEFT JOIN store_returns ON ss_customer_sk = sr_customer_sk\n        AND ss_item_sk = sr_item_sk\n        AND ss_ticket_number = sr_ticket_number\n    LEFT JOIN ...",
+    "meta": {
+      "score": 0.9972079918032787,
+      "similarity_max": 0.7055840163934426,
+      "tables_used": [
+        "sales_data",
+        "store",
+        "store_sales",
+        "date_dim",
+        "d2",
+        "d3",
+        "store_returns",
+        "catalog_sales",
+        "d1"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 47.08
+  }
+}

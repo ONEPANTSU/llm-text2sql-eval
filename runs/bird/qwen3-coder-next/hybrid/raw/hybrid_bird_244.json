@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_244",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4093.1393330029096,
+  "execution_time_ms": 9.46670799748972,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH double_bond_counts AS (\n    SELECT \n        molecule_id, \n        COUNT(*) AS double_bond_count\n    FROM bond\n    WHERE bond_type = 'double'\n    GROUP BY molecule_id\n),\nmax_double_bond_molecule AS (\n    SELECT molecule_id\n    FROM double_bond_counts\n    ORDER BY double_bond_count DESC\n    LIMIT 1\n)\nSELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM max_double_bond_molecule m\n            JOIN molecule mol ON m.molecule_id = mol.molecule_id\n            WHERE mol.label LIKE '%carcinogen%' OR mol.label LIKE '%Carcinogen%'\n        ) THEN 'yes'\n        ELSE 'no'\n    END AS is_carcinogenic;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.246999996714294,
+      "result_signature": "2065c74ed4b8fa2a936f31991cf372b3af168654d7e6b4d25cd38e0736d137da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH double_bonds AS (\n  SELECT molecule_id, COUNT(*) AS double_bond_count\n  FROM bond\n  WHERE bond_type = 'double'\n  GROUP BY molecule_id\n),\nmax_double_bonds AS (\n  SELECT molecule_id\n  FROM double_bonds\n  WHERE double_bond_count = (SELECT MAX(double_bond_count) FROM double_bonds)\n)\nSELECT CASE WHEN EXISTS (\n  SELECT 1 FROM molecule WHERE molecule_id IN (SELECT molecule_id FROM max_double_bonds)\n) THEN 'yes' ELSE 'no' END AS is_carcinogenic;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8658749977475964,
+      "result_signature": "2065c74ed4b8fa2a936f31991cf372b3af168654d7e6b4d25cd38e0736d137da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CASE WHEN EXISTS (\n    SELECT 1\n    FROM molecule m\n    JOIN bond b ON m.molecule_id = b.molecule_id\n    WHERE b.bond_type = 'double'\n    GROUP BY m.molecule_id\n    HAVING COUNT(*) = (\n        SELECT MAX(double_count)\n        FROM (\n            SELECT COUNT(*) AS double_count\n            FROM bond\n            WHERE bond_type = 'double'\n            GROUP BY molecule_id\n        )\n    )\n    AND m.molecule_id IN (\n        SELECT molecule_id\n        FROM molecule\n        WHERE label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n    )\n) THEN 'Yes' ELSE 'No' END AS is_most_double_bonds_carcinogenic;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3348749998840503,
+      "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'double'\nGROUP BY m.molecule_id\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1673330009216443,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'double'\nGROUP BY m.molecule_id\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1387920021661557,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT CASE WHEN EXISTS (\n    SELECT 1\n    FROM molecule m\n    JOIN bond b ON m.molecule_id = b.molecule_id\n    WHERE b.bond_type = 'double'\n    GROUP BY m.molecule_id\n    HAVING COUNT(*) = (\n        SELECT MAX(double_count)\n        FROM (\n            SELECT COUNT(*) AS double_count\n            FROM bond\n            WHERE bond_type = 'double'\n            GROUP BY molecule_id\n        )\n    )\n    AND m.molecule_id IN (\n        SELECT molecule_id\n        FROM molecule\n        WHERE label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n    )\n) THEN 'Yes' ELSE 'No' END AS is_most_double_bonds_carcinogenic;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2065c74ed4b8fa2a936f31991cf372b3af168654d7e6b4d25cd38e0736d137da": 2,
+        "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf": 3,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 3093.499583999801,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT CASE \n    WHEN EXISTS (\n        SELECT 1\n        FROM (\n            SELECT m.molecule_id, COUNT(*) AS double_bond_count\n            FROM molecule m\n            JOIN bond b ON m.molecule_id = b.molecule_id\n            WHERE b.bond_type = 'double'\n            GROUP BY m.molecule_id\n        ) t1\n        JOIN (\n            SELECT molecule_id\n            FROM molecule\n            WHERE label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n        ) t2 ON t1.molecule_id = t2.molecule_id\n        WHERE t1.double_bond_count = (\n            SELECT MAX(double_bond_count)\n            FROM (\n                SELECT COUNT(*) AS double_bond_count\n                FROM bond\n                WHERE bond_type = 'double'\n                GROUP BY molecule_id\n            )\n        )\n    ) THEN 'Yes' ELSE 'No' \nEND AS is_most_double_bonds_carcinogenic;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.592666001874022,
+        "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT CASE WHEN EXISTS (\n    SELECT 1\n    FROM (\n        SELECT m.molecule_id\n        FROM molecule m\n        JOIN bond b ON m.molecule_id = b.molecule_id\n        WHERE b.bond_type = 'double'\n        GROUP BY m.molecule_id\n        ORDER BY COUNT(*) DESC\n        LIMIT 1\n    ) top_mol\n    WHERE top_mol.molecule_id IN (\n        SELECT molecule_id\n        FROM molecule\n        WHERE label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n    )\n) THEN 'Yes' ELSE 'No' END AS is_most_double_bonds_carcinogenic;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.064041000267025,
+        "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7196.213333001651
+}

@@ -1,0 +1,245 @@
+{
+  "task_id": "spider2_116",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        d.driver_id,\n        d.forename || ' ' || d.surname AS driver_name,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN drivers d ON res.driver_id = d.driver_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, d.driver_id, d.for...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "driver_season_points",
+            "res",
+            "constructors",
+            "drivers",
+            "c",
+            "season_min_points",
+            "d",
+            "min_point_drivers",
+            "results",
+            "smp",
+            "races",
+            "dsp"
+          ]
+        },
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        ds.driver_id,\n        ds.points AS driver_points\n    FROM driver_standings ds\n    JOIN races r ON ds.race_id = r.race_id\n    WHERE r.year >= 2001\n    AND ds.points > 0\n),\nconstructor_season_points AS (\n    SELECT \n        r.year,\n        cr.constructor_id,\n        SUM(cr.points) AS total_points\n    FROM constructor_results cr\n    JOIN races r ON cr.race_id = r.race_id\n    WHERE r.year >= 2001\n    GROUP BY r.year, cr.constructor_i...",
+          "score": 0.9447916666666667,
+          "similarity_max": 0.5104166666666666,
+          "tables_used": [
+            "r",
+            "ds",
+            "constructor_season_points",
+            "driver_season_points",
+            "cr",
+            "constructor_results",
+            "mps",
+            "constructor_min_seasons",
+            "driver_standings",
+            "csp",
+            "races",
+            "min_points_per_season"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        d.driver_id,\n        d.forename || ' ' || d.surname AS driver_name,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN drivers d ON res.driver_id = d.driver_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, d.driver_id, d.for...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "driver_season_points",
+            "res",
+            "constructors",
+            "drivers",
+            "c",
+            "season_min_points",
+            "d",
+            "min_point_drivers",
+            "results",
+            "smp",
+            "races",
+            "dsp"
+          ]
+        },
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        ds.driver_id,\n        ds.points AS driver_points\n    FROM driver_standings ds\n    JOIN races r ON ds.race_id = r.race_id\n    WHERE r.year >= 2001\n    AND ds.points > 0\n),\nconstructor_season_points AS (\n    SELECT \n        r.year,\n        cr.constructor_id,\n        SUM(cr.points) AS total_points\n    FROM constructor_results cr\n    JOIN races r ON cr.race_id = r.race_id\n    WHERE r.year >= 2001\n    GROUP BY r.year, cr.constructor_i...",
+          "score": 0.9447916666666667,
+          "similarity_max": 0.5104166666666666,
+          "tables_used": [
+            "r",
+            "ds",
+            "constructor_season_points",
+            "driver_season_points",
+            "cr",
+            "constructor_results",
+            "mps",
+            "constructor_min_seasons",
+            "driver_standings",
+            "csp",
+            "races",
+            "min_points_per_season"
+          ]
+        },
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        d.driver_id,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN drivers d ON res.driver_id = d.driver_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, d.driver_id, c.constructor_id, c.name\n),\nseason_min_points AS (\n    SELEC...",
+          "score": 0.7350177304964538,
+          "similarity_max": 0.8299645390070922,
+          "tables_used": [
+            "r",
+            "driver_season_points",
+            "res",
+            "constructors",
+            "drivers",
+            "c",
+            "season_min_points",
+            "d",
+            "min_point_drivers",
+            "results",
+            "smp",
+            "races",
+            "dsp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        d.driver_id,\n        d.forename || ' ' || d.surname AS driver_name,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN drivers d ON res.driver_id = d.driver_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, d.driver_id, d.for...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "driver_season_points",
+            "res",
+            "constructors",
+            "drivers",
+            "c",
+            "season_min_points",
+            "d",
+            "min_point_drivers",
+            "results",
+            "smp",
+            "races",
+            "dsp"
+          ]
+        },
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        res.driver_id,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, res.driver_id, c.constructor_id, c.name\n),\nseason_ranked AS (\n    SELECT \n        year,\n        constructor_id,\n        c...",
+          "score": 1.0115047021943573,
+          "similarity_max": 0.6769905956112852,
+          "tables_used": [
+            "r",
+            "driver_season_points",
+            "res",
+            "constructors",
+            "c",
+            "min_point_drivers",
+            "results",
+            "season_ranked",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        ds.driver_id,\n        ds.points AS driver_points\n    FROM driver_standings ds\n    JOIN races r ON ds.race_id = r.race_id\n    WHERE r.year >= 2001\n    AND ds.points > 0\n),\nconstructor_season_points AS (\n    SELECT \n        r.year,\n        cr.constructor_id,\n        SUM(cr.points) AS total_points\n    FROM constructor_results cr\n    JOIN races r ON cr.race_id = r.race_id\n    WHERE r.year >= 2001\n    GROUP BY r.year, cr.constructor_i...",
+          "score": 0.9447916666666667,
+          "similarity_max": 0.5104166666666666,
+          "tables_used": [
+            "r",
+            "ds",
+            "constructor_season_points",
+            "driver_season_points",
+            "cr",
+            "constructor_results",
+            "mps",
+            "constructor_min_seasons",
+            "driver_standings",
+            "csp",
+            "races",
+            "min_points_per_season"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH driver_season_points AS (\n    SELECT \n        r.year,\n        d.driver_id,\n        d.forename || ' ' || d.surname AS driver_name,\n        c.constructor_id,\n        c.name AS constructor_name,\n        SUM(res.points) AS total_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    JOIN drivers d ON res.driver_id = d.driver_id\n    JOIN constructors c ON res.constructor_id = c.constructor_id\n    WHERE r.year >= 2001 AND res.points > 0\n    GROUP BY r.year, d.driver_id, d.for...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "driver_season_points",
+        "res",
+        "constructors",
+        "drivers",
+        "c",
+        "season_min_points",
+        "d",
+        "min_point_drivers",
+        "results",
+        "smp",
+        "races",
+        "dsp"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: cr.driver_id",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 5.22
+  }
+}

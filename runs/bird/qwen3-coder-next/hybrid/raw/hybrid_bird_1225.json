@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_1225",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5733.863250003196,
+  "execution_time_ms": 12.78866600478068,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.SEX, COUNT(*) AS patient_count\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.T-BIL NOT BETWEEN 0.2 AND 1.2\nGROUP BY p.SEX;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 0.7663750002393499,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.SEX, COUNT(*) AS patient_count\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.`T-BIL` NOT BETWEEN 0.2 AND 1.2\nGROUP BY p.SEX;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.59820800239686,
+      "result_signature": "11db87ead110065e3c3417bb620b87dfe76d76cf71cf9f2ec9a9ed59f9e9efd5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_generation_fail",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "gen_error": "'NoneType' object has no attribute 'strip'"
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    p.SEX,\n    COUNT(*) AS patient_count\nFROM \n    Patient p\nJOIN \n    Laboratory l ON p.ID = l.ID\nWHERE \n    l.T-BIL NOT BETWEEN 0.2 AND 1.2\nGROUP BY \n    p.SEX;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 0.2864579946617596,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT p.SEX, COUNT(*) AS patient_count\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.`T-BIL` NOT BETWEEN 0.2 AND 1.2\nGROUP BY p.SEX;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "11db87ead110065e3c3417bb620b87dfe76d76cf71cf9f2ec9a9ed59f9e9efd5": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5746.719333001238
+}

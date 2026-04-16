@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_294",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT b.bond_id\nFROM bond b\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT b.bond_id\nFROM bond b\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_id\nFROM bond b\nJOIN molecule m USING (molecule_id)\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+          "score": 0.8477941176470588,
+          "similarity_max": 0.7044117647058823,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT b.bond_id\nFROM bond b\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_id\nFROM bond b\nJOIN molecule m USING (molecule_id)\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+          "score": 0.8477941176470588,
+          "similarity_max": 0.7044117647058823,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT bond.bond_id\nFROM bond\nJOIN molecule ON bond.molecule_id = molecule.molecule_id\nWHERE bond.bond_type = 'double'\n  AND molecule.label LIKE '%carcinogenic%';",
+          "score": 0.646218487394958,
+          "similarity_max": 0.807563025210084,
+          "tables_used": [
+            "bond"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT b.bond_id\nFROM bond b\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'double'\n  AND m.label LIKE '%carcinogenic%';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "bond",
+        "m",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.08
+  }
+}

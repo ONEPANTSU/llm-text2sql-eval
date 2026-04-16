@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_18",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3413.4907920088153,
+  "execution_time_ms": 13.078832998871803,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH monthly_deliveries AS (\n  SELECT \n    strftime('%Y', order_delivered_customer_date) AS year,\n    strftime('%m', order_delivered_customer_date) AS month,\n    COUNT(*) AS delivered_count\n  FROM olist_orders\n  WHERE order_status = 'delivered' \n    AND order_delivered_customer_date IS NOT NULL\n  GROUP BY year, month\n)\nSELECT \n  month AS month,\n  MAX(CASE WHEN year = '2016' THEN delivered_count ELSE 0 END) AS \"2016\",\n  MAX(CASE WHEN year = '2017' THEN delivered_count ELSE 0 END) AS \"2017\",\n  MAX(CASE WHEN year = '2018' THEN delivered_count ELSE 0 END) AS \"2018\"\nFROM monthly_deliveries\nGROUP BY month\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.902874995721504,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  strftime('%m', order_delivered_customer_date) AS month,\n  SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2016' THEN 1 ELSE 0 END) AS year_2016,\n  SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2017' THEN 1 ELSE 0 END) AS year_2017,\n  SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2018' THEN 1 ELSE 0 END) AS year_2018\nFROM olist_orders\nWHERE order_status = 'delivered'\n  AND order_delivered_customer_date IS NOT NULL\nGROUP BY strftime('%m', order_delivered_customer_date)\nORDER BY strftime('%m', order_delivered_customer_date) ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6012079975334927,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH monthly_counts AS (\n  SELECT \n    strftime('%Y', order_delivered_customer_date) AS year,\n    strftime('%m', order_delivered_customer_date) AS month,\n    COUNT(*) AS delivered_count\n  FROM olist_orders\n  WHERE order_status = 'delivered'\n    AND order_delivered_customer_date IS NOT NULL\n  GROUP BY year, month\n)\nSELECT \n  month AS month,\n  MAX(CASE WHEN year = '2016' THEN delivered_count ELSE 0 END) AS \"2016\",\n  MAX(CASE WHEN year = '2017' THEN delivered_count ELSE 0 END) AS \"2017\",\n  MAX(CASE WHEN year = '2018' THEN delivered_count ELSE 0 END) AS \"2018\"\nFROM monthly_counts\nGROUP BY month\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3693329927045852,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH monthly_deliveries AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        strftime('%m', order_delivered_customer_date) AS month,\n        COUNT(*) AS delivered_count\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n    GROUP BY year, month\n)\nSELECT \n    month AS month_number,\n    MAX(CASE WHEN year = '2016' THEN delivered_count ELSE 0 END) AS \"2016\",\n    MAX(CASE WHEN year = '2017' THEN delivered_count ELSE 0 END) AS \"2017\",\n    MAX(CASE WHEN year = '2018' THEN delivered_count ELSE 0 END) AS \"2018\"\nFROM monthly_deliveries\nGROUP BY month\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2641670036828145,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH monthly_counts AS (\n  SELECT \n    strftime('%Y', order_delivered_customer_date) AS year,\n    strftime('%m', order_delivered_customer_date) AS month,\n    COUNT(*) AS delivered_count\n  FROM olist_orders\n  WHERE order_status = 'delivered'\n    AND order_delivered_customer_date IS NOT NULL\n  GROUP BY year, month\n)\nSELECT \n  month,\n  MAX(CASE WHEN year = '2016' THEN delivered_count ELSE 0 END) AS \"2016\",\n  MAX(CASE WHEN year = '2017' THEN delivered_count ELSE 0 END) AS \"2017\",\n  MAX(CASE WHEN year = '2018' THEN delivered_count ELSE 0 END) AS \"2018\"\nFROM monthly_counts\nGROUP BY month\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.66562500433065,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH monthly_counts AS (\n  SELECT \n    strftime('%Y', order_delivered_customer_date) AS year,\n    strftime('%m', order_delivered_customer_date) AS month,\n    COUNT(*) AS delivered_count\n  FROM olist_orders\n  WHERE order_status = 'delivered'\n    AND order_delivered_customer_date IS NOT NULL\n  GROUP BY year, month\n)\nSELECT \n  month AS month,\n  MAX(CASE WHEN year = '2016' THEN delivered_count ELSE 0 END) AS \"2016\",\n  MAX(CASE WHEN year = '2017' THEN delivered_count ELSE 0 END) AS \"2017\",\n  MAX(CASE WHEN year = '2018' THEN delivered_count ELSE 0 END) AS \"2018\"\nFROM monthly_counts\nGROUP BY month\nORDER BY month ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3426.740874987445
+}

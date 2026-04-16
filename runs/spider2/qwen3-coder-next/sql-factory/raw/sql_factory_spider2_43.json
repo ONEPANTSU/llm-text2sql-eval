@@ -1,0 +1,197 @@
+{
+  "task_id": "spider2_43",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH streaks AS (\n  SELECT \n    c.country_code_2,\n    c.insert_date,\n    DATE(c.insert_date) AS insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS row_num\n  FROM cities c\n  WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\ngrouped_streaks AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    row_num,\n    DATE(insert_date_only, '-' || row_num || ' days') AS streak_group\n  FROM streaks\n),\nstreak_counts AS (\n  SELECT \n    c...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "cities",
+            "streaks",
+            "c",
+            "max_streaks",
+            "streak_counts",
+            "grouped_streaks",
+            "gm",
+            "global_max"
+          ]
+        },
+        {
+          "sql": "WITH streaks AS (\n    SELECT \n        c.country_code_2,\n        c.insert_date,\n        julianday(c.insert_date) - ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS grp\n    FROM cities c\n    WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\nconsecutive_streaks AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS streak_length\n    FROM streaks\n    GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n    SELECT \n        country_code_2...",
+          "score": 1.0588736263736263,
+          "similarity_max": 0.6822527472527473,
+          "tables_used": [
+            "ms",
+            "cities",
+            "streaks",
+            "consecutive_streaks",
+            "c",
+            "max_streaks",
+            "gm",
+            "global_max"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH streaks AS (\n  SELECT \n    c.country_code_2,\n    c.insert_date,\n    DATE(c.insert_date) AS insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS row_num\n  FROM cities c\n  WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\ngrouped_streaks AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    row_num,\n    DATE(insert_date_only, '-' || row_num || ' days') AS streak_group\n  FROM streaks\n),\nstreak_counts AS (\n  SELECT \n    c...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "cities",
+            "streaks",
+            "c",
+            "max_streaks",
+            "streak_counts",
+            "grouped_streaks",
+            "gm",
+            "global_max"
+          ]
+        },
+        {
+          "sql": "WITH streaks AS (\n    SELECT \n        c.country_code_2,\n        c.insert_date,\n        CAST(julianday(c.insert_date) AS INTEGER) - ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS grp\n    FROM cities c\n    WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\nconsecutive_streaks AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS streak_length\n    FROM streaks\n    GROUP BY country_code_2, grp\n),\nranked_streaks AS (\n    SELECT \n  ...",
+          "score": 1.1450334448160535,
+          "similarity_max": 0.609933110367893,
+          "tables_used": [
+            "streaks",
+            "cities",
+            "ranked_streaks",
+            "consecutive_streaks",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH daily_inserts AS (\n  SELECT \n    country_code_2,\n    DATE(insert_date) AS insert_date_only\n  FROM cities\n  WHERE insert_date >= '2022-06-01' AND insert_date < '2022-07-01'\n  GROUP BY country_code_2, DATE(insert_date)\n),\nstreaked AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date_only) AS rn,\n    DATE(insert_date_only, '-' || ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date_only) || ' days') AS s...",
+          "score": 1.1044491525423727,
+          "similarity_max": 0.5911016949152542,
+          "tables_used": [
+            "gms",
+            "cities",
+            "daily_inserts",
+            "cms",
+            "country_max_streaks",
+            "global_max_streak",
+            "streak_lengths",
+            "streaked"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH streaks AS (\n  SELECT \n    c.country_code_2,\n    c.insert_date,\n    DATE(c.insert_date) AS insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS row_num\n  FROM cities c\n  WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\ngrouped_streaks AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    row_num,\n    DATE(insert_date_only, '-' || row_num || ' days') AS streak_group\n  FROM streaks\n),\nstreak_counts AS (\n  SELECT \n    c...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "cities",
+            "streaks",
+            "c",
+            "max_streaks",
+            "streak_counts",
+            "grouped_streaks",
+            "gm",
+            "global_max"
+          ]
+        },
+        {
+          "sql": "WITH streaks AS (\n    SELECT \n        c.country_code_2,\n        c.insert_date,\n        CAST(julianday(c.insert_date) AS INTEGER) - ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS grp\n    FROM cities c\n    WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\nconsecutive_streaks AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS streak_length\n    FROM streaks\n    GROUP BY country_code_2, grp\n),\nranked_streaks AS (\n    SELECT \n  ...",
+          "score": 1.1450334448160535,
+          "similarity_max": 0.609933110367893,
+          "tables_used": [
+            "streaks",
+            "cities",
+            "ranked_streaks",
+            "consecutive_streaks",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH daily_inserts AS (\n  SELECT \n    country_code_2,\n    DATE(insert_date) AS insert_date_only\n  FROM cities\n  WHERE insert_date >= '2022-06-01' AND insert_date < '2022-07-01'\n  GROUP BY country_code_2, DATE(insert_date)\n),\nstreaked AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date_only) AS rn,\n    DATE(insert_date_only, '-' || ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date_only) || ' days') AS s...",
+          "score": 1.1044491525423727,
+          "similarity_max": 0.5911016949152542,
+          "tables_used": [
+            "gms",
+            "cities",
+            "daily_inserts",
+            "cms",
+            "country_max_streaks",
+            "global_max_streak",
+            "streak_lengths",
+            "streaked"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH streaks AS (\n  SELECT \n    c.country_code_2,\n    c.insert_date,\n    DATE(c.insert_date) AS insert_date_only,\n    ROW_NUMBER() OVER (PARTITION BY c.country_code_2 ORDER BY c.insert_date) AS row_num\n  FROM cities c\n  WHERE c.insert_date >= '2022-06-01' AND c.insert_date < '2022-07-01'\n),\ngrouped_streaks AS (\n  SELECT \n    country_code_2,\n    insert_date_only,\n    row_num,\n    DATE(insert_date_only, '-' || row_num || ' days') AS streak_group\n  FROM streaks\n),\nstreak_counts AS (\n  SELECT \n    c...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ms",
+        "cities",
+        "streaks",
+        "c",
+        "max_streaks",
+        "streak_counts",
+        "grouped_streaks",
+        "gm",
+        "global_max"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.91
+  }
+}

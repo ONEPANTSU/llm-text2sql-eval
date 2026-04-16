@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1413",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6460.489707998931,
+  "execution_time_ms": 7.776540995109826,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.200082999886945,
+      "result_signature": "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7746249975753017,
+      "result_signature": "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7096670015016571,
+      "result_signature": "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8190419976017438,
+      "result_signature": "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5410000012489036,
+      "result_signature": "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT m.zip\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nWHERE e.cost < 50;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "48d5b4ac1f493fcb74e752188e92372c50c3b5efd366549b03d0e5c5fc4219dc": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6468.527500001073
+}

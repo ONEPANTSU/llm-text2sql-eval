@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_341",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2169.559041998582,
+  "execution_time_ms": 554.8625000010361,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT * FROM cards WHERE borderColor = 'borderless' AND hasFoil = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 503.2865410030354,
+      "result_signature": "6a587878e008b2fc82f6c71fe1c5d9d1de2857ac8c6d0d780e98802f83518dad",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT id, asciiName, hasNonFoil\nFROM cards\nWHERE borderColor = 'borderless' AND hasFoil = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.766291995940264,
+      "result_signature": "87b6a4d2332cd147e2fbb63bbb6b7c23c6df6ff7944223fe703fc6c85325c4d4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT id, asciiName, name\nFROM cards\nWHERE borderColor = 'borderless' AND hasFoil = 0 AND hasNonFoil = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.985375004878733,
+      "result_signature": "d1d758776e34bdddb67cfdb1fe597d1a76be8461587e022fc50246c63871cfa0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT * FROM cards WHERE borderColor = 'borderless' AND hasFoil = 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.795709005033132,
+      "result_signature": "6a587878e008b2fc82f6c71fe1c5d9d1de2857ac8c6d0d780e98802f83518dad",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT id, faceName, convertedManaCost, colors, manaValue, rarity, setCode, name, type, power, toughness, loyalty, defense, hand, artist, borderColor, frameVersion, frameEffects, hasFoil, hasNonFoil, isOnlineOnly, isPromo, isReprint, isAlternative, isFullArt, isOversized, isPromo, isReprint\nFROM cards\nWHERE borderColor = 'borderless' AND hasFoil = 0;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: manaValue",
+      "exec_time_ms": 0.6052079988876358,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT * FROM cards WHERE borderColor = 'borderless' AND hasFoil = 0;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6a587878e008b2fc82f6c71fe1c5d9d1de2857ac8c6d0d780e98802f83518dad": 2,
+        "87b6a4d2332cd147e2fbb63bbb6b7c23c6df6ff7944223fe703fc6c85325c4d4": 1,
+        "d1d758776e34bdddb67cfdb1fe597d1a76be8461587e022fc50246c63871cfa0": 1,
+        "4a2adf4a0fab353a9e358efc3f33ed1adaf888ebece98d9e490d030ff367fa46": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1864.8094160016626,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT hasFoil, hasNonFoil, borderColor FROM cards WHERE borderColor = 'borderless' AND hasFoil = 0;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 38.10741699999198,
+        "result_signature": "4a2adf4a0fab353a9e358efc3f33ed1adaf888ebece98d9e490d030ff367fa46",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT hasFoil, hasNonFoil, borderColor FROM cards WHERE borderColor = 'borderless' AND hasFoil = 0;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 20.019417002913542,
+        "result_signature": "4a2adf4a0fab353a9e358efc3f33ed1adaf888ebece98d9e490d030ff367fa46",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4589.278458995977
+}

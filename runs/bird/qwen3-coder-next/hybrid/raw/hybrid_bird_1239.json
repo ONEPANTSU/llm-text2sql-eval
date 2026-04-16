@@ -1,0 +1,169 @@
+{
+  "task_id": "bird_1239",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 9300.34129100386,
+  "execution_time_ms": 16.079583001555875,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Patient.ID, strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) AS age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HCT > 0  -- Assuming normal range is positive; adjust if specific normal range is known\nGROUP BY Patient.ID, Patient.Birthday\nHAVING COUNT(Laboratory.HCT) >= 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.351084002351854,
+      "result_signature": "919189518566b8f7f983836bb6d86fd138bdb6f2fa6dc94769def5c4ef252810",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Laboratory.ID, (strftime('%Y', 'now') - strftime('%Y', Patient.Birthday)) AS age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HCT > 45\nGROUP BY Laboratory.ID, Patient.Birthday\nHAVING COUNT(Laboratory.HCT) >= 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.252708000014536,
+      "result_signature": "4f26fb94daf4b763f95bec15f818f0bb80f653cb5f8988d93fbef7df047d7b5b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 5,
+    "selected_sql": "SELECT Patient.ID, CAST(strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) AS INTEGER) AS age\nFROM Patient\nINNER JOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HCT > 0\nGROUP BY Patient.ID, Patient.Birthday\nHAVING COUNT(Laboratory.HCT) >= 2;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "919189518566b8f7f983836bb6d86fd138bdb6f2fa6dc94769def5c4ef252810": 3,
+        "4f26fb94daf4b763f95bec15f818f0bb80f653cb5f8988d93fbef7df047d7b5b": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 3561.9635000039125,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT Patient.ID, CAST(strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) AS INTEGER) AS age\nFROM Patient\nINNER JOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HCT > 0\nGROUP BY Patient.ID, Patient.Birthday\nHAVING COUNT(Laboratory.HCT) >= 2;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.5605000011855736,
+        "result_signature": "919189518566b8f7f983836bb6d86fd138bdb6f2fa6dc94769def5c4ef252810",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT Patient.ID, CAST(strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) AS INTEGER) AS age\nFROM Patient\nINNER JOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HCT IS NOT NULL AND Laboratory.HCT > 0\nGROUP BY Patient.ID, Patient.Birthday\nHAVING COUNT(*) >= 2;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.872166002111044,
+        "result_signature": "919189518566b8f7f983836bb6d86fd138bdb6f2fa6dc94769def5c4ef252810",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 12878.477083999314
+}

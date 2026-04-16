@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q07",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8690.6579159986,
+  "execution_time_ms": 130.53483300609514,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\nJOIN \n    customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN \n    promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\nWHERE \n    customer_demographics.cd_gender = 'M'\n    AND customer_demographics.cd_marital_status = 'S'\n    AND customer_demographics.cd_education_status = 'College'\n    AND (promotion.p_channel_email = 'N' OR promotion.p_channel_event = 'N')\n    AND date_dim.d_year = 2000\nGROUP BY \n    i_item_id\nORDER BY \n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.25920900737401,
+      "result_signature": "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i.i_item_id,\n    AVG(ss.ss_quantity) AS agg1,\n    AVG(ss.ss_list_price) AS agg2,\n    AVG(ss.ss_coupon_amt) AS agg3,\n    AVG(ss.ss_sales_price) AS agg4\nFROM \n    store_sales ss\nJOIN \n    customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\nJOIN \n    date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nJOIN \n    item i ON ss.ss_item_sk = i.i_item_sk\nJOIN \n    promotion p ON ss.ss_promo_sk = p.p_promo_sk\nWHERE \n    cd.cd_gender = 'M'\n    AND cd.cd_marital_status = 'S'\n    AND cd.cd_education_status = 'College'\n    AND (p.p_channel_email = 'N' OR p.p_channel_event = 'N')\n    AND d.d_year = 2000\nGROUP BY \n    i.i_item_id\nORDER BY \n    i.i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 22.683041999698617,
+      "result_signature": "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i.i_item_id,\n    AVG(ss.ss_quantity) AS agg1,\n    AVG(ss.ss_list_price) AS agg2,\n    AVG(ss.ss_coupon_amt) AS agg3,\n    AVG(ss.ss_sales_price) AS agg4\nFROM \n    store_sales ss\nJOIN \n    customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\nJOIN \n    date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nJOIN \n    item i ON ss.ss_item_sk = i.i_item_sk\nJOIN \n    promotion p ON ss.ss_promo_sk = p.p_promo_sk\nWHERE \n    cd.cd_gender = 'M'\n    AND cd.cd_marital_status = 'S'\n    AND cd.cd_education_status = 'College'\n    AND (p.p_channel_email = 'N' OR p.p_channel_event = 'N')\n    AND d.d_year = 2000\nGROUP BY \n    i.i_item_id\nORDER BY \n    i.i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.743458000244573,
+      "result_signature": "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    i.i_item_id,\n    AVG(ss.ss_quantity) AS agg1,\n    AVG(ss.ss_list_price) AS agg2,\n    AVG(ss.ss_coupon_amt) AS agg3,\n    AVG(ss.ss_sales_price) AS agg4\nFROM \n    store_sales ss\nJOIN \n    customer_demographics cd ON ss.ss_cdemo_sk = cd.cd_demo_sk\nJOIN \n    date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nJOIN \n    item i ON ss.ss_item_sk = i.i_item_sk\nJOIN \n    promotion p ON ss.ss_promo_sk = p.p_promo_sk\nWHERE \n    cd.cd_gender = 'M'\n    AND cd.cd_marital_status = 'S'\n    AND cd.cd_education_status = 'College'\n    AND (p.p_channel_email = 'N' OR p.p_channel_event = 'N')\n    AND d.d_year = 2000\nGROUP BY \n    i.i_item_id\nORDER BY \n    i.i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.411667011212558,
+      "result_signature": "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\n    JOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\nWHERE \n    customer_demographics.cd_gender = 'M'\n    AND customer_demographics.cd_marital_status = 'S'\n    AND customer_demographics.cd_education_status = 'College'\n    AND (promotion.p_channel_email = 'N' OR promotion.p_channel_event = 'N')\n    AND date_dim.d_year = 2000\nGROUP BY \n    i_item_id\nORDER BY \n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.100832996424288,
+      "result_signature": "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    i_item_id,\n    AVG(ss_quantity) AS agg1,\n    AVG(ss_list_price) AS agg2,\n    AVG(ss_coupon_amt) AS agg3,\n    AVG(ss_sales_price) AS agg4\nFROM \n    store_sales\n    JOIN customer_demographics ON store_sales.ss_cdemo_sk = customer_demographics.cd_demo_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN promotion ON store_sales.ss_promo_sk = promotion.p_promo_sk\nWHERE \n    customer_demographics.cd_gender = 'M'\n    AND customer_demographics.cd_marital_status = 'S'\n    AND customer_demographics.cd_education_status = 'College'\n    AND (promotion.p_channel_email = 'N' OR promotion.p_channel_event = 'N')\n    AND date_dim.d_year = 2000\nGROUP BY \n    i_item_id\nORDER BY \n    i_item_id ASC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "babebdfaaa98772d549bc8e38d88316fd93a849732f8b1d7f61479b859e35f2a": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8821.299625007669
+}

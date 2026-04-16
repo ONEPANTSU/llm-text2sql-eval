@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_91",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1654.4614160011406,
+  "execution_time_ms": 4.329374998633284,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CASE \n        WHEN AVG(district.A10) > AVG(district.A11) THEN '1995'\n        ELSE '1996'\n    END AS higher_percentage_year\nFROM district;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2700420013279654,
+      "result_signature": "3c3b8a5ca4635874d9da8f2e87a11a9a78cd16d0351349dc0997bf34d72fde24",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  CASE \n    WHEN AVG(district.A10) > AVG(district.A11) THEN '1995'\n    WHEN AVG(district.A10) < AVG(district.A11) THEN '1996'\n    ELSE 'Equal'\n  END AS higher_percentage\nFROM district;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5650829989463091,
+      "result_signature": "3c3b8a5ca4635874d9da8f2e87a11a9a78cd16d0351349dc0997bf34d72fde24",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  CASE \n    WHEN AVG(district.A10) > AVG(district.A11) THEN '1995'\n    WHEN AVG(district.A10) < AVG(district.A11) THEN '1996'\n    ELSE 'Equal'\n  END AS higher_percentage_year\nFROM district;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3986669980804436,
+      "result_signature": "3c3b8a5ca4635874d9da8f2e87a11a9a78cd16d0351349dc0997bf34d72fde24",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CASE WHEN AVG(district.A10) > AVG(district.A11) THEN '1995' ELSE '1996' END AS higher_unemployment_year\nFROM district;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3288750012870878,
+      "result_signature": "3c3b8a5ca4635874d9da8f2e87a11a9a78cd16d0351349dc0997bf34d72fde24",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  CASE \n    WHEN AVG(district.A10) > AVG(district.A11) THEN '1995'\n    WHEN AVG(district.A10) < AVG(district.A11) THEN '1996'\n    ELSE 'Equal'\n  END AS higher_unemployment_year,\n  AVG(district.A10) AS avg_1995,\n  AVG(district.A11) AS avg_1996\nFROM district;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.32324999483535066,
+      "result_signature": "b902c295f7da4369729e466742c52fdcede56f807b6d32c346b3086dfc46c590",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT CASE WHEN AVG(district.A10) > AVG(district.A11) THEN '1995' ELSE '1996' END AS higher_unemployment_year\nFROM district;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3c3b8a5ca4635874d9da8f2e87a11a9a78cd16d0351349dc0997bf34d72fde24": 4,
+        "b902c295f7da4369729e466742c52fdcede56f807b6d32c346b3086dfc46c590": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1857.1554580048542,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3516.0553340028855
+}

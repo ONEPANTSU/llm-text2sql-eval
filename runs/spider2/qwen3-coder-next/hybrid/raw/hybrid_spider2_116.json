@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_116",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8167.569416997139,
+  "execution_time_ms": 64.07629100431222,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH driver_season_points AS (\n    SELECT \n        ds.race_id,\n        ds.driver_id,\n        SUM(ds.points) AS total_points\n    FROM driver_standings ds\n    JOIN races r ON ds.race_id = r.race_id\n    WHERE r.year >= 2001\n    GROUP BY ds.race_id, ds.driver_id\n    HAVING SUM(ds.points) > 0\n),\nmin_points_per_season AS (\n    SELECT \n        race_id,\n        MIN(total_points) AS min_points\n    FROM driver_season_points\n    GROUP BY race_id\n),\nconstructor_season_points AS (\n    SELECT \n        cr.race_id,\n        cr.constructor_id,\n        SUM(cr.points) AS total_points\n    FROM constructor_results cr\n    JOIN races r ON cr.race_id = r.race_id\n    WHERE r.year >= 2001\n    GROUP BY cr.race_id, cr.constructor_id\n),\nseasons_with_fewest_points AS (\n    SELECT \n        csp.race_id,\n        csp.constructor_id,\n        csp.total_points,\n        CASE \n            WHEN csp.total_points = mps.min_points THEN 1 \n            ELSE 0 \n        END AS is_fewest\n    FROM constructor_season_points csp\n    JOIN min_points_per_season mps ON csp.race_id = mps.race_id\n    WHERE csp.total_points > 0\n)\nSELECT \n    con.name AS constructor_name,\n    COUNT(sfp.is_fewest) AS seasons_with_fewest_points\nFROM seasons_with_fewest_points sfp\nJOIN constructors con ON sfp.constructor_id = con.constructor_id\nWHERE sfp.is_fewest = 1\nGROUP BY con.name\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6390839921077713,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH min_points_per_season AS (\n    SELECT \n        races.year,\n        MIN(driver_standings.points) AS min_points\n    FROM races\n    JOIN driver_standings ON races.race_id = driver_standings.race_id\n    WHERE races.year >= 2001\n      AND driver_standings.points > 0\n    GROUP BY races.year\n),\nconstructor_points_per_season AS (\n    SELECT \n        races.year,\n        constructors.name AS constructor_name,\n        SUM(constructor_results.points) AS total_points\n    FROM races\n    JOIN constructor_results ON races.race_id = constructor_results.race_id\n    JOIN constructors ON constructor_results.constructor_id = constructors.constructor_id\n    WHERE races.year >= 2001\n    GROUP BY races.year, constructors.name\n),\nseasons_with_fewest_points AS (\n    SELECT \n        cpps.constructor_name,\n        cpps.year\n    FROM constructor_points_per_season cpps\n    JOIN min_points_per_season mpps ON cpps.year = mpps.year\n    WHERE cpps.total_points = mpps.min_points\n)\nSELECT \n    constructor_name,\n    COUNT(*) AS seasons_with_fewest_points\nFROM seasons_with_fewest_points\nGROUP BY constructor_name\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6527079967781901,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH min_points_per_season AS (\n    SELECT \n        r.year,\n        MIN(ds.points) AS min_points\n    FROM races r\n    JOIN driver_standings ds ON r.race_id = ds.race_id\n    WHERE r.year >= 2001 AND ds.points > 0\n    GROUP BY r.year\n),\nconstructors_with_min_points AS (\n    SELECT DISTINCT\n        c.name AS constructor_name,\n        r.year\n    FROM races r\n    JOIN constructor_results cr ON r.race_id = cr.race_id\n    JOIN constructors c ON cr.constructor_id = c.constructor_id\n    JOIN driver_standings ds ON r.race_id = ds.race_id\n    JOIN min_points_per_season mps ON r.year = mps.year AND ds.points = mps.min_points\n    WHERE r.year >= 2001 AND ds.points > 0\n)\nSELECT \n    constructor_name,\n    COUNT(*) AS seasons_with_fewest_points\nFROM constructors_with_min_points\nGROUP BY constructor_name\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8311670098919421,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH point_scoring_drivers_per_season AS (\n    SELECT \n        r.year,\n        ds.driver_id,\n        SUM(ds.points) AS total_points\n    FROM races r\n    JOIN driver_standings ds ON r.race_id = ds.race_id\n    WHERE r.year >= 2001\n    GROUP BY r.year, ds.driver_id\n    HAVING SUM(ds.points) > 0\n),\nmin_points_per_season AS (\n    SELECT \n        year,\n        MIN(total_points) AS min_points\n    FROM point_scoring_drivers_per_season\n    GROUP BY year\n),\ndrivers_with_min_points AS (\n    SELECT \n        ps.year,\n        ps.driver_id\n    FROM point_scoring_drivers_per_season ps\n    JOIN min_points_per_season mp ON ps.year = mp.year AND ps.total_points = mp.min_points\n),\nconstructor_points_per_season AS (\n    SELECT \n        r.year,\n        cr.constructor_id,\n        SUM(cr.points) AS total_points\n    FROM races r\n    JOIN constructor_results cr ON r.race_id = cr.race_id\n    WHERE r.year >= 2001\n    GROUP BY r.year, cr.constructor_id\n    HAVING SUM(cr.points) > 0\n),\nconstructors_with_min_points AS (\n    SELECT \n        crps.year,\n        crps.constructor_id\n    FROM constructor_points_per_season crps\n    JOIN min_points_per_season mp ON crps.year = mp.year AND crps.total_points = mp.min_points\n)\nSELECT \n    c.name,\n    COUNT(*) AS seasons_with_fewest_points\nFROM constructors_with_min_points cm\nJOIN constructors c ON cm.constructor_id = c.constructor_id\nGROUP BY c.name\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.48708400572650135,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH min_points_per_season AS (\n    SELECT \n        races.year,\n        MIN(driver_standings.points) AS min_points\n    FROM races\n    INNER JOIN driver_standings ON races.race_id = driver_standings.race_id\n    WHERE races.year >= 2001\n      AND driver_standings.points > 0\n    GROUP BY races.year\n),\nseasons_with_min_points AS (\n    SELECT DISTINCT\n        races.year,\n        driver_standings.driver_id\n    FROM races\n    INNER JOIN driver_standings ON races.race_id = driver_standings.race_id\n    INNER JOIN min_points_per_season ON races.year = min_points_per_season.year\n                                         AND driver_standings.points = min_points_per_season.min_points\n    WHERE races.year >= 2001\n      AND driver_standings.points > 0\n),\nconstructor_min_seasons AS (\n    SELECT \n        constructors.name,\n        COUNT(*) AS seasons_with_fewest_points\n    FROM seasons_with_min_points\n    INNER JOIN results ON seasons_with_min_points.year = races.year \n                       AND seasons_with_min_points.driver_id = results.driver_id\n    INNER JOIN races ON results.race_id = races.race_id\n    INNER JOIN constructors ON results.constructor_id = constructors.constructor_id\n    GROUP BY constructors.name\n)\nSELECT \n    name,\n    seasons_with_fewest_points\nFROM constructor_min_seasons\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3674589970614761,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH min_points_per_season AS (\n    SELECT \n        races.year,\n        MIN(driver_standings.points) AS min_points\n    FROM races\n    INNER JOIN driver_standings ON races.race_id = driver_standings.race_id\n    WHERE races.year >= 2001\n      AND driver_standings.points > 0\n    GROUP BY races.year\n),\nseasons_with_min_points AS (\n    SELECT DISTINCT\n        races.year,\n        driver_standings.driver_id\n    FROM races\n    INNER JOIN driver_standings ON races.race_id = driver_standings.race_id\n    INNER JOIN min_points_per_season ON races.year = min_points_per_season.year\n                                         AND driver_standings.points = min_points_per_season.min_points\n    WHERE races.year >= 2001\n      AND driver_standings.points > 0\n),\nconstructor_min_seasons AS (\n    SELECT \n        constructors.name,\n        COUNT(*) AS seasons_with_fewest_points\n    FROM seasons_with_min_points\n    INNER JOIN results ON seasons_with_min_points.year = races.year \n                       AND seasons_with_min_points.driver_id = results.driver_id\n    INNER JOIN races ON results.race_id = races.race_id\n    INNER JOIN constructors ON results.constructor_id = constructors.constructor_id\n    GROUP BY constructors.name\n)\nSELECT \n    name,\n    seasons_with_fewest_points\nFROM constructor_min_seasons\nORDER BY seasons_with_fewest_points DESC\nLIMIT 5;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8231.747208003071
+}

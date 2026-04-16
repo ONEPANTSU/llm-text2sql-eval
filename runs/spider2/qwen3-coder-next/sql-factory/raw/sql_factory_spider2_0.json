@@ -1,0 +1,129 @@
+{
+  "task_id": "spider2_0",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        COUNT(oi.order_id) AS daily_sales_count\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_count) AS avg_sales,\n        SUM((strftime('%s', sale_date) - (SELECT AVG(s...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "daily_sales",
+            "orders",
+            "oi",
+            "order_items",
+            "predicted_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        COUNT(oi.order_id) AS daily_sales_count\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_count) AS avg_sales,\n        SUM((strftime('%s', sale_date) - (SELECT AVG(s...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "daily_sales",
+            "orders",
+            "oi",
+            "order_items",
+            "predicted_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        COUNT(oi.order_id) AS daily_sales_count\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_count) AS avg_sales,\n        SUM((strftime('%s', sale_date) - (SELECT AVG(s...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "daily_sales",
+            "orders",
+            "oi",
+            "order_items",
+            "predicted_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        COUNT(oi.order_id) AS daily_sales_count\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_count) AS avg_sales,\n        SUM((strftime('%s', sale_date) - (SELECT AVG(s...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "daily_sales",
+        "orders",
+        "oi",
+        "order_items",
+        "predicted_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.8,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 4
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "misuse of window function AVG()",
+        "count": 3
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "misuse of aggregate function AVG()",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.26
+  }
+}

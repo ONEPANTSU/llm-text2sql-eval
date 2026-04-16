@@ -1,0 +1,216 @@
+{
+  "task_id": "bird_896",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(*) - COUNT(CASE WHEN r.grid = 1 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_not_first_track\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nJOIN races ra ON r.raceId = ra.raceId\nWHERE d.forename = 'Lewis' \n  AND d.surname = 'Hamilton'\n  AND ra.year >= 2010;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH hamilton_races AS (\n    SELECT r.raceId, r.year, r.circuitId, res.grid\n    FROM races r\n    JOIN results res ON r.raceId = res.raceId\n    JOIN drivers d ON res.driverId = d.driverId\n    WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.year >= 2010\n),\nfirst_track_races AS (\n    SELECT DISTINCT circuitId, name\n    FROM circuits\n    WHERE circuitId = 1  -- Assuming circuitId = 1 is the first track (e.g., Silverstone or similar)\n),\nhamilton_first_track_starts AS (\n    SELECT hr.raceI...",
+          "score": 1.0265368852459016,
+          "similarity_max": 0.44692622950819666,
+          "tables_used": [
+            "drivers",
+            "d",
+            "hamilton_races",
+            "ftr",
+            "r",
+            "res",
+            "circuits",
+            "hr",
+            "first_track_races",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(*) - COUNT(CASE WHEN r.grid = 1 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_not_first_track\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nJOIN races ra ON r.raceId = ra.raceId\nWHERE d.forename = 'Lewis' \n  AND d.surname = 'Hamilton'\n  AND ra.year >= 2010;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH hamilton_races AS (\n    SELECT r.raceId, r.year, r.circuitId, res.grid\n    FROM races r\n    JOIN results res ON r.raceId = res.raceId\n    JOIN drivers d ON res.driverId = d.driverId\n    WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.year >= 2010\n),\nfirst_track_races AS (\n    SELECT DISTINCT circuitId, name\n    FROM circuits\n    WHERE circuitId = 1  -- Assuming circuitId = 1 is the first track (e.g., Silverstone or similar)\n),\nhamilton_first_track_starts AS (\n    SELECT hr.raceI...",
+          "score": 1.0265368852459016,
+          "similarity_max": 0.44692622950819666,
+          "tables_used": [
+            "drivers",
+            "d",
+            "hamilton_races",
+            "ftr",
+            "r",
+            "res",
+            "circuits",
+            "hr",
+            "first_track_races",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH hamilton_races AS (\n    SELECT r.raceId, r.year, r.circuitId, res.grid, c.name AS circuitName\n    FROM races r\n    JOIN results res ON r.raceId = res.raceId\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN circuits c ON r.circuitId = c.circuitId\n    WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.year >= 2010\n),\nfirst_circuit AS (\n    SELECT circuitId, name\n    FROM circuits\n    ORDER BY circuitId\n    LIMIT 1\n),\nhamilton_first_circuit_starts AS (\n    SELECT hr.raceId\n   ...",
+          "score": 0.9244762288477035,
+          "similarity_max": 0.5510475423045931,
+          "tables_used": [
+            "drivers",
+            "d",
+            "fc",
+            "hamilton_races",
+            "first_circuit",
+            "r",
+            "res",
+            "circuits",
+            "c",
+            "hr",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(*) - COUNT(CASE WHEN r.grid = 1 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_not_first_track\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nJOIN races ra ON r.raceId = ra.raceId\nWHERE d.forename = 'Lewis' \n  AND d.surname = 'Hamilton'\n  AND ra.year >= 2010;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH hamilton_races AS (\n    SELECT r.raceId, r.year, r.circuitId, res.grid\n    FROM races r\n    JOIN results res ON r.raceId = res.raceId\n    JOIN drivers d ON res.driverId = d.driverId\n    WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.year >= 2010\n),\nfirst_track_races AS (\n    SELECT DISTINCT circuitId, name\n    FROM circuits\n    WHERE circuitId = 1  -- Assuming circuitId = 1 is the first track (e.g., Silverstone or similar)\n),\nhamilton_first_track_starts AS (\n    SELECT hr.raceI...",
+          "score": 1.0265368852459016,
+          "similarity_max": 0.44692622950819666,
+          "tables_used": [
+            "drivers",
+            "d",
+            "hamilton_races",
+            "ftr",
+            "r",
+            "res",
+            "circuits",
+            "hr",
+            "first_track_races",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH hamilton_races AS (\n    SELECT r.raceId, r.year, r.circuitId, res.grid, c.name AS circuitName\n    FROM races r\n    JOIN results res ON r.raceId = res.raceId\n    JOIN drivers d ON res.driverId = d.driverId\n    JOIN circuits c ON r.circuitId = c.circuitId\n    WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.year >= 2010\n),\nfirst_circuit AS (\n    SELECT circuitId, name\n    FROM circuits\n    ORDER BY circuitId\n    LIMIT 1\n),\nhamilton_first_circuit_starts AS (\n    SELECT hr.raceId\n   ...",
+          "score": 0.9244762288477035,
+          "similarity_max": 0.5510475423045931,
+          "tables_used": [
+            "drivers",
+            "d",
+            "fc",
+            "hamilton_races",
+            "first_circuit",
+            "r",
+            "res",
+            "circuits",
+            "c",
+            "hr",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(*) - COUNT(CASE WHEN r.grid = 1 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_not_first_track\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nJOIN races ra ON r.raceId = ra.raceId\nWHERE d.forename = 'Lewis' \n  AND d.surname = 'Hamilton'\n  AND ra.year >= 2010;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "drivers",
+        "d",
+        "ra",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: round",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 13.29
+  }
+}

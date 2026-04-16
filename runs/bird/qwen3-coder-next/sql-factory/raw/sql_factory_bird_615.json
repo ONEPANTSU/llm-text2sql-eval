@@ -1,0 +1,175 @@
+{
+  "task_id": "bird_615",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH organizer_users AS (\n    SELECT DISTINCT u.Id, u.Age\n    FROM badges b\n    JOIN users u ON b.UserId = u.Id\n    WHERE b.Name = 'Organizer'\n),\nteenagers AS (\n    SELECT COUNT(*) AS teen_count\n    FROM organizer_users\n    WHERE Age BETWEEN 13 AND 19\n),\ntotal_organizers AS (\n    SELECT COUNT(*) AS total_count\n    FROM organizer_users\n)\nSELECT \n    CASE \n        WHEN t.total_count = 0 THEN 0.0\n        ELSE ROUND(100.0 * teen_count / total_count, 2)\n    END AS percentage_teenagers\nFROM teenagers,...",
+          "score": 1.2678461538461538,
+          "similarity_max": 0.4643076923076923,
+          "tables_used": [
+            "u",
+            "organizer_users",
+            "teenagers",
+            "users",
+            "b",
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN u.Age BETWEEN 13 AND 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_teenagers\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH organizer_users AS (\n    SELECT DISTINCT u.Id, u.Age\n    FROM badges b\n    JOIN users u ON b.UserId = u.Id\n    WHERE b.Name = 'Organizer'\n),\nteenagers AS (\n    SELECT COUNT(*) AS teen_count\n    FROM organizer_users\n    WHERE Age BETWEEN 13 AND 19\n),\ntotal_organizers AS (\n    SELECT COUNT(*) AS total_count\n    FROM organizer_users\n)\nSELECT \n    CASE \n        WHEN t.total_count = 0 THEN 0.0\n        ELSE ROUND(100.0 * teen_count / total_count, 2)\n    END AS percentage_teenagers\nFROM teenagers,...",
+          "score": 1.2678461538461538,
+          "similarity_max": 0.4643076923076923,
+          "tables_used": [
+            "u",
+            "organizer_users",
+            "teenagers",
+            "users",
+            "b",
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN u.Age BETWEEN 13 AND 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_teenagers\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH organizer_users AS (\n    SELECT DISTINCT u.Id, u.Age\n    FROM badges b\n    INNER JOIN users u ON b.UserId = u.Id\n    WHERE b.Name = 'Organizer'\n),\nteenagers AS (\n    SELECT COUNT(*) AS teen_count\n    FROM organizer_users\n    WHERE Age IS NOT NULL AND Age >= 13 AND Age <= 19\n),\ntotal_organizers AS (\n    SELECT COUNT(*) AS total_count\n    FROM organizer_users\n)\nSELECT \n    CASE \n        WHEN t.total_count = 0 THEN 0.0\n        ELSE ROUND(100.0 * teen_count / total_count, 2)\n    END AS percenta...",
+          "score": 1.1126618431073876,
+          "similarity_max": 0.7746763137852247,
+          "tables_used": [
+            "u",
+            "organizer_users",
+            "teenagers",
+            "users",
+            "b",
+            "badges"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH organizer_users AS (\n    SELECT DISTINCT u.Id, u.Age\n    FROM badges b\n    JOIN users u ON b.UserId = u.Id\n    WHERE b.Name = 'Organizer'\n),\nteenagers AS (\n    SELECT COUNT(*) AS teen_count\n    FROM organizer_users\n    WHERE Age BETWEEN 13 AND 19\n),\ntotal_organizers AS (\n    SELECT COUNT(*) AS total_count\n    FROM organizer_users\n)\nSELECT \n    CASE \n        WHEN t.total_count = 0 THEN 0.0\n        ELSE ROUND(100.0 * teen_count / total_count, 2)\n    END AS percentage_teenagers\nFROM teenagers,...",
+          "score": 1.2678461538461538,
+          "similarity_max": 0.4643076923076923,
+          "tables_used": [
+            "u",
+            "organizer_users",
+            "teenagers",
+            "users",
+            "b",
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN u.Age BETWEEN 13 AND 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_teenagers\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH organizer_users AS (\n    SELECT DISTINCT b.UserId\n    FROM badges b\n    WHERE b.Name = 'Organizer'\n)\nSELECT \n    CAST(COUNT(CASE WHEN u.Age BETWEEN 13 AND 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_teenagers\nFROM organizer_users ou\nJOIN users u ON ou.UserId = u.Id;",
+          "score": 1.1307692307692307,
+          "similarity_max": 0.7384615384615385,
+          "tables_used": [
+            "u",
+            "organizer_users",
+            "users",
+            "ou",
+            "b",
+            "badges"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH organizer_users AS (\n    SELECT DISTINCT u.Id, u.Age\n    FROM badges b\n    JOIN users u ON b.UserId = u.Id\n    WHERE b.Name = 'Organizer'\n),\nteenagers AS (\n    SELECT COUNT(*) AS teen_count\n    FROM organizer_users\n    WHERE Age BETWEEN 13 AND 19\n),\ntotal_organizers AS (\n    SELECT COUNT(*) AS total_count\n    FROM organizer_users\n)\nSELECT \n    CASE \n        WHEN t.total_count = 0 THEN 0.0\n        ELSE ROUND(100.0 * teen_count / total_count, 2)\n    END AS percentage_teenagers\nFROM teenagers,...",
+    "meta": {
+      "score": 1.2678461538461538,
+      "similarity_max": 0.4643076923076923,
+      "tables_used": [
+        "u",
+        "organizer_users",
+        "teenagers",
+        "users",
+        "b",
+        "badges"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.3
+  }
+}

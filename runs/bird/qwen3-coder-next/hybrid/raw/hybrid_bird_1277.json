@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1277",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2246.933334005007,
+  "execution_time_ms": 5.431124998722225,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM Laboratory \nWHERE U-PRO = 'normal' AND ID NOT IN (\n    SELECT ID \n    FROM Patient \n    WHERE Description IS NOT NULL\n);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: U",
+      "exec_time_ms": 1.155874997493811,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM Patient \nWHERE ID NOT IN (SELECT ID FROM Laboratory);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.112083999440074,
+      "result_signature": "d201a1348ea450ca2e3cfe7d2b6b5f0be536f5b144bb800c5226c189d78f1b6d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) \nFROM Patient \nWHERE ID NOT IN (SELECT ID FROM Laboratory);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.49687499995343387,
+      "result_signature": "d201a1348ea450ca2e3cfe7d2b6b5f0be536f5b144bb800c5226c189d78f1b6d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM Patient p\nWHERE p.Diagnosis = 'normal' \n  AND p.ID NOT IN (SELECT ID FROM Examination WHERE aCL IgG = 'normal');",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"IgG\": syntax error",
+      "exec_time_ms": 0.1015840025502257,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM Patient p\nWHERE p.ID NOT IN (SELECT ID FROM Laboratory);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3970840043621138,
+      "result_signature": "d201a1348ea450ca2e3cfe7d2b6b5f0be536f5b144bb800c5226c189d78f1b6d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(*) \nFROM Patient p\nWHERE p.ID NOT IN (SELECT ID FROM Laboratory);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d201a1348ea450ca2e3cfe7d2b6b5f0be536f5b144bb800c5226c189d78f1b6d": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2252.436792005028
+}

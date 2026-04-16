@@ -1,12 +1,10 @@
-# Plain (Baseline) / Базовая архитектура
+# Plain (Baseline)
 
-## Overview / Обзор
+## Overview
 
 Single SQL generation per task. The simplest approach — one LLM call produces one SQL query, which is then executed against the database.
 
-Одна генерация SQL на задачу. Простейший подход — один вызов LLM создаёт один SQL-запрос, который исполняется на базе данных.
-
-## Algorithm / Алгоритм
+## Algorithm
 
 1. Build schema context (full_schema / toolchain / none)
 2. Send question + schema to LLM
@@ -14,7 +12,7 @@ Single SQL generation per task. The simplest approach — one LLM call produces 
 4. Execute SQL against the database
 5. Compare result with gold standard
 
-## Parameters / Параметры
+## Parameters
 
 No architecture-specific parameters. Uses global settings:
 
@@ -26,15 +24,17 @@ No architecture-specific parameters. Uses global settings:
 ## CLI
 
 ```bash
-uv run python -m evalsuite run --model openrouter --bench bird_sqlite --architecture plain
+uv run python -m evalsuite run --model qwen3-coder-next --bench bird_sqlite --architecture plain
 ```
 
-## Results / Результаты
+## Results
 
-| Benchmark | Accuracy | Failures |
-|-----------|----------|----------|
-| BIRD | 26.3% (403/1534) | 473 |
-| Spider2 | 12.2% (15/123) | 96 |
-| TPC-DS | 3.0% (3/99) | 69 |
+For qwen3-coder-next, `context_mode=toolchain`:
 
-Основные ошибки: `pred_exec_fail` (модель галлюцинирует имена колонок), `pred_generation_fail` (не удаётся извлечь SQL из ответа).
+| Benchmark | Accuracy | Exec failures |
+|-----------|----------|---------------|
+| BIRD | 31.4% (481/1534) | 59 |
+| Spider2 | 48.0% (59/123) | 26 |
+| TPC-DS | 8.1% (8/99) | 24 |
+
+Dominant error category: `schema_mismatch` (76-100% of exec failures) — model hallucinates column/table names.

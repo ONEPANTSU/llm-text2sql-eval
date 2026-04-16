@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_20",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4359.354917003657,
+  "execution_time_ms": 6.11804099753499,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  oc.customer_unique_id,\n  COUNT(o.order_id) AS order_count,\n  AVG(op.payment_value) AS avg_payment_value,\n  oc.customer_city,\n  oc.customer_state\nFROM \n  olist_customers oc\nJOIN \n  olist_orders o ON oc.customer_id = o.customer_id\nJOIN \n  olist_order_payments op ON o.order_id = op.order_id\nWHERE \n  o.order_status = 'delivered'\nGROUP BY \n  oc.customer_unique_id, oc.customer_city, oc.customer_state\nORDER BY \n  order_count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.389208999578841,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    c.customer_unique_id,\n    COUNT(o.order_id) AS order_count,\n    AVG(p.payment_value) AS avg_payment_value,\n    c.customer_city,\n    c.customer_state\nFROM \n    olist_customers c\nJOIN \n    olist_orders o ON c.customer_id = o.customer_id\nJOIN \n    olist_order_payments p ON o.order_id = p.order_id\nWHERE \n    o.order_status = 'delivered'\nGROUP BY \n    c.customer_unique_id, c.customer_city, c.customer_state\nORDER BY \n    order_count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0267920006299391,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    oc.customer_unique_id,\n    COUNT oo.order_id) AS order_count,\n    AVG(op.payment_value) AS avg_payment_value,\n    oc.customer_city,\n    oc.customer_state\nFROM \n    olist_customers oc\nJOIN \n    olist_orders oo ON oc.customer_id = oo.customer_id\nJOIN \n    olist_order_payments op ON oo.order_id = op.order_id\nWHERE \n    oo.order_status = 'delivered'\nGROUP BY \n    oc.customer_unique_id, oc.customer_city, oc.customer_state\nORDER BY \n    order_count DESC\nLIMIT 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \".\": syntax error",
+      "exec_time_ms": 0.3252500027883798,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    oc.customer_unique_id,\n    COUNT(o.order_id) AS order_count,\n    AVG(op.payment_value) AS avg_payment_value,\n    oc.customer_city,\n    oc.customer_state\nFROM \n    olist_customers oc\nJOIN \n    olist_orders o ON oc.customer_id = o.customer_id\nJOIN \n    olist_order_payments op ON o.order_id = op.order_id\nWHERE \n    o.order_status = 'delivered'\nGROUP BY \n    oc.customer_unique_id, oc.customer_city, oc.customer_state\nORDER BY \n    order_count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3209160058759153,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  c.customer_unique_id,\n  COUNT(o.order_id) AS order_count,\n  AVG(p.payment_value) AS avg_payment_value,\n  c.customer_city,\n  c.customer_state\nFROM \n  olist_customers c\nJOIN \n  olist_orders o ON c.customer_id = o.customer_id\nJOIN \n  olist_order_payments p ON o.order_id = p.order_id\nWHERE \n  o.order_status = 'delivered'\nGROUP BY \n  c.customer_unique_id, c.customer_city, c.customer_state\nORDER BY \n  order_count DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3669589932542294,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    oc.customer_unique_id,\n    COUNT(o.order_id) AS order_count,\n    AVG(op.payment_value) AS avg_payment_value,\n    oc.customer_city,\n    oc.customer_state\nFROM \n    olist_customers oc\nJOIN \n    olist_orders o ON oc.customer_id = o.customer_id\nJOIN \n    olist_order_payments op ON o.order_id = op.order_id\nWHERE \n    o.order_status = 'delivered'\nGROUP BY \n    oc.customer_unique_id, oc.customer_city, oc.customer_state\nORDER BY \n    order_count DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4365.64004200045
+}

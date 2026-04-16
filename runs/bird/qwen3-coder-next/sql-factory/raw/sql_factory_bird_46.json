@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_46",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%'\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.School\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%Special%' AND f.`School Type` = 'State Special'\nGROUP BY s.School\nORDER BY SUM(f.`Enrollment (K-12)`) DESC\nLIMIT 1;",
+          "score": 0.8117647058823529,
+          "similarity_max": 0.776470588235294,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%'\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.School\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%Special%' AND f.`School Type` = 'State Special'\nGROUP BY s.School\nORDER BY SUM(f.`Enrollment (K-12)`) DESC\nLIMIT 1;",
+          "score": 0.8117647058823529,
+          "similarity_max": 0.776470588235294,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%' AND f.`Low Grade` <= 12 AND f.`High Grade` >= 1\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+          "score": 0.8067567567567567,
+          "similarity_max": 0.7864864864864864,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%'\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.School\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%Special%' AND f.`School Type` = 'State Special'\nGROUP BY s.School\nORDER BY SUM(f.`Enrollment (K-12)`) DESC\nLIMIT 1;",
+          "score": 0.8117647058823529,
+          "similarity_max": 0.776470588235294,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%' AND f.`Low Grade` <= 12 AND f.`High Grade` >= 1\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+          "score": 0.8067567567567567,
+          "similarity_max": 0.7864864864864864,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT s.State, SUM(f.`Enrollment (K-12)`) AS total_enrollment\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.School LIKE '%State Special%'\nGROUP BY s.State\nORDER BY total_enrollment DESC;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "frpm",
+        "f",
+        "s",
+        "schools"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 11.91
+  }
+}

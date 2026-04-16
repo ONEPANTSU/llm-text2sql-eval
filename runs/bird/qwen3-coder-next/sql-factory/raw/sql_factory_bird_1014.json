@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1014",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT lt.raceId, lt.driverId, lt.lap, lt.time, lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT l.raceId, l.driverId, l.lap, l.time, l.milliseconds\nFROM lapTimes l\nJOIN races r ON l.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+          "score": 0.8750000000000001,
+          "similarity_max": 0.8499999999999999,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "c",
+            "circuits",
+            "l",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT lt.raceId, lt.driverId, lt.lap, lt.time, lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT lt.raceId, lt.driverId, lt.lap, lt.time, lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy'\nORDER BY lt.time;",
+          "score": 0.8873928571428572,
+          "similarity_max": 0.8252142857142857,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT l.raceId, l.driverId, l.lap, l.time, l.milliseconds\nFROM lapTimes l\nJOIN races r ON l.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+          "score": 0.8750000000000001,
+          "similarity_max": 0.8499999999999999,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "c",
+            "circuits",
+            "l",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT lt.raceId, lt.driverId, lt.lap, lt.time, lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.name AS circuit_name,\n    r.name AS race_name,\n    r.year,\n    l.driverId,\n    l.lap,\n    l.time AS lap_time,\n    l.milliseconds\nFROM lapTimes l\nJOIN races r ON l.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy'\nORDER BY c.name, r.year, l.lap;",
+          "score": 0.9664473684210527,
+          "similarity_max": 0.6671052631578946,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "c",
+            "circuits",
+            "l",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.name AS circuit_name,\n    r.name AS race_name,\n    r.date AS race_date,\n    lt.driverId,\n    lt.lap,\n    lt.time AS lap_time,\n    lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy'\nORDER BY c.name, r.date, lt.lap;",
+          "score": 0.9018099547511313,
+          "similarity_max": 0.7963800904977375,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "lt",
+            "c",
+            "circuits",
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT lt.raceId, lt.driverId, lt.lap, lt.time, lt.milliseconds\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN circuits c ON r.circuitId = c.circuitId\nWHERE c.country = 'Italy';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "lapTimes",
+        "r",
+        "lt",
+        "c",
+        "circuits",
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 176.2
+  }
+}

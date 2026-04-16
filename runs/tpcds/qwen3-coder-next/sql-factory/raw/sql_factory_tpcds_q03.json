@@ -1,0 +1,138 @@
+{
+  "task_id": "tpcds_q03",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE \n    item.i_manufact_id = 128\n    AND date_dim.d_moy = 11\nGROUP BY \n    d_year,\n    i_brand,\n    i_brand_id\nORDER BY \n    d_year,\n    sum_agg DESC,\n    brand_id\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE \n    item.i_manufact_id = 128\n    AND date_dim.d_moy = 11\nGROUP BY \n    d_year,\n    i_brand,\n    i_brand_id\nORDER BY \n    d_year,\n    sum_agg DESC,\n    brand_id\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nINNER JOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nINNER JOIN \n    item ON ss_item_sk = i_item_sk\nWHERE \n    i_manufact_id = 128\n    AND d_moy = 11\nGROUP BY \n    d_year,\n    i_brand_id,\n    i_brand\nORDER BY \n    d_year ASC,\n    sum_agg DESC,\n    brand_id ASC\nLIMIT 100",
+          "score": 0.8359340659340659,
+          "similarity_max": 0.8281318681318681,
+          "tables_used": [
+            "date_dim",
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE \n    item.i_manufact_id = 128\n    AND date_dim.d_moy = 11\nGROUP BY \n    d_year,\n    i_brand,\n    i_brand_id\nORDER BY \n    d_year,\n    sum_agg DESC,\n    brand_id\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_by_brand AS (\n    SELECT \n        d_year,\n        i_brand_id,\n        i_brand,\n        SUM(ss_ext_sales_price) AS sum_agg\n    FROM \n        store_sales\n    JOIN \n        date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN \n        item ON ss_item_sk = i_item_sk\n    WHERE \n        i_manufact_id = 128\n        AND d_moy = 11\n    GROUP BY \n        d_year,\n        i_brand_id,\n        i_brand\n)\nSELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    sum_agg\nFROM \n    sales_by...",
+          "score": 1.007451923076923,
+          "similarity_max": 0.6850961538461539,
+          "tables_used": [
+            "sales_by_brand",
+            "item",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nINNER JOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nINNER JOIN \n    item ON ss_item_sk = i_item_sk\nWHERE \n    i_manufact_id = 128\n    AND d_moy = 11\nGROUP BY \n    d_year,\n    i_brand_id,\n    i_brand\nORDER BY \n    d_year ASC,\n    sum_agg DESC,\n    brand_id ASC\nLIMIT 100",
+          "score": 0.8359340659340659,
+          "similarity_max": 0.8281318681318681,
+          "tables_used": [
+            "date_dim",
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    d_year,\n    i_brand_id AS brand_id,\n    i_brand AS brand,\n    SUM(ss_ext_sales_price) AS sum_agg\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE \n    item.i_manufact_id = 128\n    AND date_dim.d_moy = 11\nGROUP BY \n    d_year,\n    i_brand,\n    i_brand_id\nORDER BY \n    d_year,\n    sum_agg DESC,\n    brand_id\nLIMIT 100",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "item",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Table \"item\" does not have a column named \"i_manult_id\"\n\nCandidate",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 33.88
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_899",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2242.517749997205,
+  "execution_time_ms": 2.1222499999566935,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT c.name\nFROM circuits c\nJOIN races r ON c.circuitId = r.circuitId\nWHERE r.year >= 1990 AND r.year <= 2000\nGROUP BY r.circuitId\nHAVING COUNT(r.circuitId) = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8300420013256371,
+      "result_signature": "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.name\nFROM circuits c\nJOIN races r ON c.circuitId = r.circuitId\nWHERE r.year >= 1990 AND r.year <= 2000\nGROUP BY r.circuitId\nHAVING COUNT(r.circuitId) = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3426670009503141,
+      "result_signature": "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT circuits.name\nFROM circuits\nJOIN races ON races.circuitId = circuits.circuitId\nWHERE races.year >= 1990 AND races.year <= 2000\nGROUP BY races.circuitId\nHAVING COUNT(races.circuitId) = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.28283400024520233,
+      "result_signature": "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.name\nFROM circuits c\nJOIN races r ON c.circuitId = r.circuitId\nWHERE r.year >= 1990 AND r.year <= 2000\nGROUP BY r.circuitId\nHAVING COUNT(*) = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.26575000083539635,
+      "result_signature": "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c.name\nFROM circuits c\nJOIN races r ON c.circuitId = r.circuitId\nWHERE r.year >= 1990 AND r.year <= 2000\nGROUP BY r.circuitId\nHAVING COUNT(r.circuitId) = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2560840002843179,
+      "result_signature": "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT c.name\nFROM circuits c\nJOIN races r ON c.circuitId = r.circuitId\nWHERE r.year >= 1990 AND r.year <= 2000\nGROUP BY r.circuitId\nHAVING COUNT(r.circuitId) = 4;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ee1188061246148ae243d09be77c37aa2646d6a15a55a73e7f84666784ba7a1d": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2244.6844169971882
+}

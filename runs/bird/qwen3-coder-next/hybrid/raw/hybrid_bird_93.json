@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_93",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3389.799791999394,
+  "execution_time_ms": 9.860915997705888,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*)\nFROM client\nJOIN district ON client.district_id = district.district_id\nWHERE client.gender = 'M' AND district.A2 = 'North Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.324167002981994,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM client \nJOIN district ON client.district_id = district.district_id \nWHERE client.gender = 'M' \n  AND district.A2 = 'North Bohemia' \n  AND client.client_id IN (\n    SELECT client_id \n    FROM disp \n    JOIN account ON disp.account_id = account.account_id \n    JOIN trans ON account.account_id = trans.account_id \n    WHERE trans.type = 'salary' \n    GROUP BY client.client_id \n    HAVING AVG(trans.amount) > 8000\n  );",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: client.client_id",
+      "exec_time_ms": 0.8033339981921017,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*)  \nFROM client  \nJOIN district ON client.district_id = district.district_id  \nWHERE client.gender = 'male'  \n  AND district.A2 = 'North Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9550419999868609,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*)  \nFROM client  \nJOIN district ON client.district_id = district.district_id  \nWHERE client.gender = 'male'  \n  AND district.A2 = 'North Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7949170030769892,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*)\nFROM client\nJOIN district ON client.district_id = district.district_id\nWHERE client.gender = 'M'\n  AND district.A2 = 'North Bohemia';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2756250071106479,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT COUNT(*)  \nFROM client  \nJOIN district ON client.district_id = district.district_id  \nWHERE client.gender = 'male'  \n  AND district.A2 = 'North Bohemia';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3399.916750000557
+}

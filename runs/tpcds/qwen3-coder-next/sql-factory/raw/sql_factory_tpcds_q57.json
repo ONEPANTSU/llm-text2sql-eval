@@ -1,0 +1,127 @@
+{
+  "task_id": "tpcds_q57",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT i_item_id,\n       i_item_desc,\n       SUM(ss_ext_sales_price) AS sales\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1999 AND d_moy = 12 LIMIT 1)\nGROUP BY i_item_id, i_item_desc\nORDER BY sales DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    SUM(ss_ext_sales_price) AS sales\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\nWHERE \n    d_year = 1999\n    AND d_moy = 12\nGROUP BY \n    i_item_id,\n    i_item_desc\nORDER BY \n    sales DESC\nLIMIT 100",
+          "score": 0.8076190476190478,
+          "similarity_max": 0.7847619047619048,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT i_item_id,\n       i_item_desc,\n       SUM(ss_ext_sales_price) AS sales\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1999 AND d_moy = 12 LIMIT 1)\nGROUP BY i_item_id, i_item_desc\nORDER BY sales DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    SUM(ss_ext_sales_price) AS sales\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\nWHERE \n    d_year = 1999\n    AND d_moy = 12\nGROUP BY \n    i_item_id,\n    i_item_desc\nORDER BY \n    sales DESC\nLIMIT 100",
+          "score": 0.8076190476190478,
+          "similarity_max": 0.7847619047619048,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT i_item_id,\n       i_item_desc,\n       SUM(ss_ext_sales_price) AS sales\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1999 AND d_moy = 12 LIMIT 1)\nGROUP BY i_item_id, i_item_desc\nORDER BY sales DESC\nLIMIT 100",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    SUM(ss_ext_sales_price) AS sales\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\nWHERE \n    d_year = 1999\n    AND d_moy = 12\nGROUP BY \n    i_item_id,\n    i_item_desc\nORDER BY \n    sales DESC\nLIMIT 100",
+          "score": 0.8076190476190478,
+          "similarity_max": 0.7847619047619048,
+          "tables_used": [
+            "item",
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT i_item_id,\n       i_item_desc,\n       SUM(ss_ext_sales_price) AS sales\nFROM store_sales\nJOIN item ON ss_item_sk = i_item_sk\nJOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE d_month_seq = (SELECT d_month_seq FROM date_dim WHERE d_year = 1999 AND d_moy = 12 LIMIT 1)\nGROUP BY i_item_id, i_item_desc\nORDER BY sales DESC\nLIMIT 100",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 35.22
+  }
+}

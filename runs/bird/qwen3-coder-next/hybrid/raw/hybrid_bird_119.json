@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_119",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7276.894707996689,
+  "execution_time_ms": 510.8459170005517,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    account.account_id, \n    district.A2 AS district_name, \n    district.A3 AS district_region\nFROM \n    account\nJOIN \n    district ON account.district_id = district.district_id\nJOIN \n    trans ON account.account_id = trans.account_id\nWHERE \n    trans.date LIKE '1993%'\nGROUP BY \n    account.account_id, \n    district.A2, \n    district.A3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 272.8357500018319,
+      "result_signature": "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    a.account_id, \n    d.A2 AS district_name, \n    d.A3 AS district_region\nFROM \n    account a\nJOIN \n    district d ON a.district_id = d.district_id\nJOIN \n    trans t ON a.account_id = t.account_id\nWHERE \n    t.date LIKE '1993%'\nGROUP BY \n    a.account_id, d.A2, d.A3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.67800000082934,
+      "result_signature": "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    account.account_id, \n    district.A2 AS district_name, \n    district.A3 AS district_region\nFROM \n    account\nJOIN \n    district ON account.district_id = district.district_id\nJOIN \n    trans ON account.account_id = trans.account_id\nWHERE \n    trans.date LIKE '1993%'\nGROUP BY \n    account.account_id, \n    district.A2, \n    district.A3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 62.10308299341705,
+      "result_signature": "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    account.account_id, \n    district.A2 AS district_name, \n    district.A3 AS district_region\nFROM \n    account\nJOIN \n    district ON account.district_id = district.district_id\nJOIN \n    trans ON account.account_id = trans.account_id\nWHERE \n    trans.date LIKE '1993%'\nGROUP BY \n    account.account_id, \n    district.A2, \n    district.A3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 57.03324999922188,
+      "result_signature": "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    account.account_id, \n    district.A2 AS district_name, \n    district.A3 AS district_region\nFROM \n    account\nJOIN \n    district ON account.district_id = district.district_id\nJOIN \n    trans ON account.account_id = trans.account_id\nWHERE \n    trans.date LIKE '1993%'\nGROUP BY \n    account.account_id, \n    district.A2, \n    district.A3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.952125003386755,
+      "result_signature": "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    account.account_id, \n    district.A2 AS district_name, \n    district.A3 AS district_region\nFROM \n    account\nJOIN \n    district ON account.district_id = district.district_id\nJOIN \n    trans ON account.account_id = trans.account_id\nWHERE \n    trans.date LIKE '1993%'\nGROUP BY \n    account.account_id, \n    district.A2, \n    district.A3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "98a003fbbbc8266865ae1feb64e8ff0190962e2c2a669e1e3f69388d773f4956": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7787.804499996128
+}

@@ -1,0 +1,166 @@
+{
+  "task_id": "bird_1282",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1910.7360419948236,
+  "execution_time_ms": 11.743209004634991,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT BETWEEN 7 AND 56  -- Assuming normal range for GPT (ALT) is typically 7-56 U/L\nORDER BY l.GPT DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.245791002176702,
+      "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT <= 50  -- Assuming normal range for GPT (Glutamic Pyruvic Transaminase) is up to 50 U/L\nORDER BY l.GPT DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.006084003369324,
+      "result_signature": "9885167f25c2433d9631de6a9c8537ff4c3cefad5d006c87d941d6263de9ed81",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT BETWEEN 7 AND 56\nORDER BY l.GPT DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0387080003274605,
+      "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT BETWEEN 7 AND 56  -- Assuming normal range for GPT (Glutamic Pyruvic Transaminase) is 7-56 U/L\nORDER BY l.GPT DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4800409990129992,
+      "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Patient.Birthday\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.GPT BETWEEN 7 AND 56\nORDER BY Laboratory.GPT DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7369159977533855,
+      "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT BETWEEN 7 AND 56  -- Assuming normal range for GPT (Glutamic Pyruvic Transaminase) is 7-56 U/L\nORDER BY l.GPT DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8": 6,
+        "9885167f25c2433d9631de6a9c8537ff4c3cefad5d006c87d941d6263de9ed81": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1627.1894170058658,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT >= 7 AND l.GPT <= 56\nORDER BY l.GPT DESC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.115290997608099,
+        "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT >= 7 AND l.GPT <= 56\nORDER BY l.GPT DESC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.70208299823571,
+        "result_signature": "be3d4d09f2e6cb42cc94e7973c5424e19838009e5373fbdefcd8cfb4d29a8cd8",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3549.791291996371
+}

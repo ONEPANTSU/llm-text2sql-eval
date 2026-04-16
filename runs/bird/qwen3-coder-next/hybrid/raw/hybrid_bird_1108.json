@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1108",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2343.395625000994,
+  "execution_time_ms": 6.171874993015081,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT buildUpPlaySpeedClass\nFROM Team_Attributes\nJOIN Team ON Team_Attributes.team_api_id = Team.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.695999999763444,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT buildUpPlaySpeedClass\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6408749977708794,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT buildUpPlaySpeedClass\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5872090041521005,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT buildUpPlaySpeedClass\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.534541999513749,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT buildUpPlaySpeedClass\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5154169994057156,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT buildUpPlaySpeedClass\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'Willem II'\n  AND Team_Attributes.date = '2011-02-22';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2349.75483299786
+}

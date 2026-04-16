@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_86",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 14114.344790999894,
+  "execution_time_ms": 23.879875006969087,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH batsman_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball b ON m.match_id = b.match_id AND b.striker = p.player_id\n    JOIN batsman_scored bs ON b.match_id = bs.match_id AND b.over_id = bs.over_id AND b.ball_id = bs.ball_id AND b.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(w.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball b ON m.match_id = b.match_id AND b.bowler = p.player_id\n    JOIN wicket_taken w ON b.match_id = w.match_id AND b.over_id = w.over_id AND b.ball_id = w.ball_id AND b.innings_no = w.innings_no\n    WHERE w.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nranked_batsmen AS (\n    SELECT \n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nranked_bowlers AS (\n    SELECT \n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n)\nSELECT \n    rb.season_id,\n    rb.batsman_name,\n    rb.total_runs,\n    rw.bowler_name,\n    rw.total_wickets\nFROM ranked_batsmen rb\nJOIN ranked_bowlers rw ON rb.season_id = rw.season_id AND rb.batsman_rank = rw.bowler_rank\nWHERE rb.batsman_rank <= 3\nORDER BY rb.season_id ASC, rb.batsman_rank ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.2361660016467795,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH batsman_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'Batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.striker = p.player_id\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id AND bb.ball_id = bs.ball_id AND bb.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(wt.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'Bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.bowler = p.player_id\n    JOIN wicket_taken wt ON bb.match_id = wt.match_id AND bb.over_id = wt.over_id AND bb.ball_id = wt.ball_id AND bb.innings_no = wt.innings_no\n    WHERE wt.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbatsman_ranks AS (\n    SELECT \n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nbowler_ranks AS (\n    SELECT \n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n)\nSELECT \n    br.season_id,\n    br.batsman_name,\n    br.total_runs,\n    wbr.bowler_name,\n    wbr.total_wickets\nFROM batsman_ranks br\nJOIN bowler_ranks wbr ON br.season_id = wbr.season_id AND br.batsman_rank = wbr.bowler_rank\nWHERE br.batsman_rank <= 3\nORDER BY br.season_id ASC, br.batsman_rank ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.942750004469417,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH batsman_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.striker = p.player_id\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id AND bb.ball_id = bs.ball_id AND bb.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(w.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.bowler = p.player_id\n    JOIN wicket_taken w ON bb.match_id = w.match_id AND bb.over_id = w.over_id AND bb.ball_id = w.ball_id AND bb.innings_no = w.innings_no\n    WHERE w.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nranked_batsmen AS (\n    SELECT \n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nranked_bowlers AS (\n    SELECT \n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n),\ntop_batsmen AS (\n    SELECT * FROM ranked_batsmen WHERE batsman_rank <= 3\n),\ntop_bowlers AS (\n    SELECT * FROM ranked_bowlers WHERE bowler_rank <= 3\n)\nSELECT \n    b.season_id,\n    b.batsman_name,\n    b.total_runs,\n    w.bowler_name,\n    w.total_wickets\nFROM top_batsmen b\nJOIN top_bowlers w ON b.season_id = w.season_id AND b.batsman_rank = w.bowler_rank\nORDER BY b.season_id ASC, b.batsman_rank ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7287079934030771,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH batsman_stats AS (\n    SELECT\n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.striker = p.player_id\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id AND bb.ball_id = bs.ball_id AND bb.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbatsman_ranked AS (\n    SELECT\n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nbowler_stats AS (\n    SELECT\n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(w.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.bowler = p.player_id\n    JOIN wicket_taken w ON bb.match_id = w.match_id AND bb.over_id = w.over_id AND bb.ball_id = w.ball_id AND bb.innings_no = w.innings_no\n    WHERE w.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_ranked AS (\n    SELECT\n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n),\ntop_batsmen AS (\n    SELECT season_id, batsman_id, batsman_name, total_runs, batsman_rank\n    FROM batsman_ranked\n    WHERE batsman_rank <= 3\n),\ntop_bowlers AS (\n    SELECT season_id, bowler_id, bowler_name, total_wickets, bowler_rank\n    FROM bowler_ranked\n    WHERE bowler_rank <= 3\n)\nSELECT\n    b.season_id,\n    b.batsman_id,\n    b.batsman_name,\n    b.total_runs,\n    w.bowler_id,\n    w.bowler_name,\n    w.total_wickets\nFROM top_batsmen b\nJOIN top_bowlers w ON b.season_id = w.season_id AND b.batsman_rank = w.bowler_rank\nORDER BY b.season_id ASC, b.batsman_rank ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7004999933997169,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH batsman_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'Batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.striker = p.player_id\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id \n        AND bb.over_id = bs.over_id \n        AND bb.ball_id = bs.ball_id \n        AND bb.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_stats AS (\n    SELECT \n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(w.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'Bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.bowler = p.player_id\n    JOIN wicket_taken w ON bb.match_id = w.match_id \n        AND bb.over_id = w.over_id \n        AND bb.ball_id = w.ball_id \n        AND bb.innings_no = w.innings_no\n    WHERE w.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbatsman_ranks AS (\n    SELECT \n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nbowler_ranks AS (\n    SELECT \n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n),\ntop_batsmen AS (\n    SELECT season_id, batsman_id, batsman_name, total_runs, batsman_rank\n    FROM batsman_ranks\n    WHERE batsman_rank <= 3\n),\ntop_bowlers AS (\n    SELECT season_id, bowler_id, bowler_name, total_wickets, bowler_rank\n    FROM bowler_ranks\n    WHERE bowler_rank <= 3\n)\nSELECT \n    b.season_id,\n    b.batsman_name,\n    b.total_runs,\n    w.bowler_name,\n    w.total_wickets\nFROM top_batsmen b\nJOIN top_bowlers w \n    ON b.season_id = w.season_id \n    AND b.batsman_rank = w.bowler_rank\nORDER BY b.season_id ASC, b.batsman_rank ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6166249988600612,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH batsman_stats AS (\n    SELECT\n        m.season_id,\n        p.player_id AS batsman_id,\n        p.player_name AS batsman_name,\n        SUM(bs.runs_scored) AS total_runs\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'batsman'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.striker = p.player_id\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id AND bb.ball_id = bs.ball_id AND bb.innings_no = bs.innings_no\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbatsman_ranked AS (\n    SELECT\n        season_id,\n        batsman_id,\n        batsman_name,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_runs DESC, batsman_id ASC) AS batsman_rank\n    FROM batsman_stats\n),\nbowler_stats AS (\n    SELECT\n        m.season_id,\n        p.player_id AS bowler_id,\n        p.player_name AS bowler_name,\n        COUNT(w.player_out) AS total_wickets\n    FROM match m\n    JOIN player_match pm ON m.match_id = pm.match_id AND pm.role = 'bowler'\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN ball_by_ball bb ON m.match_id = bb.match_id AND bb.bowler = p.player_id\n    JOIN wicket_taken w ON bb.match_id = w.match_id AND bb.over_id = w.over_id AND bb.ball_id = w.ball_id AND bb.innings_no = w.innings_no\n    WHERE w.kind_out NOT IN ('run out', 'hit wicket', 'retired hurt')\n    GROUP BY m.season_id, p.player_id, p.player_name\n),\nbowler_ranked AS (\n    SELECT\n        season_id,\n        bowler_id,\n        bowler_name,\n        total_wickets,\n        ROW_NUMBER() OVER (PARTITION BY season_id ORDER BY total_wickets DESC, bowler_id ASC) AS bowler_rank\n    FROM bowler_stats\n),\ntop_batsmen AS (\n    SELECT season_id, batsman_id, batsman_name, total_runs, batsman_rank\n    FROM batsman_ranked\n    WHERE batsman_rank <= 3\n),\ntop_bowlers AS (\n    SELECT season_id, bowler_id, bowler_name, total_wickets, bowler_rank\n    FROM bowler_ranked\n    WHERE bowler_rank <= 3\n)\nSELECT\n    b.season_id,\n    b.batsman_id,\n    b.batsman_name,\n    b.total_runs,\n    w.bowler_id,\n    w.bowler_name,\n    w.total_wickets\nFROM top_batsmen b\nJOIN top_bowlers w ON b.season_id = w.season_id AND b.batsman_rank = w.bowler_rank\nORDER BY b.season_id ASC, b.batsman_rank ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 14138.330542002223
+}

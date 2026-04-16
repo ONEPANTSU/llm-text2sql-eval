@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_67",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 14796.399750004639,
+  "execution_time_ms": 3.1642500107409433,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH movie_dates AS (\n    SELECT \n        m.director_id,\n        m.release_date,\n        LAG(m.release_date) OVER (PARTITION BY m.director_id ORDER BY m.release_date) AS prev_release_date\n    FROM movies m\n),\ninter_movie_durations AS (\n    SELECT \n        director_id,\n        julianday(release_date) - julianday(prev_release_date) AS inter_movie_diff\n    FROM movie_dates\n    WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n    SELECT \n        d.director_id,\n        d.name,\n        COUNT(m.director_id) AS movie_count,\n        ROUND(AVG(imd.inter_movie_diff)) AS avg_inter_movie_duration,\n        ROUND(AVG(m.rating), 2) AS avg_rating,\n        SUM(m.votes) AS total_votes,\n        MIN(m.rating) AS min_rating,\n        MAX(m.rating) AS max_rating,\n        SUM(m.duration) AS total_duration\n    FROM directors d\n    JOIN movies m ON d.director_id = m.director_id\n    LEFT JOIN inter_movie_durations imd ON d.director_id = imd.director_id\n    GROUP BY d.director_id, d.name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: directors",
+      "exec_time_ms": 1.1807499977294356,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH inter_movie_duration AS (\n  SELECT \n    m.director_id,\n    m.release_date,\n    LAG(m.release_date) OVER (PARTITION BY m.director_id ORDER BY m.release_date) AS prev_release_date\n  FROM movies m\n),\nmovie_diffs AS (\n  SELECT \n    director_id,\n    julianday(release_date) - julianday(prev_release_date) AS inter_movie_diff\n  FROM inter_movie_duration\n  WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n  SELECT \n    d.director_id,\n    d.name,\n    COUNT(m.director_id) AS movie_count,\n    ROUND(AVG(md.inter_movie_diff)) AS avg_inter_movie_duration,\n    ROUND(AVG(m.rating), 2) AS avg_rating,\n    SUM(m.votes) AS total_votes,\n    MIN(m.rating) AS min_rating,\n    MAX(m.rating) AS max_rating,\n    SUM(m.duration) AS total_duration\n  FROM directors d\n  JOIN movies m ON d.director_id = m.director_id\n  LEFT JOIN movie_diffs md ON d.director_id = md.director_id\n  GROUP BY d.director_id, d.name\n)\nSELECT \n  director_id,\n  name,\n  movie_count,\n  avg_inter_movie_duration,\n  avg_rating,\n  total_votes,\n  min_rating,\n  max_rating,\n  total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: directors",
+      "exec_time_ms": 0.5930830084253103,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH director_movies AS (\n    SELECT \n        d.director_id,\n        d.name,\n        m.rating,\n        m.votes,\n        m.duration,\n        m.release_date,\n        LAG(m.release_date) OVER (PARTITION BY d.director_id ORDER BY m.release_date) AS prev_release_date\n    FROM directors d\n    JOIN movies m ON d.director_id = m.director_id\n),\ndirector_stats AS (\n    SELECT \n        director_id,\n        name,\n        COUNT(*) AS movie_count,\n        ROUND(AVG(\n            CASE \n                WHEN prev_release_date IS NOT NULL THEN julianday(release_date) - julianday(prev_release_date)\n                ELSE NULL\n            END\n        )) AS avg_inter_movie_duration,\n        ROUND(AVG(rating), 2) AS avg_rating,\n        SUM(votes) AS total_votes,\n        MIN(rating) AS min_rating,\n        MAX(rating) AS max_rating,\n        SUM(duration) AS total_duration\n    FROM director_movies\n    GROUP BY director_id, name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: directors",
+      "exec_time_ms": 0.5910830077482387,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH movie_dates AS (\n    SELECT \n        m.director_id,\n        m.release_date,\n        LAG(m.release_date) OVER (PARTITION BY m.director_id ORDER BY m.release_date) AS prev_release_date\n    FROM movies m\n),\ninter_movie_durations AS (\n    SELECT \n        director_id,\n        julianday(release_date) - julianday(prev_release_date) AS inter_movie_diff\n    FROM movie_dates\n    WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n    SELECT \n        d.director_id,\n        d.name,\n        COUNT(m.director_id) AS movie_count,\n        ROUND(AVG(imd.inter_movie_diff)) AS avg_inter_movie_duration,\n        ROUND(AVG(m.rating), 2) AS avg_rating,\n        SUM(m.votes) AS total_votes,\n        MIN(m.rating) AS min_rating,\n        MAX(m.rating) AS max_rating,\n        SUM(m.duration) AS total_duration\n    FROM directors d\n    JOIN movies m ON d.director_id = m.director_id\n    LEFT JOIN inter_movie_durations imd ON d.director_id = imd.director_id\n    GROUP BY d.director_id, d.name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: directors",
+      "exec_time_ms": 0.3508340014377609,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH director_movies AS (\n    SELECT \n        d.director_id,\n        d.name,\n        m.release_date,\n        m.rating,\n        m.votes,\n        m.duration,\n        LAG(m.release_date) OVER (PARTITION BY d.director_id ORDER BY m.release_date) AS prev_release_date\n    FROM directors d\n    JOIN movies m ON d.director_id = m.director_id\n),\ninter_movie_durations AS (\n    SELECT \n        director_id,\n        name,\n        rating,\n        votes,\n        duration,\n        CAST(julianday(release_date) - julianday(prev_release_date) AS INTEGER) AS inter_movie_diff\n    FROM director_movies\n    WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n    SELECT \n        d.director_id,\n        d.name,\n        COUNT(*) AS movie_count,\n        ROUND(AVG(imd.inter_movie_diff)) AS avg_inter_movie_duration,\n        ROUND(AVG(d.rating), 2) AS avg_rating,\n        SUM(d.votes) AS total_votes,\n        MIN(d.rating) AS min_rating,\n        MAX(d.rating) AS max_rating,\n        SUM(d.duration) AS total_duration\n    FROM directors d\n    JOIN movies m ON d.director_id = m.director_id\n    LEFT JOIN inter_movie_durations imd ON d.director_id = imd.director_id\n    GROUP BY d.director_id, d.name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: directors",
+      "exec_time_ms": 0.32570899929851294,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: directors",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH movie_dates AS (\n    SELECT \n        director_id,\n        release_date,\n        LAG(release_date) OVER (PARTITION BY director_id ORDER BY release_date) AS prev_release_date\n    FROM movies\n),\ninter_movie_durations AS (\n    SELECT \n        director_id,\n        julianday(release_date) - julianday(prev_release_date) AS inter_movie_diff\n    FROM movie_dates\n    WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n    SELECT \n        m.director_id,\n        d.name,\n        COUNT(*) AS movie_count,\n        ROUND(AVG(imd.inter_movie_diff)) AS avg_inter_movie_duration,\n        ROUND(AVG(m.rating), 2) AS avg_rating,\n        SUM(m.votes) AS total_votes,\n        MIN(m.rating) AS min_rating,\n        MAX(m.rating) AS max_rating,\n        SUM(m.duration) AS total_duration\n    FROM movies m\n    JOIN directors d ON m.director_id = d.director_id\n    LEFT JOIN inter_movie_durations imd ON m.director_id = imd.director_id\n    GROUP BY m.director_id, d.name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: movies",
+        "exec_time_ms": 5.1405419944785535,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH movie_dates AS (\n    SELECT \n        director_id,\n        release_date,\n        LAG(release_date) OVER (PARTITION BY director_id ORDER BY release_date) AS prev_release_date\n    FROM movies\n),\ninter_movie_durations AS (\n    SELECT \n        director_id,\n        julianday(release_date) - julianday(prev_release_date) AS inter_movie_diff\n    FROM movie_dates\n    WHERE prev_release_date IS NOT NULL\n),\ndirector_stats AS (\n    SELECT \n        m.director_id,\n        d.name,\n        COUNT(m.director_id) AS movie_count,\n        ROUND(AVG(imd.inter_movie_diff)) AS avg_inter_movie_duration,\n        ROUND(AVG(m.rating), 2) AS avg_rating,\n        SUM(m.votes) AS total_votes,\n        MIN(m.rating) AS min_rating,\n        MAX(m.rating) AS max_rating,\n        SUM(m.duration) AS total_duration\n    FROM movies m\n    JOIN directors d ON m.director_id = d.director_id\n    LEFT JOIN inter_movie_durations imd ON m.director_id = imd.director_id\n    GROUP BY m.director_id, d.name\n)\nSELECT \n    director_id,\n    name,\n    movie_count,\n    avg_inter_movie_duration,\n    avg_rating,\n    total_votes,\n    min_rating,\n    max_rating,\n    total_duration\nFROM director_stats\nORDER BY movie_count DESC, total_duration DESC\nLIMIT 9;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: movies",
+        "exec_time_ms": 0.7849999965401366,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 31937.726166986977
+}

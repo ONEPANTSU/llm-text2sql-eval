@@ -1,0 +1,185 @@
+{
+  "task_id": "tpcds_q62",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6637.775417009834,
+  "execution_time_ms": 100.60220799641684,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT i_item_sk\nFROM store_sales, web_sales, date_dim, item\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND web_sales.ws_item_sk = item.i_item_sk\n  AND web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_month_seq = 1200\n  AND date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY i_item_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 35.323167001479305,
+      "result_signature": "574da4fa3893802db07e1d48b62b133de8394a2037674442f2781cff00c47d3c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT i_item_sk\nFROM store_sales, web_sales, date_dim, item\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND web_sales.ws_item_sk = item.i_item_sk\n  AND web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_month_seq = 1200\nGROUP BY i_item_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.351833990891464,
+      "result_signature": "2ab44fc0941e67ecc1f10fed91ef37968e69d95260e4e23c376ba5dd6f9c98ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT i_item_sk\nFROM store_sales, web_sales, date_dim, item\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND web_sales.ws_item_sk = item.i_item_sk\n  AND web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_month_seq = 1200\nGROUP BY i_item_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.06708399776835,
+      "result_signature": "16ed695f5b1a52546af3f66dc93661e706684c5911802387235cfc2d8a789a99",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT item.i_item_sk\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE date_dim.d_month_seq = 1200\nINTERSECT\nSELECT DISTINCT item.i_item_sk\nFROM web_sales\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN item ON web_sales.ws_item_sk = item.i_item_sk\nWHERE date_dim.d_month_seq = 1200\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.322124992962927,
+      "result_signature": "4ef95528f515a80126d6997639746bcfa24652ca945932b3fb607c6478eb3d38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT i_item_sk\nFROM store_sales, web_sales, date_dim, item\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND web_sales.ws_item_sk = item.i_item_sk\n  AND web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_month_seq = 1200\n  AND date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY i_item_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.57154200761579,
+      "result_signature": "40cc0b806e82dfcb0cf67c0db4c81b9caabdaf4b837ab3e91b7ecb5b5e8baaaa",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 7,
+    "selected_sql": "SELECT DISTINCT item.i_item_sk\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE date_dim.d_month_seq = 1200\n  AND item.i_item_sk IN (\n    SELECT DISTINCT item.i_item_sk\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_month_seq = 1200\n  )\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "574da4fa3893802db07e1d48b62b133de8394a2037674442f2781cff00c47d3c": 1,
+        "2ab44fc0941e67ecc1f10fed91ef37968e69d95260e4e23c376ba5dd6f9c98ec": 1,
+        "16ed695f5b1a52546af3f66dc93661e706684c5911802387235cfc2d8a789a99": 1,
+        "4ef95528f515a80126d6997639746bcfa24652ca945932b3fb607c6478eb3d38": 1,
+        "40cc0b806e82dfcb0cf67c0db4c81b9caabdaf4b837ab3e91b7ecb5b5e8baaaa": 1,
+        "a4232aa97fedd499b82f9bc070946cb2bb195af11f20185acee140801dc0775f": 1,
+        "4862a2eb667482c754d61f2e877f08d316bcc91504c954f03dfabbd7b5737d5f": 2
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 2307.1293750108453,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT i_item_sk\nFROM store_sales\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN web_sales ON web_sales.ws_item_sk = item.i_item_sk\n  AND web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq = 1200\nGROUP BY i_item_sk\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 30.836417005048133,
+        "result_signature": "a4232aa97fedd499b82f9bc070946cb2bb195af11f20185acee140801dc0775f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT item.i_item_sk\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE date_dim.d_month_seq = 1200\nAND item.i_item_sk IN (\n  SELECT DISTINCT item.i_item_sk\n  FROM web_sales\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n  JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n  WHERE date_dim.d_month_seq = 1200\n)\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 20.529375004116446,
+        "result_signature": "4862a2eb667482c754d61f2e877f08d316bcc91504c954f03dfabbd7b5737d5f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT item.i_item_sk\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nWHERE date_dim.d_month_seq = 1200\n  AND item.i_item_sk IN (\n    SELECT DISTINCT item.i_item_sk\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_month_seq = 1200\n  )\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 16.295249995891936,
+        "result_signature": "4862a2eb667482c754d61f2e877f08d316bcc91504c954f03dfabbd7b5737d5f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9045.629457992618
+}

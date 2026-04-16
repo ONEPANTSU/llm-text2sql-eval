@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_638",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1295.100542003638,
+  "execution_time_ms": 49.06195800140267,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.423333001323044,
+      "result_signature": "3a6b232ddf11a14083b36af834ffa5dd927f02081af991062f7e60912c24b8d8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.985042000247631,
+      "result_signature": "bb006a0535e32211208357ee3a058527546848c5c5f3ca77ac5345acfcc11eaa",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.662167000991758,
+      "result_signature": "3a6b232ddf11a14083b36af834ffa5dd927f02081af991062f7e60912c24b8d8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.4706669980078,
+      "result_signature": "3a6b232ddf11a14083b36af834ffa5dd927f02081af991062f7e60912c24b8d8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.349375001969747,
+      "result_signature": "3a6b232ddf11a14083b36af834ffa5dd927f02081af991062f7e60912c24b8d8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT u.DisplayName\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE b.Name = 'Organizer';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3a6b232ddf11a14083b36af834ffa5dd927f02081af991062f7e60912c24b8d8": 4,
+        "bb006a0535e32211208357ee3a058527546848c5c5f3ca77ac5345acfcc11eaa": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 991.8092080042697,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2336.0814999978174
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_934",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1902.455875002488,
+  "execution_time_ms": 11.454749997938052,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT drivers.forename, drivers.surname\nFROM races\nJOIN results ON races.raceId = results.raceId\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE races.year = 1989\n  AND races.name = 'Australian Grand Prix'\n  AND results.grid = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7029590021120384,
+      "result_signature": "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT drivers.forename, drivers.surname\nFROM races\nJOIN results ON races.raceId = results.raceId\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE races.year = 1989\n  AND races.name = 'Australian Grand Prix'\n  AND results.grid = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.107542000885587,
+      "result_signature": "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT drivers.forename, drivers.surname\nFROM races\nJOIN results ON races.raceId = results.raceId\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE races.year = 1989\n  AND races.name = 'Australian Grand Prix'\n  AND results.grid = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1822920025442727,
+      "result_signature": "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.forename, d.surname\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE r.year = 1989\n  AND r.name = 'Australian Grand Prix'\n  AND res.grid = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5123749981285073,
+      "result_signature": "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT drivers.forename, drivers.surname\nFROM races\nJOIN results ON races.raceId = results.raceId\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE races.year = 1989\n  AND races.name = 'Australian Grand Prix'\n  AND results.grid = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2516670030890964,
+      "result_signature": "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT drivers.forename, drivers.surname\nFROM races\nJOIN results ON races.raceId = results.raceId\nJOIN drivers ON results.driverId = drivers.driverId\nWHERE races.year = 1989\n  AND races.name = 'Australian Grand Prix'\n  AND results.grid = 4\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "490289a622ab138168a38b8ff99ee9e96421e27fd35d184be56c22664b3ed644": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1913.9964589994634
+}

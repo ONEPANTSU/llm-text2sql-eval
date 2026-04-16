@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_99",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3441.021874998114,
+  "execution_time_ms": 17.743000003974885,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT account.account_id\nFROM account\nJOIN loan ON account.account_id = loan.account_id\nWHERE loan.duration > 12\n  AND strftime('%Y', account.date) = '1993'\nORDER BY loan.amount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.596207995258737,
+      "result_signature": "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT a.account_id\nFROM account a\nJOIN loan l ON a.account_id = l.account_id\nWHERE l.duration > 12\n  AND strftime('%Y', a.date) = '1993'\nORDER BY l.amount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6037919956725091,
+      "result_signature": "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT account.account_id\nFROM account\nJOIN loan ON account.account_id = loan.account_id\nWHERE loan.duration > 12\n  AND strftime('%Y', account.date) = '1993'\nORDER BY loan.amount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.47408299724338576,
+      "result_signature": "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT account.account_id\nFROM account\nJOIN loan ON account.account_id = loan.account_id\nWHERE loan.duration > 12\n  AND strftime('%Y', account.date) = '1993'\nORDER BY loan.amount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4314170000725426,
+      "result_signature": "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT a.account_id\nFROM account a\nJOIN loan l ON a.account_id = l.account_id\nWHERE l.duration > 12\n  AND strftime('%Y', a.date) = '1993'\nORDER BY l.amount DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.40704199636820704,
+      "result_signature": "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT a.account_id\nFROM account a\nJOIN loan l ON a.account_id = l.account_id\nWHERE l.duration > 12\n  AND strftime('%Y', a.date) = '1993'\nORDER BY l.amount DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "551039ec7e9ae806cf3da3c1a39b5e6e82de13c1d26596b4dca3359025967cae": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3458.814915997209
+}

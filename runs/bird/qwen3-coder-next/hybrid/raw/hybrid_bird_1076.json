@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1076",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3542.029292002553,
+  "execution_time_ms": 554.4977499957895,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (SELECT AVG(pa.ball_control) \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Abdou Diallo') \n    - \n    (SELECT AVG(pa.ball_control) \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Aaron Appindangoye') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 148.9967500019702,
+      "result_signature": "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  (SELECT AVG(pa.ball_control) \n   FROM Player_Attributes pa \n   JOIN Player p ON pa.player_api_id = p.player_api_id \n   WHERE p.player_name = 'Abdou Diallo') \n  - \n  (SELECT AVG(pa.ball_control) \n   FROM Player_Attributes pa \n   JOIN Player p ON pa.player_api_id = p.player_api_id \n   WHERE p.player_name = 'Aaron Appindangoye') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 114.66695900162449,
+      "result_signature": "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  (SELECT AVG(pa.ball_control) \n   FROM Player p \n   JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n   WHERE p.player_name = 'Abdou Diallo') \n  - \n  (SELECT AVG(pa.ball_control) \n   FROM Player p \n   JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n   WHERE p.player_name = 'Aaron Appindangoye') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 110.47708300611703,
+      "result_signature": "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (SELECT AVG(pa.ball_control) \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Abdou Diallo') \n    - \n    (SELECT AVG(pa.ball_control) \n     FROM Player p \n     JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id \n     WHERE p.player_name = 'Aaron Appindangoye') AS difference",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 109.5278339998913,
+      "result_signature": "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(CASE WHEN p.player_name = 'Abdou Diallo' THEN pa.ball_control END) - AVG(CASE WHEN p.player_name = 'Aaron Appindangoye' THEN pa.ball_control END) AS ball_control_difference\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name IN ('Abdou Diallo', 'Aaron Appindangoye');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 70.47687500016764,
+      "result_signature": "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT AVG(CASE WHEN p.player_name = 'Abdou Diallo' THEN pa.ball_control END) - AVG(CASE WHEN p.player_name = 'Aaron Appindangoye' THEN pa.ball_control END) AS ball_control_difference\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name IN ('Abdou Diallo', 'Aaron Appindangoye');",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d2405a1695edb8cf7cd2896d5947b4bc18c1fd38c318b6f2d8612d6665c2cef0": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4096.618541996577
+}

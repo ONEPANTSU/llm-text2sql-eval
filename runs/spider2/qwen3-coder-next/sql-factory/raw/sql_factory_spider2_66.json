@@ -1,0 +1,163 @@
+{
+  "task_id": "spider2_66",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    s.businessentityid,\n    strftime('%Y', soh.orderdate) AS year,\n    SUM(soh.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(soh.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nJOIN salesorderheader soh ON s.businessentityid = soh.salespersonid\nGROUP BY s.businessentityid, strftime('%Y', soh.orderdate), s.salesquota\nORDER BY s.businessentityid, year;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salesperson",
+            "soh",
+            "salesorderheader",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    s.businessentityid AS salesperson_id,\n    strftime('%Y', so.orderdate) AS year,\n    SUM(so.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(so.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nJOIN salesorderheader so ON s.businessentityid = so.salespersonid\nGROUP BY s.businessentityid, strftime('%Y', so.orderdate)\nORDER BY s.businessentityid, year;",
+          "score": 0.7933423913043478,
+          "similarity_max": 0.8133152173913043,
+          "tables_used": [
+            "salesperson",
+            "so",
+            "salesorderheader",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    s.businessentityid,\n    strftime('%Y', soh.orderdate) AS year,\n    SUM(soh.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(soh.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nJOIN salesorderheader soh ON s.businessentityid = soh.salespersonid\nGROUP BY s.businessentityid, strftime('%Y', soh.orderdate), s.salesquota\nORDER BY s.businessentityid, year;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salesperson",
+            "soh",
+            "salesorderheader",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    s.businessentityid AS salesperson_id,\n    CAST(strftime('%Y', so.orderdate) AS INTEGER) AS year,\n    SUM(so.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    ROUND(SUM(so.totaldue) - s.salesquota, 2) AS sales_vs_quota_diff\nFROM salesperson s\nINNER JOIN salesorderheader so ON s.businessentityid = so.salespersonid\nWHERE so.orderdate IS NOT NULL\nGROUP BY s.businessentityid, strftime('%Y', so.orderdate)\nHAVING s.salesquota IS NOT NULL\nORDER BY s.businessentityid, year;",
+          "score": 0.9650311968235963,
+          "similarity_max": 0.6699376063528076,
+          "tables_used": [
+            "salesperson",
+            "so",
+            "salesorderheader",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    s.businessentityid,\n    CAST(strftime('%Y', soh.orderdate) AS INTEGER) AS year,\n    SUM(soh.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(soh.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nINNER JOIN salesorderheader soh ON s.businessentityid = soh.salespersonid\nGROUP BY s.businessentityid, CAST(strftime('%Y', soh.orderdate) AS INTEGER), s.salesquota\nORDER BY s.businessentityid, year;",
+          "score": 0.9019302615193027,
+          "similarity_max": 0.7961394769613948,
+          "tables_used": [
+            "salesperson",
+            "soh",
+            "salesorderheader",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    s.businessentityid,\n    strftime('%Y', soh.orderdate) AS year,\n    SUM(soh.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(soh.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nJOIN salesorderheader soh ON s.businessentityid = soh.salespersonid\nGROUP BY s.businessentityid, strftime('%Y', soh.orderdate), s.salesquota\nORDER BY s.businessentityid, year;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salesperson",
+            "soh",
+            "salesorderheader",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    s.businessentityid AS salesperson_id,\n    CAST(strftime('%Y', so.orderdate) AS INTEGER) AS year,\n    SUM(so.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    ROUND(SUM(so.totaldue) - s.salesquota, 2) AS sales_vs_quota_diff\nFROM salesperson s\nINNER JOIN salesorderheader so ON s.businessentityid = so.salespersonid\nWHERE so.orderdate IS NOT NULL\nGROUP BY s.businessentityid, strftime('%Y', so.orderdate)\nHAVING s.salesquota IS NOT NULL\nORDER BY s.businessentityid, year;",
+          "score": 0.9650311968235963,
+          "similarity_max": 0.6699376063528076,
+          "tables_used": [
+            "salesperson",
+            "so",
+            "salesorderheader",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    s.businessentityid,\n    CAST(strftime('%Y', soh.orderdate) AS INTEGER) AS year,\n    ROUND(SUM(soh.totaldue), 2) AS total_sales,\n    ROUND(s.salesquota, 2) AS annual_quota,\n    ROUND(SUM(soh.totaldue) - s.salesquota, 2) AS sales_vs_quota_diff\nFROM salesperson s\nINNER JOIN salesorderheader soh \n    ON s.businessentityid = soh.salespersonid\n    AND soh.orderdate IS NOT NULL\nGROUP BY s.businessentityid, CAST(strftime('%Y', soh.orderdate) AS INTEGER), s.salesquota\nHAVING s.salesquota IS N...",
+          "score": 0.9397224306076519,
+          "similarity_max": 0.7205551387846961,
+          "tables_used": [
+            "salesperson",
+            "soh",
+            "salesorderheader",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    s.businessentityid,\n    strftime('%Y', soh.orderdate) AS year,\n    SUM(soh.totaldue) AS total_sales,\n    s.salesquota AS annual_quota,\n    SUM(soh.totaldue) - s.salesquota AS sales_vs_quota_diff\nFROM salesperson s\nJOIN salesorderheader soh ON s.businessentityid = soh.salespersonid\nGROUP BY s.businessentityid, strftime('%Y', soh.orderdate), s.salesquota\nORDER BY s.businessentityid, year;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "salesperson",
+        "soh",
+        "salesorderheader",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.27
+  }
+}

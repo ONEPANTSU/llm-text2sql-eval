@@ -1,0 +1,159 @@
+{
+  "task_id": "bird_1143",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match \nJOIN League ON Match.league_id = League.id \nWHERE League.name = 'Netherlands Eredivisie';",
+          "score": 0.6507936507936509,
+          "similarity_max": 0.7984126984126984,
+          "tables_used": [
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(home_team_goal) AS highest_home_score\nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+          "score": 0.8019490254872563,
+          "similarity_max": 0.7961019490254873,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match \nJOIN League ON Match.league_id = League.id \nWHERE League.name = 'Netherlands Eredivisie';",
+          "score": 0.6507936507936509,
+          "similarity_max": 0.7984126984126984,
+          "tables_used": [
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(home_team_goal) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON m.country_id = c.id\nWHERE c.name = 'Netherlands' AND l.name = 'Eredivisie';",
+          "score": 0.9613333333333334,
+          "similarity_max": 0.6773333333333333,
+          "tables_used": [
+            "c",
+            "Country",
+            "m",
+            "l",
+            "League",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT MAX(home_team_goal) AS highest_home_score\nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+          "score": 0.8019490254872563,
+          "similarity_max": 0.7961019490254873,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT MAX(home_team_goal) \nFROM Match m\nJOIN League l ON m.league_id = l.id\nWHERE l.name = 'Netherlands Eredivisie';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "l",
+        "League",
+        "m",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 164.29
+  }
+}

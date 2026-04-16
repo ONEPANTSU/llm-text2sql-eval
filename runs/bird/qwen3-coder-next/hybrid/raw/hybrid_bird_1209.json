@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1209",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2608.7173340056324,
+  "execution_time_ms": 144.98341600119602,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL AND l.GPT > 40\nORDER BY p.Birthday ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.74962500447873,
+      "result_signature": "6371149dad22d83dfa5197c2cfcbfac11834cede2be7e134c171101d87ac5175",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.5050420016632415,
+      "result_signature": "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT > (SELECT MAX(GPT) FROM Laboratory WHERE GPT IS NOT NULL)\nORDER BY p.Birthday ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3445830011041835,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.015874998411164,
+      "result_signature": "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.534541997709312,
+      "result_signature": "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6371149dad22d83dfa5197c2cfcbfac11834cede2be7e134c171101d87ac5175": 2,
+        "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9": 5,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 3,
+    "expansion_time_ms": 2212.8592079970986,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 11.826583002402913,
+        "result_signature": "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT IS NOT NULL\nORDER BY p.Birthday ASC;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5.977082997560501,
+        "result_signature": "017c48fa85e605aa01763ec05e298f7a62be83c3735b4c4828a6c78f6abc7fe9",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT p.Diagnosis\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GPT > 40\nORDER BY p.Birthday ASC;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.041583000391256,
+        "result_signature": "6371149dad22d83dfa5197c2cfcbfac11834cede2be7e134c171101d87ac5175",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4966.6277910000645
+}

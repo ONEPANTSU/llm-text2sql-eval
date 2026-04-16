@@ -1,0 +1,148 @@
+{
+  "task_id": "bird_1350",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT status\nFROM event\nWHERE event_name = 'Post Cards, Posters' AND event_date = '2019-08-20';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT e.status\nFROM event e\nJOIN expense ex ON e.event_id = ex.link_to_budget\nJOIN budget b ON ex.link_to_budget = b.budget_id\nWHERE ex.expense_description = 'Post Cards, Posters' AND ex.expense_date = '2019-08-20';",
+          "score": 1.0966666666666667,
+          "similarity_max": 0.4066666666666666,
+          "tables_used": [
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense",
+            "ex"
+          ]
+        },
+        {
+          "sql": "SELECT status\nFROM event\nWHERE event_name = 'Post Cards, Posters' AND event_date = '2019-08-20';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT status\nFROM event\nWHERE event_name LIKE '%Post Cards, Posters%' AND event_date = '2019-08-20';",
+          "score": 0.6260416666666667,
+          "similarity_max": 0.8479166666666667,
+          "tables_used": [
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT e.status\nFROM event e\nJOIN expense ex ON e.event_id = ex.link_to_budget\nJOIN budget b ON ex.link_to_budget = b.budget_id\nWHERE ex.expense_description = 'Post Cards, Posters' AND ex.expense_date = '2019-08-20';",
+          "score": 1.0966666666666667,
+          "similarity_max": 0.4066666666666666,
+          "tables_used": [
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense",
+            "ex"
+          ]
+        },
+        {
+          "sql": "SELECT e.status\nFROM event e\nJOIN expense ex ON ex.link_to_budget IN (\n    SELECT b.budget_id\n    FROM budget b\n    WHERE b.link_to_event = e.event_id\n)\nWHERE ex.expense_description = 'Post Cards, Posters' AND ex.expense_date = '2019-08-20';",
+          "score": 1.053125,
+          "similarity_max": 0.69375,
+          "tables_used": [
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense",
+            "ex"
+          ]
+        },
+        {
+          "sql": "SELECT status\nFROM event\nWHERE event_name = 'Post Cards, Posters' AND event_date = '2019-08-20';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT e.status\nFROM event e\nJOIN expense ex ON e.event_id = ex.link_to_budget\nJOIN budget b ON ex.link_to_budget = b.budget_id\nWHERE ex.expense_description = 'Post Cards, Posters' AND ex.expense_date = '2019-08-20';",
+    "meta": {
+      "score": 1.0966666666666667,
+      "similarity_max": 0.4066666666666666,
+      "tables_used": [
+        "budget",
+        "e",
+        "event",
+        "b",
+        "expense",
+        "ex"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.62
+  }
+}

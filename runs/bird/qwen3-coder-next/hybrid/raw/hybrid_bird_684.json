@@ -1,0 +1,180 @@
+{
+  "task_id": "bird_684",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1733.3372080029221,
+  "execution_time_ms": 25.192875000357162,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT CAST(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS teenage_percentage\nFROM users\nWHERE Age IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.262333998165559,
+      "result_signature": "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT (COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) * 100.0 / COUNT(*)) AS teenage_percentage\nFROM users\nWHERE Age IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.827249998925254,
+      "result_signature": "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CAST(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.006667000998277,
+      "result_signature": "5e552f4d9d958daea39fa329e4a02972707951c5485b396bf7a563a58c2e774d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CAST(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS teenage_percentage FROM users WHERE Age IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.470541993214283,
+      "result_signature": "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CAST(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS teenage_percentage\nFROM users\nWHERE Age IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.4132499970146455,
+      "result_signature": "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT CAST(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS teenage_percentage\nFROM users\nWHERE Age IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac": 5,
+        "5e552f4d9d958daea39fa329e4a02972707951c5485b396bf7a563a58c2e774d": 3
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 1368.872333005129,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT (COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) * 100.0 / COUNT(*)) AS teenage_percentage\nFROM users\nWHERE Age IS NOT NULL;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.56737499916926,
+        "result_signature": "03a6f2230260298c73bfde858cf969d04af379a5e23e97987af6babb04ad08ac",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT (COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) * 100.0 / COUNT(*)) AS teenage_percentage\nFROM users;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.924000000755768,
+        "result_signature": "5e552f4d9d958daea39fa329e4a02972707951c5485b396bf7a563a58c2e774d",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT CAST((SELECT COUNT(*) FROM users WHERE Age >= 13 AND Age <= 19) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.843624999921303,
+        "result_signature": "5e552f4d9d958daea39fa329e4a02972707951c5485b396bf7a563a58c2e774d",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3127.4720420042286
+}

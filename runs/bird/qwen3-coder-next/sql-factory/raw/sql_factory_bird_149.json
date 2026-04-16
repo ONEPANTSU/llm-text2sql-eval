@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_149",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "account",
+            "a",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000\nAND a.account_id NOT IN (\n    SELECT DISTINCT l.account_id\n    FROM loan l\n);",
+          "score": 1.0725490196078433,
+          "similarity_max": 0.6549019607843137,
+          "tables_used": [
+            "loan",
+            "d",
+            "account",
+            "a",
+            "l",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "account",
+            "a",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000\nAND a.account_id NOT IN (\n    SELECT DISTINCT l.account_id\n    FROM loan l\n);",
+          "score": 1.0725490196078433,
+          "similarity_max": 0.6549019607843137,
+          "tables_used": [
+            "loan",
+            "d",
+            "account",
+            "a",
+            "l",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "account",
+            "a",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000\nAND a.account_id NOT IN (\n    SELECT DISTINCT l.account_id\n    FROM loan l\n);",
+          "score": 1.0725490196078433,
+          "similarity_max": 0.6549019607843137,
+          "tables_used": [
+            "loan",
+            "d",
+            "account",
+            "a",
+            "l",
+            "district"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 8000 AND d.A10 <= 9000;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "d",
+        "account",
+        "a",
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.6666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 4
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: a.type",
+        "count": 4
+      }
+    ],
+    "avg_preflight_ms": 2.2
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "task_id": "bird_203",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule \nWHERE molecule_id NOT IN (\n    SELECT DISTINCT molecule_id \n    FROM atom \n    WHERE element = 'Br'\n)",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE NOT EXISTS (\n    SELECT 1 \n    FROM atom a \n    WHERE a.molecule_id = m.molecule_id \n    AND a.element = 'Br'\n);",
+          "score": 1.0423913043478261,
+          "similarity_max": 0.5152173913043478,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule \nWHERE molecule_id NOT IN (\n    SELECT DISTINCT molecule_id \n    FROM atom \n    WHERE element = 'Br'\n)",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE NOT EXISTS (\n    SELECT 1 \n    FROM atom a \n    WHERE a.molecule_id = m.molecule_id \n    AND a.element = 'Br'\n);",
+          "score": 1.0423913043478261,
+          "similarity_max": 0.5152173913043478,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE m.molecule_id NOT IN (\n    SELECT a.molecule_id \n    FROM atom a \n    WHERE a.element = 'Br'\n);",
+          "score": 0.9650000000000001,
+          "similarity_max": 0.6699999999999999,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule \nWHERE molecule_id NOT IN (\n    SELECT DISTINCT molecule_id \n    FROM atom \n    WHERE element = 'Br'\n)",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE NOT EXISTS (\n    SELECT 1 \n    FROM atom a \n    WHERE a.molecule_id = m.molecule_id \n    AND a.element = 'Br'\n);",
+          "score": 1.0423913043478261,
+          "similarity_max": 0.5152173913043478,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT molecule_id \n    FROM molecule \n    EXCEPT \n    SELECT molecule_id \n    FROM atom \n    WHERE element = 'Br'\n) AS no_bromine_molecules;",
+          "score": 0.977,
+          "similarity_max": 0.546,
+          "tables_used": [
+            "molecule",
+            "EXCEPT",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM molecule \nWHERE molecule_id NOT IN (\n    SELECT DISTINCT molecule_id \n    FROM atom \n    WHERE element = 'Br'\n)",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 59.42
+  }
+}

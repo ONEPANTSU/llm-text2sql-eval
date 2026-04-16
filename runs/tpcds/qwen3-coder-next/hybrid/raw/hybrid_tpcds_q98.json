@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q98",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5276.263041989296,
+  "execution_time_ms": 0.9359999967273325,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    hd_buy_potential,\n    CASE \n        WHEN ss_sold_date_sk IS NOT NULL THEN 'Store'\n        WHEN ws_sold_date_sk IS NOT NULL THEN 'Web'\n        WHEN cs_sold_date_sk IS NOT NULL THEN 'Catalog'\n    END AS sales_channel,\n    SUM(COALESCE(ss_ext_sales_price, 0)) AS store_sales_total,\n    SUM(COALESCE(ws_ext_sales_price, 0)) AS web_sales_total,\n    SUM(COALESCE(cs_ext_sales_price, 0)) AS catalog_sales_total\nFROM \n    store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nWHERE \n    date_dim.d_date >= '1999-02-22' AND date_dim.d_date <= '1999-03-24'\nGROUP BY \n    hd_buy_potential,\n    CASE \n        WHEN ss_sold_date_sk IS NOT NULL THEN 'Store'\n        WHEN ws_sold_date_sk IS NOT NULL THEN 'Web'\n        WHEN cs_sold_date_sk IS NOT NULL THEN 'Catalog'\n    END\nORDER BY \n    hd_buy_potential,\n    sales_channel;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"ws_sold_date_sk\" not found in FROM clause!\nCandidate bindings: \"ss_sold_date_sk\", \"ss_sold_time_sk\", \"ss_addr_sk\", \"d_date_sk\", \"d_date\"\n\nLINE 22:         WHEN ws_sold_date_sk IS NOT NULL THEN 'Web'\n                      ^",
+      "exec_time_ms": 0.8229169907281175,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 5277.266499993857
+}

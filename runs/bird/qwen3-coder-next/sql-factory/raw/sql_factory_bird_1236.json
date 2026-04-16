@@ -1,0 +1,160 @@
+{
+  "task_id": "bird_1236",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND l.RBC NOT BETWEEN 4.0 AND 5.5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND l.RBC NOT BETWEEN 4.0 AND 5.5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND (l.RBC < 3.5 OR l.RBC > 5.0);",
+          "score": 0.93625,
+          "similarity_max": 0.7275,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND (l.RBC < 4.0 OR l.RBC > 5.5);",
+          "score": 0.7819148936170213,
+          "similarity_max": 0.8361702127659574,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND l.RBC NOT BETWEEN 4.0 AND 5.5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND (l.RBC < 3.5 OR l.RBC > 5.0);",
+          "score": 0.93625,
+          "similarity_max": 0.7275,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.ID, p.Admission\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND l.RBC != 'normal';",
+          "score": 0.915,
+          "similarity_max": 0.57,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    p.ID,\n    CASE \n        WHEN p.Admission IS NOT NULL THEN 'Yes'\n        ELSE 'No'\n    END AS WasAdmitted\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'F'\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) >= 50\n  AND l.RBC NOT BETWEEN 4.0 AND 5.5;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.2,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such function: STDDEV",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 10.9
+  }
+}

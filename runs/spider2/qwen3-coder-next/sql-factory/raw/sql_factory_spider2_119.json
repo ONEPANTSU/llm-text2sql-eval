@@ -1,0 +1,255 @@
+{
+  "task_id": "spider2_119",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_max_points AS (\n    SELECT \n        constructor_name,\n        year,\n        best_points,\n        ROW_NUMBER() OVER (ORDER BY best_points DESC) AS rank\n    FROM constructor...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructor_best_years",
+            "constructors",
+            "constructor_standings",
+            "c",
+            "cs",
+            "constructor_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.constructor_id,\n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_year_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_top_years AS (\n    SELECT \n        constructor_id,\n        constructor_name,\n        year,\n        best_year_points,\n        ROW_NUMBER() OV...",
+          "score": 0.6750791788856305,
+          "similarity_max": 0.449841642228739,
+          "tables_used": [
+            "constructor_top_years",
+            "ds",
+            "res",
+            "driver_points_per_constructor_year",
+            "constructor_standings",
+            "c",
+            "cs",
+            "dp",
+            "combined_scores",
+            "races",
+            "final_ranking",
+            "r",
+            "constructor_best_years",
+            "tc",
+            "constructors",
+            "driver_standings",
+            "top_constructors",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_max_points AS (\n    SELECT \n        constructor_name,\n        year,\n        best_points,\n        ROW_NUMBER() OVER (ORDER BY best_points DESC) AS rank\n    FROM constructor...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructor_best_years",
+            "constructors",
+            "constructor_standings",
+            "c",
+            "cs",
+            "constructor_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.constructor_id,\n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_year_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_top_years AS (\n    SELECT \n        constructor_id,\n        constructor_name,\n        year,\n        best_year_points,\n        ROW_NUMBER() OV...",
+          "score": 0.6750791788856305,
+          "similarity_max": 0.449841642228739,
+          "tables_used": [
+            "constructor_top_years",
+            "ds",
+            "res",
+            "driver_points_per_constructor_year",
+            "constructor_standings",
+            "c",
+            "cs",
+            "dp",
+            "combined_scores",
+            "races",
+            "final_ranking",
+            "r",
+            "constructor_best_years",
+            "tc",
+            "constructors",
+            "driver_standings",
+            "top_constructors",
+            "results"
+          ]
+        },
+        {
+          "sql": "WITH constructor_yearly_points AS (\n    SELECT \n        c.constructor_id,\n        c.name AS constructor_name,\n        r.year,\n        cs.points AS constructor_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n),\ntop_constructor_years AS (\n    SELECT \n        constructor_id,\n        constructor_name,\n        year,\n        constructor_points,\n        ROW_NUMBER() OVER (PARTITION BY constructor_id ORDE...",
+          "score": 0.5852266325224071,
+          "similarity_max": 0.6295467349551856,
+          "tables_used": [
+            "ds",
+            "res",
+            "constructor_standings",
+            "driver_points_by_constructor_year",
+            "c",
+            "cs",
+            "dp",
+            "races",
+            "r",
+            "bcy",
+            "constructors",
+            "ranked_totals",
+            "combined_totals",
+            "driver_standings",
+            "results",
+            "top_constructor_years",
+            "best_constructor_years",
+            "constructor_yearly_points"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_max_points AS (\n    SELECT \n        constructor_name,\n        year,\n        best_points,\n        ROW_NUMBER() OVER (ORDER BY best_points DESC) AS rank\n    FROM constructor...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructor_best_years",
+            "constructors",
+            "constructor_standings",
+            "c",
+            "cs",
+            "constructor_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH constructor_yearly_points AS (\n    SELECT \n        c.constructor_id,\n        c.name AS constructor_name,\n        r.year,\n        SUM(cs.points) AS total_team_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_best_year AS (\n    SELECT \n        constructor_id,\n        constructor_name,\n        year,\n        total_team_points,\n        ROW_NUMBER...",
+          "score": 0.6909589041095892,
+          "similarity_max": 0.6180821917808219,
+          "tables_used": [
+            "ds",
+            "constructor_standings",
+            "constructor_best_year",
+            "driver_yearly_points",
+            "c",
+            "cb",
+            "cs",
+            "races",
+            "dy",
+            "r",
+            "ranked_combined",
+            "constructors",
+            "driver_standings",
+            "results",
+            "constructor_yearly_points",
+            "combined_top_years"
+          ]
+        },
+        {
+          "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.constructor_id,\n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_year_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_top_years AS (\n    SELECT \n        constructor_id,\n        constructor_name,\n        year,\n        best_year_points,\n        ROW_NUMBER() OV...",
+          "score": 0.6750791788856305,
+          "similarity_max": 0.449841642228739,
+          "tables_used": [
+            "constructor_top_years",
+            "ds",
+            "res",
+            "driver_points_per_constructor_year",
+            "constructor_standings",
+            "c",
+            "cs",
+            "dp",
+            "combined_scores",
+            "races",
+            "final_ranking",
+            "r",
+            "constructor_best_years",
+            "tc",
+            "constructors",
+            "driver_standings",
+            "top_constructors",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH constructor_best_years AS (\n    SELECT \n        c.name AS constructor_name,\n        r.year,\n        MAX(cs.points) AS best_points\n    FROM constructors c\n    JOIN constructor_standings cs ON c.constructor_id = cs.constructor_id\n    JOIN races r ON cs.race_id = r.race_id\n    GROUP BY c.constructor_id, r.year\n),\nconstructor_max_points AS (\n    SELECT \n        constructor_name,\n        year,\n        best_points,\n        ROW_NUMBER() OVER (ORDER BY best_points DESC) AS rank\n    FROM constructor...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "constructor_best_years",
+        "constructors",
+        "constructor_standings",
+        "c",
+        "cs",
+        "constructor_max_points",
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: ds.constructor_id",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 3.86
+  }
+}

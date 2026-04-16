@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q83",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3490.059832998668,
+  "execution_time_ms": 8.44241700542625,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    c_birth_year,\n    cd_gender,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_demographics ON customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    c_birth_year,\n    cd_gender\nORDER BY \n    c_birth_year,\n    cd_gender\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.563167000422254,
+      "result_signature": "1060247492772040b07af9f0f7ddac310f5ec351ed1023a5734142208e9eaf07",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c_birth_year, cd_gender, SUM(cs_ext_sales_price) AS total_sales\nFROM catalog_sales\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nGROUP BY c_birth_year, cd_gender\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cd_gender\" not found in FROM clause!\nCandidate bindings: \"d_weekend\", \"d_year\", \"cs_call_center_sk\", \"c_login\", \"c_email_address\"\n\nLINE 5: GROUP BY c_birth_year, cd_gender\n                               ^",
+      "exec_time_ms": 0.46758299868088216,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT\n  c_birth_year,\n  cd_gender,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales\n  JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nGROUP BY\n  c_birth_year,\n  cd_gender\nORDER BY\n  c_birth_year,\n  cd_gender\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cd_gender\" not found in FROM clause!\nCandidate bindings: \"d_weekend\", \"d_year\", \"cs_call_center_sk\", \"c_login\", \"c_email_address\"\n\nLINE 11:   cd_gender\n           ^",
+      "exec_time_ms": 0.37920899922028184,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c_birth_year, cd_gender, SUM(cs_ext_sales_price) AS total_sales\nFROM catalog_sales\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 2001\nGROUP BY c_birth_year, cd_gender\nORDER BY c_birth_year, cd_gender\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cd_gender\" not found in FROM clause!\nCandidate bindings: \"d_weekend\", \"d_year\", \"cs_call_center_sk\", \"c_login\", \"c_email_address\"\n\nLINE 6: GROUP BY c_birth_year, cd_gender\n                               ^",
+      "exec_time_ms": 0.37295800575520843,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n  c_birth_year,\n  cd_gender,\n  SUM(cs_ext_sales_price) AS total_sales\nFROM\n  catalog_sales\n  JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE\n  date_dim.d_year = 2001\nGROUP BY\n  c_birth_year,\n  cd_gender\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cd_gender\" not found in FROM clause!\nCandidate bindings: \"d_weekend\", \"d_year\", \"cs_call_center_sk\", \"c_login\", \"c_email_address\"\n\nLINE 13:   cd_gender\n           ^",
+      "exec_time_ms": 0.3135410079266876,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT \n    c_birth_year,\n    cd_gender,\n    SUM(cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_demographics ON customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk\nWHERE \n    date_dim.d_year = 2001\nGROUP BY \n    c_birth_year,\n    cd_gender\nORDER BY \n    c_birth_year,\n    cd_gender\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "1060247492772040b07af9f0f7ddac310f5ec351ed1023a5734142208e9eaf07": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3498.53341699054
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q95",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4608.481584000401,
+  "execution_time_ms": 32.008167007006705,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT item.i_brand, income_band.ib_lower_bound, income_band.ib_upper_bound, SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM store_sales\nJOIN store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nJOIN income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE store.s_state = 'IL'\n  AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY item.i_brand, income_band.ib_lower_bound, income_band.ib_upper_bound\nORDER BY item.i_brand, income_band.ib_lower_bound, income_band.ib_upper_bound\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.852916009142064,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    item.i_brand, \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN \n    household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    store.s_state = 'IL'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY \n    item.i_brand, \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound\nORDER BY \n    total_sales DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.325917012873106,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT item.i_brand, income_band.ib_lower_bound, income_band.ib_upper_bound, SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM store_sales\nJOIN store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nJOIN income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE store.s_state = 'IL'\n  AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY item.i_brand, income_band.ib_lower_bound, income_band.ib_upper_bound\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.393082992872223,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound,\n    SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\n    JOIN income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    store.s_state = 'IL'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.662416006089188,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound,\n    SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN \n    household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    store.s_state = 'IL'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.228374997386709,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound,\n    SUM(store_sales.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\nJOIN \n    store ON store_sales.ss_store_sk = store.s_store_sk\nJOIN \n    item ON store_sales.ss_item_sk = item.i_item_sk\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN \n    household_demographics ON customer.c_current_hdemo_sk = household_demographics.hd_demo_sk\nJOIN \n    income_band ON household_demographics.hd_income_band_sk = income_band.ib_income_band_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    store.s_state = 'IL'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\nGROUP BY \n    item.i_brand,\n    income_band.ib_lower_bound,\n    income_band.ib_upper_bound\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4640.576499994495
+}

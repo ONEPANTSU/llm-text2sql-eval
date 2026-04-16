@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_1034",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1457.6336249956512,
+  "execution_time_ms": 345.71991700067883,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 97.89816600095946,
+      "result_signature": "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 57.81816600210732,
+      "result_signature": "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 58.05845900613349,
+      "result_signature": "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 65.0381249943166,
+      "result_signature": "60e3eed038c69f80ec829a75d85391f9548c1acda512c64bd63edc6e117e0053",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 60.182875000464264,
+      "result_signature": "60e3eed038c69f80ec829a75d85391f9548c1acda512c64bd63edc6e117e0053",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n),\nabove_avg_players AS (\n  SELECT player_api_id, overall_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n    AND overall_rating > (SELECT avg_rating FROM avg_rating_2010)\n)\nSELECT player_api_id\nFROM above_avg_players\nORDER BY overall_rating DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265": 5,
+        "60e3eed038c69f80ec829a75d85391f9548c1acda512c64bd63edc6e117e0053": 4
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 3035.464166001475,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n),\nabove_avg_players AS (\n  SELECT pa.player_api_id, pa.overall_rating\n  FROM Player_Attributes pa\n  CROSS JOIN avg_rating_2010 ar\n  WHERE pa.date LIKE '2010%'\n    AND pa.overall_rating > ar.avg_rating\n)\nSELECT player_api_id\nFROM above_avg_players\nORDER BY overall_rating DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 58.52016599965282,
+        "result_signature": "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n),\nabove_avg_players AS (\n  SELECT player_api_id, overall_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n    AND overall_rating > (SELECT avg_rating FROM avg_rating_2010)\n)\nSELECT player_api_id\nFROM above_avg_players\nORDER BY overall_rating DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 57.79212500056019,
+        "result_signature": "0cc87c345a2ef882fb09c70b934f855d33e65742ea110a3871974978b5dac265",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n)\nSELECT pa.player_api_id\nFROM Player_Attributes pa, avg_rating_2010 ar\nWHERE pa.date LIKE '2010%'\n  AND pa.overall_rating > ar.avg_rating;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 61.44095799390925,
+        "result_signature": "60e3eed038c69f80ec829a75d85391f9548c1acda512c64bd63edc6e117e0053",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n)\nSELECT pa.player_api_id\nFROM Player_Attributes pa, avg_rating_2010 ar\nWHERE pa.date LIKE '2010%'\n  AND pa.overall_rating > ar.avg_rating;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 147.25562500098022,
+        "result_signature": "60e3eed038c69f80ec829a75d85391f9548c1acda512c64bd63edc6e117e0053",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4838.877499998489
+}

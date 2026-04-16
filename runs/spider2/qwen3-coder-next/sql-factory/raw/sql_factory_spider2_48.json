@@ -1,0 +1,192 @@
+{
+  "task_id": "spider2_48",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id NOT IN (\n    SELECT order_id \n    FROM pizza_runner_orders \n    WHERE cancellation IS NOT NULL AND cancellat...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pizza_runner_orders",
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pco",
+            "ge",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END + COALESCE(pge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras pge ON pco.order_id = pge.order_id\nWHERE pco.order_id NOT IN (\n    SELECT order_id \n    FROM pizza_clean_runner_orders \n    WHERE cancellation IS NOT NULL AND cancella...",
+          "score": 1.025531914893617,
+          "similarity_max": 0.848936170212766,
+          "tables_used": [
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pizza_clean_runner_orders",
+            "pge",
+            "pco",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id NOT IN (\n    SELECT order_id \n    FROM pizza_runner_orders \n    WHERE cancellation IS NOT NULL AND cancellat...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pizza_runner_orders",
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pco",
+            "ge",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END + COALESCE(pge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras pge ON pco.order_id = pge.order_id\nWHERE pco.order_id IN (\n    SELECT order_id \n    FROM pizza_clean_runner_orders \n    WHERE cancellation IS NULL OR cancellation = ''...",
+          "score": 1.0538271925272444,
+          "similarity_max": 0.792345614945511,
+          "tables_used": [
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pizza_clean_runner_orders",
+            "pge",
+            "pco",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_clean_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id IN (\n    SELECT ro.order_id \n    FROM pizza_runner_orders ro\n    WHERE ro.cancellation IS NULL OR ro.c...",
+          "score": 1.0321646341463415,
+          "similarity_max": 0.735670731707317,
+          "tables_used": [
+            "pn",
+            "pizza_names",
+            "pizza_clean_customer_orders",
+            "ge",
+            "pizza_runner_orders",
+            "pco",
+            "ro",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id NOT IN (\n    SELECT order_id \n    FROM pizza_runner_orders \n    WHERE cancellation IS NOT NULL AND cancellat...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pizza_runner_orders",
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pco",
+            "ge",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END + COALESCE(pge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras pge ON pco.order_id = pge.order_id\nWHERE pco.order_id IN (\n    SELECT order_id \n    FROM pizza_clean_runner_orders \n    WHERE cancellation IS NULL OR cancellation = ''...",
+          "score": 1.0538271925272444,
+          "similarity_max": 0.792345614945511,
+          "tables_used": [
+            "pn",
+            "pizza_names",
+            "pizza_customer_orders",
+            "pizza_clean_runner_orders",
+            "pge",
+            "pco",
+            "pizza_get_extras"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_clean_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id IN (\n    SELECT ro.order_id \n    FROM pizza_runner_orders ro\n    WHERE ro.cancellation IS NULL OR ro.c...",
+          "score": 1.0321646341463415,
+          "similarity_max": 0.735670731707317,
+          "tables_used": [
+            "pn",
+            "pizza_names",
+            "pizza_clean_customer_orders",
+            "ge",
+            "pizza_runner_orders",
+            "pco",
+            "ro",
+            "pizza_get_extras"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    SUM(\n        CASE \n            WHEN pn.pizza_name = 'Meat Lovers' THEN 12\n            WHEN pn.pizza_name = 'Vegetarian' THEN 10\n            ELSE 0\n        END\n        + COALESCE(ge.extras_count, 0)\n    ) AS total_income\nFROM pizza_customer_orders pco\nJOIN pizza_names pn ON pco.pizza_id = pn.pizza_id\nLEFT JOIN pizza_get_extras ge ON pco.order_id = ge.order_id\nWHERE pco.order_id NOT IN (\n    SELECT order_id \n    FROM pizza_runner_orders \n    WHERE cancellation IS NOT NULL AND cancellat...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "pizza_runner_orders",
+        "pn",
+        "pizza_names",
+        "pizza_customer_orders",
+        "pco",
+        "ge",
+        "pizza_get_extras"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.37
+  }
+}

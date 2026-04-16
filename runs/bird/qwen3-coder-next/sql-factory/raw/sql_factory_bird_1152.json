@@ -1,0 +1,159 @@
+{
+  "task_id": "bird_1152",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%outpatient%' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%inpatient%' THEN 1 ELSE 0 END) AS outpatient_to_inpatient_ratio\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nWHERE p.Diagnosis LIKE '%SLE%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Examination",
+            "p",
+            "Patient",
+            "e"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission = 'Outpatient' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission IN ('Inpatient', 'Outpatient') THEN 1 ELSE 0 END) AS Outpatient_to_Inpatient_Ratio\nFROM Patient p\nJOIN Examination e ON p.ID = e.ID\nWHERE e.Diagnosis = 'SLE';",
+          "score": 0.7978494623655914,
+          "similarity_max": 0.8043010752688171,
+          "tables_used": [
+            "Examination",
+            "e",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%outpatient%' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%inpatient%' THEN 1 ELSE 0 END) AS outpatient_to_inpatient_ratio\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nWHERE p.Diagnosis LIKE '%SLE%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Examination",
+            "p",
+            "Patient",
+            "e"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission = 'Outpatient' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission IN ('Inpatient', 'Outpatient') THEN 1 ELSE 0 END) AS Outpatient_to_Inpatient_Ratio\nFROM Patient p\nJOIN Examination e ON p.ID = e.ID\nWHERE e.Diagnosis = 'SLE';",
+          "score": 0.7978494623655914,
+          "similarity_max": 0.8043010752688171,
+          "tables_used": [
+            "Examination",
+            "e",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN p.Admission = 'Outpatient' THEN 1 END) AS REAL) /\n    CAST(SUM(CASE WHEN p.Admission = 'Inpatient' THEN 1 END) AS REAL) AS Outpatient_to_Inpatient_Ratio\nFROM Patient p\nWHERE p.Diagnosis = 'SLE'\n  AND p.Admission IN ('Inpatient', 'Outpatient');",
+          "score": 0.7946774193548388,
+          "similarity_max": 0.6106451612903225,
+          "tables_used": [
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%outpatient%' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%inpatient%' THEN 1 ELSE 0 END) AS outpatient_to_inpatient_ratio\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nWHERE p.Diagnosis LIKE '%SLE%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Examination",
+            "p",
+            "Patient",
+            "e"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission = 'Outpatient' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis = 'SLE' AND p.Admission IN ('Inpatient', 'Outpatient') THEN 1 ELSE 0 END) AS Outpatient_to_Inpatient_Ratio\nFROM Patient p\nJOIN Examination e ON p.ID = e.ID\nWHERE e.Diagnosis = 'SLE';",
+          "score": 0.7978494623655914,
+          "similarity_max": 0.8043010752688171,
+          "tables_used": [
+            "Examination",
+            "e",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN p.Admission = 'Outpatient' THEN 1 END) AS REAL) /\n    CAST(SUM(CASE WHEN p.Admission = 'Inpatient' THEN 1 END) AS REAL) AS Outpatient_to_Inpatient_Ratio\nFROM Patient p\nWHERE p.Diagnosis = 'SLE'\n  AND p.Admission IN ('Inpatient', 'Outpatient');",
+          "score": 0.7946774193548388,
+          "similarity_max": 0.6106451612903225,
+          "tables_used": [
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%outpatient%' THEN 1 ELSE 0 END) AS REAL) /\n    SUM(CASE WHEN e.Diagnosis LIKE '%SLE%' AND e.Diagnosis LIKE '%inpatient%' THEN 1 ELSE 0 END) AS outpatient_to_inpatient_ratio\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nWHERE p.Diagnosis LIKE '%SLE%';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Examination",
+        "p",
+        "Patient",
+        "e"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.67
+  }
+}

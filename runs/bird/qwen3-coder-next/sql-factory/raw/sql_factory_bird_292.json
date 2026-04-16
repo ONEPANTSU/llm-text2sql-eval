@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_292",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\n  AND m.molecule_id BETWEEN 'TR010' AND 'TR050';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT atom_id\nFROM atom\nWHERE molecule_id BETWEEN 'TR010' AND 'TR050'\n  AND element = 'C';",
+          "score": 0.7782352941176471,
+          "similarity_max": 0.5435294117647058,
+          "tables_used": [
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\n  AND m.molecule_id BETWEEN 'TR010' AND 'TR050';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "WITH filtered_molecules AS (\n    SELECT molecule_id\n    FROM molecule\n    WHERE molecule_id BETWEEN 'TR010' AND 'TR050'\n)\nSELECT a.atom_id\nFROM atom a\nJOIN filtered_molecules fm ON a.molecule_id = fm.molecule_id\nWHERE a.element = 'C';",
+          "score": 1.1365831842576029,
+          "similarity_max": 0.6268336314847942,
+          "tables_used": [
+            "molecule",
+            "a",
+            "filtered_molecules",
+            "fm",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT atom_id\nFROM atom\nWHERE molecule_id BETWEEN 'TR010' AND 'TR050'\n  AND element = 'C';",
+          "score": 0.7782352941176471,
+          "similarity_max": 0.5435294117647058,
+          "tables_used": [
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\n  AND m.molecule_id BETWEEN 'TR010' AND 'TR050';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "WITH filtered_molecules AS (\n    SELECT molecule_id\n    FROM molecule\n    WHERE molecule_id BETWEEN 'TR010' AND 'TR050'\n)\nSELECT a.atom_id\nFROM atom a\nJOIN filtered_molecules fm ON a.molecule_id = fm.molecule_id\nWHERE a.element = 'C';",
+          "score": 1.1365831842576029,
+          "similarity_max": 0.6268336314847942,
+          "tables_used": [
+            "molecule",
+            "a",
+            "filtered_molecules",
+            "fm",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT atom_id\nFROM atom\nWHERE element = 'C'\n  AND molecule_id IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE molecule_id BETWEEN 'TR010' AND 'TR050'\n  );",
+          "score": 0.8970238095238097,
+          "similarity_max": 0.605952380952381,
+          "tables_used": [
+            "molecule",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT a.atom_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'C'\n  AND m.molecule_id BETWEEN 'TR010' AND 'TR050';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "a",
+        "m",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.64
+  }
+}

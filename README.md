@@ -10,7 +10,7 @@ Best configuration: **qwen3-coder-next + Hybrid** = **33.7% overall accuracy** (
 
 | Architecture      | BIRD (1534) | Spider2 (123) | TPC-DS (99) | Total (1756) |
 |-------------------|-------------|---------------|-------------|--------------|
-| Plain             | 26.3%       | 12.2%         | 3.0%        | 24.0%        |
+| Plain             | 31.4%       | 48.0%         | 8.1%        | 31.2%        |
 | Self-consistency  | 30.8%       | 65.0%         | 10.1%       | 32.0%        |
 | SGR               | 30.1%       | 67.4%         | 4.0%        | 31.2%        |
 | SQL Factory       | 29.8%       | 57.7%         | 8.1%        | 30.5%        |
@@ -142,9 +142,8 @@ sql-eval/
 
     core/                     # Shared infrastructure
       types.py                #   Data models (TaskSpec, ExecResult, CandidateResult, ...)
-      config.py               #   YAML config loading + env var interpolation
+      config.py               #   YAML config loading + env var interpolation + gen config resolution
       storage.py              #   Run directory IO (write results, summaries)
-      generation_config.py    #   Architecture/sampling config resolution
 
     pipeline/                 # SQL execution pipeline
       toolchain.py            #   LLM tool-calling loop (list_tables -> describe -> SQL)
@@ -242,11 +241,11 @@ See `architectures/plain.py` for the simplest example, `architectures/hybrid.py`
 
 ## Models Tested
 
-| Model | Provider | Notes |
-|-------|----------|-------|
-| qwen3-coder-next | OpenRouter | Best overall SQL generation quality |
-| qwen3-32b | Self-hosted (vLLM) | Lower latency, fewer exec failures |
-| gpt-oss-120b | Self-hosted | Poor SQL generation (63% generation failures) |
+| Model | Overall accuracy | Notes |
+|-------|------------------|-------|
+| qwen3-coder-next | **31.2%** (548/1756) | Best — produces structured SQL reliably |
+| qwen3-32b | 7.3% (128/1756) | Thinking-heavy, 40% tasks fail at SQL extraction |
+| gpt-oss-120b | 5.9% (104/1756) | Thinking-heavy, 60% tasks fail at SQL extraction |
 
 ## Running Tests
 

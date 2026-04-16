@@ -1,0 +1,129 @@
+{
+  "task_id": "bird_1",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1788.2742500005406,
+  "execution_time_ms": 2.3298329979297705,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT frpm.\"Percent (%) Eligible Free (Ages 5-17)\"\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.School Type = 'Continuation School'\nORDER BY frpm.\"Percent (%) Eligible Free (Ages 5-17)\" ASC\nLIMIT 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Type\": syntax error",
+      "exec_time_ms": 0.7687910037930124,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT frpm.\"Percent (%) Eligible Free (Ages 5-17)\"\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.\"School Type\" = 'Continuation School'\nORDER BY frpm.\"Percent (%) Eligible Free (Ages 5-17)\" ASC\nLIMIT 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: schools.School Type",
+      "exec_time_ms": 0.3565419974620454,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT frpm.`Percent (%) Eligible Free (Ages 5-17)`\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.School Type = 'Continuation School'\nORDER BY frpm.`Percent (%) Eligible Free (Ages 5-17)` ASC\nLIMIT 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Type\": syntax error",
+      "exec_time_ms": 0.3058749935007654,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT frpm.`Percent (%) Eligible Free (Ages 5-17)`\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.`School Type` = 'Continuation School'\nORDER BY frpm.`Percent (%) Eligible Free (Ages 5-17)` ASC\nLIMIT 3;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: schools.School Type",
+      "exec_time_ms": 0.29954199999338016,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT frpm.`Percent (%) Eligible Free (Ages 5-17)`\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.`School Type` = 'Continuation School'\nORDER BY frpm.`Percent (%) Eligible Free (Ages 5-17)` ASC\nLIMIT 3",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: schools.School Type",
+      "exec_time_ms": 0.290749994746875,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 1790.685082996788
+}

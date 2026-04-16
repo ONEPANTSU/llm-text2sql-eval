@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_859",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4227.978750001057,
+  "execution_time_ms": 5.078292000689544,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.surname = 'Senna' AND d.forename = 'Bruno' AND r.raceId = 354;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.965584004414268,
+      "result_signature": "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.surname = 'Senna' AND d.forename = 'Bruno' AND r.raceId = 354;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.45212500117486343,
+      "result_signature": "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT q1\nFROM qualifying\nJOIN drivers ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.surname = 'Senna'\n  AND drivers.forename = 'Bruno'\n  AND races.raceId = 354;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5349160055629909,
+      "result_signature": "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.surname = 'Senna' AND d.forename = 'Bruno' AND r.raceId = 354;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.41733300167834386,
+      "result_signature": "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT qualifying.q1\nFROM qualifying\nJOIN drivers ON qualifying.driverId = drivers.driverId\nJOIN races ON qualifying.raceId = races.raceId\nWHERE drivers.surname = 'Senna'\n  AND drivers.forename = 'Bruno'\n  AND races.raceId = 354;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5309169937390834,
+      "result_signature": "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.surname = 'Senna' AND d.forename = 'Bruno' AND r.raceId = 354;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "8b2f1333966d31b059e2648924123a7996098ea1d10732da2039458264021831": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4233.118834003108
+}

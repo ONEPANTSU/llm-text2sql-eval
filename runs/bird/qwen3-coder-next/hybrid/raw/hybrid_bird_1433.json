@@ -1,0 +1,154 @@
+{
+  "task_id": "bird_1433",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1819.0644169953885,
+  "execution_time_ms": 105.85191699647112,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT city, state FROM zip_code WHERE type = 'PO Box';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.602583995147143,
+      "result_signature": "4c5e2b51fdbf348d084df46e1bba1b116fc24da309ce72c878ae2072fe247523",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT city, state\nFROM zip_code\nWHERE type = 'PO Box';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.713457999576349,
+      "result_signature": "4c5e2b51fdbf348d084df46e1bba1b116fc24da309ce72c878ae2072fe247523",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT zip_code.zip_code\nFROM zip_code\nWHERE zip_code.type = 'PO Box';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.71170799958054,
+      "result_signature": "1ccde46402b036cbb600a314393f7c85116a779d814d20dcd1e28f6c10c9db89",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT city, county, state, short_state\nFROM zip_code\nWHERE type = 'PO Box';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.701999999990221,
+      "result_signature": "eda7533d8de04a0ede07e38ba02b2ff73a5cc7befe0330513a664cc7294921bd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT city, state\nFROM zip_code\nWHERE type = 'PO Box';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.334541995485779,
+      "result_signature": "4c5e2b51fdbf348d084df46e1bba1b116fc24da309ce72c878ae2072fe247523",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT city, state\nFROM zip_code\nWHERE type = 'PO Box';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4c5e2b51fdbf348d084df46e1bba1b116fc24da309ce72c878ae2072fe247523": 3,
+        "1ccde46402b036cbb600a314393f7c85116a779d814d20dcd1e28f6c10c9db89": 1,
+        "eda7533d8de04a0ede07e38ba02b2ff73a5cc7befe0330513a664cc7294921bd": 1,
+        "0139be4836618ffbe5499a7830f4aa99f10f62a1c7be9c1dc281d84088aefaa9": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1090.3948749983101,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT county\nFROM zip_code\nWHERE type = 'PO Box';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 11.48641599866096,
+        "result_signature": "0139be4836618ffbe5499a7830f4aa99f10f62a1c7be9c1dc281d84088aefaa9",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3015.408084000228
+}

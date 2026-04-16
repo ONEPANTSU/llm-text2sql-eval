@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_159",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1786.6580420013634,
+  "execution_time_ms": 315.5469580015051,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT trans.*\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nJOIN trans ON account.account_id = trans.account_id\nWHERE client.client_id = 3356\n  AND trans.type = 'withdrawal'\n  AND trans.operation = 'cash';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 152.24708300229395,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT * FROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE client.client_id = 3356\n  AND trans.type = 'withdrawal'\n  AND trans.operation = 'cash';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.46445900166873,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT t.*\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN trans t ON a.account_id = t.account_id\nWHERE c.client_id = 3356\n  AND t.type = 'withdrawal'\n  AND t.operation = 'cash';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 41.20891600177856,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT *\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE client.client_id = 3356\n  AND trans.type = 'withdrawal'\n  AND trans.operation = 'cash';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.676000000326894,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT *  \nFROM client  \nJOIN disp ON client.client_id = disp.client_id  \nJOIN account ON disp.account_id = account.account_id  \nJOIN trans ON account.account_id = trans.account_id  \nWHERE client.client_id = 3356  \n  AND trans.type = 'withdrawal'  \n  AND trans.operation = 'cash';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 41.5396669995971,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT *\nFROM trans\nJOIN account ON trans.account_id = account.account_id\nJOIN disp ON account.account_id = disp.account_id\nJOIN client ON disp.client_id = client.client_id\nWHERE client.client_id = 3356\n  AND trans.type = 'withdrawal'\n  AND trans.operation = 'cash';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2102.2613329987507
+}

@@ -1,0 +1,196 @@
+{
+  "task_id": "bird_117",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1326.5055829979246,
+  "execution_time_ms": 7.452707999618724,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT (SUM(CASE WHEN loan.status = 'A' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS fully_paid_percentage\nFROM loan;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4988749971962534,
+      "result_signature": "0dafced3165cf24a98b80d2fc1cd79d905f4964488cb0fff5a0ba7f566513f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (SUM(CASE WHEN loan.status = 'A' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS fully_paid_percentage\nFROM loan\nWHERE loan.status = 'A';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6917089995113201,
+      "result_signature": "f38dbb0f0cb9045e93665aad465c342ce8908cd2397f8d874e2185f17c0c7bc7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    (SUM(CASE WHEN loan.status = 'fully paid with no issue' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5916250011068769,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT (SUM(loan.amount) * 100.0 / (SELECT SUM(amount) FROM loan)) AS percentage_fully_paid_no_issue\nFROM loan\nWHERE loan.status = 'A';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6419999990612268,
+      "result_signature": "0dafced3165cf24a98b80d2fc1cd79d905f4964488cb0fff5a0ba7f566513f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    (SUM(CASE WHEN loan.status = 'fully paid with no issue' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS percentage_fully_paid\nFROM loan;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.4662079997360706,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 8,
+    "selected_sql": "SELECT (SUM(CASE WHEN loan.status = 'A' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0dafced3165cf24a98b80d2fc1cd79d905f4964488cb0fff5a0ba7f566513f57": 4,
+        "f38dbb0f0cb9045e93665aad465c342ce8908cd2397f8d874e2185f17c0c7bc7": 1,
+        "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877": 2,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 2
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1554.0086659966619,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    (SUM(loan.amount) FILTER (WHERE loan.status = 'fully paid with no issue') * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.021500000206288,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    (SUM(loan.amount) FILTER (WHERE loan.status = 'fully paid with no issue') * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5904159988858737,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT (SUM(CASE WHEN loan.status = 'A' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.51391599845374,
+        "result_signature": "0dafced3165cf24a98b80d2fc1cd79d905f4964488cb0fff5a0ba7f566513f57",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT (SUM(CASE WHEN loan.status = 'A' THEN loan.amount ELSE 0 END) * 100.0 / SUM(loan.amount)) AS percentage_fully_paid_no_issue\nFROM loan;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5014589987695217,
+        "result_signature": "0dafced3165cf24a98b80d2fc1cd79d905f4964488cb0fff5a0ba7f566513f57",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2888.106374994095
+}

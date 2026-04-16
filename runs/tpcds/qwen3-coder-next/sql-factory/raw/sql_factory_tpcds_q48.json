@@ -1,0 +1,137 @@
+{
+  "task_id": "tpcds_q48",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    channel,\n    year,\n    SUM(ext_sales_price) AS total_sales,\n    SUM(ext_sales_price - ext_wholesale_cost) AS net_profit\nFROM (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    channel,\n    year,\n    SUM(ext_sales_price) AS total_sales,\n    SUM(ext_sales_price - ext_wholesale_cost) AS net_profit\nFROM (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_by_channel AS (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price AS ext_sales_price,\n        ws_ext_wholesale_cost AS ext_wholesale_cost\n    FROM web_sales\n    JOIN date_dim ON...",
+          "score": 0.9822222222222221,
+          "similarity_max": 0.8355555555555555,
+          "tables_used": [
+            "sales_by_channel",
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    channel,\n    year,\n    SUM(ext_sales_price) AS total_sales,\n    SUM(ext_sales_price - ext_wholesale_cost) AS net_profit\nFROM (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_by_channel AS (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_net_profit AS net_profit\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price AS ext_sales_price,\n        ws_net_paid_inc_tax - ws_ext_wholesale_cost AS net_profit\n    FROM web_sales\n    JOIN date_dim ON w...",
+          "score": 0.9982192414431081,
+          "similarity_max": 0.8035615171137835,
+          "tables_used": [
+            "sales_by_channel",
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales_by_channel AS (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price AS ext_sales_price,\n        ws_ext_wholesale_cost AS ext_wholesale_cost\n    FROM web_sales\n    JOIN date_dim ON...",
+          "score": 0.9822222222222221,
+          "similarity_max": 0.8355555555555555,
+          "tables_used": [
+            "sales_by_channel",
+            "catalog_sales",
+            "web_sales",
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    channel,\n    year,\n    SUM(ext_sales_price) AS total_sales,\n    SUM(ext_sales_price - ext_wholesale_cost) AS net_profit\nFROM (\n    SELECT \n        'store' AS channel,\n        d_year AS year,\n        ss_ext_sales_price AS ext_sales_price,\n        ss_ext_wholesale_cost AS ext_wholesale_cost\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        d_year AS year,\n        ws_ext_sales_price...",
+    "meta": {
+      "score": 1.3499999999999999,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "catalog_sales",
+        "web_sales",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 37.85
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_599",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT GROUP_CONCAT(DISTINCT PostHistoryTypeId) \n     FROM postHistory \n     WHERE PostId = 3720) AS post_history_type_ids,\n    (SELECT COUNT(DISTINCT UserId) \n     FROM comments \n     WHERE PostId = 3720) AS unique_commenters_count;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "postHistory",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT GROUP_CONCAT(DISTINCT PostHistoryTypeId) \n     FROM postHistory \n     WHERE PostId = 3720) AS post_history_type_ids,\n    (SELECT COUNT(DISTINCT UserId) \n     FROM comments \n     WHERE PostId = 3720) AS unique_commenters;",
+          "score": 0.6785714285714287,
+          "similarity_max": 0.8428571428571427,
+          "tables_used": [
+            "postHistory",
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    GROUP_CONCAT(DISTINCT ph.PostHistoryTypeId) AS post_history_type_ids,\n    COUNT(DISTINCT c.UserId) AS unique_commenters\nFROM posts p\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND p.Id = 3720\nLEFT JOIN comments c ON c.PostId = p.Id AND p.Id = 3720\nWHERE p.Id = 3720\nGROUP BY p.Id;",
+          "score": 1.169318181818182,
+          "similarity_max": 0.46136363636363636,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT GROUP_CONCAT(DISTINCT PostHistoryTypeId) \n     FROM postHistory \n     WHERE PostId = 3720) AS post_history_type_ids,\n    (SELECT COUNT(DISTINCT UserId) \n     FROM comments \n     WHERE PostId = 3720) AS unique_commenters_count;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "postHistory",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    GROUP_CONCAT(DISTINCT ph.PostHistoryTypeId) AS post_history_type_ids,\n    COUNT(DISTINCT c.UserId) AS unique_commenters_count\nFROM posts p\nLEFT JOIN postHistory ph ON p.Id = ph.PostId AND ph.PostId = 3720\nLEFT JOIN comments c ON p.Id = c.PostId AND c.PostId = 3720\nWHERE p.Id = 3720;",
+          "score": 0.9954545454545456,
+          "similarity_max": 0.8090909090909091,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    GROUP_CONCAT(DISTINCT ph.PostHistoryTypeId) AS post_history_type_ids,\n    COUNT(DISTINCT c.UserId) AS unique_commenters\nFROM posts p\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND p.Id = 3720\nLEFT JOIN comments c ON c.PostId = p.Id AND p.Id = 3720\nWHERE p.Id = 3720\nGROUP BY p.Id;",
+          "score": 1.169318181818182,
+          "similarity_max": 0.46136363636363636,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT GROUP_CONCAT(DISTINCT PostHistoryTypeId) \n     FROM postHistory \n     WHERE PostId = 3720) AS post_history_type_ids,\n    (SELECT COUNT(DISTINCT UserId) \n     FROM comments \n     WHERE PostId = 3720) AS unique_commenters_count;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "postHistory",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    GROUP_CONCAT(DISTINCT ph.PostHistoryTypeId) AS post_history_type_ids,\n    COUNT(DISTINCT c.UserId) AS unique_commenters\nFROM posts p\nLEFT JOIN postHistory ph ON ph.PostId = p.Id\nLEFT JOIN comments c ON c.PostId = p.Id\nWHERE p.Id = 3720\nGROUP BY p.Id;",
+          "score": 0.9957386363636365,
+          "similarity_max": 0.8085227272727272,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    GROUP_CONCAT(DISTINCT ph.PostHistoryTypeId) AS post_history_type_ids,\n    COUNT(DISTINCT c.UserId) AS unique_commenters\nFROM posts p\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND p.Id = 3720\nLEFT JOIN comments c ON c.PostId = p.Id AND p.Id = 3720\nWHERE p.Id = 3720\nGROUP BY p.Id;",
+    "meta": {
+      "score": 1.169318181818182,
+      "similarity_max": 0.46136363636363636,
+      "tables_used": [
+        "posts",
+        "c",
+        "ph",
+        "postHistory",
+        "p",
+        "comments"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 342.16
+  }
+}

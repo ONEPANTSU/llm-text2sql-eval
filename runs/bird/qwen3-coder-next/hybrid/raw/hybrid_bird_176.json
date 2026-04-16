@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_176",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1513.1826249998994,
+  "execution_time_ms": 9.84500000049593,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.182042001048103,
+      "result_signature": "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7178749985760078,
+      "result_signature": "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2211669964017347,
+      "result_signature": "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1148330013384111,
+      "result_signature": "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0893329963437282,
+      "result_signature": "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT l.amount, l.payments, l.status\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN loan l ON a.account_id = l.account_id\nWHERE c.client_id = 992;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "757fa0ea6bde73a16e50635eef53142ada1853531bb3e9a7aaa128e07afaee13": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1523.1445000026724
+}

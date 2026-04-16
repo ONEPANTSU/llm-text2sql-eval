@@ -1,0 +1,201 @@
+{
+  "task_id": "bird_1127",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.home_player_2 OR p.player_api_id = m.home_player_3 OR p.player_api_id = m.home_player_4 OR p.player_api_id = m.home_player_5 OR p.player_api_id = m.home_player_6 OR p.player_api_id = m.home_player_7 OR p.player_api_id = m.home_player_8 OR p.player_api_id = m.home_player_9 OR p.player_api_id = m.home_player_10 OR p.player_api...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 \n             OR p.player_api_id = m.home_player_2 \n             OR p.player_api_id = m.home_player_3 \n             OR p.player_api_id = m.home_player_4 \n             OR p.player_api_id = m.home_player_5 \n             OR p.player_api_id = m.home_player_6 \n             OR p.player_api_id = m.home_player_7 \n             OR p.player_api_id = m.home_p...",
+          "score": 0.9053349282296651,
+          "similarity_max": 0.5893301435406698,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.home_player_2 OR p.player_api_id = m.home_player_3 OR p.player_api_id = m.home_player_4 OR p.player_api_id = m.home_player_5 OR p.player_api_id = m.home_player_6 OR p.player_api_id = m.home_player_7 OR p.player_api_id = m.home_player_8 OR p.player_api_id = m.home_player_9 OR p.player_api_id = m.home_player_10 OR p.player_api...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 \n             OR p.player_api_id = m.home_player_2 \n             OR p.player_api_id = m.home_player_3 \n             OR p.player_api_id = m.home_player_4 \n             OR p.player_api_id = m.home_player_5 \n             OR p.player_api_id = m.home_player_6 \n             OR p.player_api_id = m.home_player_7 \n             OR p.player_api_id = m.home_p...",
+          "score": 0.9053349282296651,
+          "similarity_max": 0.5893301435406698,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4, m.home_player_5,\n    m.home_player_6, m.home_player_7, m.home_player_8, m.home_player_9, m.home_player_10, m.home_player_11,\n    m.away_player_1, m.away_player_2, m.away_player_3, m.away_player_4, m.away_player_5,\n    m.away_player_6, m.away_player_7, m.away_player_8, m.away_player_9, m.aw...",
+          "score": 0.8761363636363638,
+          "similarity_max": 0.6477272727272726,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.home_player_2 OR p.player_api_id = m.home_player_3 OR p.player_api_id = m.home_player_4 OR p.player_api_id = m.home_player_5 OR p.player_api_id = m.home_player_6 OR p.player_api_id = m.home_player_7 OR p.player_api_id = m.home_player_8 OR p.player_api_id = m.home_player_9 OR p.player_api_id = m.home_player_10 OR p.player_api...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        },
+        {
+          "sql": "WITH VisionPlayers AS (\n    SELECT DISTINCT pa.player_api_id\n    FROM Player_Attributes pa\n    WHERE pa.crossing >= 90 OR pa.finishing >= 90 OR pa.heading_accuracy >= 90 OR pa.short_passing >= 90 OR pa.volleys >= 90 OR pa.dribbling >= 90 OR pa.curve >= 90 OR pa.free_kick_accuracy >= 90 OR pa.long_passing >= 90 OR pa.ball_control >= 90\n)\nSELECT DISTINCT c.name\nFROM VisionPlayers vp\nJOIN Player p ON vp.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_ap...",
+          "score": 0.9167941176470589,
+          "similarity_max": 0.7664117647058823,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "VisionPlayers",
+            "c",
+            "vp",
+            "pa",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 \n             OR p.player_api_id = m.home_player_2 \n             OR p.player_api_id = m.home_player_3 \n             OR p.player_api_id = m.home_player_4 \n             OR p.player_api_id = m.home_player_5 \n             OR p.player_api_id = m.home_player_6 \n             OR p.player_api_id = m.home_player_7 \n             OR p.player_api_id = m.home_p...",
+          "score": 0.9053349282296651,
+          "similarity_max": 0.5893301435406698,
+          "tables_used": [
+            "Country",
+            "m",
+            "Player_Attributes",
+            "p",
+            "Player",
+            "c",
+            "pa",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT c.name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.home_player_2 OR p.player_api_id = m.home_player_3 OR p.player_api_id = m.home_player_4 OR p.player_api_id = m.home_player_5 OR p.player_api_id = m.home_player_6 OR p.player_api_id = m.home_player_7 OR p.player_api_id = m.home_player_8 OR p.player_api_id = m.home_player_9 OR p.player_api_id = m.home_player_10 OR p.player_api...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Country",
+        "m",
+        "Player_Attributes",
+        "p",
+        "Player",
+        "c",
+        "pa",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3744.79
+  }
+}

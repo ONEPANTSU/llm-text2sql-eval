@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_254",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3009.8118749956484,
+  "execution_time_ms": 150.6476670037955,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH bond_element_pairs AS (\n    SELECT \n        a1.element AS element1,\n        a2.element AS element2,\n        b.bond_id\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\ncommonest_pair AS (\n    SELECT \n        element1,\n        element2,\n        COUNT(*) AS pair_count\n    FROM bond_element_pairs\n    GROUP BY element1, element2\n    ORDER BY pair_count DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total\n    FROM bond\n)\nSELECT \n    CAST(cb.pair_count AS REAL) * 100 / tb.total AS percentage\nFROM commonest_pair cb, total_bonds tb;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 46.78241700457875,
+      "result_signature": "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH element_pairs AS (\n    SELECT \n        a1.element AS element1,\n        a2.element AS element2,\n        COUNT(b.bond_id) AS bond_count\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n    GROUP BY a1.element, a2.element\n),\nmost_common_pair AS (\n    SELECT \n        element1,\n        element2,\n        bond_count\n    FROM element_pairs\n    ORDER BY bond_count DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total_count\n    FROM bond\n)\nSELECT \n    (mc.bond_count * 100.0 / tb.total_count) AS percentage\nFROM most_common_pair mc, total_bonds tb;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.795582995575387,
+      "result_signature": "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH bond_element_pairs AS (\n    SELECT \n        a1.element AS element1, \n        a2.element AS element2, \n        b.bond_id\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\npair_counts AS (\n    SELECT \n        element1, \n        element2, \n        COUNT(*) AS cnt\n    FROM bond_element_pairs\n    GROUP BY element1, element2\n),\nmost_common_pair AS (\n    SELECT \n        element1, \n        element2, \n        cnt\n    FROM pair_counts\n    ORDER BY cnt DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total\n    FROM bond\n)\nSELECT \n    (mc.cnt * 100.0 / tb.total) AS percentage\nFROM most_common_pair mc, total_bonds tb;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.503332999302074,
+      "result_signature": "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH bond_elements AS (\n    SELECT \n        a1.element AS element1,\n        a2.element AS element2,\n        b.bond_id\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nelement_counts AS (\n    SELECT \n        element1,\n        element2,\n        COUNT(*) AS cnt\n    FROM bond_elements\n    GROUP BY element1, element2\n),\nmost_common AS (\n    SELECT \n        element1,\n        element2,\n        cnt\n    FROM element_counts\n    ORDER BY cnt DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total\n    FROM bond\n)\nSELECT \n    CAST(mc.cnt AS REAL) * 100 / tb.total AS percentage\nFROM most_common mc, total_bonds tb;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 23.83916699909605,
+      "result_signature": "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH bond_elements AS (\n    SELECT \n        a1.element AS element1,\n        a2.element AS element2,\n        b.bond_id\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        element1,\n        element2,\n        COUNT(*) AS pair_count\n    FROM bond_elements\n    GROUP BY element1, element2\n),\nmost_common_pair AS (\n    SELECT \n        element1,\n        element2,\n        pair_count\n    FROM bond_element_pairs\n    ORDER BY pair_count DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total_count\n    FROM bond\n)\nSELECT \n    CAST(mcp.pair_count AS REAL) * 100 / tb.total_count AS percentage\nFROM most_common_pair mcp\nCROSS JOIN total_bonds tb;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 23.44249999441672,
+      "result_signature": "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH bond_elements AS (\n    SELECT \n        a1.element AS element1,\n        a2.element AS element2,\n        b.bond_id\n    FROM connected c\n    JOIN bond b ON c.bond_id = b.bond_id\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        element1,\n        element2,\n        COUNT(*) AS pair_count\n    FROM bond_elements\n    GROUP BY element1, element2\n),\nmost_common_pair AS (\n    SELECT \n        element1,\n        element2,\n        pair_count\n    FROM bond_element_pairs\n    ORDER BY pair_count DESC\n    LIMIT 1\n),\ntotal_bonds AS (\n    SELECT COUNT(*) AS total_count\n    FROM bond\n)\nSELECT \n    CAST(mcp.pair_count AS REAL) * 100 / tb.total_count AS percentage\nFROM most_common_pair mcp\nCROSS JOIN total_bonds tb;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b14332a608abc4f6eb9880fce4458044527f3e274991840e08405a76b72128bb": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3160.5919579960755
+}

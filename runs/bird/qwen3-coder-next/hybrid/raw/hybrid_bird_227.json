@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_227",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1357.1271670007263,
+  "execution_time_ms": 2.998832998855505,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT '0.000' AS percentage;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6097500008763745,
+      "result_signature": "07ab86da027ed6d99dfc9d7233e96095a2aec9d2a57ca1a2f50379089c678694",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT CAST(COUNT(*) AS REAL) * 100.0 / (SELECT COUNT(*) FROM molecule) AS percentage\nFROM molecule\nWHERE label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9794999932637438,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CAST(COUNT(*) AS REAL) * 100.0 / (SELECT COUNT(*) FROM molecule) || '%' AS percentage_carcinogenic\nFROM molecule\nWHERE label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.43004100007237867,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CAST(COUNT(*) AS REAL) * 100.0 / (SELECT COUNT(*) FROM molecule) AS percentage_carcinogenic\nFROM molecule\nWHERE label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3831669964711182,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT ROUND(CAST(SUM(CASE WHEN label LIKE '%carcinogen%' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*), 3) AS percentage\nFROM molecule;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3287089930381626,
+      "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT ROUND(CAST(SUM(CASE WHEN label LIKE '%carcinogen%' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*), 3) AS percentage\nFROM molecule;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "07ab86da027ed6d99dfc9d7233e96095a2aec9d2a57ca1a2f50379089c678694": 1,
+        "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877": 8
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1505.3065419997438,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT ROUND(COUNT(CASE WHEN label LIKE '%carcinogen%' THEN 1 END) * 100.0 / COUNT(*), 3) AS percentage\nFROM molecule;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.9546670044073835,
+        "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT ROUND(CAST((SELECT COUNT(*) FROM molecule WHERE label LIKE '%carcinogen%') AS REAL) * 100 / COUNT(*), 3) AS percentage\nFROM molecule;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.4525420008576475,
+        "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT ROUND(CAST(SUM(CASE WHEN label LIKE '%carcinogenic%' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*), 3) AS percentage_carcinogenic\nFROM molecule;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.39595900307176635,
+        "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT ROUND(CAST(SUM(CASE WHEN label LIKE '%carcinogenic%' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*), 3) AS percentage_carcinogenic\nFROM molecule;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.37566700484603643,
+        "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2865.5222919987864
+}

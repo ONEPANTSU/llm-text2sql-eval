@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q14",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 16483.474000007845,
+  "execution_time_ms": 180.93712499830872,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH cross_items AS (\n    SELECT i_brand_id, i_class_id, i_category_id\n    FROM item\n    WHERE i_item_sk IN (\n        SELECT ss_item_sk FROM store_sales ss\n        JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n        WHERE d.d_year BETWEEN 1999 AND 2001\n        INTERSECT\n        SELECT cs_item_sk FROM catalog_sales cs\n        JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n        WHERE d.d_year BETWEEN 1999 AND 2001\n        INTERSECT\n        SELECT ws_item_sk FROM web_sales ws\n        JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n        WHERE d.d_year BETWEEN 1999 AND 2001\n    )\n),\navg_sales AS (\n    SELECT AVG(qty * price) AS avg_sales\n    FROM (\n        SELECT ss_quantity AS qty, ss_list_price AS price FROM store_sales\n        UNION ALL\n        SELECT cs_quantity AS qty, cs_list_price AS price FROM catalog_sales\n        UNION ALL\n        SELECT ws_quantity AS qty, ws_list_price AS price FROM web_sales\n    ) t\n),\nsales_2001_nov AS (\n    SELECT 'store' AS channel, i_brand_id, i_class_id, i_category_id,\n           ss_quantity * ss_list_price AS sales, ss_quantity AS quantity\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND i.i_brand_id IN (SELECT i_brand_id FROM cross_items)\n      AND i.i_class_id IN (SELECT i_class_id FROM cross_items)\n      AND i.i_category_id IN (SELECT i_category_id FROM cross_items)\n    UNION ALL\n    SELECT 'catalog' AS channel, i_brand_id, i_class_id, i_category_id,\n           cs_quantity * cs_list_price AS sales, cs_quantity AS quantity\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND i.i_brand_id IN (SELECT i_brand_id FROM cross_items)\n      AND i.i_class_id IN (SELECT i_class_id FROM cross_items)\n      AND i.i_category_id IN (SELECT i_category_id FROM cross_items)\n    UNION ALL\n    SELECT 'web' AS channel, i_brand_id, i_class_id, i_category_id,\n           ws_quantity * ws_list_price AS sales, ws_quantity AS quantity\n    FROM web_sales ws\n    JOIN item i ON ws.ws_item_sk = i.i_item_sk\n    JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND i.i_brand_id IN (SELECT i_brand_id FROM cross_items)\n      AND i.i_class_id IN (SELECT i_class_id FROM cross_items)\n      AND i.i_category_id IN (SELECT i_category_id FROM cross_items)\n)\nSELECT channel, i_brand_id, i_class_id, i_category_id,\n       SUM(sales) AS sum_sales,\n       COUNT(quantity) AS sum_number_sales\nFROM sales_2001_nov\nGROUP BY ROLLUP(channel, i_brand_id, i_class_id, i_category_id)\nHAVING SUM(sales) > (SELECT avg_sales FROM avg_sales)\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 93.50825000728946,
+      "result_signature": "72fca42e2eabb8cc997e23abf37770d161fecce82888c18677b7d758280106bc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH cross_items AS (\n  SELECT i_brand_id, i_class_id, i_category_id\n  FROM item\n  WHERE EXISTS (\n    SELECT 1 FROM store_sales ss\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\n    WHERE ss.ss_item_sk = item.i_item_sk AND dd.d_year BETWEEN 1999 AND 2001\n  )\n  AND EXISTS (\n    SELECT 1 FROM catalog_sales cs\n    JOIN date_dim dd ON cs.cs_sold_date_sk = dd.d_date_sk\n    WHERE cs.cs_item_sk = item.i_item_sk AND dd.d_year BETWEEN 1999 AND 2001\n  )\n  AND EXISTS (\n    SELECT 1 FROM web_sales ws\n    JOIN date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk\n    WHERE ws.ws_item_sk = item.i_item_sk AND dd.d_year BETWEEN 1999 AND 2001\n  )\n),\navg_sales AS (\n  SELECT AVG(qty * price) AS avg_sales\n  FROM (\n    SELECT ss_quantity AS qty, ss_list_price AS price FROM store_sales\n    UNION ALL\n    SELECT cs_quantity AS qty, cs_list_price AS price FROM catalog_sales\n    UNION ALL\n    SELECT ws_quantity AS qty, ws_list_price AS price FROM web_sales\n  ) t\n),\nsales_2001_nov AS (\n  SELECT 'store' AS channel, ss_item_sk AS item_sk, ss_quantity AS quantity, ss_list_price AS list_price\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_year = 2001 AND d_moy = 11\n  UNION ALL\n  SELECT 'catalog' AS channel, cs_item_sk AS item_sk, cs_quantity AS quantity, cs_list_price AS list_price\n  FROM catalog_sales\n  JOIN date_dim ON cs_sold_date_sk = d_date_sk\n  WHERE d_year = 2001 AND d_moy = 11\n  UNION ALL\n  SELECT 'web' AS channel, ws_item_sk AS item_sk, ws_quantity AS quantity, ws_list_price AS list_price\n  FROM web_sales\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_year = 2001 AND d_moy = 11\n)\nSELECT \n  channel,\n  i_brand_id,\n  i_class_id,\n  i_category_id,\n  SUM(quantity * list_price) AS sum_sales,\n  COUNT(quantity) AS sum_number_sales\nFROM sales_2001_nov s\nJOIN item i ON s.item_sk = i.i_item_sk\nJOIN cross_items ci ON i.i_brand_id = ci.i_brand_id \n  AND i.i_class_id = ci.i_class_id \n  AND i.i_category_id = ci.i_category_id\nCROSS JOIN avg_sales av\nGROUP BY ROLLUP(channel, i_brand_id, i_class_id, i_category_id)\nHAVING SUM(quantity * list_price) > av.avg_sales\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Ambiguous reference to column name \"i_brand_id\" (use: \"i.i_brand_id\" or \"ci.i_brand_id\")",
+      "exec_time_ms": 10.781707998830825,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH cross_items AS (\n  SELECT i_brand_id, i_class_id, i_category_id\n  FROM store_sales ss\n  JOIN item i ON ss.ss_item_sk = i.i_item_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n  INTERSECT\n  SELECT i_brand_id, i_class_id, i_category_id\n  FROM catalog_sales cs\n  JOIN item i ON cs.cs_item_sk = i.i_item_sk\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n  INTERSECT\n  SELECT i_brand_id, i_class_id, i_category_id\n  FROM web_sales ws\n  JOIN item i ON ws.ws_item_sk = i.i_item_sk\n  JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n),\navg_sales AS (\n  SELECT AVG(quantity * list_price) AS avg_sales\n  FROM (\n    SELECT ss_quantity AS quantity, ss_list_price AS list_price FROM store_sales\n    UNION ALL\n    SELECT cs_quantity AS quantity, cs_list_price AS list_price FROM catalog_sales\n    UNION ALL\n    SELECT ws_quantity AS quantity, ws_list_price AS list_price FROM web_sales\n  ) t\n),\nsales_2001_nov AS (\n  SELECT 'store' AS channel, ss_item_sk AS item_sk, ss_quantity AS quantity, ss_list_price AS list_price\n  FROM store_sales\n  WHERE ss_sold_date_sk IN (SELECT d_date_sk FROM date_dim WHERE d_year = 2001 AND d_moy = 11)\n  UNION ALL\n  SELECT 'catalog' AS channel, cs_item_sk AS item_sk, cs_quantity AS quantity, cs_list_price AS list_price\n  FROM catalog_sales\n  WHERE cs_sold_date_sk IN (SELECT d_date_sk FROM date_dim WHERE d_year = 2001 AND d_moy = 11)\n  UNION ALL\n  SELECT 'web' AS channel, ws_item_sk AS item_sk, ws_quantity AS quantity, ws_list_price AS list_price\n  FROM web_sales\n  WHERE ws_sold_date_sk IN (SELECT d_date_sk FROM date_dim WHERE d_year = 2001 AND d_moy = 11)\n)\nSELECT \n  channel,\n  i_brand_id,\n  i_class_id,\n  i_category_id,\n  SUM(quantity * list_price) AS sum_sales,\n  COUNT(quantity) AS sum_number_sales\nFROM sales_2001_nov s\nJOIN item i ON s.item_sk = i.i_item_sk\nJOIN cross_items ci ON i.i_brand_id = ci.i_brand_id AND i.i_class_id = ci.i_class_id AND i.i_category_id = ci.i_category_id\nGROUP BY ROLLUP(channel, i_brand_id, i_class_id, i_category_id)\nHAVING SUM(quantity * list_price) > (SELECT avg_sales FROM avg_sales)\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Ambiguous reference to column name \"i_brand_id\" (use: \"i.i_brand_id\" or \"ci.i_brand_id\")",
+      "exec_time_ms": 10.00895800825674,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH cross_items AS (\n  SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n  FROM store_sales ss\n  JOIN item i ON ss.ss_item_sk = i.i_item_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n  INTERSECT\n  SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n  FROM catalog_sales cs\n  JOIN item i ON cs.cs_item_sk = i.i_item_sk\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n  INTERSECT\n  SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n  FROM web_sales ws\n  JOIN item i ON ws.ws_item_sk = i.i_item_sk\n  JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n  WHERE d.d_year BETWEEN 1999 AND 2001\n),\navg_sales AS (\n  SELECT AVG(qty * price) AS avg_sales\n  FROM (\n    SELECT ss_quantity AS qty, ss_list_price AS price FROM store_sales\n    UNION ALL\n    SELECT cs_quantity AS qty, cs_list_price AS price FROM catalog_sales\n    UNION ALL\n    SELECT ws_quantity AS qty, ws_list_price AS price FROM web_sales\n  ) t\n)\nSELECT channel, i_brand_id, i_class_id, i_category_id, sum_sales, sum_number_sales\nFROM (\n  SELECT 'store' AS channel, i.i_brand_id, i.i_class_id, i.i_category_id,\n         SUM(ss.ss_quantity) AS sum_sales, COUNT(ss.ss_quantity) AS sum_number_sales\n  FROM store_sales ss\n  JOIN item i ON ss.ss_item_sk = i.i_item_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  JOIN cross_items ci ON i.i_brand_id = ci.i_brand_id AND i.i_class_id = ci.i_class_id AND i.i_category_id = ci.i_category_id\n  JOIN avg_sales av ON 1=1\n  WHERE d.d_year = 2001 AND d.d_moy = 11\n  GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n  HAVING SUM(ss.ss_quantity * ss.ss_list_price) > av.avg_sales\n\n  UNION ALL\n\n  SELECT 'catalog' AS channel, i.i_brand_id, i.i_class_id, i.i_category_id,\n         SUM(cs.cs_quantity) AS sum_sales, COUNT(cs.cs_quantity) AS sum_number_sales\n  FROM catalog_sales cs\n  JOIN item i ON cs.cs_item_sk = i.i_item_sk\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  JOIN cross_items ci ON i.i_brand_id = ci.i_brand_id AND i.i_class_id = ci.i_class_id AND i.i_category_id = ci.i_category_id\n  JOIN avg_sales av ON 1=1\n  WHERE d.d_year = 2001 AND d.d_moy = 11\n  GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n  HAVING SUM(cs.cs_quantity * cs.cs_list_price) > av.avg_sales\n\n  UNION ALL\n\n  SELECT 'web' AS channel, i.i_brand_id, i.i_class_id, i.i_category_id,\n         SUM(ws.ws_quantity) AS sum_sales, COUNT(ws.ws_quantity) AS sum_number_sales\n  FROM web_sales ws\n  JOIN item i ON ws.ws_item_sk = i.i_item_sk\n  JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n  JOIN cross_items ci ON i.i_brand_id = ci.i_brand_id AND i.i_class_id = ci.i_class_id AND i.i_category_id = ci.i_category_id\n  JOIN avg_sales av ON 1=1\n  WHERE d.d_year = 2001 AND d.d_moy = 11\n  GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n  HAVING SUM(ws.ws_quantity * ws.ws_list_price) > av.avg_sales\n) t\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: column avg_sales must appear in the GROUP BY clause or be used in an aggregate function",
+      "exec_time_ms": 9.847834007814527,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH cross_items AS (\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERSECT\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERSECT\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM web_sales ws\n    JOIN item i ON ws.ws_item_sk = i.i_item_sk\n    JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n),\navg_sales AS (\n    SELECT AVG(qty * price) AS avg_sales\n    FROM (\n        SELECT ss_quantity AS qty, ss_list_price AS price FROM store_sales\n        UNION ALL\n        SELECT cs_quantity AS qty, cs_list_price AS price FROM catalog_sales\n        UNION ALL\n        SELECT ws_quantity AS qty, ws_list_price AS price FROM web_sales\n    ) t\n)\nSELECT \n    channel,\n    i_brand_id,\n    i_class_id,\n    i_category_id,\n    SUM(sum_sales) AS sum_sales,\n    SUM(sum_number_sales) AS sum_number_sales\nFROM (\n    SELECT \n        'store' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(ss_quantity * ss_list_price) AS sum_sales,\n        COUNT(ss_quantity) AS sum_number_sales\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(cs_quantity * cs_list_price) AS sum_sales,\n        COUNT(cs_quantity) AS sum_number_sales\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(ws_quantity * ws_list_price) AS sum_sales,\n        COUNT(ws_quantity) AS sum_number_sales\n    FROM web_sales ws\n    JOIN item i ON ws.ws_item_sk = i.i_item_sk\n    JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n) t\nGROUP BY ROLLUP(channel, i_brand_id, i_class_id, i_category_id)\nHAVING SUM(sum_sales) > (SELECT avg_sales FROM avg_sales)\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 45.89804199349601,
+      "result_signature": "72fca42e2eabb8cc997e23abf37770d161fecce82888c18677b7d758280106bc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH cross_items AS (\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERSECT\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERSECT\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM web_sales ws\n    JOIN item i ON ws.ws_item_sk = i.i_item_sk\n    JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n),\navg_sales AS (\n    SELECT AVG(qty * price) AS avg_sales\n    FROM (\n        SELECT ss_quantity AS qty, ss_list_price AS price FROM store_sales\n        UNION ALL\n        SELECT cs_quantity AS qty, cs_list_price AS price FROM catalog_sales\n        UNION ALL\n        SELECT ws_quantity AS qty, ws_list_price AS price FROM web_sales\n    ) t\n)\nSELECT \n    channel,\n    i_brand_id,\n    i_class_id,\n    i_category_id,\n    SUM(sum_sales) AS sum_sales,\n    SUM(sum_number_sales) AS sum_number_sales\nFROM (\n    SELECT \n        'store' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(ss_quantity * ss_list_price) AS sum_sales,\n        COUNT(ss_quantity) AS sum_number_sales\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(cs_quantity * cs_list_price) AS sum_sales,\n        COUNT(cs_quantity) AS sum_number_sales\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        i.i_brand_id,\n        i.i_class_id,\n        i.i_category_id,\n        SUM(ws_quantity * ws_list_price) AS sum_sales,\n        COUNT(ws_quantity) AS sum_number_sales\n    FROM web_sales ws\n    JOIN item i ON ws.ws_item_sk = i.i_item_sk\n    JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk\n    WHERE d.d_year = 2001 AND d.d_moy = 11\n      AND (i.i_brand_id, i.i_class_id, i.i_category_id) IN (SELECT * FROM cross_items)\n    GROUP BY i.i_brand_id, i.i_class_id, i.i_category_id\n) t\nGROUP BY ROLLUP(channel, i_brand_id, i_class_id, i_category_id)\nHAVING SUM(sum_sales) > (SELECT avg_sales FROM avg_sales)\nORDER BY channel ASC, i_brand_id ASC, i_class_id ASC, i_category_id ASC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "72fca42e2eabb8cc997e23abf37770d161fecce82888c18677b7d758280106bc": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 16664.501582999947
+}

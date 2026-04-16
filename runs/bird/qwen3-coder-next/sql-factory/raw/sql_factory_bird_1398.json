@@ -1,0 +1,143 @@
+{
+  "task_id": "bird_1398",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement'\nORDER BY b.spent DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "event",
+            "e",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement'\nORDER BY b.spent DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "event",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement'\nORDER BY b.amount DESC\nLIMIT 1;",
+          "score": 0.775,
+          "similarity_max": 0.8499999999999999,
+          "tables_used": [
+            "budget",
+            "event",
+            "e",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement'\nORDER BY b.spent DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "event",
+            "e",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH ad_budgets AS (\n    SELECT e.event_name, b.spent\n    FROM event e\n    JOIN budget b ON e.event_id = b.link_to_event\n    WHERE b.category = 'Advertisement'\n)\nSELECT event_name\nFROM ad_budgets\nORDER BY spent DESC\nLIMIT 1;",
+          "score": 1.1338080959520238,
+          "similarity_max": 0.6323838080959521,
+          "tables_used": [
+            "budget",
+            "e",
+            "event",
+            "ad_budgets",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement' AND b.spent = (\n    SELECT MAX(b2.spent)\n    FROM budget b2\n    WHERE b2.category = 'Advertisement'\n);",
+          "score": 1.0806122448979592,
+          "similarity_max": 0.5387755102040817,
+          "tables_used": [
+            "budget",
+            "b2",
+            "e",
+            "event",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT e.event_name\nFROM event e\nJOIN budget b ON e.event_id = b.link_to_event\nWHERE b.category = 'Advertisement'\nORDER BY b.spent DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "budget",
+        "event",
+        "e",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.2,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.8
+  }
+}

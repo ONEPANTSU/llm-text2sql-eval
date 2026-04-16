@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_444",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 1,
+  "generation_time_ms": 1586.9500420012628,
+  "execution_time_ms": 842.3306670010788,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT fd.name, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'boros';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 418.5856660042191,
+      "result_signature": "c9a9ea39da349041a8e2ca19bada730ca43133feb32024cb26d32db574fc0a5f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT foreign_data.name, foreign_data.type\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.watermark = 'boros';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 48.30499999661697,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT fd.name, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'boros';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 119.33691699960036,
+      "result_signature": "c9a9ea39da349041a8e2ca19bada730ca43133feb32024cb26d32db574fc0a5f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT fd.name, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'boros';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 128.41412499983562,
+      "result_signature": "c9a9ea39da349041a8e2ca19bada730ca43133feb32024cb26d32db574fc0a5f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT fd.name, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'boros';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 120.56049999955576,
+      "result_signature": "c9a9ea39da349041a8e2ca19bada730ca43133feb32024cb26d32db574fc0a5f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT fd.name, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'boros';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c9a9ea39da349041a8e2ca19bada730ca43133feb32024cb26d32db574fc0a5f": 4,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1279.8929999989923,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3709.2202919957344
+}

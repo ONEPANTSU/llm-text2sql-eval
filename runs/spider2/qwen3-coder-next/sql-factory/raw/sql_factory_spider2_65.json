@@ -1,0 +1,202 @@
+{
+  "task_id": "spider2_65",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN Musical_Preferences mp1 ON c.CustomerID = mp1.CustomerID\nJOIN Musical_Preferences mp2 ON c.CustomerID = mp2.CustomerID\nJOIN Entertainers e\nJOIN Entertainer_Styles es1 ON e.EntertainerID = es1.EntertainerID\nJOIN Entertainer_Styles es2 ON e.EntertainerID = es2.EntertainerID\nWHERE \n    mp1.PreferenceSeq = 1 \n    AND mp2.PreferenceSeq = 2\n    AND mp1.StyleID != mp2.StyleID\n    AND es1.StyleStrength = 1 \n    AND es2.StyleStrength =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Musical_Preferences",
+            "Customers",
+            "mp1",
+            "Entertainers",
+            "mp3",
+            "c",
+            "es3",
+            "mp2",
+            "Entertainer_Styles",
+            "es1",
+            "e",
+            "es2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN (\n    SELECT CustomerID, \n           MAX(CASE WHEN PreferenceSeq = 1 THEN StyleID END) AS Pref1,\n           MAX(CASE WHEN PreferenceSeq = 2 THEN StyleID END) AS Pref2\n    FROM Musical_Preferences\n    GROUP BY CustomerID\n    HAVING COUNT(*) <= 3\n) cp ON c.CustomerID = cp.CustomerID\nJOIN Entertainers e\nJOIN (\n    SELECT EntertainerID, \n           MAX(CASE WHEN StyleStrength = 1 THEN StyleID END) AS Style1,\n           MAX(CASE WH...",
+          "score": 1.1485442661913252,
+          "similarity_max": 0.50291146761735,
+          "tables_used": [
+            "Musical_Preferences",
+            "e",
+            "Entertainer_Styles",
+            "Customers",
+            "Entertainers",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN Musical_Preferences mp1 ON c.CustomerID = mp1.CustomerID\nJOIN Musical_Preferences mp2 ON c.CustomerID = mp2.CustomerID\nJOIN Entertainers e\nJOIN Entertainer_Styles es1 ON e.EntertainerID = es1.EntertainerID\nJOIN Entertainer_Styles es2 ON e.EntertainerID = es2.EntertainerID\nWHERE \n    mp1.PreferenceSeq = 1 \n    AND mp2.PreferenceSeq = 2\n    AND mp1.StyleID != mp2.StyleID\n    AND es1.StyleStrength = 1 \n    AND es2.StyleStrength =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Musical_Preferences",
+            "Customers",
+            "mp1",
+            "Entertainers",
+            "mp3",
+            "c",
+            "es3",
+            "mp2",
+            "Entertainer_Styles",
+            "es1",
+            "e",
+            "es2"
+          ]
+        },
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN Musical_Preferences mp1 ON c.CustomerID = mp1.CustomerID AND mp1.PreferenceSeq = 1\nJOIN Musical_Preferences mp2 ON c.CustomerID = mp2.CustomerID AND mp2.PreferenceSeq = 2 AND mp1.StyleID < mp2.StyleID\nJOIN Entertainers e\nJOIN Entertainer_Styles es1 ON e.EntertainerID = es1.EntertainerID AND es1.StyleStrength = 1\nJOIN Entertainer_Styles es2 ON e.EntertainerID = es2.EntertainerID AND es2.StyleStrength = 2 AND es1.StyleID < es2.S...",
+          "score": 0.7579831932773111,
+          "similarity_max": 0.6840336134453782,
+          "tables_used": [
+            "Musical_Preferences",
+            "Customers",
+            "mp1",
+            "Entertainers",
+            "mp3",
+            "c",
+            "es3",
+            "mp2",
+            "Entertainer_Styles",
+            "es1",
+            "e",
+            "es2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN (\n    SELECT CustomerID, \n           MAX(CASE WHEN PreferenceSeq = 1 THEN StyleID END) AS Pref1,\n           MAX(CASE WHEN PreferenceSeq = 2 THEN StyleID END) AS Pref2\n    FROM Musical_Preferences\n    GROUP BY CustomerID\n    HAVING COUNT(*) <= 3\n) cp ON c.CustomerID = cp.CustomerID\nJOIN Entertainers e\nJOIN (\n    SELECT EntertainerID, \n           MAX(CASE WHEN StyleStrength = 1 THEN StyleID END) AS Style1,\n           MAX(CASE WH...",
+          "score": 1.1485442661913252,
+          "similarity_max": 0.50291146761735,
+          "tables_used": [
+            "Musical_Preferences",
+            "e",
+            "Entertainer_Styles",
+            "Customers",
+            "Entertainers",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN (\n    SELECT CustomerID, \n           StyleID AS Pref1, \n           LEAD(StyleID) OVER (PARTITION BY CustomerID ORDER BY PreferenceSeq) AS Pref2\n    FROM Musical_Preferences\n    WHERE PreferenceSeq IN (1, 2)\n) cp ON c.CustomerID = cp.CustomerID\nJOIN Entertainers e\nJOIN (\n    SELECT EntertainerID, \n           StyleID AS Style1, \n           LEAD(StyleID) OVER (PARTITION BY EntertainerID ORDER BY StyleStrength) AS Style2\n    FROM ...",
+          "score": 1.1144736842105263,
+          "similarity_max": 0.5710526315789474,
+          "tables_used": [
+            "Musical_Preferences",
+            "Entertainers",
+            "mp",
+            "c",
+            "Entertainer_Styles",
+            "Customers",
+            "e",
+            "es2"
+          ]
+        },
+        {
+          "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN Musical_Preferences mp1 ON c.CustomerID = mp1.CustomerID\nJOIN Musical_Preferences mp2 ON c.CustomerID = mp2.CustomerID\nJOIN Entertainers e\nJOIN Entertainer_Styles es1 ON e.EntertainerID = es1.EntertainerID\nJOIN Entertainer_Styles es2 ON e.EntertainerID = es2.EntertainerID\nWHERE \n    mp1.PreferenceSeq = 1 \n    AND mp2.PreferenceSeq = 2\n    AND mp1.StyleID != mp2.StyleID\n    AND es1.StyleStrength = 1 \n    AND es2.StyleStrength =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Musical_Preferences",
+            "Customers",
+            "mp1",
+            "Entertainers",
+            "mp3",
+            "c",
+            "es3",
+            "mp2",
+            "Entertainer_Styles",
+            "es1",
+            "e",
+            "es2"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    e.EntStageName, \n    c.CustLastName\nFROM Customers c\nJOIN (\n    SELECT CustomerID, \n           MAX(CASE WHEN PreferenceSeq = 1 THEN StyleID END) AS Pref1,\n           MAX(CASE WHEN PreferenceSeq = 2 THEN StyleID END) AS Pref2\n    FROM Musical_Preferences\n    GROUP BY CustomerID\n    HAVING COUNT(*) <= 3\n) cp ON c.CustomerID = cp.CustomerID\nJOIN Entertainers e\nJOIN (\n    SELECT EntertainerID, \n           MAX(CASE WHEN StyleStrength = 1 THEN StyleID END) AS Style1,\n           MAX(CASE WH...",
+    "meta": {
+      "score": 1.1485442661913252,
+      "similarity_max": 0.50291146761735,
+      "tables_used": [
+        "Musical_Preferences",
+        "e",
+        "Entertainer_Styles",
+        "Customers",
+        "Entertainers",
+        "c"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "wrong number of arguments to function COUNT()",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 1.64
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "task_id": "bird_392",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT faceName\nFROM cards\nWHERE rarity = 'uncommon'\nORDER BY (\n    SELECT date\n    FROM rulings\n    WHERE rulings.uuid = cards.uuid\n    LIMIT 1\n)\nLIMIT 3;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.faceName\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nWHERE c.rarity = 'uncommon'\nGROUP BY c.uuid, c.faceName\nORDER BY MIN(r.date) ASC\nLIMIT 3;",
+          "score": 0.9285714285714286,
+          "similarity_max": 0.5428571428571428,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT faceName\nFROM cards\nWHERE rarity = 'uncommon'\nORDER BY (\n    SELECT date\n    FROM rulings\n    WHERE rulings.uuid = cards.uuid\n    LIMIT 1\n)\nLIMIT 3;",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "rulings",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 73354.13
+  }
+}

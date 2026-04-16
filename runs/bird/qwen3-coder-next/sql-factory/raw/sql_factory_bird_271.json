@@ -1,0 +1,173 @@
+{
+  "task_id": "bird_271",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN COUNT(DISTINCT a1.element) = 2 AND \n             'Cl' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id FROM connected WHERE bond_id = 'TR001_1_8')) AND \n             'C' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id2 FROM connected WHERE bond_id = 'TR001_1_8')) \n        THEN 'yes' \n        ELSE 'no' \n    END AS result\nFROM atom a1\nJOIN connected c ON a1.atom_id = c.atom_id\nWHERE c.bond_id = 'TR001_1_8';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a1",
+            "c",
+            "connected",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN COUNT(DISTINCT a1.element) = 2 AND \n             SUM(CASE WHEN a1.element = 'Cl' THEN 1 ELSE 0 END) > 0 AND \n             SUM(CASE WHEN a1.element = 'C' THEN 1 ELSE 0 END) > 0 \n        THEN 'yes' \n        ELSE 'no' \n    END AS has_both\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON a1.atom_id = c.atom_id\nJOIN atom a2 ON a2.atom_id = c.atom_id2\nWHERE b.bond_id = 'TR001_1_8';",
+          "score": 0.9742375601926165,
+          "similarity_max": 0.5515248796147671,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN COUNT(DISTINCT a1.element) = 2 AND \n             'Cl' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id FROM connected WHERE bond_id = 'TR001_1_8')) AND \n             'C' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id2 FROM connected WHERE bond_id = 'TR001_1_8')) \n        THEN 'yes' \n        ELSE 'no' \n    END AS result\nFROM atom a1\nJOIN connected c ON a1.atom_id = c.atom_id\nWHERE c.bond_id = 'TR001_1_8';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a1",
+            "c",
+            "connected",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM connected c\n            JOIN atom a1 ON c.atom_id = a1.atom_id\n            JOIN atom a2 ON c.atom_id2 = a2.atom_id\n            WHERE c.bond_id = 'TR001_1_8'\n              AND ((a1.element = 'Cl' AND a2.element = 'C') OR (a1.element = 'C' AND a2.element = 'Cl'))\n        ) THEN 'yes' \n        ELSE 'no' \n    END AS result;",
+          "score": 1.1647554129911788,
+          "similarity_max": 0.5704891740176423,
+          "tables_used": [
+            "connected",
+            "c",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM bond b\n            JOIN connected c ON b.bond_id = c.bond_id\n            JOIN atom a1 ON a1.atom_id = c.atom_id\n            JOIN atom a2 ON a2.atom_id = c.atom_id2\n            WHERE b.bond_id = 'TR001_1_8' \n              AND ((a1.element = 'Cl' AND a2.element = 'C') OR (a1.element = 'C' AND a2.element = 'Cl'))\n        ) THEN 'yes' \n        ELSE 'no' \n    END AS has_both;",
+          "score": 1.0538610038610037,
+          "similarity_max": 0.7922779922779923,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN COUNT(DISTINCT a1.element) = 2 AND \n             'Cl' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id FROM connected WHERE bond_id = 'TR001_1_8')) AND \n             'C' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id2 FROM connected WHERE bond_id = 'TR001_1_8')) \n        THEN 'yes' \n        ELSE 'no' \n    END AS result\nFROM atom a1\nJOIN connected c ON a1.atom_id = c.atom_id\nWHERE c.bond_id = 'TR001_1_8';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a1",
+            "c",
+            "connected",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN (\n            SELECT COUNT(DISTINCT a.element) \n            FROM bond b\n            JOIN connected c ON b.bond_id = c.bond_id\n            JOIN atom a ON a.atom_id IN (c.atom_id, c.atom_id2)\n            WHERE b.bond_id = 'TR001_1_8'\n              AND a.element IN ('Cl', 'C')\n        ) = 2 THEN 'yes' \n        ELSE 'no' \n    END AS has_both;",
+          "score": 1.1892857142857143,
+          "similarity_max": 0.6214285714285714,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM connected c\n            JOIN atom a1 ON c.atom_id = a1.atom_id\n            JOIN atom a2 ON c.atom_id2 = a2.atom_id\n            WHERE c.bond_id = 'TR001_1_8'\n              AND ((a1.element = 'Cl' AND a2.element = 'C') OR (a1.element = 'C' AND a2.element = 'Cl'))\n        ) THEN 'yes' \n        ELSE 'no' \n    END AS result;",
+          "score": 1.1647554129911788,
+          "similarity_max": 0.5704891740176423,
+          "tables_used": [
+            "connected",
+            "c",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CASE \n        WHEN COUNT(DISTINCT a1.element) = 2 AND \n             'Cl' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id FROM connected WHERE bond_id = 'TR001_1_8')) AND \n             'C' IN (SELECT element FROM atom WHERE atom_id IN (SELECT atom_id2 FROM connected WHERE bond_id = 'TR001_1_8')) \n        THEN 'yes' \n        ELSE 'no' \n    END AS result\nFROM atom a1\nJOIN connected c ON a1.atom_id = c.atom_id\nWHERE c.bond_id = 'TR001_1_8';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "a1",
+        "c",
+        "connected",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.83
+  }
+}

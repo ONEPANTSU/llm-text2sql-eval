@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q48",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2696.7357089888537,
+  "execution_time_ms": 94.18945899233222,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 37.21620800206438,
+      "result_signature": "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.079917000955902,
+      "result_signature": "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.32554199709557,
+      "result_signature": "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.52195899724029,
+      "result_signature": "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.452833994757384,
+      "result_signature": "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d51e8bc8b677873757c9e48ae1cb536a0b5504cd5421bd5286f240f483359253": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2791.015499999048
+}

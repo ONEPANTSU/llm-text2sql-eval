@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_881",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1553.2419999944977,
+  "execution_time_ms": 18.151208001654595,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  CAST(COUNT(results.position) AS REAL) * 100 / COUNT(results.driverId) AS completion_rate\nFROM races\nJOIN results ON races.raceId = results.raceId\nWHERE races.date = '1983-07-16';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.60799999604933,
+      "result_signature": "4c989168a8dce8257748ae5339053ce624ee3973428978feafb23b5c5ccedb50",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    COUNT(results.driverId) AS total_drivers,\n    COUNT(results.position) AS completed_drivers\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.date = '1983-07-16';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.550124998786487,
+      "result_signature": "b274f877e04abe7912cc84698888470c6529b46406fc5b440103f8855751cc9a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    COUNT(results.driverId) AS total_drivers,\n    COUNT(results.position) AS completed_drivers,\n    CAST(COUNT(results.position) AS REAL) * 100 / COUNT(results.driverId) AS completion_rate\nFROM races\nJOIN results ON races.raceId = results.raceId\nWHERE races.date = '1983-07-16';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.4806660003378056,
+      "result_signature": "a639acd3a851aeb30fa895698bc0a816e48ae08c4b85f890c5f1e9d5fdeb5a91",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    COUNT(results.driverId) AS total_drivers,\n    COUNT(results.position) AS completed_drivers,\n    CAST(COUNT(results.position) AS REAL) * 100 / COUNT(results.driverId) AS completion_rate\nFROM races\nJOIN results ON races.raceId = results.raceId\nWHERE races.date = '1983-07-16';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.185375000408385,
+      "result_signature": "a639acd3a851aeb30fa895698bc0a816e48ae08c4b85f890c5f1e9d5fdeb5a91",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    COUNT(results.driverId) AS total_drivers,\n    COUNT(results.position) AS completed_drivers,\n    CAST(COUNT(results.position) AS REAL) * 100 / COUNT(results.driverId) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.date = '1983-07-16';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9476659945212305,
+      "result_signature": "a639acd3a851aeb30fa895698bc0a816e48ae08c4b85f890c5f1e9d5fdeb5a91",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    COUNT(results.driverId) AS total_drivers,\n    COUNT(results.position) AS completed_drivers,\n    CAST(COUNT(results.position) AS REAL) * 100 / COUNT(results.driverId) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.date = '1983-07-16';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4c989168a8dce8257748ae5339053ce624ee3973428978feafb23b5c5ccedb50": 1,
+        "b274f877e04abe7912cc84698888470c6529b46406fc5b440103f8855751cc9a": 1,
+        "a639acd3a851aeb30fa895698bc0a816e48ae08c4b85f890c5f1e9d5fdeb5a91": 4
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1979.1022920035175,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    COUNT(*) AS total_drivers,\n    SUM(CASE WHEN results.position IS NOT NULL THEN 1 ELSE 0 END) AS completed_drivers,\n    CAST(SUM(CASE WHEN results.position IS NOT NULL THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.date = '1983-07-16';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.260167006170377,
+        "result_signature": "a639acd3a851aeb30fa895698bc0a816e48ae08c4b85f890c5f1e9d5fdeb5a91",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3550.61562499759
+}

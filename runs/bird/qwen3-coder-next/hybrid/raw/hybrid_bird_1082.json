@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1082",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7878.067625002586,
+  "execution_time_ms": 2.2201669999049045,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9473750033066608,
+      "result_signature": "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2978330012410879,
+      "result_signature": "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2933750001830049,
+      "result_signature": "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.26645899924915284,
+      "result_signature": "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.25020799512276426,
+      "result_signature": "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT League.name\nFROM League\nJOIN Country ON League.country_id = Country.id\nWHERE Country.name = 'Germany';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6313e0ff3cabec0ad3154c9ebfbd123098dced25ff63e4209e147e708177a101": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7880.3591249961755
+}

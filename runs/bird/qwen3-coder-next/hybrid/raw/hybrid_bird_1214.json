@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_1214",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1599.1917089995695,
+  "execution_time_ms": 14.283958997111768,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < 6.0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.398374996730126,
+      "result_signature": "dab9f3ad73e2cdcc6562e37f1eba4ca11795460f6d92ebe8490c17e8c2e75ad3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(TP) FROM Laboratory WHERE TP IS NOT NULL);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.4017079995246604,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(TP) * 0.85 FROM Laboratory);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8115839993697591,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < 6.0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4341249989229254,
+      "result_signature": "dab9f3ad73e2cdcc6562e37f1eba4ca11795460f6d92ebe8490c17e8c2e75ad3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(TP) FROM Laboratory WHERE TP IS NOT NULL);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.928292003867682,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(TP) * 0.85 FROM Laboratory);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "dab9f3ad73e2cdcc6562e37f1eba4ca11795460f6d92ebe8490c17e8c2e75ad3": 3,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1398.5019999963697,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(6.0));",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.9524580056895502,
+        "result_signature": "dab9f3ad73e2cdcc6562e37f1eba4ca11795460f6d92ebe8490c17e8c2e75ad3",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT MIN(TP) FROM Laboratory WHERE TP IS NOT NULL);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.89200000022538,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT AVG(TP) - 2 * (SELECT SQRT(VAR_POP(TP)) FROM Laboratory) FROM Laboratory);",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such function: VAR_POP",
+        "exec_time_ms": 0.21883300360059366,
+        "result_signature": null,
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.TP < (SELECT AVG(TP) - 2 * STDDEV(TP) FROM Laboratory WHERE TP IS NOT NULL);",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such function: STDDEV",
+        "exec_time_ms": 0.14450000162469223,
+        "result_signature": null,
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3012.067333002051
+}

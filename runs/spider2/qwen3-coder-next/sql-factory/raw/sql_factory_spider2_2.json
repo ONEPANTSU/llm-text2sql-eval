@@ -1,0 +1,183 @@
+{
+  "task_id": "spider2_2",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH customer_order_stats AS (\n    SELECT \n        o.customer_id,\n        COUNT(o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        MAX(julianday(o.order_purchase_timestamp)) - MIN(julianday(o.order_purchase_timestamp)) AS days_span\n    FROM orders o\n    JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\ncustomer_lifespan AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_order,\n        CASE \n    ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "customer_lifespan",
+            "op",
+            "customer_order_stats"
+          ]
+        },
+        {
+          "sql": "WITH customer_order_stats AS (\n  SELECT \n    c.customer_id,\n    COUNT(o.order_id) AS num_orders,\n    AVG(op.payment_value) AS avg_payment,\n    MAX(o.order_purchase_timestamp) AS latest_order,\n    MIN(o.order_purchase_timestamp) AS earliest_order\n  FROM customers c\n  JOIN orders o ON c.customer_id = o.customer_id\n  JOIN order_payments op ON o.order_id = op.order_id\n  GROUP BY c.customer_id\n),\ncustomer_lifespan AS (\n  SELECT \n    customer_id,\n    num_orders,\n    avg_payment,\n    CASE \n      WHEN (...",
+          "score": 1.0512318727584593,
+          "similarity_max": 0.6975362544830812,
+          "tables_used": [
+            "order_payments",
+            "orders",
+            "customer_lifespan",
+            "c",
+            "o",
+            "op",
+            "customer_order_stats",
+            "customers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH customer_order_stats AS (\n    SELECT \n        o.customer_id,\n        COUNT(o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        MAX(julianday(o.order_purchase_timestamp)) - MIN(julianday(o.order_purchase_timestamp)) AS days_span\n    FROM orders o\n    JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\ncustomer_lifespan AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_order,\n        CASE \n    ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "customer_lifespan",
+            "op",
+            "customer_order_stats"
+          ]
+        },
+        {
+          "sql": "WITH customer_payment_stats AS (\n  SELECT \n    o.customer_id,\n    COUNT(DISTINCT o.order_id) AS num_orders,\n    AVG(op.payment_value) AS avg_payment,\n    MAX(o.order_purchase_timestamp) AS max_purchase,\n    MIN(o.order_purchase_timestamp) AS min_purchase\n  FROM orders o\n  JOIN order_payments op ON o.order_id = op.order_id\n  GROUP BY o.customer_id\n),\ncustomer_metrics AS (\n  SELECT \n    customer_id,\n    num_orders,\n    avg_payment,\n    CASE \n      WHEN (julianday(max_purchase) - julianday(min_purc...",
+          "score": 1.137741046831956,
+          "similarity_max": 0.7245179063360881,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "op",
+            "customer_metrics",
+            "customer_payment_stats"
+          ]
+        },
+        {
+          "sql": "WITH customer_metrics AS (\n    SELECT \n        o.customer_id,\n        COUNT(DISTINCT o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        CAST((julianday(MAX(o.order_purchase_timestamp)) - julianday(MIN(o.order_purchase_timestamp))) AS REAL) AS days_diff\n    FROM orders o\n    INNER JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\nfinal_metrics AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_or...",
+          "score": 1.1280748663101603,
+          "similarity_max": 0.7438502673796792,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "op",
+            "customer_metrics",
+            "final_metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH customer_order_stats AS (\n    SELECT \n        o.customer_id,\n        COUNT(o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        MAX(julianday(o.order_purchase_timestamp)) - MIN(julianday(o.order_purchase_timestamp)) AS days_span\n    FROM orders o\n    JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\ncustomer_lifespan AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_order,\n        CASE \n    ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "customer_lifespan",
+            "op",
+            "customer_order_stats"
+          ]
+        },
+        {
+          "sql": "WITH customer_payment_stats AS (\n  SELECT \n    o.customer_id,\n    COUNT(DISTINCT o.order_id) AS num_orders,\n    AVG(op.payment_value) AS avg_payment,\n    MAX(o.order_purchase_timestamp) AS max_purchase,\n    MIN(o.order_purchase_timestamp) AS min_purchase\n  FROM orders o\n  JOIN order_payments op ON o.order_id = op.order_id\n  GROUP BY o.customer_id\n),\ncustomer_metrics AS (\n  SELECT \n    customer_id,\n    num_orders,\n    avg_payment,\n    CASE \n      WHEN (julianday(max_purchase) - julianday(min_purc...",
+          "score": 1.137741046831956,
+          "similarity_max": 0.7245179063360881,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "op",
+            "customer_metrics",
+            "customer_payment_stats"
+          ]
+        },
+        {
+          "sql": "WITH customer_metrics AS (\n    SELECT \n        o.customer_id,\n        COUNT(DISTINCT o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        CAST((julianday(MAX(o.order_purchase_timestamp)) - julianday(MIN(o.order_purchase_timestamp))) AS REAL) AS days_diff\n    FROM orders o\n    INNER JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\nfinal_metrics AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_or...",
+          "score": 1.1280748663101603,
+          "similarity_max": 0.7438502673796792,
+          "tables_used": [
+            "o",
+            "order_payments",
+            "orders",
+            "op",
+            "customer_metrics",
+            "final_metrics"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH customer_order_stats AS (\n    SELECT \n        o.customer_id,\n        COUNT(o.order_id) AS num_orders,\n        AVG(op.payment_value) AS avg_payment_per_order,\n        MAX(julianday(o.order_purchase_timestamp)) - MIN(julianday(o.order_purchase_timestamp)) AS days_span\n    FROM orders o\n    JOIN order_payments op ON o.order_id = op.order_id\n    GROUP BY o.customer_id\n),\ncustomer_lifespan AS (\n    SELECT \n        customer_id,\n        num_orders,\n        avg_payment_per_order,\n        CASE \n    ...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "order_payments",
+        "orders",
+        "customer_lifespan",
+        "op",
+        "customer_order_stats"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.82
+  }
+}

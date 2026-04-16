@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_655",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1569.1488749944256,
+  "execution_time_ms": 104.63954199803993,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.Title, pl.LinkTypeId\nFROM posts p\nJOIN postLinks pl ON p.Id = pl.PostId\nWHERE p.Title = 'What are principal component scores?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.047416998888366,
+      "result_signature": "a46e9714fa6e5545ede81b8c412bf9e36189ce801a2fd92b285952bc97ffed92",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Title, pl.LinkTypeId\nFROM posts p\nJOIN postLinks pl ON p.Id = pl.PostId\nWHERE p.Title = 'What are principal component scores?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.1238749967888,
+      "result_signature": "a46e9714fa6e5545ede81b8c412bf9e36189ce801a2fd92b285952bc97ffed92",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Title, pl.LinkTypeId\nFROM posts p\nJOIN postLinks pl ON p.Id = pl.PostId\nWHERE p.Title = 'What are principal component scores?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.893166997353546,
+      "result_signature": "a46e9714fa6e5545ede81b8c412bf9e36189ce801a2fd92b285952bc97ffed92",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p2.Title, pl.LinkTypeId\nFROM posts p1\nJOIN postLinks pl ON p1.Id = pl.PostId\nJOIN posts p2 ON pl.RelatedPostId = p2.Id\nWHERE p1.Title = 'What are principal component scores?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.922541002510116,
+      "result_signature": "f39e584b8d9586e34a159bf7853abd06bae39fdffc381f1def609b66b00b84b2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.Title, pl.LinkTypeId\nFROM posts p\nJOIN postLinks pl ON p.Id = pl.PostId\nWHERE p.Title = 'What are principal component scores?';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.344833002018277,
+      "result_signature": "a46e9714fa6e5545ede81b8c412bf9e36189ce801a2fd92b285952bc97ffed92",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT p.Title, pl.LinkTypeId\nFROM posts p\nJOIN postLinks pl ON p.Id = pl.PostId\nWHERE p.Title = 'What are principal component scores?';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a46e9714fa6e5545ede81b8c412bf9e36189ce801a2fd92b285952bc97ffed92": 4,
+        "f39e584b8d9586e34a159bf7853abd06bae39fdffc381f1def609b66b00b84b2": 2
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 6883.181624994904,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p2.Title, pl.LinkTypeId\nFROM posts p1\nJOIN postLinks pl ON p1.Id = pl.PostId\nJOIN posts p2 ON pl.RelatedPostId = p2.Id\nWHERE p1.Title = 'What are principal component scores?';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 35.78025000024354,
+        "result_signature": "f39e584b8d9586e34a159bf7853abd06bae39fdffc381f1def609b66b00b84b2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8557.02133399609
+}

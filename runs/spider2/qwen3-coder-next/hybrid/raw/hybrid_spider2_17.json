@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_17",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 19489.34920899046,
+  "execution_time_ms": 8.04091700410936,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH over_runs AS (\n    SELECT \n        bb.match_id,\n        bb.innings_no,\n        bb.over_id,\n        bb.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball bb\n    LEFT JOIN batsman_scored bs \n        ON bb.match_id = bs.match_id \n        AND bb.over_id = bs.over_id \n        AND bb.innings_no = bs.innings_no\n        AND bb.ball_id = bs.ball_id\n    LEFT JOIN extra_runs er \n        ON bb.match_id = er.match_id \n        AND bb.over_id = er.over_id \n        AND bb.innings_no = er.innings_no\n        AND bb.ball_id = er.ball_id\n    GROUP BY bb.match_id, bb.innings_no, bb.over_id, bb.bowler\n),\nhighest_over_per_match AS (\n    SELECT \n        match_id,\n        innings_no,\n        over_id,\n        bowler,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY match_id, innings_no ORDER BY total_runs DESC) AS rn\n    FROM over_runs\n),\ntop_over_per_match AS (\n    SELECT \n        match_id,\n        innings_no,\n        over_id,\n        bowler,\n        total_runs\n    FROM highest_over_per_match\n    WHERE rn = 1\n)\nSELECT \n    AVG(total_runs) AS avg_highest_over_runs\nFROM top_over_per_match;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.603542001452297,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH over_runs AS (\n  SELECT\n    bb.match_id,\n    bb.over_id,\n    bb.innings_no,\n    bb.bowler,\n    COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n  FROM ball_by_ball bb\n  LEFT JOIN batsman_scored bs\n    ON bb.match_id = bs.match_id\n    AND bb.over_id = bs.over_id\n    AND bb.innings_no = bs.innings_no\n  LEFT JOIN extra_runs er\n    ON bb.match_id = er.match_id\n    AND bb.over_id = er.over_id\n    AND bb.innings_no = er.innings_no\n  GROUP BY bb.match_id, bb.over_id, bb.innings_no, bb.bowler\n),\nhighest_over_per_match AS (\n  SELECT\n    match_id,\n    over_id,\n    innings_no,\n    bowler,\n    total_runs,\n    ROW_NUMBER() OVER (PARTITION BY match_id ORDER BY total_runs DESC) AS rn\n  FROM over_runs\n)\nSELECT\n  AVG(total_runs) AS avg_highest_over_runs\nFROM highest_over_per_match\nWHERE rn = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5610420048469678,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH over_runs AS (\n  SELECT \n    b.match_id,\n    b.over_id,\n    b.innings_no,\n    b.bowler,\n    COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n  FROM ball_by_ball b\n  LEFT JOIN batsman_scored bs \n    ON b.match_id = bs.match_id \n    AND b.over_id = bs.over_id \n    AND b.innings_no = bs.innings_no\n  LEFT JOIN extra_runs er \n    ON b.match_id = er.match_id \n    AND b.over_id = er.over_id \n    AND b.innings_no = er.innings_no\n  GROUP BY b.match_id, b.over_id, b.innings_no, b.bowler\n),\nhighest_over_per_match AS (\n  SELECT \n    match_id,\n    over_id,\n    innings_no,\n    bowler,\n    total_runs,\n    ROW_NUMBER() OVER (PARTITION BY match_id ORDER BY total_runs DESC) AS rn\n  FROM over_runs\n)\nSELECT \n  AVG(total_runs) AS avg_highest_over_runs\nFROM highest_over_per_match\nWHERE rn = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2529579942347482,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH over_runs AS (\n  SELECT \n    bb.match_id,\n    bb.innings_no,\n    bb.over_id,\n    bb.bowler,\n    COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n  FROM ball_by_ball bb\n  LEFT JOIN batsman_scored bs \n    ON bb.match_id = bs.match_id \n    AND bb.over_id = bs.over_id \n    AND bb.innings_no = bs.innings_no\n  LEFT JOIN extra_runs er \n    ON bb.match_id = er.match_id \n    AND bb.over_id = er.over_id \n    AND bb.innings_no = er.innings_no\n  GROUP BY bb.match_id, bb.innings_no, bb.over_id, bb.bowler\n),\nhighest_over_per_match AS (\n  SELECT \n    match_id,\n    innings_no,\n    over_id,\n    bowler,\n    total_runs,\n    ROW_NUMBER() OVER (PARTITION BY match_id, innings_no ORDER BY total_runs DESC) AS rn\n  FROM over_runs\n),\nhighest_over_totals AS (\n  SELECT \n    total_runs\n  FROM highest_over_per_match\n  WHERE rn = 1\n)\nSELECT \n  AVG(total_runs) AS avg_highest_over_runs\nFROM highest_over_totals;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.24070798826869577,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH over_runs AS (\n    SELECT \n        bb.match_id,\n        bb.over_id,\n        bb.innings_no,\n        bb.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball bb\n    LEFT JOIN batsman_scored bs \n        ON bb.match_id = bs.match_id \n        AND bb.over_id = bs.over_id \n        AND bb.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er \n        ON bb.match_id = er.match_id \n        AND bb.over_id = er.over_id \n        AND bb.innings_no = er.innings_no\n    GROUP BY bb.match_id, bb.over_id, bb.innings_no, bb.bowler\n),\nhighest_over_per_match AS (\n    SELECT \n        match_id,\n        over_id,\n        innings_no,\n        bowler,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY match_id ORDER BY total_runs DESC) AS rn\n    FROM over_runs\n)\nSELECT \n    AVG(total_runs) AS avg_highest_over_runs\nFROM highest_over_per_match\nWHERE rn = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.18758399528451264,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH over_runs AS (\n    SELECT \n        bb.match_id,\n        bb.over_id,\n        bb.innings_no,\n        bb.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball bb\n    LEFT JOIN batsman_scored bs \n        ON bb.match_id = bs.match_id \n        AND bb.over_id = bs.over_id \n        AND bb.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er \n        ON bb.match_id = er.match_id \n        AND bb.over_id = er.over_id \n        AND bb.innings_no = er.innings_no\n    GROUP BY bb.match_id, bb.over_id, bb.innings_no, bb.bowler\n),\nhighest_over_per_match AS (\n    SELECT \n        match_id,\n        over_id,\n        innings_no,\n        bowler,\n        total_runs,\n        ROW_NUMBER() OVER (PARTITION BY match_id ORDER BY total_runs DESC) AS rn\n    FROM over_runs\n)\nSELECT \n    AVG(total_runs) AS avg_highest_over_runs\nFROM highest_over_per_match\nWHERE rn = 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 19497.50650000351
+}

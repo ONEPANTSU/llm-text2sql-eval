@@ -1,0 +1,128 @@
+{
+  "task_id": "bird_598",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011');",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011');",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) AS REAL) AS count_2011,\n    CAST(COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS REAL) AS count_2010,\n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011') \n  AND Name = 'Student';",
+          "score": 0.7333079268292684,
+          "similarity_max": 0.6333841463414634,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS REAL) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011')\n  AND Name = 'Student';",
+          "score": 0.6736280487804879,
+          "similarity_max": 0.7527439024390243,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011');",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) AS REAL) AS count_2011,\n    CAST(COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS REAL) AS count_2010,\n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011') \n  AND Name = 'Student';",
+          "score": 0.7333079268292684,
+          "similarity_max": 0.6333841463414634,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 ELSE 0 END) AS REAL) AS count_2011,\n    CAST(SUM(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 ELSE 0 END) AS REAL) AS count_2010,\n    (SUM(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 ELSE 0 END) - SUM(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 ELSE 0 END)) * 100.0 / \n        NULLIF(SUM(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 ELSE 0 END), 0) AS percentage_difference\nFROM badges\nWHERE Name = 'Student' \n  AND strfti...",
+          "score": 0.6821161048689139,
+          "similarity_max": 0.7357677902621723,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    (COUNT(CASE WHEN strftime('%Y', Date) = '2011' THEN 1 END) - COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END)) * 100.0 / COUNT(CASE WHEN strftime('%Y', Date) = '2010' THEN 1 END) AS percentage_difference\nFROM badges\nWHERE strftime('%Y', Date) IN ('2010', '2011');",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "badges"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 35.61
+  }
+}

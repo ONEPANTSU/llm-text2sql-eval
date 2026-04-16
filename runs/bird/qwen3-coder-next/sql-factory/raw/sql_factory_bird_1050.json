@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1050",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY p.birthday DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY p.birthday DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.birthday = (\n    SELECT MAX(birthday)\n    FROM Player\n)\nLIMIT 1;",
+          "score": 0.9841614906832299,
+          "similarity_max": 0.6316770186335403,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT pa.preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.birthday IS NOT NULL\nORDER BY p.birthday DESC\nLIMIT 1;",
+          "score": 0.8364596273291925,
+          "similarity_max": 0.7270807453416148,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY p.birthday DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.birthday = (\n    SELECT MAX(birthday)\n    FROM Player\n)\nLIMIT 1;",
+          "score": 0.9841614906832299,
+          "similarity_max": 0.6316770186335403,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT pa.preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.birthday IS NOT NULL\nORDER BY p.birthday DESC\nLIMIT 1;",
+          "score": 0.8364596273291925,
+          "similarity_max": 0.7270807453416148,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT preferred_foot\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY p.birthday DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player_Attributes",
+        "Player",
+        "p",
+        "pa"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 74.08
+  }
+}

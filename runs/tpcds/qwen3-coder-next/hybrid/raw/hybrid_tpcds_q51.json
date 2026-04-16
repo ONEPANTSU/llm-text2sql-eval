@@ -1,0 +1,139 @@
+{
+  "task_id": "tpcds_q51",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4799.95441599749,
+  "execution_time_ms": 104.64374998991843,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(ws_quantity) AS avg_quantity, AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM web_sales\nJOIN item ON web_sales.ws_item_sk = item.i_item_sk\nJOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY item.i_item_sk, warehouse.w_warehouse_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.17145799298305,
+      "result_signature": "82fec6ea0c2d2f51df2751352973d028b7a22e6602641b5becd4a3fe409ef57a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_item_sk,\n    w_warehouse_sk,\n    AVG(ws_quantity) AS avg_quantity,\n    AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM \n    web_sales\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200\n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    i_item_sk,\n    w_warehouse_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.209499994758517,
+      "result_signature": "817237de774a2a559cdaf43eeb38c4f339f12ba3780d4b43cb0e4a1b01c94cb8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i_item_sk,\n    w_warehouse_sk,\n    AVG(ws_quantity) AS avg_quantity,\n    AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM \n    web_sales\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200\n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    i_item_sk,\n    w_warehouse_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.35566700133495,
+      "result_signature": "d2a894e4f2693324d8983a29a0fcacd3848ccf1be2f2147bb2d7c644d6bbccb1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(ws_quantity) AS avg_quantity, AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM web_sales\nJOIN item ON web_sales.ws_item_sk = item.i_item_sk\nJOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY i_item_sk, w_warehouse_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.839999999618158,
+      "result_signature": "e01a6afa1ada7c88ebe87091b6bd2dec8467608d958f8bec2ac0ced9c8b2733d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n  i_item_sk,\n  w_warehouse_sk,\n  AVG(ws_quantity) AS avg_quantity,\n  AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM\n  web_sales\n  JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n  JOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\n  JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE\n  date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY\n  i_item_sk,\n  w_warehouse_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.20158300222829,
+      "result_signature": "e32d94901849d2f46f067df870b5a982e0a550f9ad45e9d9756a207130dff3aa",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT AVG(ws_quantity) AS avg_quantity, AVG(ws_ext_sales_price) AS avg_ext_sales_price\nFROM web_sales\nJOIN item ON web_sales.ws_item_sk = item.i_item_sk\nJOIN warehouse ON web_sales.ws_warehouse_sk = warehouse.w_warehouse_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq >= 1200\n  AND date_dim.d_month_seq <= 1200\nGROUP BY item.i_item_sk, warehouse.w_warehouse_sk\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "82fec6ea0c2d2f51df2751352973d028b7a22e6602641b5becd4a3fe409ef57a": 1,
+        "817237de774a2a559cdaf43eeb38c4f339f12ba3780d4b43cb0e4a1b01c94cb8": 1,
+        "d2a894e4f2693324d8983a29a0fcacd3848ccf1be2f2147bb2d7c644d6bbccb1": 1,
+        "e01a6afa1ada7c88ebe87091b6bd2dec8467608d958f8bec2ac0ced9c8b2733d": 1,
+        "e32d94901849d2f46f067df870b5a982e0a550f9ad45e9d9756a207130dff3aa": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2189.0897910052445,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7093.990915993345
+}

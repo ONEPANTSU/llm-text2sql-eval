@@ -1,0 +1,196 @@
+{
+  "task_id": "tpcds_q26",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5729.77608400106,
+  "execution_time_ms": 254.0584999951534,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    c.c_customer_id\nFROM \n    customer c\n    JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\n    JOIN catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk\n    JOIN date_dim d1 ON ss.ss_sold_date_sk = d1.d_date_sk\n    JOIN date_dim d2 ON cs.cs_sold_date_sk = d2.d_date_sk\nWHERE \n    d1.d_year = 2000 \n    AND d2.d_year = 2000\nGROUP BY \n    c.c_customer_id, c.c_customer_sk\nHAVING \n    SUM(cs.cs_ext_list_price - cs.cs_ext_discount_amt) > SUM(ss.ss_ext_list_price - ss.ss_ext_discount_amt)\nORDER BY \n    c.c_customer_id ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 50.685875001363456,
+      "result_signature": "d7b91d6187fb20c423443be1487984a5f930858d4cbbcf5851e3a8d92587b73d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c_customer_id\nFROM customer\nJOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\nJOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 2000\nGROUP BY c_customer_id, c_customer_sk\nHAVING SUM(catalog_sales.cs_ext_list_price - catalog_sales.cs_ext_discount_amt) > \n       SUM(store_sales.ss_ext_list_price - store_sales.ss_ext_discount_amt)\nORDER BY c_customer_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.39241699501872,
+      "result_signature": "15c3d5fd96dd3056247a662e2a5078bd2ab67a223610b3ec84b9cdfcc88fb282",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.c_customer_id\nFROM customer c\nJOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\nJOIN catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk\nJOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk AND cs.cs_sold_date_sk = d.d_date_sk\nWHERE d.d_year = 2000\nGROUP BY c.c_customer_id, c.c_customer_sk\nHAVING SUM(cs.cs_ext_list_price - cs.cs_ext_discount_amt) > SUM(ss.ss_ext_list_price - ss.ss_ext_discount_amt)\nORDER BY c.c_customer_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.848084000637755,
+      "result_signature": "b2afa96e570b07eea214d1a366b65be361bba05ba48e7a4b2d56bf4db011678c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    c_customer_id\nFROM \n    customer\n    JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n    JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000\nGROUP BY \n    c_customer_id, c_customer_sk\nHAVING \n    SUM(catalog_sales.cs_ext_list_price - catalog_sales.cs_ext_discount_amt) > \n    SUM(store_sales.ss_ext_list_price - store_sales.ss_ext_discount_amt)\nORDER BY \n    c_customer_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 37.70170800271444,
+      "result_signature": "15c3d5fd96dd3056247a662e2a5078bd2ab67a223610b3ec84b9cdfcc88fb282",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    c_customer_id\nFROM \n    customer\n    JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n    JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_year = 2000\nGROUP BY \n    customer.c_customer_id, customer.c_customer_sk\nHAVING \n    SUM(catalog_sales.cs_ext_list_price - catalog_sales.cs_ext_discount_amt) > \n    SUM(store_sales.ss_ext_list_price - store_sales.ss_ext_discount_amt)\nORDER BY \n    customer.c_customer_id ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 105.69129200302996,
+      "result_signature": "15c3d5fd96dd3056247a662e2a5078bd2ab67a223610b3ec84b9cdfcc88fb282",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 8,
+    "selected_sql": "WITH store_totals AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    SUM(ss_ext_list_price - ss_ext_discount_amt) AS store_total\n  FROM \n    customer\n    JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  WHERE \n    date_dim.d_year = 2000\n  GROUP BY \n    c_customer_sk, c_customer_id\n),\ncatalog_totals AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    SUM(cs_ext_list_price - cs_ext_discount_amt) AS catalog_total\n  FROM \n    customer\n    JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE \n    date_dim.d_year = 2000\n  GROUP BY \n    c_customer_sk, c_customer_id\n)\nSELECT \n  c.c_customer_id\nFROM \n  customer c\n  INNER JOIN store_totals s ON c.c_customer_sk = s.c_customer_sk\n  INNER JOIN catalog_totals ct ON c.c_customer_sk = ct.c_customer_sk\nWHERE \n  ct.catalog_total > s.store_total\nORDER BY \n  c.c_customer_id ASC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d7b91d6187fb20c423443be1487984a5f930858d4cbbcf5851e3a8d92587b73d": 1,
+        "15c3d5fd96dd3056247a662e2a5078bd2ab67a223610b3ec84b9cdfcc88fb282": 3,
+        "b2afa96e570b07eea214d1a366b65be361bba05ba48e7a4b2d56bf4db011678c": 1,
+        "851bc56bbd716da92461e253309ce104c287b2cb8d117faefd6aefd97b43cf48": 4
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 4103.114249999635,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH store_totals AS (\n  SELECT ss_customer_sk, SUM(ss_ext_list_price - ss_ext_discount_amt) AS store_total\n  FROM store_sales\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_year = 2000\n  GROUP BY ss_customer_sk\n),\ncatalog_totals AS (\n  SELECT cs_bill_customer_sk, SUM(cs_ext_list_price - cs_ext_discount_amt) AS catalog_total\n  FROM catalog_sales\n  JOIN date_dim ON cs_sold_date_sk = d_date_sk\n  WHERE d_year = 2000\n  GROUP BY cs_bill_customer_sk\n)\nSELECT c.c_customer_id\nFROM customer c\nJOIN store_totals st ON c.c_customer_sk = st.ss_customer_sk\nJOIN catalog_totals ct ON c.c_customer_sk = ct.cs_bill_customer_sk\nWHERE ct.catalog_total > st.store_total\nORDER BY c.c_customer_id ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 29.784457990899682,
+        "result_signature": "851bc56bbd716da92461e253309ce104c287b2cb8d117faefd6aefd97b43cf48",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH store_totals AS (\n  SELECT \n    ss.ss_customer_sk,\n    SUM(ss.ss_ext_list_price - ss.ss_ext_discount_amt) AS store_total\n  FROM store_sales ss\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  WHERE d.d_year = 2000\n  GROUP BY ss.ss_customer_sk\n),\ncatalog_totals AS (\n  SELECT \n    cs.cs_bill_customer_sk,\n    SUM(cs.cs_ext_list_price - cs.cs_ext_discount_amt) AS catalog_total\n  FROM catalog_sales cs\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  WHERE d.d_year = 2000\n  GROUP BY cs.cs_bill_customer_sk\n)\nSELECT \n  c.c_customer_id\nFROM customer c\nJOIN store_totals st ON c.c_customer_sk = st.ss_customer_sk\nJOIN catalog_totals ct ON c.c_customer_sk = ct.cs_bill_customer_sk\nWHERE ct.catalog_total > st.store_total\nORDER BY c.c_customer_id ASC\nLIMIT 100;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 22.71166699938476,
+        "result_signature": "851bc56bbd716da92461e253309ce104c287b2cb8d117faefd6aefd97b43cf48",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH store_totals AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        SUM(ss_ext_list_price - ss_ext_discount_amt) AS store_total\n    FROM \n        customer\n        JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n        JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE \n        date_dim.d_year = 2000\n    GROUP BY \n        c_customer_sk, c_customer_id\n),\ncatalog_totals AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        SUM(cs_ext_list_price - cs_ext_discount_amt) AS catalog_total\n    FROM \n        customer\n        JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\n        JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n    WHERE \n        date_dim.d_year = 2000\n    GROUP BY \n        c_customer_sk, c_customer_id\n)\nSELECT \n    c.c_customer_id\nFROM \n    customer c\n    INNER JOIN store_totals s ON c.c_customer_sk = s.c_customer_sk\n    INNER JOIN catalog_totals ct ON c.c_customer_sk = ct.c_customer_sk\nWHERE \n    ct.catalog_total > s.store_total\nORDER BY \n    c.c_customer_id ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 21.848834003321826,
+        "result_signature": "851bc56bbd716da92461e253309ce104c287b2cb8d117faefd6aefd97b43cf48",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH store_totals AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    SUM(ss_ext_list_price - ss_ext_discount_amt) AS store_total\n  FROM \n    customer\n    JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  WHERE \n    date_dim.d_year = 2000\n  GROUP BY \n    c_customer_sk, c_customer_id\n),\ncatalog_totals AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    SUM(cs_ext_list_price - cs_ext_discount_amt) AS catalog_total\n  FROM \n    customer\n    JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n  WHERE \n    date_dim.d_year = 2000\n  GROUP BY \n    c_customer_sk, c_customer_id\n)\nSELECT \n  c.c_customer_id\nFROM \n  customer c\n  INNER JOIN store_totals s ON c.c_customer_sk = s.c_customer_sk\n  INNER JOIN catalog_totals ct ON c.c_customer_sk = ct.c_customer_sk\nWHERE \n  ct.catalog_total > s.store_total\nORDER BY \n  c.c_customer_id ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 21.45429099618923,
+        "result_signature": "851bc56bbd716da92461e253309ce104c287b2cb8d117faefd6aefd97b43cf48",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 10087.011833005818
+}

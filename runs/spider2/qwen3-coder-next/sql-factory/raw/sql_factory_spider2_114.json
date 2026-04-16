@@ -1,0 +1,186 @@
+{
+  "task_id": "spider2_114",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH lap_position_changes AS (\n    SELECT\n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap AS current_lap,\n        lp2.lap AS previous_lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        lp1.lap_type,\n        CASE\n            WHEN lp1.lap_type = 'pit_stop_exit' THEN 'Pit Stop Exit'\n            WHEN lp1.lap_type = 'pit_stop_entry' THEN 'Pit Stop Entry'\n            WHEN lp1.lap_type = 'retirement' THEN 'Retirement'\n            WHEN lp1.lap_t...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lp1",
+            "filtered_changes",
+            "combined_lap_positions",
+            "retirements",
+            "lp2",
+            "pit_stop_related_positions",
+            "results",
+            "race_start_positions",
+            "retirement_positions",
+            "lap_positions",
+            "pit_stops",
+            "c1",
+            "c2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH lap_position_changes AS (\n    SELECT\n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap AS current_lap,\n        lp2.lap AS previous_lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        lp1.lap_type,\n        CASE\n            WHEN lp1.lap_type = 'pit_stop_exit' THEN 'Pit Stop Exit'\n            WHEN lp1.lap_type = 'pit_stop_entry' THEN 'Pit Stop Entry'\n            WHEN lp1.lap_type = 'retirement' THEN 'Retirement'\n            WHEN lp1.lap_t...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lp1",
+            "filtered_changes",
+            "combined_lap_positions",
+            "retirements",
+            "lp2",
+            "pit_stop_related_positions",
+            "results",
+            "race_start_positions",
+            "retirement_positions",
+            "lap_positions",
+            "pit_stops",
+            "c1",
+            "c2"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH lap_position_changes AS (\n    SELECT\n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap AS current_lap,\n        lp2.lap AS previous_lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        lp1.lap_type,\n        CASE\n            WHEN lp1.lap_type = 'pit_stop_exit' THEN 'Pit Stop Exit'\n            WHEN lp1.lap_type = 'pit_stop_entry' THEN 'Pit Stop Entry'\n            WHEN lp1.lap_type = 'retirement' THEN 'Retirement'\n            WHEN lp1.lap_t...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lp1",
+            "filtered_changes",
+            "combined_lap_positions",
+            "retirements",
+            "lp2",
+            "pit_stop_related_positions",
+            "results",
+            "race_start_positions",
+            "retirement_positions",
+            "lap_positions",
+            "pit_stops",
+            "c1",
+            "c2"
+          ]
+        },
+        {
+          "sql": "WITH lap_position_changes AS (\n    SELECT\n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap AS current_lap,\n        lp2.lap AS previous_lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        lp1.lap_type,\n        CASE\n            WHEN lp1.lap_type = 'pit_stop_exit' THEN 'Pit Stop Exit'\n            WHEN lp1.lap_type = 'pit_stop_entry' THEN 'Pit Stop Entry'\n            WHEN lp1.lap_type = 'retirement' THEN 'Retirement'\n            WHEN lp1.lap_t...",
+          "score": 0.6367969758436289,
+          "similarity_max": 0.626406048312742,
+          "tables_used": [
+            "position_changes",
+            "lp1",
+            "race_starts",
+            "pit_stop_exits",
+            "lp2",
+            "pit_stop_entries",
+            "ps",
+            "lap_positions",
+            "pit_stops",
+            "lp",
+            "r",
+            "retirement_events",
+            "combined_positions",
+            "retirements",
+            "results",
+            "c1",
+            "c2"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH lap_position_changes AS (\n    SELECT\n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap AS current_lap,\n        lp2.lap AS previous_lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        lp1.lap_type,\n        CASE\n            WHEN lp1.lap_type = 'pit_stop_exit' THEN 'Pit Stop Exit'\n            WHEN lp1.lap_type = 'pit_stop_entry' THEN 'Pit Stop Entry'\n            WHEN lp1.lap_type = 'retirement' THEN 'Retirement'\n            WHEN lp1.lap_t...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "lp1",
+        "filtered_changes",
+        "combined_lap_positions",
+        "retirements",
+        "lp2",
+        "pit_stop_related_positions",
+        "results",
+        "race_start_positions",
+        "retirement_positions",
+        "lap_positions",
+        "pit_stops",
+        "c1",
+        "c2"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.6666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 4
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "circular reference: retirements",
+        "count": 2
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: lap",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "SELECTs to the left and right of UNION ALL do not have the same number of result",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.1
+  }
+}

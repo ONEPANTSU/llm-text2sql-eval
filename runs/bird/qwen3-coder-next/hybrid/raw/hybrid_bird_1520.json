@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1520",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7771.708667001803,
+  "execution_time_ms": 5.808624999190215,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT t.Date, t.Amount\nFROM transactions_1k t\nWHERE t.CustomerID = (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nAND t.Date >= '2012-01-01'\nAND t.Date <= '2012-01-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3751249973429367,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT t.Date, t.Amount\nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE t.CustomerID = (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nAND t.Date >= '2012-01-01'\nAND t.Date <= '2012-01-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7519999999203719,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Date, Amount\nFROM transactions_1k\nWHERE CustomerID = (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nAND Date >= '2012-01-01'\nAND Date <= '2012-01-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6438330019591376,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT t.Date, t.Amount\nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE t.CustomerID = (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nAND t.Date >= '2012-01-01'\nAND t.Date <= '2012-01-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5231250033830293,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nSELECT \n    t.Date, \n    t.Amount\nFROM transactions_1k t\nJOIN target_customer tc ON t.CustomerID = tc.CustomerID\nWHERE t.Date >= '2012-01-01' AND t.Date <= '2012-01-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5116669999551959,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH target_customer AS (\n    SELECT CustomerID\n    FROM transactions_1k\n    WHERE Date = '2012-08-24' AND Amount = 124.05\n)\nSELECT \n    t.Date, \n    t.Amount\nFROM transactions_1k t\nJOIN target_customer tc ON t.CustomerID = tc.CustomerID\nWHERE t.Date >= '2012-01-01' AND t.Date <= '2012-01-31';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7777.687082998455
+}

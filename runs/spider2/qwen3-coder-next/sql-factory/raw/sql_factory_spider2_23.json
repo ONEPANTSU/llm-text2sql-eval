@@ -1,0 +1,201 @@
+{
+  "task_id": "spider2_23",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nmost_preferred_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY payment_count DE...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "payment_counts",
+            "most_preferred_payments",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nmost_preferred_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY payment_count DE...",
+          "score": 0.9772727272727272,
+          "similarity_max": 0.8454545454545455,
+          "tables_used": [
+            "payment_counts",
+            "most_preferred_payments",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nmost_preferred_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY payment_count DE...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "payment_counts",
+            "most_preferred_payments",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nranked_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY payment_count DESC) AS r...",
+          "score": 1.0266459627329192,
+          "similarity_max": 0.7467080745341614,
+          "tables_used": [
+            "payment_counts",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "ranked_payments",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nranked_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    RANK() OVER (PARTITION BY product_category_name ORDER BY payment_count DESC) AS payment...",
+          "score": 0.9803281644428418,
+          "similarity_max": 0.7393436711143165,
+          "tables_used": [
+            "payment_counts",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "ranked_payments",
+            "most_preferred",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nmost_preferred_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY payment_count DE...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "payment_counts",
+            "most_preferred_payments",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nranked_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY payment_count DESC) AS r...",
+          "score": 1.0266459627329192,
+          "similarity_max": 0.7467080745341614,
+          "tables_used": [
+            "payment_counts",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "ranked_payments",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nranked_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    RANK() OVER (PARTITION BY product_category_name ORDER BY payment_count DESC) AS payment...",
+          "score": 0.9803281644428418,
+          "similarity_max": 0.7393436711143165,
+          "tables_used": [
+            "payment_counts",
+            "olist_order_payments",
+            "olist_order_items",
+            "olist_products",
+            "oi",
+            "op",
+            "ranked_payments",
+            "most_preferred",
+            "p"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH payment_counts AS (\n  SELECT \n    p.product_category_name,\n    op.payment_type,\n    COUNT(*) AS payment_count\n  FROM olist_order_payments op\n  JOIN olist_order_items oi ON op.order_id = oi.order_id\n  JOIN olist_products p ON oi.product_id = p.product_id\n  GROUP BY p.product_category_name, op.payment_type\n),\nmost_preferred_payments AS (\n  SELECT \n    product_category_name,\n    payment_type,\n    payment_count,\n    ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY payment_count DE...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "payment_counts",
+        "most_preferred_payments",
+        "olist_order_payments",
+        "olist_order_items",
+        "olist_products",
+        "oi",
+        "op",
+        "p"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.54
+  }
+}

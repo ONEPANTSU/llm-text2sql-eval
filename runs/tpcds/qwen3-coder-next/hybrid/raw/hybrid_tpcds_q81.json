@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q81",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5081.177208005101,
+  "execution_time_ms": 12.614374994882382,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT customer.c_customer_sk, customer.c_customer_id, SUM(store_returns.sr_return_amt) AS total_return\nFROM store_returns\nJOIN store ON store_returns.sr_store_sk = store.s_store_sk\nJOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\nJOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE store.s_state = 'GA' AND date_dim.d_year = 2000\nGROUP BY customer.c_customer_sk, customer.c_customer_id\nORDER BY total_return DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.887334005208686,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT customer.c_customer_sk, customer.c_customer_id, SUM(store_returns.sr_return_amt) AS total_return\nFROM store_returns\nJOIN store ON store_returns.sr_store_sk = store.s_store_sk\nJOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\nJOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE store.s_state = 'GA' AND date_dim.d_year = 2000\nGROUP BY customer.c_customer_sk, customer.c_customer_id\nORDER BY total_return DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.473208005540073,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    customer.c_customer_sk,\n    customer.c_customer_id,\n    SUM(store_returns.sr_return_amt) AS total_return\nFROM \n    store_returns\n    JOIN store ON store_returns.sr_store_sk = store.s_store_sk\n    JOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE \n    store.s_state = 'GA'\n    AND date_dim.d_year = 2000\nGROUP BY \n    customer.c_customer_sk,\n    customer.c_customer_id\nORDER BY \n    total_return DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3685829946771264,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT customer.c_customer_sk, customer.c_customer_id, SUM(store_returns.sr_return_amt) AS total_return\nFROM store_returns\nJOIN store ON store_returns.sr_store_sk = store.s_store_sk\nJOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\nJOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE store.s_state = 'GA' AND date_dim.d_year = 2000\nGROUP BY customer.c_customer_sk, customer.c_customer_id\nORDER BY total_return DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3053750046528876,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    SUM(store_returns.sr_return_amt) AS total_return\nFROM\n    store_returns\n    JOIN store ON store_returns.sr_store_sk = store.s_store_sk\n    JOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE\n    store.s_state = 'GA'\n    AND date_dim.d_year = 2000\nGROUP BY\n    customer.c_customer_sk,\n    customer.c_customer_id\nORDER BY\n    total_return DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2304580052150413,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT\n    customer.c_customer_sk,\n    customer.c_customer_id,\n    SUM(store_returns.sr_return_amt) AS total_return\nFROM\n    store_returns\n    JOIN store ON store_returns.sr_store_sk = store.s_store_sk\n    JOIN date_dim ON store_returns.sr_returned_date_sk = date_dim.d_date_sk\n    JOIN customer ON store_returns.sr_customer_sk = customer.c_customer_sk\nWHERE\n    store.s_state = 'GA'\n    AND date_dim.d_year = 2000\nGROUP BY\n    customer.c_customer_sk,\n    customer.c_customer_id\nORDER BY\n    total_return DESC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5093.843499998911
+}

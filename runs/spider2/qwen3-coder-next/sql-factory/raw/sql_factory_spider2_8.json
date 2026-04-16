@@ -1,0 +1,215 @@
+{
+  "task_id": "spider2_8",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS count\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntop_two_per_year AS (\n    SELECT \n        db_year,\n        cause,\n        count,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY count DESC) AS rn\n    F...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "causes_comparison",
+            "cause_counts",
+            "top_two_causes",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "parties",
+            "top_two_per_year",
+            "p",
+            "year_causes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS count\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntop_two_per_year AS (\n    SELECT \n        db_year,\n        cause,\n        count,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY count DESC) AS rn\n    F...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "causes_comparison",
+            "cause_counts",
+            "top_two_causes",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "parties",
+            "top_two_per_year",
+            "p",
+            "year_causes"
+          ]
+        },
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS cnt\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nranked_causes AS (\n    SELECT \n        db_year,\n        cause,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY cnt DESC) AS rnk\n    FROM cause_counts\n),\nt...",
+          "score": 0.8972341789541167,
+          "similarity_max": 0.7055316420917666,
+          "tables_used": [
+            "cause_counts",
+            "top_two",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "ranked_causes",
+            "year_combined",
+            "parties",
+            "p",
+            "year_diff"
+          ]
+        },
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS count\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nranked_causes AS (\n    SELECT \n        db_year,\n        cause,\n        count,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY count DESC) AS rn\n    FROM...",
+          "score": 0.8568965517241378,
+          "similarity_max": 0.7862068965517242,
+          "tables_used": [
+            "cause_counts",
+            "top_two",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "ranked_causes",
+            "year_concat",
+            "parties",
+            "diff_check",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS count\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntop_two_per_year AS (\n    SELECT \n        db_year,\n        cause,\n        count,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY count DESC) AS rn\n    F...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "causes_comparison",
+            "cause_counts",
+            "top_two_causes",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "parties",
+            "top_two_per_year",
+            "p",
+            "year_causes"
+          ]
+        },
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS cnt\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nranked_causes AS (\n    SELECT \n        db_year,\n        cause,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY cnt DESC) AS rnk\n    FROM cause_counts\n),\nt...",
+          "score": 0.9091705330934572,
+          "similarity_max": 0.7816589338130858,
+          "tables_used": [
+            "cause_counts",
+            "comparisons",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "ranked_causes",
+            "parties",
+            "top_two_per_year",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS cnt\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\nranked_causes AS (\n    SELECT \n        db_year,\n        cause,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY cnt DESC) AS rnk\n    FROM cause_counts\n),\nt...",
+          "score": 0.8972341789541167,
+          "similarity_max": 0.7055316420917666,
+          "tables_used": [
+            "cause_counts",
+            "top_two",
+            "c",
+            "collisions",
+            "col",
+            "case_ids",
+            "ranked_causes",
+            "year_combined",
+            "parties",
+            "p",
+            "year_diff"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH cause_counts AS (\n    SELECT \n        c.db_year,\n        p.oaf_violation_category AS cause,\n        COUNT(*) AS count\n    FROM collisions col\n    JOIN case_ids c ON col.case_id = c.case_id\n    JOIN parties p ON col.case_id = p.case_id\n    WHERE p.oaf_violation_category IS NOT NULL\n    GROUP BY c.db_year, p.oaf_violation_category\n),\ntop_two_per_year AS (\n    SELECT \n        db_year,\n        cause,\n        count,\n        ROW_NUMBER() OVER (PARTITION BY db_year ORDER BY count DESC) AS rn\n    F...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "causes_comparison",
+        "cause_counts",
+        "top_two_causes",
+        "c",
+        "collisions",
+        "col",
+        "case_ids",
+        "parties",
+        "top_two_per_year",
+        "p",
+        "year_causes"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.2,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"(\": syntax error",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.69
+  }
+}

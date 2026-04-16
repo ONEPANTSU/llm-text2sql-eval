@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_41",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7944.978707993869,
+  "execution_time_ms": 15.19304100656882,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH italian_sales_2021_dec AS (\n    SELECT \n        s.cust_id,\n        s.amount_sold\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n),\ntiered_sales AS (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM italian_sales_2021_dec\n)\nSELECT \n    MAX(amount_sold) AS highest_profit,\n    MIN(amount_sold) AS lowest_profit\nFROM tiered_sales;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.348875001189299,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH italian_sales_dec2021 AS (\n    SELECT \n        s.cust_id,\n        s.amount_sold\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n),\ntiered_sales AS (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM italian_sales_dec2021\n)\nSELECT \n    MAX(amount_sold) AS highest_profit,\n    MIN(amount_sold) AS lowest_profit\nFROM tiered_sales;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2266250123502687,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH italian_dec_2021_sales AS (\n    SELECT \n        s.cust_id,\n        s.amount_sold\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n),\ntiered_sales AS (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM italian_dec_2021_sales\n)\nSELECT \n    MAX(amount_sold) AS highest_profit,\n    MIN(amount_sold) AS lowest_profit\nFROM tiered_sales;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3832079964922741,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH italian_dec_sales AS (\n    SELECT \n        s.cust_id,\n        s.amount_sold\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n),\ntiered_customers AS (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM italian_dec_sales\n)\nSELECT \n    MAX(amount_sold) AS highest_profit,\n    MIN(amount_sold) AS lowest_profit\nFROM tiered_customers;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8101249986793846,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    MAX(amount_sold) AS highest_profit, \n    MIN(amount_sold) AS lowest_profit\nFROM (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n) ranked_sales\nWHERE profit_tier BETWEEN 1 AND 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "ambiguous column name: cust_id",
+      "exec_time_ms": 0.6467089988291264,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH italian_dec_2021_sales AS (\n    SELECT \n        s.cust_id,\n        s.amount_sold\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n),\ntiered_sales AS (\n    SELECT \n        cust_id,\n        amount_sold,\n        NTILE(10) OVER (ORDER BY amount_sold) AS profit_tier\n    FROM italian_dec_2021_sales\n)\nSELECT \n    MAX(amount_sold) AS highest_profit,\n    MIN(amount_sold) AS lowest_profit\nFROM tiered_sales;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7960.357124989969
+}

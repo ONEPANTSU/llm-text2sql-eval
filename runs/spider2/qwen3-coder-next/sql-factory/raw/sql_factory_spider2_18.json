@@ -1,0 +1,132 @@
+{
+  "task_id": "spider2_18",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    strftime('%m', order_delivered_customer_date) AS month,\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2017' THEN 1 ELSE 0 END) AS \"2017\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2018' THEN 1 ELSE 0 END) AS \"2018\"\nFROM olist_orders\nWHERE order_delivered_customer_date IS NOT NULL\n  AND order_status = 'delivered'\n  AND strftime('%Y', orde...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "olist_orders"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    strftime('%m', order_delivered_customer_date) AS month,\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2017' THEN 1 ELSE 0 END) AS \"2017\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2018' THEN 1 ELSE 0 END) AS \"2018\"\nFROM olist_orders\nWHERE order_delivered_customer_date IS NOT NULL\n  AND order_status = 'delivered'\n  AND strftime('%Y', orde...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH monthly_delivered_orders AS (\n    SELECT \n        strftime('%m', order_delivered_customer_date) AS month,\n        strftime('%Y', order_delivered_customer_date) AS year\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n)\nSELECT \n    month,\n    COUNT(CASE WHEN year = '2016' THEN 1 END) AS \"2016\",\n    COUNT(CASE WHEN year = '2017' THEN 1 END) AS \"2017...",
+          "score": 0.9892469879518073,
+          "similarity_max": 0.6215060240963854,
+          "tables_used": [
+            "monthly_delivered_orders",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        order_delivered_customer_date,\n        strftime('%m', order_delivered_customer_date) AS month,\n        strftime('%Y', order_delivered_customer_date) AS year\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n)\nSELECT \n    month,\n    SUM(CASE WHEN year = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN ...",
+          "score": 0.9075388026607539,
+          "similarity_max": 0.7849223946784922,
+          "tables_used": [
+            "olist_orders",
+            "delivered_orders"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    strftime('%m', order_delivered_customer_date) AS month,\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2017' THEN 1 ELSE 0 END) AS \"2017\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2018' THEN 1 ELSE 0 END) AS \"2018\"\nFROM olist_orders\nWHERE order_delivered_customer_date IS NOT NULL\n  AND order_status = 'delivered'\n  AND strftime('%Y', orde...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH monthly_delivered_orders AS (\n    SELECT \n        strftime('%m', order_delivered_customer_date) AS month,\n        strftime('%Y', order_delivered_customer_date) AS year\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n)\nSELECT \n    month,\n    COUNT(CASE WHEN year = '2016' THEN 1 END) AS \"2016\",\n    COUNT(CASE WHEN year = '2017' THEN 1 END) AS \"2017...",
+          "score": 0.9892469879518073,
+          "similarity_max": 0.6215060240963854,
+          "tables_used": [
+            "monthly_delivered_orders",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        order_delivered_customer_date,\n        strftime('%m', order_delivered_customer_date) AS month,\n        strftime('%Y', order_delivered_customer_date) AS year\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n)\nSELECT \n    month,\n    SUM(CASE WHEN year = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN ...",
+          "score": 0.9075388026607539,
+          "similarity_max": 0.7849223946784922,
+          "tables_used": [
+            "olist_orders",
+            "delivered_orders"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    strftime('%m', order_delivered_customer_date) AS month,\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2016' THEN 1 ELSE 0 END) AS \"2016\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2017' THEN 1 ELSE 0 END) AS \"2017\",\n    SUM(CASE WHEN strftime('%Y', order_delivered_customer_date) = '2018' THEN 1 ELSE 0 END) AS \"2018\"\nFROM olist_orders\nWHERE order_delivered_customer_date IS NOT NULL\n  AND order_status = 'delivered'\n  AND strftime('%Y', orde...",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "olist_orders"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.94
+  }
+}

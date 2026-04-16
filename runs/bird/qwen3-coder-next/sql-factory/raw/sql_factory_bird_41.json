@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_41",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH school_reading_scores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nranked_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "schools",
+            "satscores",
+            "school_reading_scores",
+            "ranked_schools",
+            "sa",
+            "s"
+          ]
+        },
+        {
+          "sql": "WITH SchoolReadingScores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS AvgReadingScore\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nRankedSchools AS (\n    SELECT \n        School,\n        County,\n        AvgReadingScore,\n        ROW_NUMBER() OVER (PARTITION BY County ORDER BY AvgReadingScore DESC) AS Ran...",
+          "score": 1.105057471264368,
+          "similarity_max": 0.7898850574712644,
+          "tables_used": [
+            "RankedSchools",
+            "satscores",
+            "SchoolReadingScores",
+            "schools",
+            "sa",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH school_reading_scores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nranked_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "schools",
+            "satscores",
+            "school_reading_scores",
+            "ranked_schools",
+            "sa",
+            "s"
+          ]
+        },
+        {
+          "sql": "WITH top_virtual_schools AS (\n    SELECT \n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y' AND s.School LIKE '%Virtual%'\n    GROUP BY s.School, s.County\n),\nranked_virtual_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        DENSE_RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS county_rank\n    FROM top_virtual_schoo...",
+          "score": 1.1559060895084374,
+          "similarity_max": 0.6881878209831254,
+          "tables_used": [
+            "top_virtual_schools",
+            "ranked_virtual_schools",
+            "schools",
+            "s",
+            "sa",
+            "satscores"
+          ]
+        },
+        {
+          "sql": "WITH SchoolReadingScores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS AvgReadingScore\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nRankedSchools AS (\n    SELECT \n        School,\n        County,\n        AvgReadingScore,\n        ROW_NUMBER() OVER (PARTITION BY County ORDER BY AvgReadingScore DESC) AS Ran...",
+          "score": 1.105057471264368,
+          "similarity_max": 0.7898850574712644,
+          "tables_used": [
+            "RankedSchools",
+            "satscores",
+            "SchoolReadingScores",
+            "schools",
+            "sa",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH school_reading_scores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nranked_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "schools",
+            "satscores",
+            "school_reading_scores",
+            "ranked_schools",
+            "sa",
+            "s"
+          ]
+        },
+        {
+          "sql": "WITH top_virtual_schools AS (\n    SELECT \n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y' AND s.School LIKE '%Virtual%'\n    GROUP BY s.School, s.County\n),\nranked_virtual_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        DENSE_RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS county_rank\n    FROM top_virtual_schoo...",
+          "score": 1.1559060895084374,
+          "similarity_max": 0.6881878209831254,
+          "tables_used": [
+            "top_virtual_schools",
+            "ranked_virtual_schools",
+            "schools",
+            "s",
+            "sa",
+            "satscores"
+          ]
+        },
+        {
+          "sql": "WITH school_reading_scores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        sa.AvgScrRead\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'\n),\nranked_schools AS (\n    SELECT \n        School,\n        County,\n        AvgScrRead,\n        ROW_NUMBER() OVER (PARTITION BY County ORDER BY AvgScrRead DESC) AS rn\n    FROM school_reading_scores\n)\nSELECT DISTINCT School\nFROM ranked_schools\nWHERE rn <= 5;",
+          "score": 1.1543103448275862,
+          "similarity_max": 0.6913793103448276,
+          "tables_used": [
+            "schools",
+            "satscores",
+            "school_reading_scores",
+            "ranked_schools",
+            "sa",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH school_reading_scores AS (\n    SELECT \n        s.CDSCode,\n        s.School,\n        s.County,\n        AVG(sa.AvgScrRead) AS avg_reading_score\n    FROM schools s\n    JOIN satscores sa ON s.CDSCode = sa.cds\n    WHERE s.Charter = 'Y'  -- Virtual schools are typically charter schools\n    GROUP BY s.CDSCode, s.School, s.County\n),\nranked_schools AS (\n    SELECT \n        School,\n        County,\n        avg_reading_score,\n        RANK() OVER (PARTITION BY County ORDER BY avg_reading_score DESC) AS ...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "schools",
+        "satscores",
+        "school_reading_scores",
+        "ranked_schools",
+        "sa",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 14.15
+  }
+}

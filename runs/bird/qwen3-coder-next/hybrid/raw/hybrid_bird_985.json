@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_985",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7550.265624995518,
+  "execution_time_ms": 144.87849999568425,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 96.20662499946775,
+      "result_signature": "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.038790999213234,
+      "result_signature": "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.147125002229586,
+      "result_signature": "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.749874996894505,
+      "result_signature": "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 12.160084006609395,
+      "result_signature": "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT d.forename, d.surname\nFROM lapTimes lt\nJOIN races r ON lt.raceId = r.raceId\nJOIN drivers d ON lt.driverId = d.driverId\nWHERE r.name = 'French Grand Prix'\n  AND lt.lap = 3\nORDER BY lt.time DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6342487912361209f33ae03a3a16915fc2efd87bd1ec1942b122ab2d1f26745b": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7695.244249996904
+}

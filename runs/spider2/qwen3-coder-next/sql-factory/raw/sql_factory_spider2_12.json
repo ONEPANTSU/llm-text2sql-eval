@@ -1,0 +1,193 @@
+{
+  "task_id": "spider2_12",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS wickets,\n           SUM(COALESCE(bs.runs_scored, 0)) + COALESCE(er.extra_runs_total, 0) AS runs_conceded\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n                               AND bb.over_id = wt.over_id \n                               AND bb.ball_id = wt.ball_id \n                               AND bb.innings_no = wt.innings_no\n    LEFT JOIN (\n        SELECT match_id,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "player",
+            "bs",
+            "extra_runs",
+            "wicket_taken",
+            "p",
+            "batsman_scored",
+            "wt"
+          ]
+        },
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS total_balls,\n           SUM(CASE WHEN w.player_out IS NOT NULL THEN 1 ELSE 0 END) AS wickets\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n    GROUP BY bowler\n) bw ON p.player_id = bw.bowler\nWHERE bw.wickets > 0\nORDER BY (bw.total_balls / bw.wickets) ASC\nLIMIT ...",
+          "score": 1.245121563642142,
+          "similarity_max": 0.5097568727157158,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "player",
+            "wicket_taken",
+            "p",
+            "w"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS wickets,\n           SUM(COALESCE(bs.runs_scored, 0)) + COALESCE(er.extra_runs_total, 0) AS runs_conceded\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n                               AND bb.over_id = wt.over_id \n                               AND bb.ball_id = wt.ball_id \n                               AND bb.innings_no = wt.innings_no\n    LEFT JOIN (\n        SELECT match_id,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "player",
+            "bs",
+            "extra_runs",
+            "wicket_taken",
+            "p",
+            "batsman_scored",
+            "wt"
+          ]
+        },
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS total_balls,\n           SUM(CASE WHEN w.player_out IS NOT NULL THEN 1 ELSE 0 END) AS wickets\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n    GROUP BY bowler\n) bw ON p.player_id = bw.bowler\nWHERE bw.wickets > 0\nORDER BY (bw.total_balls / bw.wickets) ASC\nLIMIT ...",
+          "score": 1.245121563642142,
+          "similarity_max": 0.5097568727157158,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "player",
+            "wicket_taken",
+            "p",
+            "w"
+          ]
+        },
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler,\n           COUNT(*) AS total_balls,\n           COUNT(w.player_out) AS wickets\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n    GROUP BY bowler\n) bw ON p.player_id = bw.bowler\nWHERE bw.wickets > 0\nORDER BY CAST(bw.total_balls AS REAL) / bw.wickets ASC\nLIMIT 1;",
+          "score": 1.1384615384615384,
+          "similarity_max": 0.7230769230769231,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "player",
+            "wicket_taken",
+            "p",
+            "w"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS wickets,\n           SUM(COALESCE(bs.runs_scored, 0)) + COALESCE(er.extra_runs_total, 0) AS runs_conceded\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n                               AND bb.over_id = wt.over_id \n                               AND bb.ball_id = wt.ball_id \n                               AND bb.innings_no = wt.innings_no\n    LEFT JOIN (\n        SELECT match_id,...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "player",
+            "bs",
+            "extra_runs",
+            "wicket_taken",
+            "p",
+            "batsman_scored",
+            "wt"
+          ]
+        },
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS total_balls,\n           SUM(CASE WHEN w.player_out IS NOT NULL THEN 1 ELSE 0 END) AS wickets\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n    GROUP BY bowler\n) bw ON p.player_id = bw.bowler\nWHERE bw.wickets > 0\nORDER BY (bw.total_balls / bw.wickets) ASC\nLIMIT ...",
+          "score": 1.245121563642142,
+          "similarity_max": 0.5097568727157158,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "player",
+            "wicket_taken",
+            "p",
+            "w"
+          ]
+        },
+        {
+          "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler,\n           COUNT(*) AS total_balls,\n           COUNT(w.player_out) AS wickets\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n    GROUP BY bowler\n) bw ON p.player_id = bw.bowler\nWHERE bw.wickets > 0\nORDER BY CAST(bw.total_balls AS REAL) / bw.wickets ASC\nLIMIT 1;",
+          "score": 1.1384615384615384,
+          "similarity_max": 0.7230769230769231,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "player",
+            "wicket_taken",
+            "p",
+            "w"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT p.player_name\nFROM player p\nJOIN (\n    SELECT bowler, \n           COUNT(*) AS wickets,\n           SUM(COALESCE(bs.runs_scored, 0)) + COALESCE(er.extra_runs_total, 0) AS runs_conceded\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n                               AND bb.over_id = wt.over_id \n                               AND bb.ball_id = wt.ball_id \n                               AND bb.innings_no = wt.innings_no\n    LEFT JOIN (\n        SELECT match_id,...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ball_by_ball",
+        "bb",
+        "player",
+        "bs",
+        "extra_runs",
+        "wicket_taken",
+        "p",
+        "batsman_scored",
+        "wt"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.62
+  }
+}

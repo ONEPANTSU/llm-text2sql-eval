@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_84",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5976.632042002166,
+  "execution_time_ms": 4.992375004803762,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams t\nJOIN matches m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: teams",
+      "exec_time_ms": 3.115250001428649,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams t\nJOIN matches m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: teams",
+      "exec_time_ms": 0.7984170078998432,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams t\nJOIN matches m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: teams",
+      "exec_time_ms": 0.3981669869972393,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT teams.team_name, COUNT(matches.winner_id) AS win_count\nFROM teams\nJOIN matches ON matches.winner_id = teams.team_id\nGROUP BY teams.team_id, teams.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: teams",
+      "exec_time_ms": 0.30345800041686743,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams t\nJOIN matches m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: teams",
+      "exec_time_ms": 0.23533399507869035,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: teams",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams t\nJOIN matches m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: teams",
+        "exec_time_ms": 0.4847090021939948,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT t.team_name, COUNT(m.winner_id) AS win_count\nFROM teams AS t\nJOIN matches AS m ON m.winner_id = t.team_id\nGROUP BY t.team_id, t.team_name\nORDER BY win_count DESC\nLIMIT 10;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: teams",
+        "exec_time_ms": 1.3393340050242841,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 10602.81841600954
+}

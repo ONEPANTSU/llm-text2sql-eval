@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_23",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3556.082584000251,
+  "execution_time_ms": 48.44279200187884,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT s.School, s.Street || ' ' || s.StreetAbr || ', ' || s.City || ', ' || s.Zip || ' ' || s.State AS FullAddress\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)` > 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.031208003056236,
+      "result_signature": "06d734b6382715adcfbd1154391de191ff526788882dca58873224b1cc0e627b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.School, s.Street, s.StreetAbr, s.City, s.Zip, s.State\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)` > 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.638750001206063,
+      "result_signature": "88899b9962aeccec468576658977ffbe6b7c839249c9249eb196045a3a8e0abc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT schools.School, schools.Street, schools.StreetAbr, schools.City, schools.Zip, schools.State\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Enrollment (K-12)` - frpm.`Enrollment (Ages 5-17)` > 30",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.807624998851679,
+      "result_signature": "88899b9962aeccec468576658977ffbe6b7c839249c9249eb196045a3a8e0abc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT s.School, s.Street || ' ' || s.StreetAbr || ', ' || s.City || ', ' || s.Zip || ' ' || s.State AS FullAddress\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)` > 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.198333001113497,
+      "result_signature": "06d734b6382715adcfbd1154391de191ff526788882dca58873224b1cc0e627b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.School, schools.Street, schools.StreetAbr, schools.City, schools.Zip, schools.State\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Enrollment (K-12)` - frpm.`Enrollment (Ages 5-17)` > 30",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.211790997942444,
+      "result_signature": "88899b9962aeccec468576658977ffbe6b7c839249c9249eb196045a3a8e0abc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT schools.School, schools.Street, schools.StreetAbr, schools.City, schools.Zip, schools.State\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Enrollment (K-12)` - frpm.`Enrollment (Ages 5-17)` > 30",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "06d734b6382715adcfbd1154391de191ff526788882dca58873224b1cc0e627b": 2,
+        "88899b9962aeccec468576658977ffbe6b7c839249c9249eb196045a3a8e0abc": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 3410.873166001693,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7015.575583005557
+}

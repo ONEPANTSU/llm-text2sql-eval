@@ -1,0 +1,137 @@
+{
+  "task_id": "tpcds_q23",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8305.327624999336,
+  "execution_time_ms": 2024.5255420013564,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH all_sales AS (\n    SELECT \n        'store' AS channel,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price,\n        i_brand_id\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price,\n        i_brand_id\n    FROM catalog_sales\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        ws_quantity AS quantity,\n        ws_list_price AS list_price,\n        i_brand_id\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(quantity * list_price) AS total_sales\nFROM all_sales\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.567208999651484,
+      "result_signature": "c49f69245eefa3c35eb0238fa3cedf40b738a55660be7cda9ec992a38e568ba6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH sales_by_channel AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    UNION ALL\n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    UNION ALL\n    SELECT \n        'web' AS channel,\n        ws_item_sk AS item_sk,\n        ws_quantity AS quantity,\n        ws_list_price AS list_price\n    FROM web_sales\n),\nsales_with_brand AS (\n    SELECT \n        s.channel,\n        i.i_brand_id,\n        s.quantity * s.list_price AS sales_amount\n    FROM sales_by_channel s\n    JOIN item i ON s.item_sk = i.i_item_sk\n    JOIN date_dim d ON d.d_date_sk = (\n        CASE \n            WHEN s.channel = 'store' THEN (SELECT ss_sold_date_sk FROM store_sales WHERE ss_item_sk = s.item_sk LIMIT 1)\n            WHEN s.channel = 'catalog' THEN (SELECT cs_sold_date_sk FROM catalog_sales WHERE cs_item_sk = s.item_sk LIMIT 1)\n            WHEN s.channel = 'web' THEN (SELECT ws_sold_date_sk FROM web_sales WHERE ws_item_sk = s.item_sk LIMIT 1)\n        END\n    )\n    WHERE d.d_year = 2000 AND d.d_moy = 2\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(sales_amount) AS total_sales\nFROM sales_with_brand\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1931.542291000369,
+      "result_signature": "c5c3b5a63809ba35a03a7a423f31a2b5635977b27c2aeb067076211b712c6b63",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH all_sales AS (\n    SELECT \n        'store' AS channel,\n        ss_quantity * ss_list_price AS sales_amount,\n        item.i_brand_id\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_quantity * cs_list_price AS sales_amount,\n        item.i_brand_id\n    FROM catalog_sales\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'web' AS channel,\n        ws_quantity * ws_list_price AS sales_amount,\n        item.i_brand_id\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(sales_amount) AS total_sales\nFROM all_sales\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.03604099911172,
+      "result_signature": "c49f69245eefa3c35eb0238fa3cedf40b738a55660be7cda9ec992a38e568ba6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH all_sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    UNION ALL\n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    UNION ALL\n    SELECT \n        'web' AS channel,\n        ws_item_sk AS item_sk,\n        ws_quantity AS quantity,\n        ws_list_price AS list_price\n    FROM web_sales\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(quantity * list_price) AS total_sales\nFROM all_sales\nJOIN item ON all_sales.item_sk = item.i_item_sk\nJOIN date_dim ON \n    (channel = 'store' AND ss_sold_date_sk = d_date_sk) OR\n    (channel = 'catalog' AND cs_sold_date_sk = d_date_sk) OR\n    (channel = 'web' AND ws_sold_date_sk = d_date_sk)\nWHERE d_year = 2000 AND d_moy = 2\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"ss_sold_date_sk\" not found in FROM clause!\nCandidate bindings: \"d_date_sk\", \"d_date\", \"d_last_dom\", \"d_fy_quarter_seq\", \"d_same_day_lq\"\n\nLINE 30:     (channel = 'store' AND ss_sold_date_sk = d_date_sk) OR\n                                    ^",
+      "exec_time_ms": 10.940749998553656,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH sales AS (\n    SELECT \n        'store' AS channel,\n        ss_quantity * ss_list_price AS sales_amount,\n        i_brand_id\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        cs_quantity * cs_list_price AS sales_amount,\n        i_brand_id\n    FROM catalog_sales\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        ws_quantity * ws_list_price AS sales_amount,\n        i_brand_id\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(sales_amount) AS total_sales\nFROM sales\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.296540995128453,
+      "result_signature": "c49f69245eefa3c35eb0238fa3cedf40b738a55660be7cda9ec992a38e568ba6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH sales AS (\n    SELECT \n        'store' AS channel,\n        ss_quantity * ss_list_price AS sales_amount,\n        i_brand_id\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        cs_quantity * cs_list_price AS sales_amount,\n        i_brand_id\n    FROM catalog_sales\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n\n    UNION ALL\n\n    SELECT \n        'web' AS channel,\n        ws_quantity * ws_list_price AS sales_amount,\n        i_brand_id\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    WHERE date_dim.d_year = 2000 AND date_dim.d_moy = 2\n)\nSELECT \n    channel,\n    i_brand_id,\n    SUM(sales_amount) AS total_sales\nFROM sales\nGROUP BY channel, i_brand_id\nORDER BY total_sales DESC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c49f69245eefa3c35eb0238fa3cedf40b738a55660be7cda9ec992a38e568ba6": 3,
+        "c5c3b5a63809ba35a03a7a423f31a2b5635977b27c2aeb067076211b712c6b63": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 9692.63691699598,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 20022.832250004285
+}

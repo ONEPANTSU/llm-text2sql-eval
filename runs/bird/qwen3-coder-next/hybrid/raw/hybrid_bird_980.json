@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_980",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1694.6979999993346,
+  "execution_time_ms": 12.54666600289056,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23 AND q.position = 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.358291000651661,
+      "result_signature": "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23 AND q.position = 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.689415999862831,
+      "result_signature": "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23\nAND q.position = 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5295420016627759,
+      "result_signature": "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23 AND q.position = 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1677079965011217,
+      "result_signature": "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23 AND q.position = 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1187499985680915,
+      "result_signature": "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT d.driverRef, d.nationality, d.dob\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE r.raceId = 23 AND q.position = 2;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f60cb6d73145d22c78d02acf3569c69d24500b98f6070943008db2f7e3abadbf": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1707.4738340015756
+}

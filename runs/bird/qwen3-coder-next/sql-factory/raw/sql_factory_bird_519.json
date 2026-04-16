@@ -1,0 +1,144 @@
+{
+  "task_id": "bird_519",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = 'btd') LIMIT 1;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT language\nFROM foreign_data\nWHERE uuid IN (\n    SELECT uuid\n    FROM cards\n    WHERE setCode = 'bnd'\n)\nLIMIT 1;",
+          "score": 0.785294117647059,
+          "similarity_max": 0.8294117647058823,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = 'btd') LIMIT 1;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT language\nFROM set_translations\nWHERE setCode = (\n    SELECT code\n    FROM sets\n    WHERE name = 'Battlebond'\n);",
+          "score": 0.9522727272727274,
+          "similarity_max": 0.4954545454545455,
+          "tables_used": [
+            "set_translations",
+            "sets"
+          ]
+        },
+        {
+          "sql": "SELECT language FROM set_translations WHERE setCode = 'btd' LIMIT 1;",
+          "score": 0.7922794117647058,
+          "similarity_max": 0.5154411764705883,
+          "tables_used": [
+            "set_translations"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = 'btd') LIMIT 1;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT language\nFROM set_translations\nWHERE setCode = (\n    SELECT code\n    FROM sets\n    WHERE name = 'Battlebond'\n);",
+          "score": 0.9522727272727274,
+          "similarity_max": 0.4954545454545455,
+          "tables_used": [
+            "set_translations",
+            "sets"
+          ]
+        },
+        {
+          "sql": "SELECT language\nFROM set_translations\nWHERE setCode IN (\n    SELECT code\n    FROM sets\n    WHERE name = 'Battlebond'\n);",
+          "score": 0.8005434782608697,
+          "similarity_max": 0.798913043478261,
+          "tables_used": [
+            "set_translations",
+            "sets"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT language FROM foreign_data WHERE uuid IN (SELECT uuid FROM cards WHERE setCode = 'btd') LIMIT 1;",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "foreign_data",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 65.47
+  }
+}

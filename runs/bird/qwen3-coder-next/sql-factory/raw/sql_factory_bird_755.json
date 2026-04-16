@@ -1,0 +1,149 @@
+{
+  "task_id": "bird_755",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT full_name \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') \n  AND publisher_id IN (SELECT id FROM publisher WHERE publisher_name IN ('Marvel', 'DC'))\nLIMIT 5;",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT full_name FROM superhero WHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') AND full_name LIKE '%Demi-God%' OR full_name LIKE '%Demigod%' OR full_name LIKE '%Half-God%' OR full_name LIKE '%Halfgod%' LIMIT 5;",
+          "score": 0.8786363636363637,
+          "similarity_max": 0.44272727272727275,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT full_name \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') \n  AND publisher_id IN (SELECT id FROM publisher WHERE publisher_name IN ('Marvel', 'DC'))\nLIMIT 5;",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT full_name FROM superhero WHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') AND full_name LIKE '%Demi-God%' OR full_name LIKE '%Demigod%' OR full_name LIKE '%Half-God%' OR full_name LIKE '%Halfgod%' LIMIT 5;",
+          "score": 0.8786363636363637,
+          "similarity_max": 0.44272727272727275,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT full_name \nFROM superhero \nWHERE race_id = (SELECT id FROM race WHERE race = 'Demi-God') \n  AND full_name IS NOT NULL \nLIMIT 5;",
+          "score": 0.8608766233766235,
+          "similarity_max": 0.4782467532467532,
+          "tables_used": [
+            "superhero",
+            "race"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT full_name \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') \n  AND publisher_id IN (SELECT id FROM publisher WHERE publisher_name IN ('Marvel', 'DC'))\nLIMIT 5;",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT full_name FROM superhero WHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') AND full_name LIKE '%Demi-God%' OR full_name LIKE '%Demigod%' OR full_name LIKE '%Half-God%' OR full_name LIKE '%Halfgod%' LIMIT 5;",
+          "score": 0.8786363636363637,
+          "similarity_max": 0.44272727272727275,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT full_name \nFROM superhero \nWHERE race_id = (SELECT id FROM race WHERE race = 'Demi-God') \n  AND full_name IS NOT NULL \nLIMIT 5;",
+          "score": 0.8608766233766235,
+          "similarity_max": 0.4782467532467532,
+          "tables_used": [
+            "superhero",
+            "race"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT full_name \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'good') \n  AND publisher_id IN (SELECT id FROM publisher WHERE publisher_name IN ('Marvel', 'DC'))\nLIMIT 5;",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "alignment",
+        "publisher",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.09
+  }
+}

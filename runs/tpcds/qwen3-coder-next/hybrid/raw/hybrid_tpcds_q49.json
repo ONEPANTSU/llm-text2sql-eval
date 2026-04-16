@@ -1,0 +1,152 @@
+{
+  "task_id": "tpcds_q49",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8493.792833003681,
+  "execution_time_ms": 107.32224999810569,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    item.i_item_sk,\n    item.i_item_id\nFROM \n    item,\n    store_sales,\n    date_dim\nWHERE \n    item.i_item_sk = store_sales.ss_item_sk\n    AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 2001\n    AND date_dim.d_moy = 12\nGROUP BY \n    item.i_item_sk, \n    item.i_item_id\nHAVING \n    SUM(store_sales.ss_ext_sales_price) = 0\n    AND item.i_item_sk IN (\n        SELECT \n            ss_item_sk\n        FROM \n            store_sales,\n            date_dim\n        WHERE \n            store_sales.ss_sold_date_sk = date_dim.d_date_sk\n            AND date_dim.d_year = 2000\n            AND date_dim.d_moy = 12\n        GROUP BY \n            ss_item_sk\n        HAVING \n            SUM(store_sales.ss_ext_sales_price) > 0\n    )\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 36.294417004683055,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  item.i_item_sk,\n  item.i_item_id\nFROM\n  item\n  JOIN store_sales ON store_sales.ss_item_sk = item.i_item_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE\n  date_dim.d_year = 2001\n  AND date_dim.d_moy = 12\nGROUP BY\n  item.i_item_sk,\n  item.i_item_id\nHAVING\n  SUM(store_sales.ss_ext_sales_price) = 0\n  AND item.i_item_sk IN (\n    SELECT ss_item_sk\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = 2000\n      AND date_dim.d_moy = 12\n    GROUP BY ss_item_sk\n    HAVING SUM(ss_ext_sales_price) > 0\n  )\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.502540995948948,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    item.i_item_sk,\n    item.i_item_id\nFROM \n    item,\n    store_sales,\n    date_dim\nWHERE \n    item.i_item_sk = store_sales.ss_item_sk\n    AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 2001\n    AND date_dim.d_moy = 12\nGROUP BY \n    item.i_item_sk, \n    item.i_item_id\nHAVING \n    SUM(store_sales.ss_ext_sales_price) = 0\n    AND item.i_item_sk IN (\n        SELECT \n            ss_item_sk\n        FROM \n            store_sales,\n            date_dim\n        WHERE \n            store_sales.ss_sold_date_sk = date_dim.d_date_sk\n            AND date_dim.d_year = 2000\n            AND date_dim.d_moy = 12\n        GROUP BY \n            ss_item_sk\n        HAVING \n            SUM(ss_ext_sales_price) > 0\n    )\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.056666998541914,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT item.i_item_sk, item.i_item_id\nFROM item, store_sales, date_dim\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 2000\n  AND date_dim.d_moy = 12\nGROUP BY item.i_item_sk, item.i_item_id\nHAVING SUM(store_sales.ss_ext_sales_price) > 0\nEXCEPT\nSELECT item.i_item_sk, item.i_item_id\nFROM item, store_sales, date_dim\nWHERE store_sales.ss_item_sk = item.i_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 2001\n  AND date_dim.d_moy = 12\nGROUP BY item.i_item_sk, item.i_item_id\nHAVING SUM(store_sales.ss_ext_sales_price) > 0\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.142916000215337,
+      "result_signature": "1fdec753a462fc9cac62445c5c38c55dc3947260dea232ca5e59ff6ab054e243",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  i_item_sk,\n  i_item_id\nFROM \n  item,\n  store_sales,\n  date_dim\nWHERE \n  item.i_item_sk = store_sales.ss_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 2001\n  AND date_dim.d_moy = 12\nGROUP BY \n  item.i_item_sk, item.i_item_id\nHAVING \n  SUM(store_sales.ss_ext_sales_price) = 0\nORDER BY \n  i_item_sk\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.581291994545609,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n  i_item_sk,\n  i_item_id\nFROM \n  item,\n  store_sales,\n  date_dim\nWHERE \n  item.i_item_sk = store_sales.ss_item_sk\n  AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 2001\n  AND date_dim.d_moy = 12\nGROUP BY \n  item.i_item_sk, item.i_item_id\nHAVING \n  SUM(store_sales.ss_ext_sales_price) = 0\nORDER BY \n  i_item_sk\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5,
+        "1fdec753a462fc9cac62445c5c38c55dc3947260dea232ca5e59ff6ab054e243": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 4882.572749993415,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH sales_2001_dec AS (\n  SELECT \n    i_item_sk,\n    i_item_id\n  FROM \n    item,\n    store_sales,\n    date_dim\n  WHERE \n    item.i_item_sk = store_sales.ss_item_sk\n    AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 2001\n    AND date_dim.d_moy = 12\n  GROUP BY \n    i_item_sk, i_item_id\n  HAVING \n    SUM(store_sales.ss_ext_sales_price) = 0\n),\nsales_2000_dec AS (\n  SELECT \n    i_item_sk\n  FROM \n    item,\n    store_sales,\n    date_dim\n  WHERE \n    item.i_item_sk = store_sales.ss_item_sk\n    AND store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    AND date_dim.d_year = 2000\n    AND date_dim.d_moy = 12\n  GROUP BY \n    i_item_sk\n)\nSELECT \n  s2001.i_item_sk,\n  s2001.i_item_id\nFROM \n  sales_2001_dec s2001\n  INNER JOIN sales_2000_dec s2000 ON s2001.i_item_sk = s2000.i_item_sk\nORDER BY \n  s2001.i_item_sk\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 29.51412499533035,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 13483.815416999278
+}

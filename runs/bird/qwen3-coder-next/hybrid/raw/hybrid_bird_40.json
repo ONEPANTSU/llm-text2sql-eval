@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_40",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1605.9814170002937,
+  "execution_time_ms": 17.897249999805354,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE satscores.AvgScrRead IS NOT NULL\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.902624998474494,
+      "result_signature": "3198d8a33d9855df89f62322b277b5b2afebe955836e85731461417e3e4b9555",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.City = 'Fresno' AND schools.District = 'Fresno Unified'\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.492958003946114,
+      "result_signature": "4920ea3cbe5521d60ecc76c5d12a089eb60668212d6eb16b5da2263fb89ae87f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE satscores.AvgScrRead IS NOT NULL\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8751670029596426,
+      "result_signature": "3198d8a33d9855df89f62322b277b5b2afebe955836e85731461417e3e4b9555",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE satscores.AvgScrRead IS NOT NULL\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7342079989030026,
+      "result_signature": "3198d8a33d9855df89f62322b277b5b2afebe955836e85731461417e3e4b9555",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.City = 'Fresno'\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.639375001308508,
+      "result_signature": "899434d393d20fa9cc99bda6779f4d7a015105d509b780f732e4616da26eb491",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT schools.Phone\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE satscores.AvgScrRead IS NOT NULL\nORDER BY satscores.AvgScrRead ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3198d8a33d9855df89f62322b277b5b2afebe955836e85731461417e3e4b9555": 3,
+        "4920ea3cbe5521d60ecc76c5d12a089eb60668212d6eb16b5da2263fb89ae87f": 1,
+        "899434d393d20fa9cc99bda6779f4d7a015105d509b780f732e4616da26eb491": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1453.908791001595,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3077.949708000233
+}

@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_1167",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3332.9814999960945,
+  "execution_time_ms": 7.887583000410814,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(DISTINCT L.ID) / 12.0 AS avg_monthly_count\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date BETWEEN '1998-01-01' AND '1998-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8062500025262125,
+      "result_signature": "3aa23209cf28542aa0eabd0213c70c52e9bcf85b5f2ee5fff077991717a8f88e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(DISTINCT L.ID) * 1.0 / 12 AS average_monthly_count\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date BETWEEN '1998-01-01' AND '1998-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1215420017833821,
+      "result_signature": "3aa23209cf28542aa0eabd0213c70c52e9bcf85b5f2ee5fff077991717a8f88e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(DISTINCT Laboratory.ID) * 1.0 / 12 AS average_monthly_count\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.Date BETWEEN '1998-01-01' AND '1998-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9754169950610958,
+      "result_signature": "3aa23209cf28542aa0eabd0213c70c52e9bcf85b5f2ee5fff077991717a8f88e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(monthly_count) AS average_male_patients_per_month\nFROM (\n    SELECT strftime('%Y-%m', Laboratory.Date) AS month, COUNT(DISTINCT Laboratory.ID) AS monthly_count\n    FROM Laboratory\n    JOIN Patient ON Laboratory.ID = Patient.ID\n    WHERE Patient.SEX = 'M'\n      AND Laboratory.Date BETWEEN '1998-01-01' AND '1998-12-31'\n    GROUP BY month\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2139579994254746,
+      "result_signature": "60e6ffed5d4ca2b8e86855cea282cf6e7ebb1b694c9b15ed0e19f70bee6fab63",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(DISTINCT L.ID) AS monthly_count\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date BETWEEN '1998-01-01' AND '1998-12-31'\nGROUP BY strftime('%Y-%m', L.Date);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5109589983476326,
+      "result_signature": "cc81efa3304849a4649fcd56241c3c06f24c327c0629c7eff9f13f13ac44afe6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT COUNT(DISTINCT Laboratory.ID) * 1.0 / 12 AS average_monthly_count\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.Date BETWEEN '1998-01-01' AND '1998-12-31';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3aa23209cf28542aa0eabd0213c70c52e9bcf85b5f2ee5fff077991717a8f88e": 3,
+        "60e6ffed5d4ca2b8e86855cea282cf6e7ebb1b694c9b15ed0e19f70bee6fab63": 3,
+        "cc81efa3304849a4649fcd56241c3c06f24c327c0629c7eff9f13f13ac44afe6": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 6508.87537500239,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT AVG(monthly_count) AS average_monthly_count\nFROM (\n    SELECT strftime('%Y-%m', Laboratory.Date) AS month,\n           COUNT(DISTINCT Laboratory.ID) AS monthly_count\n    FROM Laboratory\n    JOIN Patient ON Laboratory.ID = Patient.ID\n    WHERE Patient.SEX = 'M'\n      AND Laboratory.Date BETWEEN '1998-01-01' AND '1998-12-31'\n    GROUP BY month\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.21175000135554,
+        "result_signature": "60e6ffed5d4ca2b8e86855cea282cf6e7ebb1b694c9b15ed0e19f70bee6fab63",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH monthly_counts AS (\n    SELECT strftime('%Y-%m', Laboratory.Date) AS month,\n           COUNT(DISTINCT Laboratory.ID) AS monthly_count\n    FROM Laboratory\n    JOIN Patient ON Laboratory.ID = Patient.ID\n    WHERE Patient.SEX = 'M'\n      AND Laboratory.Date BETWEEN '1998-01-01' AND '1998-12-31'\n    GROUP BY strftime('%Y-%m', Laboratory.Date)\n)\nSELECT AVG(monthly_count) AS average_monthly_count\nFROM monthly_counts;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5204999979468994,
+        "result_signature": "60e6ffed5d4ca2b8e86855cea282cf6e7ebb1b694c9b15ed0e19f70bee6fab63",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9849.836083005357
+}

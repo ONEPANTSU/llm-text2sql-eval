@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_840",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1575.961249996908,
+  "execution_time_ms": 5.708665994461626,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT hero_attribute.attribute_value\nFROM superhero\nJOIN hero_attribute ON superhero.id = hero_attribute.hero_id\nJOIN attribute ON hero_attribute.attribute_id = attribute.id\nWHERE superhero.superhero_name = 'Aquababy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.75716599955922,
+      "result_signature": "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT ha.attribute_value\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE s.superhero_name = 'Aquababy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.48529099876759574,
+      "result_signature": "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT ha.attribute_value\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE s.superhero_name = 'Aquababy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4270000063115731,
+      "result_signature": "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT ha.attribute_value\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE s.superhero_name = 'Aquababy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.41720900480868295,
+      "result_signature": "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT hero_attribute.attribute_value\nFROM superhero\nJOIN hero_attribute ON superhero.id = hero_attribute.hero_id\nJOIN attribute ON hero_attribute.attribute_id = attribute.id\nWHERE superhero.superhero_name = 'Aquababy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4250409983796999,
+      "result_signature": "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT ha.attribute_value\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE s.superhero_name = 'Aquababy';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2e2ee3f77d34e8db69097c322cf3e0c0d57e8f15ec47bfad630644a5679c8e6f": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1581.730375000916
+}

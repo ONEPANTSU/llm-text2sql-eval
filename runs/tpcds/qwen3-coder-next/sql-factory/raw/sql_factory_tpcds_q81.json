@@ -1,0 +1,61 @@
+{
+  "task_id": "tpcds_q81",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    c_customer_id,\n    SUM(cr_return_amount) AS total_returns\nFROM \n    catalog_returns cr\nJOIN \n    customer c ON cr.cr_returning_customer_sk = c.c_customer_sk\nJOIN \n    customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\nJOIN \n    date_dim d ON cr.cr_returned_date_sk = d.d_date_sk\nWHERE \n    ca.ca_state = 'GA' \n    AND d.d_year = 2000\nGROUP BY \n    c_customer_id\nORDER BY \n    total_returns DESC\nLIMIT 100",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandid",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 25.54
+  }
+}

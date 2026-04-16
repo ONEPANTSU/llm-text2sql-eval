@@ -1,0 +1,104 @@
+{
+  "task_id": "tpcds_q30",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk AS customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n          AND ca_state = 'GA'\n        GROUP BY wr_returning_customer_sk, ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "state_avg",
+            "high_return_customers",
+            "web_returns",
+            "customer_address",
+            "sa",
+            "customer"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk AS customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n          AND ca_state = 'GA'\n        GROUP BY wr_returning_customer_sk, ...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "state_avg",
+            "high_return_customers",
+            "web_returns",
+            "customer_address",
+            "sa",
+            "customer"
+          ]
+        },
+        {
+          "sql": "WITH customer_returns_ga AS (\n    SELECT \n        wr_returning_customer_sk AS customer_sk,\n        SUM(wr_return_amt) AS ctr_total_return\n    FROM web_returns\n    JOIN date_dim ON wr_returned_date_sk = d_date_sk\n    JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n    WHERE d_year = 2002\n      AND ca_state = 'GA'\n    GROUP BY wr_returning_customer_sk\n),\nstate_avg_ga AS (\n    SELECT \n        AVG(ctr_total_return) AS avg_return\n    FROM customer_returns_ga\n),\nhigh_return_customers AS ...",
+          "score": 1.1021636506687646,
+          "similarity_max": 0.6956726986624704,
+          "tables_used": [
+            "customer_returns_ga",
+            "high_return_customers",
+            "web_returns",
+            "customer_address",
+            "customer"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH state_avg AS (\n    SELECT \n        ca_state,\n        AVG(ctr_total_return) AS avg_return\n    FROM (\n        SELECT \n            wr_returning_customer_sk AS customer_sk,\n            ca_state,\n            SUM(wr_return_amt) AS ctr_total_return\n        FROM web_returns\n        JOIN date_dim ON wr_returned_date_sk = d_date_sk\n        JOIN customer_address ON wr_returning_addr_sk = ca_address_sk\n        WHERE d_year = 2002\n          AND ca_state = 'GA'\n        GROUP BY wr_returning_customer_sk, ...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "state_avg",
+        "high_return_customers",
+        "web_returns",
+        "customer_address",
+        "sa",
+        "customer"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 43.76
+  }
+}

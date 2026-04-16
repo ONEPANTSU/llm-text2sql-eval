@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_1026",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT COUNT(*) AS losses\n        FROM Match M2\n        WHERE M2.season = '2016' AND M2.home_team_goal < M2.away_team_goal\n        GROUP BY M2.home_team_api_id\n    )\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "T",
+            "M2",
+            "M",
+            "Team",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name, T.team_api_id\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT home_team_api_id, SUM(CASE WHEN home_team_goal < away_team_goal THEN 1 ELSE 0 END) AS losses\n        FROM Match\n        WHERE season = '2016'\n        GROUP BY home_team_api_id\n    )\n);",
+          "score": 0.9199186991869919,
+          "similarity_max": 0.7601626016260163,
+          "tables_used": [
+            "T",
+            "Team",
+            "M",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT COUNT(*) AS losses\n        FROM Match M2\n        WHERE M2.season = '2016' AND M2.home_team_goal < M2.away_team_goal\n        GROUP BY M2.home_team_api_id\n    )\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "T",
+            "M2",
+            "M",
+            "Team",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name, T.team_api_id\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT home_team_api_id, SUM(CASE WHEN home_team_goal < away_team_goal THEN 1 ELSE 0 END) AS losses\n        FROM Match\n        WHERE season = '2016'\n        GROUP BY home_team_api_id\n    )\n);",
+          "score": 0.9199186991869919,
+          "similarity_max": 0.7601626016260163,
+          "tables_used": [
+            "T",
+            "Team",
+            "M",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name, T.team_api_id\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT home_team_api_id,\n               COUNT(*) FILTER (WHERE home_team_goal < away_team_goal) AS losses\n        FROM Match\n        WHERE season = '2016'\n        GROUP BY home_team_api_id\n    )\n);",
+          "score": 0.885462962962963,
+          "similarity_max": 0.8290740740740741,
+          "tables_used": [
+            "T",
+            "Team",
+            "M",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT COUNT(*) AS losses\n        FROM Match M2\n        WHERE M2.season = '2016' AND M2.home_team_goal < M2.away_team_goal\n        GROUP BY M2.home_team_api_id\n    )\n);",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "T",
+            "M2",
+            "M",
+            "Team",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name, T.team_api_id\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT home_team_api_id, SUM(CASE WHEN home_team_goal < away_team_goal THEN 1 ELSE 0 END) AS losses\n        FROM Match\n        WHERE season = '2016'\n        GROUP BY home_team_api_id\n    )\n);",
+          "score": 0.9199186991869919,
+          "similarity_max": 0.7601626016260163,
+          "tables_used": [
+            "T",
+            "Team",
+            "M",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name, T.team_api_id\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT home_team_api_id,\n               COUNT(*) FILTER (WHERE home_team_goal < away_team_goal) AS losses\n        FROM Match\n        WHERE season = '2016'\n        GROUP BY home_team_api_id\n    )\n);",
+          "score": 0.885462962962963,
+          "similarity_max": 0.8290740740740741,
+          "tables_used": [
+            "T",
+            "Team",
+            "M",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT T.team_long_name\nFROM Match M\nJOIN Team T ON M.home_team_api_id = T.team_api_id\nWHERE M.season = '2016'\nGROUP BY T.team_long_name\nHAVING SUM(CASE WHEN M.home_team_goal < M.away_team_goal THEN 1 ELSE 0 END) = (\n    SELECT MIN(losses)\n    FROM (\n        SELECT COUNT(*) AS losses\n        FROM Match M2\n        WHERE M2.season = '2016' AND M2.home_team_goal < M2.away_team_goal\n        GROUP BY M2.home_team_api_id\n    )\n);",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "T",
+        "M2",
+        "M",
+        "Team",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 203.75
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "task_id": "bird_1120",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT SUM(away_team_goal) \nFROM Match m\nJOIN Player p ON (m.away_player_1 = p.player_api_id \n                 OR m.away_player_2 = p.player_api_id \n                 OR m.away_player_3 = p.player_api_id \n                 OR m.away_player_4 = p.player_api_id \n                 OR m.away_player_5 = p.player_api_id \n                 OR m.away_player_6 = p.player_api_id \n                 OR m.away_player_7 = p.player_api_id \n                 OR m.away_player_8 = p.player_api_id \n                 OR m...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(Match.away_team_goal) \nFROM Match\nJOIN Player ON Match.away_player_1 = Player.player_api_id OR \n              Match.away_player_2 = Player.player_api_id OR \n              Match.away_player_3 = Player.player_api_id OR \n              Match.away_player_4 = Player.player_api_id OR \n              Match.away_player_5 = Player.player_api_id OR \n              Match.away_player_6 = Player.player_api_id OR \n              Match.away_player_7 = Player.player_api_id OR \n              Match.away_pl...",
+          "score": 0.6331804281345567,
+          "similarity_max": 0.8336391437308868,
+          "tables_used": [
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT SUM(away_team_goal) \nFROM Match m\nJOIN Player p ON (m.away_player_1 = p.player_api_id \n                 OR m.away_player_2 = p.player_api_id \n                 OR m.away_player_3 = p.player_api_id \n                 OR m.away_player_4 = p.player_api_id \n                 OR m.away_player_5 = p.player_api_id \n                 OR m.away_player_6 = p.player_api_id \n                 OR m.away_player_7 = p.player_api_id \n                 OR m.away_player_8 = p.player_api_id \n                 OR m...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(Match.away_team_goal)\nFROM Match\nWHERE Match.away_team_api_id IN (\n    SELECT T.team_api_id\n    FROM Match M\n    JOIN Player P ON P.player_api_id IN (\n        M.away_player_1, M.away_player_2, M.away_player_3, M.away_player_4, M.away_player_5,\n        M.away_player_6, M.away_player_7, M.away_player_8, M.away_player_9, M.away_player_10, M.away_player_11\n    )\n    JOIN Team T ON T.team_api_id = M.home_team_api_id\n    WHERE P.player_name IN ('Daan Smith', 'Filipe Ferreira')\n);",
+          "score": 1.1737189527858582,
+          "similarity_max": 0.6525620944282837,
+          "tables_used": [
+            "Player",
+            "T",
+            "M",
+            "Team",
+            "P",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.away_team_goal)\nFROM Match m\nJOIN Player p ON (\n    p.player_api_id IN (\n        m.away_player_1, m.away_player_2, m.away_player_3, m.away_player_4,\n        m.away_player_5, m.away_player_6, m.away_player_7, m.away_player_8,\n        m.away_player_9, m.away_player_10, m.away_player_11\n    )\n)\nWHERE p.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+          "score": 0.8382262996941896,
+          "similarity_max": 0.7235474006116207,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT SUM(away_team_goal) \nFROM Match m\nJOIN Player p ON (m.away_player_1 = p.player_api_id \n                 OR m.away_player_2 = p.player_api_id \n                 OR m.away_player_3 = p.player_api_id \n                 OR m.away_player_4 = p.player_api_id \n                 OR m.away_player_5 = p.player_api_id \n                 OR m.away_player_6 = p.player_api_id \n                 OR m.away_player_7 = p.player_api_id \n                 OR m.away_player_8 = p.player_api_id \n                 OR m...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(Match.away_team_goal)\nFROM Match\nWHERE Match.away_team_api_id IN (\n    SELECT T.team_api_id\n    FROM Match M\n    JOIN Player P ON P.player_api_id IN (\n        M.away_player_1, M.away_player_2, M.away_player_3, M.away_player_4, M.away_player_5,\n        M.away_player_6, M.away_player_7, M.away_player_8, M.away_player_9, M.away_player_10, M.away_player_11\n    )\n    JOIN Team T ON T.team_api_id = M.home_team_api_id\n    WHERE P.player_name IN ('Daan Smith', 'Filipe Ferreira')\n);",
+          "score": 1.1737189527858582,
+          "similarity_max": 0.6525620944282837,
+          "tables_used": [
+            "Player",
+            "T",
+            "M",
+            "Team",
+            "P",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.away_team_goal)\nFROM Match m\nJOIN Player p ON (\n    p.player_api_id IN (\n        m.away_player_1, m.away_player_2, m.away_player_3, m.away_player_4,\n        m.away_player_5, m.away_player_6, m.away_player_7, m.away_player_8,\n        m.away_player_9, m.away_player_10, m.away_player_11\n    )\n)\nWHERE p.player_name IN ('Daan Smith', 'Filipe Ferreira');",
+          "score": 0.8382262996941896,
+          "similarity_max": 0.7235474006116207,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT SUM(away_team_goal) \nFROM Match m\nJOIN Player p ON (m.away_player_1 = p.player_api_id \n                 OR m.away_player_2 = p.player_api_id \n                 OR m.away_player_3 = p.player_api_id \n                 OR m.away_player_4 = p.player_api_id \n                 OR m.away_player_5 = p.player_api_id \n                 OR m.away_player_6 = p.player_api_id \n                 OR m.away_player_7 = p.player_api_id \n                 OR m.away_player_8 = p.player_api_id \n                 OR m...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player",
+        "p",
+        "m",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 341.68
+  }
+}

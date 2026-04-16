@@ -1,0 +1,182 @@
+{
+  "task_id": "bird_168",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.gender = 'F' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN c.gender = 'F' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 0.9325358851674642,
+          "similarity_max": 0.7349282296650717,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.gender = 'F' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN c.gender = 'F' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 0.9325358851674642,
+          "similarity_max": 0.7349282296650717,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN c.gender = 'F' THEN 1 ELSE 0 END) AS FLOAT) * 100.0 / COUNT(*), 2) AS percentage_women\nFROM client c\nJOIN account a ON c.client_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 0.9225214198286414,
+          "similarity_max": 0.7549571603427172,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.gender = 'F' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(SUM(CASE WHEN c.gender = 'F' THEN 1.0 ELSE 0.0 END) * 100 / COUNT(*), 2) AS percentage_women\nFROM client c\nJOIN account a ON c.client_id = (\n    SELECT client_id \n    FROM disp \n    WHERE account_id = a.account_id \n    LIMIT 1\n)\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 0.9971526908635797,
+          "similarity_max": 0.705694618272841,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN c.gender = 'F' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+          "score": 0.9325358851674642,
+          "similarity_max": 0.7349282296650717,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN c.gender = 'F' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_women\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A10 > 10000;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "client",
+        "d",
+        "c",
+        "a",
+        "account",
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 55.05
+  }
+}

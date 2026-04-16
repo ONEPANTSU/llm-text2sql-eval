@@ -1,55 +1,49 @@
-# Hybrid / Гибридная архитектура
+# Hybrid (гибридная архитектура)
 
-## Overview / Обзор
-
-The best-performing architecture. Combines self-consistency with SGR grounding, seed expansion, diagnostic retry, smart early stop, and schema validation.
+## Обзор
 
 Лучшая архитектура по результатам. Комбинирует самосогласованность с SGR-обоснованием, расширением зёрен, диагностическим повтором, умной ранней остановкой и валидацией схемы.
 
-## Algorithm / Алгоритм
+## Алгоритм
 
-### Phase 1: SGR Grounding (optional)
+### Фаза 1: SGR Grounding (опционально)
 
-LLM analyzes the question and identifies relevant tables/columns from schema. On error — graceful fallback to full schema.
+LLM анализирует вопрос и определяет релевантные таблицы/колонки из схемы. При ошибке — graceful fallback на полную схему.
 
-LLM анализирует вопрос и определяет релевантные таблицы/колонки. При ошибке — fallback на полную схему.
+### Фаза 2: Начальная генерация (K=5)
 
-### Phase 2: Initial Generation (K=5)
+Параллельная генерация 5 независимых SQL-кандидатов. Каждый кандидат проходит:
 
-Generate 5 independent SQL candidates (parallel). Each candidate goes through:
+1. **Strip SQL fences** — удаление markdown-обёрток ` ```sql ``` `
+2. **Placeholder check** — отклонение при наличии `<...>`, `YourState`, `TODO`, `???`
+3. **Schema validation (fuzzy fix)** — коррекция имён таблиц/колонок по edit distance ≤ 2
+4. **Preflight + Execution** — валидация и исполнение
+5. **Result signature** — SHA-256 хеш для голосования большинством
 
-1. **Strip SQL fences** — remove markdown ` ```sql ``` ` wrappers
-2. **Placeholder check** — reject if contains `<...>`, `YourState`, `TODO`, `???`
-3. **Schema validation (fuzzy fix)** — edit distance <= 2 correction of table/column names
-4. **Preflight + Execution** — validate and execute
-5. **Result signature** — SHA-256 hash for majority voting
-
-### Phase 2.5: Diagnostic Retry (conditional)
-
-Triggered only if **all** K candidates failed with the **same error**. Generates 2 retry candidates with low temperature (0.3), including the error message in the prompt.
+### Фаза 2.5: Diagnostic Retry (условно)
 
 Срабатывает только если **все** K кандидатов упали с **одинаковой** ошибкой. Генерирует 2 повторных кандидата с низкой temperature (0.3), включая текст ошибки в промпт.
 
-### Phase 3: Seed Expansion (optional)
+### Фаза 3: Seed Expansion (опционально)
 
-**Smart Early Stop** — skip expansion if:
-- No candidate has exec_ok (nothing to expand)
-- All exec_ok candidates have same result_signature (consensus reached)
+**Smart Early Stop** — пропуск расширения если:
+- Нет кандидата с exec_ok (нечего расширять)
+- Все exec_ok кандидаты имеют одинаковую result_signature (достигнут консенсус)
 
 **Expansion:**
-1. Pick top 2 seeds (greedy diverse selection, Jaccard < 0.85)
-2. Generate 2 variations per seed ("Provide a different but equivalent SQL")
-3. Filter by similarity (reject if Jaccard >= 0.85)
-4. Execute accepted variations
+1. Выбрать 2 лучших зерна (жадный отбор разнообразия, Jaccard < 0.85)
+2. Сгенерировать 2 вариации на каждое зерно ("Provide a different but equivalent SQL")
+3. Отфильтровать по похожести (отклонить если Jaccard ≥ 0.85)
+4. Исполнить принятые вариации
 
-### Phase 4: Aggregation
+### Фаза 4: Aggregation
 
-3-level fallback:
-1. **exec_ok candidates** — group by result_signature, majority vote
-2. **preflight_ok only** — group by normalized SQL, majority vote
-3. **fallback** — return empty (no valid SQL)
+3-уровневый fallback:
+1. **exec_ok кандидаты** — группировка по result_signature, голосование большинством
+2. **только preflight_ok** — группировка по нормализованному SQL, голосование большинством
+3. **fallback** — вернуть пустой SQL (нет валидного)
 
-## Parameters / Параметры
+## Параметры
 
 ```yaml
 architecture:
@@ -71,35 +65,37 @@ architecture:
     execution_timeout: 30
 ```
 
-| Parameter | Default | Description / Описание |
-|-----------|---------|------------------------|
-| `sgr_grounding` | true | Enable SGR schema analysis / Включить SGR-анализ |
-| `initial_candidates` | 5 | K parallel generations / Число начальных генераций |
-| `expansion_enabled` | true | Enable seed expansion / Включить расширение |
-| `expansion_seeds` | 2 | Seeds for expansion / Число зёрен |
-| `expansion_per_seed` | 2 | Variations per seed / Вариаций на зерно |
-| `expansion_sim_threshold` | 0.85 | Jaccard dedup threshold / Порог дедупликации |
-| `aggregation_mode` | hybrid | 3-level fallback aggregation / 3-уровневая агрегация |
+| Параметр | По умолчанию | Описание |
+|-----------|---------|-------------|
+| `sgr_grounding` | true | Включить SGR-анализ схемы |
+| `initial_candidates` | 5 | Число начальных параллельных генераций |
+| `expansion_enabled` | true | Включить расширение зёрен |
+| `expansion_seeds` | 2 | Число зёрен для расширения |
+| `expansion_per_seed` | 2 | Вариаций на зерно |
+| `expansion_sim_threshold` | 0.85 | Порог дедупликации по Jaccard |
+| `aggregation_mode` | hybrid | 3-уровневая агрегация |
 
-## Max Candidates / Макс. кандидатов
+## Максимум кандидатов
 
-5 initial + 2 retry + 4 expansion = **11 candidates** per task.
+5 начальных + 2 retry + 4 expansion = **11 кандидатов** на задачу.
+
+На практике (BIRD, n=1534): среднее = 5.3 кандидата, expansion пропускается на 85.5% задач за счёт smart early stop.
 
 ## CLI
 
 ```bash
-uv run python -m evalsuite run --model openrouter --bench bird_sqlite --architecture hybrid
+uv run python -m evalsuite run --model qwen3-coder-next --bench bird_sqlite --architecture hybrid
 ```
 
-## Results / Результаты
+## Результаты
 
-| Benchmark | Accuracy | Failures | Avg Latency |
-|-----------|----------|----------|-------------|
+Для qwen3-coder-next, `context_mode=toolchain`:
+
+| Бенчмарк | Accuracy | Failures | Ср. латентность |
+|----------|----------|----------|-----------------|
 | BIRD | **32.3%** (495/1534) | **16** | 16.2s |
 | Spider2 | **71.5%** (88/123) | **12** | 30.9s |
 | TPC-DS | 9.1% (9/99) | 22 | 36.8s |
-| **Total** | **33.7%** (592/1756) | | |
+| **Всего** | **33.7%** (592/1756) | | |
 
-Key improvement: `pred_exec_fail` = **0** on BIRD and Spider2 (vs 426 and 90 in plain). Diagnostic retry + schema validation eliminate execution failures. Smart early stop reduces timeouts (12 vs 124 in self-consistency on BIRD).
-
-Ключевое улучшение: `pred_exec_fail` = **0** на BIRD и Spider2. Диагностический повтор + валидация схемы устраняют ошибки исполнения. Умная ранняя остановка сокращает таймауты.
+Ключевое улучшение: `pred_exec_fail` = **0** на BIRD и Spider2 (vs 59 и 26 в plain). Diagnostic retry + schema validation устраняют ошибки исполнения. Smart early stop сокращает таймауты (12 vs 124 в self-consistency на BIRD).

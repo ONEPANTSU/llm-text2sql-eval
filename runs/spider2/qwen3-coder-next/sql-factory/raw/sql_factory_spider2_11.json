@@ -1,0 +1,224 @@
+{
+  "task_id": "spider2_11",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er.bal...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_with_max_runs",
+            "overs_runs",
+            "max_runs_per_match",
+            "o",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored",
+            "top_bowlers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er.bal...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_with_max_runs",
+            "overs_runs",
+            "max_runs_per_match",
+            "o",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored",
+            "top_bowlers"
+          ]
+        },
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS runs_conceded\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er....",
+          "score": 0.8270847902097902,
+          "similarity_max": 0.7458304195804195,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_runs",
+            "match_max",
+            "o",
+            "ranked_bowlers",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored",
+            "max_overs"
+          ]
+        },
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er.bal...",
+          "score": 0.7860152714932125,
+          "similarity_max": 0.8279694570135747,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_with_max_runs",
+            "overs_runs",
+            "max_runs_per_match",
+            "o",
+            "ranked_bowlers",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er.bal...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_with_max_runs",
+            "overs_runs",
+            "max_runs_per_match",
+            "o",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored",
+            "top_bowlers"
+          ]
+        },
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS runs_conceded\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er....",
+          "score": 0.8270847902097902,
+          "similarity_max": 0.7458304195804195,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_runs",
+            "match_max",
+            "o",
+            "ranked_bowlers",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "batsman_scored",
+            "max_overs"
+          ]
+        },
+        {
+          "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs \n        ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er \n        ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND ...",
+          "score": 0.791826923076923,
+          "similarity_max": 0.8163461538461538,
+          "tables_used": [
+            "b",
+            "ball_by_ball",
+            "overs_runs",
+            "max_runs_per_match",
+            "o",
+            "ranked_bowlers",
+            "bs",
+            "extra_runs",
+            "er",
+            "m",
+            "top_overs",
+            "batsman_scored"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH overs_runs AS (\n    SELECT \n        b.match_id,\n        b.over_id,\n        b.bowler,\n        COALESCE(SUM(bs.runs_scored), 0) + COALESCE(SUM(er.extra_runs), 0) AS total_runs\n    FROM ball_by_ball b\n    LEFT JOIN batsman_scored bs ON b.match_id = bs.match_id \n        AND b.over_id = bs.over_id \n        AND b.ball_id = bs.ball_id \n        AND b.innings_no = bs.innings_no\n    LEFT JOIN extra_runs er ON b.match_id = er.match_id \n        AND b.over_id = er.over_id \n        AND b.ball_id = er.bal...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "b",
+        "ball_by_ball",
+        "overs_with_max_runs",
+        "overs_runs",
+        "max_runs_per_match",
+        "o",
+        "bs",
+        "extra_runs",
+        "er",
+        "m",
+        "batsman_scored",
+        "top_bowlers"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such table: overs_with_max_overs",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 4.48
+  }
+}

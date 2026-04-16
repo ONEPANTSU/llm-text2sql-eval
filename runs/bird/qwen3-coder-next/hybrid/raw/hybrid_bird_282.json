@@ -1,0 +1,195 @@
+{
+  "task_id": "bird_282",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1944.1976250018342,
+  "execution_time_ms": 9.254333002900239,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.element = 'Hydrogen' AND molecule.molecule_id = 'TR006'\nGROUP BY molecule.label",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0652919993153773,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, 'Hydrogen' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H'\nGROUP BY 'Hydrogen';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.503457999206148,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, 'Hydrogen' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0719579988508485,
+      "result_signature": "87c4a912f47b9fbed8c9ed996198185a869b8e5cf44e9853037ba12f3bf1071b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE molecule.molecule_id = 'TR006' AND atom.element = 'H'\nGROUP BY molecule.label;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.12825000542216,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE molecule.molecule_id = 'TR006'\nGROUP BY molecule.label;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0346669989521615,
+      "result_signature": "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 7,
+    "selected_sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.molecule_id = 'TR006'\nGROUP BY molecule.label;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3,
+        "87c4a912f47b9fbed8c9ed996198185a869b8e5cf44e9853037ba12f3bf1071b": 1,
+        "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12": 5
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 2503.985000003013,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(COUNT(CASE WHEN atom.element = 'H' THEN 1 END) AS REAL) / COUNT(*) AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE molecule.molecule_id = 'TR006'\nGROUP BY molecule.label;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.6977499946951866,
+        "result_signature": "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    CAST(COUNT(CASE WHEN atom.element = 'H' THEN 1 END) AS REAL) / COUNT(*) AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE molecule.molecule_id = 'TR006'\nGROUP BY molecule.label;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.603207998618018,
+        "result_signature": "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    molecule.label\nFROM atom\nJOIN molecule ON atom.molecule_id = molecule.molecule_id\nWHERE atom.molecule_id = 'TR006'\nGROUP BY molecule.label;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.5753339976072311,
+        "result_signature": "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.element = 'H' THEN 1 END) AS REAL) / COUNT(*) AS ratio,\n    m.label\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE m.molecule_id = 'TR006'\nGROUP BY m.label;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.7004170003929175,
+        "result_signature": "a9d8c769bd0f765d5d4d47ea95bc30c8d667474cd53c0b4a8dbc5804ca9d2f12",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4457.5331669984735
+}

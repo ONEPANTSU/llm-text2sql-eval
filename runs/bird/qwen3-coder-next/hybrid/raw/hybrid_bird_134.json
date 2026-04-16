@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_134",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1729.0323749984964,
+  "execution_time_ms": 585.8022500033258,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH crime_counts AS (\n    SELECT \n        a.district_id,\n        COUNT(t.trans_id) AS crime_count\n    FROM \n        trans t\n    JOIN \n        account a ON t.account_id = a.account_id\n    WHERE \n        t.date LIKE '1996%'\n    GROUP BY \n        a.district_id\n    ORDER BY \n        crime_count DESC\n    LIMIT 1\n)\nSELECT \n    COUNT(a.account_id) AS account_count\nFROM \n    account a\nJOIN \n    crime_counts cc ON a.district_id = cc.district_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 221.91633399779676,
+      "result_signature": "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(account_id) \nFROM account \nWHERE district_id = (\n    SELECT district_id \n    FROM trans \n    JOIN account ON trans.account_id = account.account_id \n    WHERE trans.date LIKE '1996%' \n    GROUP BY account.district_id \n    ORDER BY COUNT(trans.trans_id) DESC \n    LIMIT 1\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 91.39170900016325,
+      "result_signature": "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH crime_by_district AS (\n    SELECT \n        a.district_id,\n        COUNT(t.trans_id) AS crime_count\n    FROM \n        trans t\n    JOIN \n        account a ON t.account_id = a.account_id\n    WHERE \n        t.date LIKE '1996%'\n    GROUP BY \n        a.district_id\n    ORDER BY \n        crime_count DESC\n    LIMIT 1\n)\nSELECT \n    COUNT(*) AS account_count\nFROM \n    account a\nJOIN \n    crime_by_district cbd ON a.district_id = cbd.district_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 90.69150000141235,
+      "result_signature": "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH crime_counts AS (\n  SELECT \n    a.district_id,\n    COUNT(t.trans_id) AS crime_count\n  FROM trans t\n  JOIN account a ON t.account_id = a.account_id\n  WHERE t.date LIKE '1996%'\n  GROUP BY a.district_id\n  ORDER BY crime_count DESC\n  LIMIT 1\n)\nSELECT COUNT(*) \nFROM account a\nJOIN crime_counts cc ON a.district_id = cc.district_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 89.99999999650754,
+      "result_signature": "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH CrimeCountByDistrict AS (\n    SELECT \n        a.district_id,\n        COUNT(t.trans_id) AS crime_count\n    FROM \n        trans t\n    JOIN \n        account a ON t.account_id = a.account_id\n    WHERE \n        t.date LIKE '1996%'\n    GROUP BY \n        a.district_id\n    ORDER BY \n        crime_count DESC\n    LIMIT 1\n)\nSELECT \n    COUNT(*) AS account_count\nFROM \n    account a\nWHERE \n    a.district_id = (SELECT district_id FROM CrimeCountByDistrict);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 90.36229199409718,
+      "result_signature": "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH crime_counts AS (\n  SELECT \n    a.district_id,\n    COUNT(t.trans_id) AS crime_count\n  FROM trans t\n  JOIN account a ON t.account_id = a.account_id\n  WHERE t.date LIKE '1996%'\n  GROUP BY a.district_id\n  ORDER BY crime_count DESC\n  LIMIT 1\n)\nSELECT COUNT(*) \nFROM account a\nJOIN crime_counts cc ON a.district_id = cc.district_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b52048f7ba88840ad082dcb95004687e4b7111cb0b5ce88dea45e9d26bc90f57": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2314.8735420036246
+}

@@ -1,0 +1,169 @@
+{
+  "task_id": "bird_894",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT d.forename, d.surname, r.name, MIN(lt.time) AS best_lap_time\nFROM lapTimes lt\nJOIN drivers d ON lt.driverId = d.driverId\nJOIN races r ON lt.raceId = r.raceId\nGROUP BY d.forename, d.surname, r.name\nORDER BY best_lap_time ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT d.forename, d.surname, r.name, MIN(lt.time) AS best_lap_time\nFROM lapTimes lt\nJOIN drivers d ON lt.driverId = d.driverId\nJOIN races r ON lt.raceId = r.raceId\nGROUP BY d.forename, d.surname, r.name\nORDER BY best_lap_time ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH best_lap AS (\n  SELECT \n    d.forename, \n    d.surname, \n    r.name AS race_name, \n    lt.time AS lap_time\n  FROM lapTimes lt\n  JOIN drivers d ON lt.driverId = d.driverId\n  JOIN races r ON lt.raceId = r.raceId\n  WHERE lt.time IS NOT NULL\n  ORDER BY lt.time ASC\n  LIMIT 1\n)\nSELECT forename, surname, race_name, lap_time\nFROM best_lap;",
+          "score": 1.1938259109311742,
+          "similarity_max": 0.6123481781376517,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT d.forename, d.surname, r.name, lt.time AS best_lap_time\nFROM lapTimes lt\nJOIN drivers d ON lt.driverId = d.driverId\nJOIN races r ON lt.raceId = r.raceId\nORDER BY lt.milliseconds ASC\nLIMIT 1;",
+          "score": 0.9313012295081968,
+          "similarity_max": 0.7373975409836065,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT d.forename, d.surname, r.name, MIN(lt.time) AS best_lap_time\nFROM lapTimes lt\nJOIN drivers d ON lt.driverId = d.driverId\nJOIN races r ON lt.raceId = r.raceId\nGROUP BY d.forename, d.surname, r.name\nORDER BY best_lap_time ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH best_lap AS (\n  SELECT \n    d.forename, \n    d.surname, \n    r.name AS race_name, \n    lt.time AS lap_time\n  FROM lapTimes lt\n  JOIN drivers d ON lt.driverId = d.driverId\n  JOIN races r ON lt.raceId = r.raceId\n  WHERE lt.time IS NOT NULL\n  ORDER BY lt.time ASC\n  LIMIT 1\n)\nSELECT forename, surname, race_name, lap_time\nFROM best_lap;",
+          "score": 1.1938259109311742,
+          "similarity_max": 0.6123481781376517,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH best_lap AS (\n  SELECT \n    d.forename, \n    d.surname, \n    r.name AS race_name, \n    lt.time AS lap_time,\n    RANK() OVER (ORDER BY lt.time ASC) AS lap_rank\n  FROM lapTimes lt\n  JOIN drivers d ON lt.driverId = d.driverId\n  JOIN races r ON lt.raceId = r.raceId\n  WHERE lt.time IS NOT NULL\n)\nSELECT forename, surname, race_name, lap_time\nFROM best_lap\nWHERE lap_rank = 1;",
+          "score": 1.0560704355885078,
+          "similarity_max": 0.7878591288229841,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "drivers",
+            "d",
+            "lt",
+            "best_lap",
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT d.forename, d.surname, r.name, MIN(lt.time) AS best_lap_time\nFROM lapTimes lt\nJOIN drivers d ON lt.driverId = d.driverId\nJOIN races r ON lt.raceId = r.raceId\nGROUP BY d.forename, d.surname, r.name\nORDER BY best_lap_time ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "lapTimes",
+        "r",
+        "drivers",
+        "d",
+        "lt",
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 211.14
+  }
+}

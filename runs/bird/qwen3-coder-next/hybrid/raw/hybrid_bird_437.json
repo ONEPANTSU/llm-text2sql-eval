@@ -1,0 +1,197 @@
+{
+  "task_id": "bird_437",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1107.7657910063863,
+  "execution_time_ms": 339.20266699715285,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT id, artist, asciiName, flavorText, frameVersion, hand, isFullArt\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 252.10374999733176,
+      "result_signature": "09c6cff19d4cbcf0529a333d268d498d65115215e53df05dad59da80fb0efe62",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT id, faceName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.684250002494082,
+      "result_signature": "c2131daec8789f921c17ecd0f4d296e618148896d47edd69c41f956bc66e96ef",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT id, faceName, artist\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.837624997308012,
+      "result_signature": "2bc6290bd33b56ab146ac11483e65f6eb44526de99433cd7d3e049c9f0f8f450",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT faceName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.944791998364963,
+      "result_signature": "f863f134b00fd5603f6471afc7045677b48f95e00f7058582f6ea5f04279beff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT asciiName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.473458003427368,
+      "result_signature": "f863f134b00fd5603f6471afc7045677b48f95e00f7058582f6ea5f04279beff",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT asciiName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 'true';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "09c6cff19d4cbcf0529a333d268d498d65115215e53df05dad59da80fb0efe62": 1,
+        "c2131daec8789f921c17ecd0f4d296e618148896d47edd69c41f956bc66e96ef": 1,
+        "2bc6290bd33b56ab146ac11483e65f6eb44526de99433cd7d3e049c9f0f8f450": 1,
+        "f863f134b00fd5603f6471afc7045677b48f95e00f7058582f6ea5f04279beff": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1273.5132909947424,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT asciiName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 'true';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 19.15920800092863,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT asciiName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 'true';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 18.808499997248873,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT faceName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 'true';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 19.86212500196416,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT faceName\nFROM cards\nWHERE borderColor = 'black' AND isFullArt = 'true';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 19.79366700106766,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2720.5285420059226
+}

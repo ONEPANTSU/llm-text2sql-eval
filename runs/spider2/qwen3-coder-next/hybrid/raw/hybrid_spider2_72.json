@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_72",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 9616.48654199962,
+  "execution_time_ms": 18.091082994942553,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH top_skills AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n    GROUP BY sd.skills\n    ORDER BY skill_count DESC\n    LIMIT 3\n)\nSELECT \n    AVG(jpf.salary_year_avg) AS overall_avg_salary\nFROM job_postings_fact jpf\nJOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\nJOIN top_skills ts ON sjd.skill_id = (\n    SELECT skill_id FROM skills_dim WHERE skills = ts.skills\n)\nWHERE \n    jpf.job_title_short = 'Data Analyst'\n    AND jpf.salary_year_avg IS NOT NULL\n    AND jpf.job_work_from_home = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1284999966155738,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH top_skills AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n    GROUP BY sd.skills\n    ORDER BY skill_count DESC\n    LIMIT 3\n),\nfiltered_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n        AND sd.skills IN (SELECT skills FROM top_skills)\n)\nSELECT \n    AVG(salary_year_avg) AS overall_avg_salary\nFROM filtered_jobs;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7764170004520565,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH top_skills AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n    GROUP BY sd.skills\n    ORDER BY skill_count DESC\n    LIMIT 3\n),\nfiltered_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN top_skills ts ON sjd.skill_id = (\n        SELECT skill_id FROM skills_dim WHERE skills = ts.skills\n    )\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n)\nSELECT \n    AVG(salary_year_avg) AS overall_avg_salary\nFROM filtered_jobs;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4624580033123493,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH top_skills AS (\n    SELECT \n        skills_dim.skills,\n        COUNT(*) AS skill_count\n    FROM \n        job_postings_fact\n    JOIN \n        skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id\n    JOIN \n        skills_dim ON skills_job_dim.skill_id = skills_dim.skill_id\n    WHERE \n        job_postings_fact.job_title_short = 'Data Analyst'\n        AND job_postings_fact.salary_year_avg IS NOT NULL\n        AND job_postings_fact.job_work_from_home = 1\n    GROUP BY \n        skills_dim.skills\n    ORDER BY \n        skill_count DESC\n    LIMIT 3\n),\nfiltered_jobs AS (\n    SELECT DISTINCT\n        job_postings_fact.job_id,\n        job_postings_fact.salary_year_avg\n    FROM \n        job_postings_fact\n    JOIN \n        skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id\n    JOIN \n        skills_dim ON skills_job_dim.skill_id = skills_dim.skill_id\n    WHERE \n        job_postings_fact.job_title_short = 'Data Analyst'\n        AND job_postings_fact.salary_year_avg IS NOT NULL\n        AND job_postings_fact.job_work_from_home = 1\n        AND skills_dim.skills IN (SELECT skills FROM top_skills)\n)\nSELECT \n    AVG(salary_year_avg) AS overall_avg_salary\nFROM \n    filtered_jobs;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5287079984555021,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH top_skills AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM \n        job_postings_fact jpf\n    JOIN \n        skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN \n        skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n    GROUP BY \n        sd.skills\n    ORDER BY \n        skill_count DESC\n    LIMIT 3\n),\nfiltered_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM \n        job_postings_fact jpf\n    JOIN \n        skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN \n        skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n        AND sd.skills IN (SELECT skills FROM top_skills)\n)\nSELECT \n    AVG(salary_year_avg) AS overall_avg_salary\nFROM \n    filtered_jobs;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7010410045040771,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH top_skills AS (\n    SELECT \n        sd.skills,\n        COUNT(*) AS skill_count\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN skills_dim sd ON sjd.skill_id = sd.skill_id\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n    GROUP BY sd.skills\n    ORDER BY skill_count DESC\n    LIMIT 3\n),\nfiltered_jobs AS (\n    SELECT \n        jpf.job_id,\n        jpf.salary_year_avg\n    FROM job_postings_fact jpf\n    JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id\n    JOIN top_skills ts ON sjd.skill_id = (\n        SELECT skill_id FROM skills_dim WHERE skills = ts.skills\n    )\n    WHERE \n        jpf.job_title_short = 'Data Analyst'\n        AND jpf.salary_year_avg IS NOT NULL\n        AND jpf.job_work_from_home = 1\n)\nSELECT \n    AVG(salary_year_avg) AS overall_avg_salary\nFROM filtered_jobs;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 9634.781500004465
+}

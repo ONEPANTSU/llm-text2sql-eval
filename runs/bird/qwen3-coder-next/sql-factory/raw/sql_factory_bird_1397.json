@@ -1,0 +1,151 @@
+{
+  "task_id": "bird_1397",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_description LIKE '%food%' OR expense_description LIKE '%Food%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_description LIKE '%food%';",
+          "score": 0.6760180995475114,
+          "similarity_max": 0.7479638009049774,
+          "tables_used": [
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_description LIKE '%food%' OR expense_description LIKE '%Food%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_description LIKE '%food%';",
+          "score": 0.6760180995475114,
+          "similarity_max": 0.7479638009049774,
+          "tables_used": [
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE LOWER(expense_description) LIKE '%food%';",
+          "score": 0.6461538461538462,
+          "similarity_max": 0.8076923076923077,
+          "tables_used": [
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_id IN (\n    SELECT expense_id \n    FROM expense e\n    JOIN budget b ON e.link_to_budget = b.budget_id\n    JOIN event ev ON b.link_to_event = ev.event_id\n    WHERE e.expense_description LIKE '%food%' OR e.expense_description LIKE '%Food%'\n);",
+          "score": 1.182983193277311,
+          "similarity_max": 0.6340336134453781,
+          "tables_used": [
+            "ev",
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense e\nJOIN budget b ON e.link_to_budget = b.budget_id\nJOIN event ev ON b.link_to_event = ev.event_id\nWHERE LOWER(e.expense_description) LIKE '%food%' \n  AND ev.event_date < date('now');",
+          "score": 1.1327041866849692,
+          "similarity_max": 0.3345916266300617,
+          "tables_used": [
+            "ev",
+            "budget",
+            "e",
+            "event",
+            "b",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_description LIKE '%food%' OR expense_description LIKE '%Food%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "expense"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(cost) \nFROM expense \nWHERE expense_id IN (\n    SELECT expense_id \n    FROM expense e\n    JOIN budget b ON e.link_to_budget = b.budget_id\n    JOIN event ev ON b.link_to_event = ev.event_id\n    WHERE e.expense_description LIKE '%food%' OR e.expense_description LIKE '%Food%'\n);",
+    "meta": {
+      "score": 1.182983193277311,
+      "similarity_max": 0.6340336134453781,
+      "tables_used": [
+        "ev",
+        "budget",
+        "e",
+        "event",
+        "b",
+        "expense"
+      ],
+      "phase": "gen",
+      "round_idx": 2,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.42
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "task_id": "bird_177",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    t.balance,\n    c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT \n    t.balance AS sum_after_transaction,\n    c.gender AS owner_gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 0.8008928571428572,
+          "similarity_max": 0.7982142857142858,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    t.balance,\n    c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT \n    t.balance AS sum_after_transaction,\n    c.gender AS owner_gender\nFROM trans t\nJOIN account a USING (account_id)\nJOIN disp d USING (account_id)\nJOIN client c USING (client_id)\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 0.8379284274193549,
+          "similarity_max": 0.7241431451612903,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT \n    t.balance AS sum_after_transaction,\n    c.gender AS owner_gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 0.8008928571428572,
+          "similarity_max": 0.7982142857142858,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    t.balance,\n    c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT \n    t.balance AS sum_after_transaction,\n    c.gender AS owner_gender\nFROM trans t\nJOIN account a USING (account_id)\nJOIN disp d USING (account_id)\nJOIN client c USING (client_id)\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+          "score": 0.8379284274193549,
+          "similarity_max": 0.7241431451612903,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT \n    SUM(t.balance) AS total_balance,\n    c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851\nGROUP BY c.gender;",
+          "score": 0.8357742537313434,
+          "similarity_max": 0.7284514925373134,
+          "tables_used": [
+            "disp",
+            "d",
+            "client",
+            "t",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    t.balance,\n    c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE c.client_id = 4 \n  AND t.trans_id = 851;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "d",
+        "client",
+        "t",
+        "a",
+        "c",
+        "account",
+        "trans"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.28
+  }
+}

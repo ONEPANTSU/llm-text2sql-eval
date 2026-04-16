@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1046",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1890.8034580017556,
+  "execution_time_ms": 8.129416994052008,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT defenceTeamWidth\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.545791001874022,
+      "result_signature": "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(defenceTeamWidth) AS average_defence_team_width\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9502500033704564,
+      "result_signature": "082383588334a14f99db6c45632d4893be7fe19f11f4013e7604b5c1616baf10",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT defenceTeamWidth\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8185839978978038,
+      "result_signature": "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT defenceTeamWidth\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7315000038943253,
+      "result_signature": "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT defenceTeamWidth\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8640410014777444,
+      "result_signature": "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT defenceTeamWidth\nFROM Team\nJOIN Team_Attributes ON Team.team_api_id = Team_Attributes.team_api_id\nWHERE Team.team_long_name = 'ADO Den Haag';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446": 5,
+        "082383588334a14f99db6c45632d4893be7fe19f11f4013e7604b5c1616baf10": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 5050.575666005898,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH ado_den_haag AS (\n  SELECT team_api_id\n  FROM Team\n  WHERE team_long_name = 'ADO Den Haag'\n)\nSELECT defenceTeamWidth\nFROM Team_Attributes\nWHERE team_api_id = (SELECT team_api_id FROM ado_den_haag);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.7740420041955076,
+        "result_signature": "e2a7856f6211cf36f5db9cff834e784eac21ed18c50ef20c50e98bf85f4f4446",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6949.593124998501
+}

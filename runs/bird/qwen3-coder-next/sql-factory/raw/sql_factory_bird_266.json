@@ -1,0 +1,141 @@
+{
+  "task_id": "bird_266",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) AS total_carcinogenic_molecules\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) AS total_carcinogenic_molecules\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id) AS total_carcinogenic_molecules\nFROM molecule m\nINNER JOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+          "score": 0.8991228070175439,
+          "similarity_max": 0.8017543859649123,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) AS total_carcinogenic_molecules\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id) AS total_carcinogenic_molecules\nFROM molecule m\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND EXISTS (\n    SELECT 1 \n    FROM atom a \n    WHERE a.molecule_id = m.molecule_id \n    AND a.element = 'C'\n);",
+          "score": 0.9698504983388705,
+          "similarity_max": 0.6602990033222591,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id) AS total_carcinogenic_molecules\nFROM molecule m\nINNER JOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+          "score": 0.8991228070175439,
+          "similarity_max": 0.8017543859649123,
+          "tables_used": [
+            "molecule",
+            "a",
+            "m",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) AS total_carcinogenic_molecules\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.molecule_id BETWEEN 'TR000' AND 'TR030'\nAND a.element = 'C';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "a",
+        "m",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 8.11
+  }
+}

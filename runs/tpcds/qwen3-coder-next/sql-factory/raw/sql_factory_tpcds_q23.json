@@ -1,0 +1,173 @@
+{
+  "task_id": "tpcds_q23",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH sales_by_brand AS (\n    SELECT \n        'store' AS channel,\n        i_brand_id,\n        SUM(ss_quantity * ss_list_price) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    GROUP BY i_brand_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i_brand_id,\n        SUM(cs_quantity * cs_list_price) AS total_sales\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_d...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales",
+            "catalog_sales",
+            "brand_totals",
+            "sales_by_brand",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = d_date_s...",
+          "score": 1.058521397134563,
+          "similarity_max": 0.6829572057308737,
+          "tables_used": [
+            "catalog_sales",
+            "sales",
+            "web_sales",
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH sales_by_brand AS (\n    SELECT \n        'store' AS channel,\n        i_brand_id,\n        SUM(ss_quantity * ss_list_price) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    GROUP BY i_brand_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i_brand_id,\n        SUM(cs_quantity * cs_list_price) AS total_sales\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_d...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales",
+            "catalog_sales",
+            "brand_totals",
+            "sales_by_brand",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = d_date_s...",
+          "score": 1.058521397134563,
+          "similarity_max": 0.6829572057308737,
+          "tables_used": [
+            "catalog_sales",
+            "sales",
+            "web_sales",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH monthly_sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = ...",
+          "score": 1.0577241168062077,
+          "similarity_max": 0.7845517663875843,
+          "tables_used": [
+            "brand_sales",
+            "store_sales",
+            "monthly_sales",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH sales_by_brand AS (\n    SELECT \n        'store' AS channel,\n        i_brand_id,\n        SUM(ss_quantity * ss_list_price) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    GROUP BY i_brand_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i_brand_id,\n        SUM(cs_quantity * cs_list_price) AS total_sales\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_d...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "store_sales",
+            "catalog_sales",
+            "brand_totals",
+            "sales_by_brand",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "WITH sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = d_date_s...",
+          "score": 1.058521397134563,
+          "similarity_max": 0.6829572057308737,
+          "tables_used": [
+            "catalog_sales",
+            "sales",
+            "web_sales",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH monthly_sales AS (\n    SELECT \n        'store' AS channel,\n        ss_item_sk AS item_sk,\n        ss_quantity AS quantity,\n        ss_list_price AS list_price\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    \n    UNION ALL\n    \n    SELECT \n        'catalog' AS channel,\n        cs_item_sk AS item_sk,\n        cs_quantity AS quantity,\n        cs_list_price AS list_price\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = ...",
+          "score": 1.0577241168062077,
+          "similarity_max": 0.7845517663875843,
+          "tables_used": [
+            "brand_sales",
+            "store_sales",
+            "monthly_sales",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH sales_by_brand AS (\n    SELECT \n        'store' AS channel,\n        i_brand_id,\n        SUM(ss_quantity * ss_list_price) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    WHERE d_year = 2000 AND d_moy = 2\n    GROUP BY i_brand_id\n\n    UNION ALL\n\n    SELECT \n        'catalog' AS channel,\n        i_brand_id,\n        SUM(cs_quantity * cs_list_price) AS total_sales\n    FROM catalog_sales\n    JOIN date_dim ON cs_sold_d...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "item",
+        "store_sales",
+        "catalog_sales",
+        "brand_totals",
+        "sales_by_brand",
+        "web_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 38.0
+  }
+}

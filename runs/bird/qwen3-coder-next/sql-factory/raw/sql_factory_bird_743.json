@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_743",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' AND p.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM superhero), 2) AS percentage_self_interested,\n    SUM(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id\nWHERE a.alignment IN ('neutral', 'good');",
+          "score": 1.0138798701298701,
+          "similarity_max": 0.5722402597402597,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' AND p.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM superhero), 2) AS percentage_self_interested,\n    SUM(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id\nWHERE a.alignment IN ('neutral', 'good');",
+          "score": 1.0138798701298701,
+          "similarity_max": 0.5722402597402597,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN a.alignment IN ('neutral', 'good') THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 2) AS percentage_self_interest_or_moral_code,\n    SUM(CASE WHEN a.alignment IN ('neutral', 'good') AND p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+          "score": 0.9492640692640694,
+          "similarity_max": 0.7014718614718614,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' AND p.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM superhero), 2) AS percentage_self_interested,\n    SUM(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id\nWHERE a.alignment IN ('neutral', 'good');",
+          "score": 1.0138798701298701,
+          "similarity_max": 0.5722402597402597,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN a.alignment IN ('neutral', 'good') THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 2) AS percentage_self_interest_or_moral_code,\n    SUM(CASE WHEN a.alignment IN ('neutral', 'good') AND p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+          "score": 0.9492640692640694,
+          "similarity_max": 0.7014718614718614,
+          "tables_used": [
+            "alignment",
+            "a",
+            "s",
+            "p",
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN a.alignment = 'neutral' OR a.alignment = 'good' AND p.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "alignment",
+        "a",
+        "s",
+        "p",
+        "publisher",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.94
+  }
+}

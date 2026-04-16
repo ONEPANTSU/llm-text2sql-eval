@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_546",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4307.759249997616,
+  "execution_time_ms": 420.17699999996694,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1 AND p.AcceptedAnswerId IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 60.566291998839006,
+      "result_signature": "5ad9fbe49a642ece50bb22982a7e1a676fe4cf7522a179f69aa7a52799c29d17",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1 AND p.AnswerCount > 0 AND p.AcceptedAnswerId IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 44.215125002665445,
+      "result_signature": "5ad9fbe49a642ece50bb22982a7e1a676fe4cf7522a179f69aa7a52799c29d17",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 65.64191699726507,
+      "result_signature": "6c446fb1e7047297afdeceacf1be76ac6b7519bbd6534cb677271f691d730dd1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1;  -- Assuming PostTypeId = 1 represents well-finished posts (e.g., questions with accepted answers or final state)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 67.70337500347523,
+      "result_signature": "6c446fb1e7047297afdeceacf1be76ac6b7519bbd6534cb677271f691d730dd1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1; -- Assuming PostTypeId = 1 represents well-finished posts (e.g., questions with accepted answers or closed posts), but since \"well-finished\" is ambiguous and no explicit column indicates this, we interpret it as posts with PostTypeId = 1 (questions) as a reasonable default. If \"well-finished\" refers to a specific condition (e.g., has an accepted answer), the query would need adjustment.",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 65.71704099769704,
+      "result_signature": "6c446fb1e7047297afdeceacf1be76ac6b7519bbd6534cb677271f691d730dd1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT DISTINCT u.DisplayName\nFROM users u\nJOIN posts p ON u.Id = p.OwnerUserId\nWHERE p.PostTypeId = 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "5ad9fbe49a642ece50bb22982a7e1a676fe4cf7522a179f69aa7a52799c29d17": 2,
+        "6c446fb1e7047297afdeceacf1be76ac6b7519bbd6534cb677271f691d730dd1": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1489.6509169993806,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6217.620415998681
+}

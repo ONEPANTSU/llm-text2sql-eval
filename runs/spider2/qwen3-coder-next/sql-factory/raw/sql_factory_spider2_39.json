@@ -1,0 +1,240 @@
+{
+  "task_id": "spider2_39",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number\n),\ngrowth_rate AS (\n    SELECT \n        (SU...",
+          "score": 0.95,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "projected_2021",
+            "monthly_avg_usd",
+            "gr",
+            "co",
+            "cur",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "growth_rate",
+            "sales",
+            "currency",
+            "ordered_avgs",
+            "t"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number\n),\ngrowth_rate AS (\n    SELECT \n        (SU...",
+          "score": 0.95,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "projected_2021",
+            "monthly_avg_usd",
+            "gr",
+            "co",
+            "cur",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "growth_rate",
+            "sales",
+            "currency",
+            "ordered_avgs",
+            "t"
+          ]
+        },
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales,\n        t.calendar_year\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number, t.calendar_year\n)...",
+          "score": 0.6118382352941176,
+          "similarity_max": 0.6763235294117647,
+          "tables_used": [
+            "year_totals",
+            "ms",
+            "growth_factor",
+            "co",
+            "c",
+            "s",
+            "times",
+            "monthly_proj_2021",
+            "avg_usd_per_month",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "gf",
+            "sales",
+            "ranked_avgs",
+            "currency",
+            "t"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number\n),\ngrowth_rate AS (\n    SELECT \n        (SU...",
+          "score": 0.95,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "projected_2021",
+            "monthly_avg_usd",
+            "gr",
+            "co",
+            "cur",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "growth_rate",
+            "sales",
+            "currency",
+            "ordered_avgs",
+            "t"
+          ]
+        },
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales,\n        t.calendar_year\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number, t.calendar_year\n)...",
+          "score": 0.6118382352941176,
+          "similarity_max": 0.6763235294117647,
+          "tables_used": [
+            "year_totals",
+            "ms",
+            "growth_factor",
+            "co",
+            "c",
+            "s",
+            "times",
+            "monthly_proj_2021",
+            "avg_usd_per_month",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "gf",
+            "sales",
+            "ranked_avgs",
+            "currency",
+            "t"
+          ]
+        },
+        {
+          "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales,\n        t.calendar_year\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number, t.calendar_year\n)...",
+          "score": 0.5955266955266956,
+          "similarity_max": 0.708946608946609,
+          "tables_used": [
+            "year_totals",
+            "ms",
+            "growth_factor",
+            "co",
+            "c",
+            "s",
+            "times",
+            "monthly_proj_2021",
+            "avg_usd_per_month",
+            "countries",
+            "monthly_sales_2019_2020",
+            "customers",
+            "gf",
+            "sales",
+            "currency",
+            "ordered_avgs",
+            "t"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH monthly_sales_2019_2020 AS (\n    SELECT \n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE co.country_name = 'France'\n      AND t.calendar_year IN (2019, 2020)\n      AND s.promo_id = 1\n      AND s.channel_id = 1\n    GROUP BY t.calendar_month_number\n),\ngrowth_rate AS (\n    SELECT \n        (SU...",
+    "meta": {
+      "score": 0.95,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ms",
+        "projected_2021",
+        "monthly_avg_usd",
+        "gr",
+        "co",
+        "cur",
+        "s",
+        "c",
+        "times",
+        "countries",
+        "monthly_sales_2019_2020",
+        "customers",
+        "growth_rate",
+        "sales",
+        "currency",
+        "ordered_avgs",
+        "t"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.4,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: s.promo_total_id",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 3.98
+  }
+}

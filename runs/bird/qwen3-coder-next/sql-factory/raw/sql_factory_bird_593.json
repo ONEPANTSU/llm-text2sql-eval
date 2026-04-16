@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_593",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location LIKE '%New York%' \n  AND b.Name IN ('teacher', 'supporter');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location LIKE '%New York%' \n  AND b.Name IN ('teacher', 'supporter');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT u.Id)  \nFROM users u  \nINNER JOIN badges b1 ON u.Id = b1.UserId AND b1.Name = 'teacher'  \nINNER JOIN badges b2 ON u.Id = b2.UserId AND b2.Name = 'supporter'  \nWHERE u.Location LIKE '%New York%';",
+          "score": 1.0570754716981132,
+          "similarity_max": 0.5858490566037735,
+          "tables_used": [
+            "u",
+            "b2",
+            "users",
+            "b1",
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT u.Id) \nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nWHERE u.Location LIKE '%New York%' \n  AND b.Name IN ('teacher', 'supporter');",
+          "score": 0.8966666666666667,
+          "similarity_max": 0.8066666666666666,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location LIKE '%New York%' \n  AND b.Name IN ('teacher', 'supporter');",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "badges",
+            "users",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)  \nFROM (\n    SELECT u.Id  \n    FROM users u  \n    INNER JOIN badges b1 ON u.Id = b1.UserId AND b1.Name = 'teacher'  \n    INNER JOIN badges b2 ON u.Id = b2.UserId AND b2.Name = 'supporter'  \n    WHERE u.Location LIKE '%New York%'  \n    GROUP BY u.Id  \n);",
+          "score": 1.0587096774193547,
+          "similarity_max": 0.7825806451612903,
+          "tables_used": [
+            "u",
+            "b2",
+            "users",
+            "b1",
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT u.Id)  \nFROM users u  \nINNER JOIN badges b1 ON u.Id = b1.UserId AND b1.Name = 'teacher'  \nINNER JOIN badges b2 ON u.Id = b2.UserId AND b2.Name = 'supporter'  \nWHERE u.Location LIKE '%New York%';",
+          "score": 1.0570754716981132,
+          "similarity_max": 0.5858490566037735,
+          "tables_used": [
+            "u",
+            "b2",
+            "users",
+            "b1",
+            "badges"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location LIKE '%New York%' \n  AND b.Name IN ('teacher', 'supporter');",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "badges",
+        "users",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.84
+  }
+}

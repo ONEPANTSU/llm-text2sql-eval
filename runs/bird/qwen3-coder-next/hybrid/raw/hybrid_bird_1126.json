@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1126",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7896.440834003442,
+  "execution_time_ms": 4478724.482833997,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Country c ON pa.player_fifa_api_id = c.id\nWHERE c.name = 'Belgium';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 60.0019169942243,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Country c ON p.country_id = c.id\nWHERE c.name = 'Belgium';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: p.country_id",
+      "exec_time_ms": 0.44883300142828375,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Country c ON pa.player_fifa_api_id = c.id\nWHERE c.name = 'Belgium';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.89441600139253,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Country c ON pa.player_fifa_api_id = c.id\nWHERE c.name = 'Belgium';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 34.03362500102958,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Country c ON c.id = (\n    SELECT country_id\n    FROM Match\n    WHERE home_player_1 = p.player_api_id\n       OR home_player_2 = p.player_api_id\n       OR home_player_3 = p.player_api_id\n       OR home_player_4 = p.player_api_id\n       OR home_player_5 = p.player_api_id\n       OR home_player_6 = p.player_api_id\n       OR home_player_7 = p.player_api_id\n       OR home_player_8 = p.player_api_id\n       OR home_player_9 = p.player_api_id\n       OR home_player_10 = p.player_api_id\n       OR home_player_11 = p.player_api_id\n       OR away_player_1 = p.player_api_id\n       OR away_player_2 = p.player_api_id\n       OR away_player_3 = p.player_api_id\n       OR away_player_4 = p.player_api_id\n       OR away_player_5 = p.player_api_id\n       OR away_player_6 = p.player_api_id\n       OR away_player_7 = p.player_api_id\n       OR away_player_8 = p.player_api_id\n       OR away_player_9 = p.player_api_id\n       OR away_player_10 = p.player_api_id\n       OR away_player_11 = p.player_api_id\n    LIMIT 1\n)\nWHERE c.name = 'Belgium';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4478595.1752080005,
+      "result_signature": "7b9eff9f693f60535c247687c9833fb9947f3dfc9163f0f1aeb98c71a396ae9c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Country c ON pa.player_fifa_api_id = c.id\nWHERE c.name = 'Belgium';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3,
+        "7b9eff9f693f60535c247687c9833fb9947f3dfc9163f0f1aeb98c71a396ae9c": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 15590.020916002686,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4502211.214791998
+}

@@ -1,0 +1,159 @@
+{
+  "task_id": "bird_484",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(convertedManaCost)\n    FROM cards\n    WHERE setCode = (\n      SELECT code\n      FROM sets\n      WHERE name = 'Coldsnap'\n    )\n  );",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(convertedManaCost)\n    FROM cards\n    WHERE setCode = (\n      SELECT code\n      FROM sets\n      WHERE name = 'Coldsnap'\n    )\n  );",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(c2.convertedManaCost)\n    FROM cards c2\n    JOIN sets s2 ON c2.setCode = s2.code\n    WHERE s2.name = 'Coldsnap'\n  );",
+          "score": 0.998010849909584,
+          "similarity_max": 0.8039783001808318,
+          "tables_used": [
+            "s2",
+            "fd",
+            "cards",
+            "s",
+            "c",
+            "c2",
+            "foreign_data",
+            "sets"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(convertedManaCost)\n    FROM cards\n    WHERE setCode = (\n      SELECT code\n      FROM sets\n      WHERE name = 'Coldsnap'\n    )\n  );",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(c2.convertedManaCost)\n    FROM cards c2\n    JOIN sets s2 ON c2.setCode = s2.code\n    WHERE s2.name = 'Coldsnap'\n  );",
+          "score": 0.998010849909584,
+          "similarity_max": 0.8039783001808318,
+          "tables_used": [
+            "s2",
+            "fd",
+            "cards",
+            "s",
+            "c",
+            "c2",
+            "foreign_data",
+            "sets"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT fd.name\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE s.name = 'Coldsnap'\n  AND fd.language = 'Italian'\n  AND c.convertedManaCost = (\n    SELECT MAX(convertedManaCost)\n    FROM cards\n    WHERE setCode = (\n      SELECT code\n      FROM sets\n      WHERE name = 'Coldsnap'\n    )\n  );",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "fd",
+        "foreign_data",
+        "sets",
+        "cards",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"set\": syntax error",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: s.setCode",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 115.27
+  }
+}

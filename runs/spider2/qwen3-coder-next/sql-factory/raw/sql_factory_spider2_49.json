@@ -1,0 +1,200 @@
+{
+  "task_id": "spider2_49",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_transactions",
+            "cm",
+            "all_months",
+            "combined",
+            "customer_transactions",
+            "customer_months",
+            "c",
+            "m",
+            "mt",
+            "all_customers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_transactions",
+            "cm",
+            "all_months",
+            "combined",
+            "customer_transactions",
+            "customer_months",
+            "c",
+            "m",
+            "mt",
+            "all_customers"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months spanning the transaction history\nmonth_series AS (\n    SELECT strftime('%Y-%m', MIN(txn_date)) AS month_val\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_val, '+1 month'))\n    FROM month_series\n    WHERE month_val < (SELECT strftime('%Y-%m', MAX(txn_date)) FROM customer_transactions)\n),\n-- Get unique customers\ncustomers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Create full customer-month gri...",
+          "score": 1.011002380322666,
+          "similarity_max": 0.577995239354668,
+          "tables_used": [
+            "ms",
+            "all_periods",
+            "customer_transactions",
+            "cust",
+            "merged",
+            "ap",
+            "month_series",
+            "monthly_nets",
+            "mn",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+          "score": 0.9821939888119846,
+          "similarity_max": 0.6356120223760311,
+          "tables_used": [
+            "ct",
+            "cm",
+            "all_months",
+            "customer_transactions",
+            "with_running_balance",
+            "customer_months",
+            "c",
+            "m",
+            "all_customers",
+            "monthly_changes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_transactions",
+            "cm",
+            "all_months",
+            "combined",
+            "customer_transactions",
+            "customer_months",
+            "c",
+            "m",
+            "mt",
+            "all_customers"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months spanning the transaction history\nmonth_series AS (\n    SELECT strftime('%Y-%m', MIN(txn_date)) AS month_val\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_val, '+1 month'))\n    FROM month_series\n    WHERE month_val < (SELECT strftime('%Y-%m', MAX(txn_date)) FROM customer_transactions)\n),\n-- Get unique customers\ncustomers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Create full customer-month gri...",
+          "score": 1.011002380322666,
+          "similarity_max": 0.577995239354668,
+          "tables_used": [
+            "ms",
+            "all_periods",
+            "customer_transactions",
+            "cust",
+            "merged",
+            "ap",
+            "month_series",
+            "monthly_nets",
+            "mn",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+          "score": 0.9821939888119846,
+          "similarity_max": 0.6356120223760311,
+          "tables_used": [
+            "ct",
+            "cm",
+            "all_months",
+            "customer_transactions",
+            "with_running_balance",
+            "customer_months",
+            "c",
+            "m",
+            "all_customers",
+            "monthly_changes"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH RECURSIVE \n-- Generate all months from the earliest to latest transaction month\nall_months AS (\n    SELECT MIN(strftime('%Y-%m', txn_date)) AS month_start\n    FROM customer_transactions\n    UNION ALL\n    SELECT strftime('%Y-%m', date(month_start, '+1 month'))\n    FROM all_months\n    WHERE month_start < (SELECT MAX(strftime('%Y-%m', txn_date)) FROM customer_transactions)\n),\n-- Get all distinct customers\nall_customers AS (\n    SELECT DISTINCT customer_id FROM customer_transactions\n),\n-- Cross...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "monthly_transactions",
+        "cm",
+        "all_months",
+        "combined",
+        "customer_transactions",
+        "customer_months",
+        "c",
+        "m",
+        "mt",
+        "all_customers"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.09
+  }
+}

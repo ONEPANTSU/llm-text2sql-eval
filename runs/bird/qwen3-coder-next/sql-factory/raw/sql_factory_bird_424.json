@@ -1,0 +1,73 @@
+{
+  "task_id": "bird_424",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT CAST(SUM(CASE WHEN fd.text IS NULL OR fd.text = '' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS proportion\nFROM cards c\nLEFT JOIN foreign_data fd ON c.id = fd.uuid;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.text IS NULL OR foreign_data.text = '' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS proportion\nFROM \n    cards\nLEFT JOIN \n    foreign_data ON cards.uuid = foreign_data.uuid\nWHERE \n    foreign_data.language = 'en';",
+          "score": 0.8160905091137651,
+          "similarity_max": 0.7678189817724701,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT CAST(SUM(CASE WHEN fd.text IS NULL OR fd.text = '' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS proportion\nFROM cards c\nLEFT JOIN foreign_data fd ON c.id = fd.uuid;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "foreign_data",
+        "fd",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1564597.44
+  }
+}

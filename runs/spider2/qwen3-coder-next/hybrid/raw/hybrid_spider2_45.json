@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_45",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 11657.826291004312,
+  "execution_time_ms": 25.98874999966938,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        ldd.month_name AS month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim ldd ON c.insert_date = ldd.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), ldd.month_name\n),\nyearly_monthly_with_running AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyear_over_year AS (\n    SELECT \n        ymr.year,\n        ymr.month_name,\n        ymr.monthly_total,\n        ymr.cumulative_running_total,\n        LAG(ymr.monthly_total) OVER (PARTITION BY ymr.month_name ORDER BY ymr.year) AS prev_year_monthly_total,\n        LAG(ymr.cumulative_running_total) OVER (PARTITION BY ymr.month_name ORDER BY ymr.year) AS prev_year_cumulative_running_total\n    FROM yearly_monthly_with_running ymr\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_year_monthly_total IS NULL OR prev_year_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_year_monthly_total) * 100.0 / prev_year_monthly_total, 2)\n    END AS monthly_yoy_growth_pct,\n    CASE \n        WHEN prev_year_cumulative_running_total IS NULL OR prev_year_cumulative_running_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_year_cumulative_running_total) * 100.0 / prev_year_cumulative_running_total, 2)\n    END AS cumulative_yoy_growth_pct\nFROM year_over_year\nWHERE year IN ('2022', '2023')\nORDER BY year ASC, month_name ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.7030420023947954,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        ldd.month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim ldd ON c.insert_date = ldd.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), ldd.month_name\n),\nyear_month_totals AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyear_over_year AS (\n    SELECT \n        ymt.year,\n        ymt.month_name,\n        ymt.monthly_total,\n        ymt.cumulative_running_total,\n        LAG(ymt.monthly_total) OVER (PARTITION BY ymt.month_name ORDER BY ymt.year) AS prev_monthly_total,\n        LAG(ymt.cumulative_running_total) OVER (PARTITION BY ymt.month_name ORDER BY ymt.year) AS prev_cumulative_running_total\n    FROM year_month_totals ymt\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_monthly_total IS NULL OR prev_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_monthly_total) * 100.0 / prev_monthly_total, 2)\n    END AS monthly_growth_pct,\n    CASE \n        WHEN prev_cumulative_running_total IS NULL OR prev_cumulative_running_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_cumulative_running_total) * 100.0 / prev_cumulative_running_total, 2)\n    END AS cumulative_growth_pct\nFROM year_over_year\nWHERE year IN ('2022', '2023')\nORDER BY year, month_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6628749979427084,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        l.month_name AS month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim l ON c.insert_date = l.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), l.month_name\n),\nrunning_totals AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyoy_growth AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        cumulative_running_total,\n        LAG(monthly_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_monthly_total,\n        LAG(cumulative_running_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_cumulative_running_total\n    FROM running_totals\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_monthly_total IS NULL OR prev_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_monthly_total) * 100.0 / prev_monthly_total, 2)\n    END AS monthly_yoy_growth_pct,\n    CASE \n        WHEN prev_cumulative_running_total IS NULL OR prev_cumulative_running_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_cumulative_running_total) * 100.0 / prev_cumulative_running_total, 2)\n    END AS cumulative_yoy_growth_pct\nFROM yoy_growth\nWHERE year IN ('2022', '2023')\nORDER BY year ASC, month_name ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.44004200026392937,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        ldd.month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim ldd ON c.insert_date = ldd.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), ldd.month_name\n),\nyear_month_running AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyoy_growth AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        cumulative_running_total,\n        LAG(monthly_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_monthly_total,\n        LAG(cumulative_running_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_cumulative_total\n    FROM year_month_running\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_year_monthly_total IS NULL OR prev_year_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_year_monthly_total) * 100.0 / prev_year_monthly_total, 2)\n    END AS yoy_growth_monthly_pct,\n    CASE \n        WHEN prev_year_cumulative_total IS NULL OR prev_year_cumulative_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_year_cumulative_total) * 100.0 / prev_year_cumulative_total, 2)\n    END AS yoy_growth_cumulative_pct\nFROM yoy_growth\nWHERE year IN ('2022', '2023')\nORDER BY year, month_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3692079917527735,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        ldd.month_name AS month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim ldd ON c.insert_date = ldd.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), ldd.month_name\n),\nyear_month_data AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyoy_growth AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        cumulative_running_total,\n        LAG(monthly_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_monthly_total,\n        LAG(cumulative_running_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_cumulative_total\n    FROM year_month_data\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_year_monthly_total IS NULL OR prev_year_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_year_monthly_total) * 100.0 / prev_year_monthly_total, 2)\n    END AS monthly_yoy_growth_pct,\n    CASE \n        WHEN prev_year_cumulative_total IS NULL OR prev_year_cumulative_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_year_cumulative_total) * 100.0 / prev_year_cumulative_total, 2)\n    END AS cumulative_yoy_growth_pct\nFROM yoy_growth\nWHERE year IN ('2022', '2023')\nORDER BY year ASC, month_name ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3584590012906119,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH monthly_counts AS (\n    SELECT \n        strftime('%Y', c.insert_date) AS year,\n        ldd.month_name AS month_name,\n        COUNT(c.city_id) AS monthly_total\n    FROM cities c\n    JOIN legislation_date_dim ldd ON c.insert_date = ldd.date\n    WHERE strftime('%Y', c.insert_date) IN ('2021', '2022', '2023')\n    GROUP BY strftime('%Y', c.insert_date), ldd.month_name\n),\nyear_month_data AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        SUM(monthly_total) OVER (\n            PARTITION BY month_name \n            ORDER BY year \n            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n        ) AS cumulative_running_total\n    FROM monthly_counts\n),\nyoy_growth AS (\n    SELECT \n        year,\n        month_name,\n        monthly_total,\n        cumulative_running_total,\n        LAG(monthly_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_monthly_total,\n        LAG(cumulative_running_total) OVER (PARTITION BY month_name ORDER BY year) AS prev_year_cumulative_total\n    FROM year_month_data\n)\nSELECT \n    year,\n    month_name,\n    monthly_total,\n    cumulative_running_total,\n    CASE \n        WHEN prev_year_monthly_total IS NULL OR prev_year_monthly_total = 0 THEN NULL\n        ELSE ROUND((monthly_total - prev_year_monthly_total) * 100.0 / prev_year_monthly_total, 2)\n    END AS monthly_yoy_growth_pct,\n    CASE \n        WHEN prev_year_cumulative_total IS NULL OR prev_year_cumulative_total = 0 THEN NULL\n        ELSE ROUND((cumulative_running_total - prev_year_cumulative_total) * 100.0 / prev_year_cumulative_total, 2)\n    END AS cumulative_yoy_growth_pct\nFROM yoy_growth\nWHERE year IN ('2022', '2023')\nORDER BY year ASC, month_name ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 11683.934250002494
+}

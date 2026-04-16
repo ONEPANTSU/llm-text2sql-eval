@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_95",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4847.300959008862,
+  "execution_time_ms": 38.146374994539656,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH RECURSIVE packaging_tree AS (\n  SELECT \n    packaging_id,\n    contains_id,\n    qty,\n    qty AS total_qty\n  FROM packaging_relations\n  UNION ALL\n  SELECT \n    pt.packaging_id,\n    pr.contains_id,\n    pr.qty,\n    pt.total_qty * pr.qty AS total_qty\n  FROM packaging_tree pt\n  JOIN packaging_relations pr ON pt.contains_id = pr.packaging_id\n),\nleaf_items AS (\n  SELECT \n    packaging_id,\n    contains_id AS leaf_id,\n    total_qty\n  FROM packaging_tree\n  WHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n)\nSELECT \n  AVG(total_qty) AS avg_total_quantity\nFROM leaf_items;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.444207992288284,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH RECURSIVE expanded_packaging AS (\n    SELECT packaging_id, contains_id, qty, 1 AS level\n    FROM packaging_relations\n    UNION ALL\n    SELECT ep.packaging_id, pr.contains_id, ep.qty * pr.qty, ep.level + 1\n    FROM expanded_packaging ep\n    JOIN packaging_relations pr ON ep.contains_id = pr.packaging_id\n),\nleaf_items AS (\n    SELECT ep.packaging_id, ep.contains_id AS leaf_id, ep.qty AS total_qty\n    FROM expanded_packaging ep\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.packaging_id = ep.contains_id\n    )\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM leaf_items;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8025410061236471,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT packaging_id, contains_id, qty, qty AS total_qty\n  FROM packaging_relations\n  WHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n  UNION ALL\n  SELECT ep.packaging_id, pr.contains_id, pr.qty, ep.total_qty * pr.qty AS total_qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.contains_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging\nWHERE contains_id NOT IN (SELECT packaging_id FROM packaging_relations);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.39820800884626806,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH RECURSIVE expanded_packaging AS (\n  -- Base case: leaf items (items that are not containers, i.e., not in packaging_id)\n  SELECT pr.contains_id AS item_id, pr.qty AS total_qty\n  FROM packaging_relations pr\n  WHERE pr.contains_id NOT IN (SELECT packaging_id FROM packaging_relations)\n  \n  UNION ALL\n  \n  -- Recursive case: expand containers\n  SELECT pr.packaging_id AS item_id, ep.total_qty * pr.qty AS total_qty\n  FROM packaging_relations pr\n  JOIN expanded_packaging ep ON pr.contains_id = ep.item_id\n),\nfinal_packaging_combinations AS (\n  -- Get all root packaging items (those that are not contained in any other packaging)\n  SELECT p.id AS root_id, ep.item_id, ep.total_qty\n  FROM packaging p\n  JOIN packaging_relations pr ON p.id = pr.packaging_id\n  JOIN expanded_packaging ep ON pr.contains_id = ep.item_id\n  WHERE p.id NOT IN (SELECT contains_id FROM packaging_relations)\n)\nSELECT AVG(total_qty) AS avg_total_quantity\nFROM (\n  SELECT root_id, SUM(total_qty) AS total_qty\n  FROM final_packaging_combinations\n  GROUP BY root_id\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5373330059228465,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT \n    packaging_id AS root_id,\n    contains_id AS leaf_id,\n    qty AS total_qty\n  FROM packaging_relations\n  UNION ALL\n  SELECT \n    ep.root_id,\n    pr.contains_id AS leaf_id,\n    ep.total_qty * pr.qty AS total_qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.leaf_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging\nWHERE leaf_id NOT IN (SELECT packaging_id FROM packaging_relations);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.35512499744072556,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH RECURSIVE expanded_packaging AS (\n  SELECT \n    packaging_id AS root_id,\n    contains_id AS leaf_id,\n    qty AS total_qty\n  FROM packaging_relations\n  UNION ALL\n  SELECT \n    ep.root_id,\n    pr.contains_id AS leaf_id,\n    ep.total_qty * pr.qty AS total_qty\n  FROM expanded_packaging ep\n  JOIN packaging_relations pr ON ep.leaf_id = pr.packaging_id\n)\nSELECT AVG(total_qty) AS average_total_quantity\nFROM expanded_packaging\nWHERE leaf_id NOT IN (SELECT packaging_id FROM packaging_relations);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4885.510249994695
+}

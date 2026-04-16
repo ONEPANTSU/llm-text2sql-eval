@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_461",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1676.3629159977427,
+  "execution_time_ms": 332.40837499761255,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT name\nFROM cards\nWHERE frameVersion = '2003'\nORDER BY convertedManaCost DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 252.91933299740776,
+      "result_signature": "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT name\nFROM cards\nWHERE frameVersion = '2003'\nORDER BY convertedManaCost DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.960125006444287,
+      "result_signature": "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT name FROM cards WHERE frameVersion = 2003 ORDER BY convertedManaCost DESC LIMIT 3",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.880374998843763,
+      "result_signature": "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT name\nFROM cards\nWHERE frameVersion = '2003'\nORDER BY convertedManaCost DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.540624994784594,
+      "result_signature": "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT name\nFROM cards\nWHERE frameVersion = '2003'\nORDER BY convertedManaCost DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.829625001875684,
+      "result_signature": "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT name\nFROM cards\nWHERE frameVersion = '2003'\nORDER BY convertedManaCost DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d8ed77d734b47751c3cc458ec072fb6a57a58b98b0e6c38125efa8c8006325cd": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2008.813790998829
+}

@@ -1,0 +1,23 @@
+{
+  "benches": [
+    {
+      "bench": "tpcds",
+      "total": 99,
+      "executed": 99,
+      "skipped": 0,
+      "gold_failed": 0,
+      "pred_failed": 77,
+      "ex_correct": 5,
+      "compared": 22
+    }
+  ],
+  "overall": {
+    "total": 99,
+    "executed": 99,
+    "skipped": 0,
+    "gold_failed": 0,
+    "pred_failed": 77,
+    "ex_correct": 5,
+    "compared": 22
+  }
+}

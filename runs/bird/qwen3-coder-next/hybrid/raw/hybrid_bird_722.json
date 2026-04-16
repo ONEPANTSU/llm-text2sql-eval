@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_722",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1389.054915998713,
+  "execution_time_ms": 1.882291995570995,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT c.colour\nFROM superhero s\nJOIN colour c ON s.skin_colour_id = c.id\nWHERE s.superhero_name = 'Apocalypse';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9489579970249906,
+      "result_signature": "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.colour\nFROM superhero s\nJOIN colour c ON s.skin_colour_id = c.id\nWHERE s.superhero_name = 'Apocalypse';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.27408300229581073,
+      "result_signature": "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT colour.colour\nFROM superhero\nJOIN colour ON superhero.skin_colour_id = colour.id\nWHERE superhero.superhero_name = 'Apocalypse'\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.15458399866474792,
+      "result_signature": "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT colour.colour\nFROM superhero\nJOIN colour ON superhero.skin_colour_id = colour.id\nWHERE superhero.superhero_name = 'Apocalypse';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.17070899775717407,
+      "result_signature": "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT colour.colour\nFROM superhero\nJOIN colour ON superhero.skin_colour_id = colour.id\nWHERE superhero.superhero_name = 'Apocalypse';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.164791003044229,
+      "result_signature": "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT colour.colour\nFROM superhero\nJOIN colour ON superhero.skin_colour_id = colour.id\nWHERE superhero.superhero_name = 'Apocalypse'\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "cb18f9372ca062a2b11c1391f6634b43f42d5463202a58ed80a31db0a6ea1b43": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1391.0054169973591
+}

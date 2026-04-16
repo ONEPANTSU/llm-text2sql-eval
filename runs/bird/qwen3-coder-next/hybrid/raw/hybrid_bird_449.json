@@ -1,0 +1,139 @@
+{
+  "task_id": "bird_449",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 2,
+  "generation_time_ms": 1548.579875001451,
+  "execution_time_ms": 729.265583002416,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT fd.language, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'azorius';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 469.9568750002072,
+      "result_signature": "e859f204a376dfd0912d3dff53fb4ac74fed5c8f4d5295583cfc13ffe9e23e07",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT foreign_data.language, foreign_data.type\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.watermark = 'azorius';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 47.38358299800893,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT foreign_data.language, foreign_data.type\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE cards.watermark = 'azorius';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 45.4283340004622,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT fd.language, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.watermark = 'azorius';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 130.00779199501267,
+      "result_signature": "e859f204a376dfd0912d3dff53fb4ac74fed5c8f4d5295583cfc13ffe9e23e07",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT fd.language, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Azorius';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 31.03091700177174,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT fd.language, fd.type\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Azorius';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e859f204a376dfd0912d3dff53fb4ac74fed5c8f4d5295583cfc13ffe9e23e07": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1412.256958996295,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3690.154916999745
+}

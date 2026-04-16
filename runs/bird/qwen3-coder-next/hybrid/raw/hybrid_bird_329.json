@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_329",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1538.6790000047768,
+  "execution_time_ms": 23.66091599833453,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.004459002928343,
+      "result_signature": "acf0039d5ec4808df81c2dcad0c507486f40ce00fa88a795f2f5543ddc9362c5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nWHERE m.label LIKE '%carcinogen%'\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2259170038742013,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.715959003078751,
+      "result_signature": "acf0039d5ec4808df81c2dcad0c507486f40ce00fa88a795f2f5543ddc9362c5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.380958998808637,
+      "result_signature": "acf0039d5ec4808df81c2dcad0c507486f40ce00fa88a795f2f5543ddc9362c5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.124708997551352,
+      "result_signature": "acf0039d5ec4808df81c2dcad0c507486f40ce00fa88a795f2f5543ddc9362c5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT m.label\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nGROUP BY m.molecule_id, m.label\nORDER BY COUNT(a.molecule_id) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "acf0039d5ec4808df81c2dcad0c507486f40ce00fa88a795f2f5543ddc9362c5": 4,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      1
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1499.8048749985173,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3062.3463750016526
+}

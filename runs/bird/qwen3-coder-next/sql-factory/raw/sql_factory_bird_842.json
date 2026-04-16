@@ -1,0 +1,142 @@
+{
+  "task_id": "bird_842",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero AS s\nJOIN alignment AS a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 0.9177777777777778,
+          "similarity_max": 0.5644444444444444,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero \nWHERE alignment_id IN (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 0.6765217391304349,
+          "similarity_max": 0.8469565217391304,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "alignment",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height_cm) \nFROM superhero AS s\nJOIN alignment AS a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 0.9177777777777778,
+          "similarity_max": 0.5644444444444444,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(s.height_cm)\nFROM superhero s\nINNER JOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 0.8839285714285715,
+          "similarity_max": 0.8321428571428571,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(height_cm) \nFROM superhero \nWHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "alignment",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.41
+  }
+}

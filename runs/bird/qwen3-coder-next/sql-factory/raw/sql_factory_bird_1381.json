@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1381",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nHAVING COUNT(a.link_to_event) > 7;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nHAVING COUNT(a.link_to_event) > 7;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id\nHAVING COUNT(*) > 7;",
+          "score": 0.916260162601626,
+          "similarity_max": 0.767479674796748,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id\nHAVING COUNT(a.link_to_event) > 7;",
+          "score": 0.8834896810506567,
+          "similarity_max": 0.8330206378986866,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nHAVING COUNT(a.link_to_event) > 7;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id\nHAVING COUNT(*) > 7;",
+          "score": 0.916260162601626,
+          "similarity_max": 0.767479674796748,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id\nHAVING COUNT(a.link_to_event) > 7;",
+          "score": 0.8834896810506567,
+          "similarity_max": 0.8330206378986866,
+          "tables_used": [
+            "member",
+            "attendance",
+            "a",
+            "m"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nHAVING COUNT(a.link_to_event) > 7;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "member",
+        "attendance",
+        "a",
+        "m"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.78
+  }
+}

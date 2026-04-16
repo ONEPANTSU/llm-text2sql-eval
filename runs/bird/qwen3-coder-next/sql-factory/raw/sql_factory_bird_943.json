@@ -1,0 +1,172 @@
+{
+  "task_id": "bird_943",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = total_laps.total_laps_in_race THEN 1 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS total_laps_in_race\n    FROM lapTimes\n    WHERE raceId = (SELECT raceId FROM races WHERE year = 2008 AND name = 'Australian Grand Prix')\n    GROUP BY raceId\n) total_laps ON r.raceId = total_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN r.laps = (SELECT MAX(lap) FROM lapTimes WHERE raceId = r.raceId) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 0.9294547872340426,
+          "similarity_max": 0.6410904255319149,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = total_laps.total_laps_in_race THEN 1 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS total_laps_in_race\n    FROM lapTimes\n    WHERE raceId = (SELECT raceId FROM races WHERE year = 2008 AND name = 'Australian Grand Prix')\n    GROUP BY raceId\n) total_laps ON r.raceId = total_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = max_laps.max_lap_count THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS max_lap_count\n    FROM lapTimes\n    GROUP BY raceId\n) max_laps ON r.raceId = max_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 0.9719429347826087,
+          "similarity_max": 0.7561141304347826,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN r.laps = (SELECT MAX(lap) FROM lapTimes WHERE raceId = r.raceId) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 0.9294547872340426,
+          "similarity_max": 0.6410904255319149,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = total_laps.total_laps_in_race THEN 1 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS total_laps_in_race\n    FROM lapTimes\n    WHERE raceId = (SELECT raceId FROM races WHERE year = 2008 AND name = 'Australian Grand Prix')\n    GROUP BY raceId\n) total_laps ON r.raceId = total_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = max_laps.max_lap_count THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS max_lap_count\n    FROM lapTimes\n    GROUP BY raceId\n) max_laps ON r.raceId = max_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 0.9719429347826087,
+          "similarity_max": 0.7561141304347826,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN r.laps = (SELECT MAX(lap) FROM lapTimes WHERE raceId = r.raceId) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+          "score": 0.9294547872340426,
+          "similarity_max": 0.6410904255319149,
+          "tables_used": [
+            "lapTimes",
+            "r",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN r.laps = total_laps.total_laps_in_race THEN 1 END) AS REAL) * 100 / COUNT(*) AS completion_rate\nFROM results r\nJOIN races ra ON r.raceId = ra.raceId\nJOIN (\n    SELECT raceId, MAX(lap) AS total_laps_in_race\n    FROM lapTimes\n    WHERE raceId = (SELECT raceId FROM races WHERE year = 2008 AND name = 'Australian Grand Prix')\n    GROUP BY raceId\n) total_laps ON r.raceId = total_laps.raceId\nWHERE ra.year = 2008 AND ra.name = 'Australian Grand Prix';",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "lapTimes",
+        "r",
+        "ra",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 18.59
+  }
+}

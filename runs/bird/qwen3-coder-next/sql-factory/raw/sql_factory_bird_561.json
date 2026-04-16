@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_561",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nORDER BY c.Score DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE c.Score = (\n    SELECT MAX(Score)\n    FROM comments\n)",
+          "score": 1.0279411764705881,
+          "similarity_max": 0.5441176470588236,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nORDER BY c.Score DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE c.Score = (\n    SELECT MAX(Score)\n    FROM comments\n)",
+          "score": 1.0279411764705881,
+          "similarity_max": 0.5441176470588236,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE c.Score = (SELECT MAX(Score) FROM comments)\nLIMIT 1;",
+          "score": 0.8011904761904762,
+          "similarity_max": 0.7976190476190476,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nORDER BY c.Score DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE c.Score = (\n    SELECT MAX(Score)\n    FROM comments\n)",
+          "score": 1.0279411764705881,
+          "similarity_max": 0.5441176470588236,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE c.Score = (SELECT MAX(Score) FROM comments)\nLIMIT 1;",
+          "score": 0.8011904761904762,
+          "similarity_max": 0.7976190476190476,
+          "tables_used": [
+            "posts",
+            "p",
+            "comments",
+            "c"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT p.Title\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nORDER BY c.Score DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "posts",
+        "p",
+        "comments",
+        "c"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 93.5
+  }
+}

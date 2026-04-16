@@ -1,0 +1,180 @@
+{
+  "task_id": "bird_1399",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7878.22445799975,
+  "execution_time_ms": 10.254167005768977,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(*) > 0 THEN 'Yes' \n        ELSE 'No' \n    END AS attended\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE m.first_name = 'Maya' \n  AND m.last_name = 'Mclean' \n  AND e.event_name = 'Women''s Soccer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.3544580001034774,
+      "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT 1\nFROM attendance\nJOIN member ON attendance.link_to_member = member.member_id\nJOIN event ON attendance.link_to_event = event.event_id\nWHERE member.first_name = 'Maya'\n  AND member.last_name = 'Mclean'\n  AND event.event_name = 'Women''s Soccer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.285499995399732,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CASE \n        WHEN COUNT(*) > 0 THEN 'Yes' \n        ELSE 'No' \n    END AS attended\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE m.first_name = 'Maya' \n  AND m.last_name = 'Mclean' \n  AND e.event_name = 'Women''s Soccer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8569589990656823,
+      "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT 1\nFROM member\nJOIN attendance ON member.member_id = attendance.link_to_member\nJOIN event ON attendance.link_to_event = event.event_id\nWHERE member.first_name = 'Maya'\n  AND member.last_name = 'Mclean'\n  AND event.event_name = 'Women''s Soccer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1455839994596317,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT 'Yes' AS attendance_status\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE m.first_name = 'Maya' AND m.last_name = 'Mclean' AND e.event_name = 'Women''s Soccer';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7798749938956462,
+      "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 7,
+    "selected_sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM member m\n            JOIN attendance a ON m.member_id = a.link_to_member\n            JOIN event e ON a.link_to_event = e.event_id\n            WHERE m.first_name = 'Maya' \n              AND m.last_name = 'Mclean' \n              AND e.event_name = 'Women''s Soccer'\n        ) THEN 'Yes' \n        ELSE 'No' \n    END AS attended",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31": 6,
+        "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02": 2
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 5294.857208005851,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS attendance_status\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE m.first_name = 'Maya' AND m.last_name = 'Mclean' AND e.event_name = 'Women''s Soccer';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.8298329998506233,
+        "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS attendance_status\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE m.first_name = 'Maya' AND m.last_name = 'Mclean' AND e.event_name = 'Women''s Soccer';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.81487499846844,
+        "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT \n    CASE \n        WHEN EXISTS (\n            SELECT 1 \n            FROM member m\n            JOIN attendance a ON m.member_id = a.link_to_member\n            JOIN event e ON a.link_to_event = e.event_id\n            WHERE m.first_name = 'Maya' \n              AND m.last_name = 'Mclean' \n              AND e.event_name = 'Women''s Soccer'\n        ) THEN 'Yes' \n        ELSE 'No' \n    END AS attended",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5014580019633286,
+        "result_signature": "6659303b534c336ca0235de7fca4e7d19647aa0d92813b2f2f7a11c3f8c32e31",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 13183.786542002053
+}

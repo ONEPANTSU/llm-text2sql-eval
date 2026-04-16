@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1080",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1774.2406249963096,
+  "execution_time_ms": 172.20924999855924,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 62.63966600090498,
+      "result_signature": "466d0c407d4820e788594c5dba1cd1e733c48063fcf1ce9d596f71ba56a189da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.941624997765757,
+      "result_signature": "466d0c407d4820e788594c5dba1cd1e733c48063fcf1ce9d596f71ba56a189da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.14958300202852,
+      "result_signature": "466d0c407d4820e788594c5dba1cd1e733c48063fcf1ce9d596f71ba56a189da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left' AND attacking_work_rate = 'high';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.748291002353653,
+      "result_signature": "25fe7cce67638f9b8f881239e68ca25db9bf774333f8aed3d8f558aeb7390b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 26.562332997855265,
+      "result_signature": "466d0c407d4820e788594c5dba1cd1e733c48063fcf1ce9d596f71ba56a189da",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(preferred_foot) AS count\nFROM Player_Attributes\nWHERE preferred_foot = 'left';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "466d0c407d4820e788594c5dba1cd1e733c48063fcf1ce9d596f71ba56a189da": 4,
+        "25fe7cce67638f9b8f881239e68ca25db9bf774333f8aed3d8f558aeb7390b97": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1799.132832995383,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3745.6168749995413
+}

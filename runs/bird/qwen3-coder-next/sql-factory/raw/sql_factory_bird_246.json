@@ -1,0 +1,141 @@
+{
+  "task_id": "bird_246",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE c.atom_id = 45 OR c.atom_id2 = 45;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE c.atom_id = 45 OR c.atom_id2 = 45;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE 45 IN (c.atom_id, c.atom_id2);",
+          "score": 0.8378787878787879,
+          "similarity_max": 0.7242424242424242,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE c.atom_id = 45 OR c.atom_id2 = 45;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nWHERE b.bond_id IN (\n    SELECT c.bond_id\n    FROM connected c\n    WHERE c.atom_id = 45 OR c.atom_id2 = 45\n);",
+          "score": 0.9678321678321679,
+          "similarity_max": 0.6643356643356644,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE 45 IN (c.atom_id, c.atom_id2);",
+          "score": 0.8378787878787879,
+          "similarity_max": 0.7242424242424242,
+          "tables_used": [
+            "c",
+            "connected",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT b.bond_type, b.bond_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE c.atom_id = 45 OR c.atom_id2 = 45;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "connected",
+        "bond",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.64
+  }
+}

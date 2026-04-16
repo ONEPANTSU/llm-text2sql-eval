@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1127",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6266.293792003125,
+  "execution_time_ms": 1614.7100829984993,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\nJOIN Country c ON m.country_id = c.id\nWHERE pa.crossing >= 90\n\nUNION\n\nSELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN Country c ON m.country_id = c.id\nWHERE pa.crossing >= 90",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 467.12995800044155,
+      "result_signature": "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\nJOIN Country c ON m.country_id = c.id\nWHERE pa.crossing >= 90\n\nUNION\n\nSELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN Country c ON m.country_id = c.id\nWHERE pa.crossing >= 90;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 309.50537500029895,
+      "result_signature": "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT p.player_name, c.name AS country_name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\nOR pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nWHERE pa.crossing >= 90;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 261.56900000205496,
+      "result_signature": "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nWHERE pa.crossing >= 90\n\nUNION\n\nSELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nWHERE pa.crossing >= 90",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 313.6046660001739,
+      "result_signature": "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT p.player_name, c.name AS country\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\n   OR pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN Country c ON m.country_id = c.id\nWHERE pa.crossing >= 90;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 261.7911249981262,
+      "result_signature": "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT DISTINCT p.player_name, c.name AS country_name\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nJOIN Match m ON pa.player_api_id = m.home_player_1 OR pa.player_api_id = m.home_player_2 OR pa.player_api_id = m.home_player_3 OR pa.player_api_id = m.home_player_4 OR pa.player_api_id = m.home_player_5 OR pa.player_api_id = m.home_player_6 OR pa.player_api_id = m.home_player_7 OR pa.player_api_id = m.home_player_8 OR pa.player_api_id = m.home_player_9 OR pa.player_api_id = m.home_player_10 OR pa.player_api_id = m.home_player_11\nOR pa.player_api_id = m.away_player_1 OR pa.player_api_id = m.away_player_2 OR pa.player_api_id = m.away_player_3 OR pa.player_api_id = m.away_player_4 OR pa.player_api_id = m.away_player_5 OR pa.player_api_id = m.away_player_6 OR pa.player_api_id = m.away_player_7 OR pa.player_api_id = m.away_player_8 OR pa.player_api_id = m.away_player_9 OR pa.player_api_id = m.away_player_10 OR pa.player_api_id = m.away_player_11\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nWHERE pa.crossing >= 90;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b846c1bf9cf56a3c83a8c9d3bc3ea3f83eb1712551448347f977b5d0150a30ec": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7881.107749999501
+}

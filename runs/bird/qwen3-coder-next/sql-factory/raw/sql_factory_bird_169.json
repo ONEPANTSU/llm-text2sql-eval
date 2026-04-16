@@ -1,0 +1,230 @@
+{
+  "task_id": "bird_169",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH male_clients AS (\n    SELECT c.client_id, c.district_id\n    FROM client c\n    WHERE c.gender = 'M'\n),\nmale_accounts AS (\n    SELECT a.account_id, a.date AS account_date\n    FROM account a\n    INNER JOIN disp d ON a.account_id = d.account_id\n    INNER JOIN male_clients mc ON d.client_id = mc.client_id\n),\nloan_amounts_1996 AS (\n    SELECT SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    INNER JOIN male_accounts ma ON l.account_id = ma.account_id\n    WHERE strftime('%Y', l.date) = '1996'...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "loan",
+            "ma",
+            "c",
+            "account",
+            "male_clients",
+            "la1996",
+            "mc",
+            "l",
+            "male_accounts",
+            "loan_amounts_1996"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN strftime('%Y', l2.date) = '1997' THEN l2.amount ELSE 0 END) AS REAL) - \n     SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END)) / \n    SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END) * 100 AS growth_rate\nFROM loan l1\nJOIN account a1 ON l1.account_id = a1.account_id\nJOIN disp d1 ON a1.account_id = d1.account_id\nJOIN client c1 ON d1.client_id = c1.client_id\nJOIN loan l2 ON a1.account_id = l2.account_id\nWHERE c1.gende...",
+          "score": 0.9718137254901961,
+          "similarity_max": 0.35637254901960785,
+          "tables_used": [
+            "disp",
+            "l2",
+            "client",
+            "d1",
+            "a1",
+            "l1",
+            "loan",
+            "account",
+            "c1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH male_clients AS (\n    SELECT c.client_id, c.district_id\n    FROM client c\n    WHERE c.gender = 'M'\n),\nmale_accounts AS (\n    SELECT a.account_id, a.date AS account_date\n    FROM account a\n    INNER JOIN disp d ON a.account_id = d.account_id\n    INNER JOIN male_clients mc ON d.client_id = mc.client_id\n),\nloan_amounts_1996 AS (\n    SELECT SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    INNER JOIN male_accounts ma ON l.account_id = ma.account_id\n    WHERE strftime('%Y', l.date) = '1996'...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "loan",
+            "ma",
+            "c",
+            "account",
+            "male_clients",
+            "la1996",
+            "mc",
+            "l",
+            "male_accounts",
+            "loan_amounts_1996"
+          ]
+        },
+        {
+          "sql": "WITH loan_1996 AS (\n    SELECT \n        l.account_id,\n        SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    JOIN disp d ON l.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    WHERE c.gender = 'male'\n      AND strftime('%Y', l.date) = '1996'\n    GROUP BY l.account_id\n),\nloan_1997 AS (\n    SELECT \n        l.account_id,\n        SUM(l.amount) AS total_amount_1997\n    FROM loan l\n    JOIN disp d ON l.account_id = d.account_id\n    JOIN client c ON d.client_id = c.cl...",
+          "score": 1.0680882352941177,
+          "similarity_max": 0.46382352941176463,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "l1996",
+            "l1997",
+            "loan_1996",
+            "loan",
+            "c",
+            "l",
+            "loan_1997"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN strftime('%Y', l2.date) = '1997' THEN l2.amount ELSE 0 END) AS REAL) - \n     SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END)) / \n    SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END) * 100 AS growth_rate\nFROM loan l1\nJOIN account a1 ON l1.account_id = a1.account_id\nJOIN disp d1 ON a1.account_id = d1.account_id\nJOIN client c1 ON d1.client_id = c1.client_id\nJOIN loan l2 ON a1.account_id = l2.account_id\nWHERE c1.gende...",
+          "score": 0.9718137254901961,
+          "similarity_max": 0.35637254901960785,
+          "tables_used": [
+            "disp",
+            "l2",
+            "client",
+            "d1",
+            "a1",
+            "l1",
+            "loan",
+            "account",
+            "c1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH male_clients AS (\n    SELECT c.client_id, c.district_id\n    FROM client c\n    WHERE c.gender = 'M'\n),\nmale_accounts AS (\n    SELECT a.account_id, a.date AS account_date\n    FROM account a\n    INNER JOIN disp d ON a.account_id = d.account_id\n    INNER JOIN male_clients mc ON d.client_id = mc.client_id\n),\nloan_amounts_1996 AS (\n    SELECT SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    INNER JOIN male_accounts ma ON l.account_id = ma.account_id\n    WHERE strftime('%Y', l.date) = '1996'...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "loan",
+            "ma",
+            "c",
+            "account",
+            "male_clients",
+            "la1996",
+            "mc",
+            "l",
+            "male_accounts",
+            "loan_amounts_1996"
+          ]
+        },
+        {
+          "sql": "WITH loan_1996 AS (\n    SELECT \n        l.account_id,\n        SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    JOIN disp d ON l.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    WHERE c.gender = 'male'\n      AND strftime('%Y', l.date) = '1996'\n    GROUP BY l.account_id\n),\nloan_1997 AS (\n    SELECT \n        l.account_id,\n        SUM(l.amount) AS total_amount_1997\n    FROM loan l\n    JOIN disp d ON l.account_id = d.account_id\n    JOIN client c ON d.client_id = c.cl...",
+          "score": 1.0680882352941177,
+          "similarity_max": 0.46382352941176463,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "l1996",
+            "l1997",
+            "loan_1996",
+            "loan",
+            "c",
+            "l",
+            "loan_1997"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN strftime('%Y', l2.date) = '1997' THEN l2.amount ELSE 0 END) AS REAL) - \n     SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END)) / \n    SUM(CASE WHEN strftime('%Y', l1.date) = '1996' THEN l1.amount ELSE 0 END) * 100 AS growth_rate\nFROM loan l1\nJOIN account a1 ON l1.account_id = a1.account_id\nJOIN disp d1 ON a1.account_id = d1.account_id\nJOIN client c1 ON d1.client_id = c1.client_id\nJOIN loan l2 ON a1.account_id = l2.account_id\nWHERE c1.gende...",
+          "score": 0.9718137254901961,
+          "similarity_max": 0.35637254901960785,
+          "tables_used": [
+            "disp",
+            "l2",
+            "client",
+            "d1",
+            "a1",
+            "l1",
+            "loan",
+            "account",
+            "c1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH male_clients AS (\n    SELECT c.client_id, c.district_id\n    FROM client c\n    WHERE c.gender = 'M'\n),\nmale_accounts AS (\n    SELECT a.account_id, a.date AS account_date\n    FROM account a\n    INNER JOIN disp d ON a.account_id = d.account_id\n    INNER JOIN male_clients mc ON d.client_id = mc.client_id\n),\nloan_amounts_1996 AS (\n    SELECT SUM(l.amount) AS total_amount_1996\n    FROM loan l\n    INNER JOIN male_accounts ma ON l.account_id = ma.account_id\n    WHERE strftime('%Y', l.date) = '1996'...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "a",
+        "loan",
+        "ma",
+        "c",
+        "account",
+        "male_clients",
+        "la1996",
+        "mc",
+        "l",
+        "male_accounts",
+        "loan_amounts_1996"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.6
+  }
+}

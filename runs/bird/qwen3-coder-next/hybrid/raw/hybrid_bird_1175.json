@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1175",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6144.941416001529,
+  "execution_time_ms": 11.593082999752369,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS Age, Examination.Diagnosis\nFROM Examination\nJOIN Patient ON Examination.ID = Patient.ID\nJOIN Laboratory ON Laboratory.ID = Patient.ID\nORDER BY Laboratory.HGB DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.434667004621588,
+      "result_signature": "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS Age, Examination.Diagnosis\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nORDER BY Laboratory.HGB DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7257920005940832,
+      "result_signature": "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT julianday('now') - julianday(p.Birthday) AS age, e.Diagnosis\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nJOIN Laboratory l ON l.ID = p.ID\nORDER BY l.HGB DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8148750057443976,
+      "result_signature": "6b829491652a777eeae3b7d3c53669cbe4e6433e89372eacd6d85b1126a1964a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) AS age, e.Diagnosis\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nJOIN Laboratory l ON p.ID = l.ID\nORDER BY l.HGB DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7082079973770306,
+      "result_signature": "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS Age, Examination.Diagnosis\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nORDER BY Laboratory.HGB DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.636166994809173,
+      "result_signature": "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT strftime('%Y', 'now') - strftime('%Y', Patient.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS Age, Examination.Diagnosis\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nORDER BY Laboratory.HGB DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd": 5,
+        "6b829491652a777eeae3b7d3c53669cbe4e6433e89372eacd6d85b1126a1964a": 1,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 5011.529040995811,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT CAST((julianday('now') - julianday(Patient.Birthday)) / 365.25 AS INTEGER) AS Age, Examination.Diagnosis\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nORDER BY Laboratory.HGB DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.3555420009652153,
+        "result_signature": "c0748c4ccf9f7d91b6d2e27e87176b859631ac1beb3cb1e6ff3bf2a516e3accd",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT (strftime('%Y', 'now') - strftime('%Y', Patient.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Patient.Birthday)) AS Age, Examination.Diagnosis\nFROM Patient\nJOIN Examination ON Patient.ID = Examination.ID\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.HGB = (\n    SELECT MAX(Laboratory.HGB)\n    FROM Laboratory\n)\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 10.14983299683081,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT CAST((julianday('now') - julianday(p.Birthday)) / 365.25 AS INTEGER) AS age, e.Diagnosis\nFROM Examination e\nJOIN Patient p ON e.ID = p.ID\nJOIN Laboratory l ON l.ID = p.ID\nWHERE l.HGB = (SELECT MAX(HGB) FROM Laboratory)\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.5396249984623864,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11168.17041599279
+}

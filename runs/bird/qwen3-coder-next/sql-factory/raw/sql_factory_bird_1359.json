@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_1359",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(CASE \n        WHEN a_budget.amount > o_budget.amount THEN 1 \n        ELSE 0 \n    END) AS count\nFROM event e1\nJOIN budget a_budget ON e1.event_id = a_budget.link_to_event\nJOIN event e2\nJOIN budget o_budget ON e2.event_id = o_budget.link_to_event\nWHERE e1.event_name = 'Yearly Kickoff'\n  AND e2.event_name = 'October Meeting'\n  AND a_budget.category = 'Advertisement'\n  AND o_budget.category = 'Advertisement';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o_budget",
+            "budget",
+            "a_budget",
+            "e2",
+            "event",
+            "e1"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM budget b1\nJOIN event e1 ON b1.link_to_event = e1.event_id\nJOIN budget b2 ON b1.category = b2.category\nJOIN event e2 ON b2.link_to_event = e2.event_id\nWHERE b1.category = 'Advertisement'\n  AND e1.event_name = 'Yearly Kickoff'\n  AND e2.event_name = 'October Meeting'\n  AND b1.amount > b2.amount;",
+          "score": 0.9955897093217507,
+          "similarity_max": 0.6088205813564985,
+          "tables_used": [
+            "budget",
+            "b2",
+            "e2",
+            "event",
+            "b1",
+            "e1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(CASE \n        WHEN a_budget.amount > o_budget.amount THEN 1 \n        ELSE 0 \n    END) AS count\nFROM event e1\nJOIN budget a_budget ON e1.event_id = a_budget.link_to_event\nJOIN event e2\nJOIN budget o_budget ON e2.event_id = o_budget.link_to_event\nWHERE e1.event_name = 'Yearly Kickoff'\n  AND e2.event_name = 'October Meeting'\n  AND a_budget.category = 'Advertisement'\n  AND o_budget.category = 'Advertisement';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o_budget",
+            "budget",
+            "a_budget",
+            "e2",
+            "event",
+            "e1"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS count\nFROM (\n    SELECT a_budget.amount AS kickoff_amount, o_budget.amount AS oct_amount\n    FROM event e1\n    JOIN budget a_budget ON e1.event_id = a_budget.link_to_event\n    JOIN event e2\n    JOIN budget o_budget ON e2.event_id = o_budget.link_to_event\n    WHERE e1.event_name = 'Yearly Kickoff'\n      AND e2.event_name = 'October Meeting'\n      AND a_budget.category = 'Advertisement'\n      AND o_budget.category = 'Advertisement'\n) \nWHERE kickoff_amount > oct_amount;",
+          "score": 1.1770325203252032,
+          "similarity_max": 0.6459349593495936,
+          "tables_used": [
+            "o_budget",
+            "budget",
+            "a_budget",
+            "e2",
+            "event",
+            "e1"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n  SELECT b1.amount AS kickoff_budget, b2.amount AS oct_budget\n  FROM budget b1\n  JOIN event e1 ON b1.link_to_event = e1.event_id\n  JOIN budget b2 ON b1.category = b2.category\n  JOIN event e2 ON b2.link_to_event = e2.event_id\n  WHERE b1.category = 'Advertisement'\n    AND e1.event_name = 'Yearly Kickoff'\n    AND e2.event_name = 'October Meeting'\n    AND b1.amount > b2.amount\n) subquery;",
+          "score": 1.1210924369747899,
+          "similarity_max": 0.7578151260504201,
+          "tables_used": [
+            "budget",
+            "b2",
+            "e2",
+            "event",
+            "b1",
+            "e1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    SUM(CASE \n        WHEN a_budget.amount > o_budget.amount THEN 1 \n        ELSE 0 \n    END) AS count\nFROM event e1\nJOIN budget a_budget ON e1.event_id = a_budget.link_to_event\nJOIN event e2\nJOIN budget o_budget ON e2.event_id = o_budget.link_to_event\nWHERE e1.event_name = 'Yearly Kickoff'\n  AND e2.event_name = 'October Meeting'\n  AND a_budget.category = 'Advertisement'\n  AND o_budget.category = 'Advertisement';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o_budget",
+            "budget",
+            "a_budget",
+            "e2",
+            "event",
+            "e1"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS count\nFROM (\n    SELECT a_budget.amount AS kickoff_amount, o_budget.amount AS oct_amount\n    FROM event e1\n    JOIN budget a_budget ON e1.event_id = a_budget.link_to_event\n    JOIN event e2\n    JOIN budget o_budget ON e2.event_id = o_budget.link_to_event\n    WHERE e1.event_name = 'Yearly Kickoff'\n      AND e2.event_name = 'October Meeting'\n      AND a_budget.category = 'Advertisement'\n      AND o_budget.category = 'Advertisement'\n) \nWHERE kickoff_amount > oct_amount;",
+          "score": 1.1770325203252032,
+          "similarity_max": 0.6459349593495936,
+          "tables_used": [
+            "o_budget",
+            "budget",
+            "a_budget",
+            "e2",
+            "event",
+            "e1"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n  SELECT b1.amount AS kickoff_budget, b2.amount AS oct_budget\n  FROM budget b1\n  JOIN event e1 ON b1.link_to_event = e1.event_id\n  JOIN budget b2 ON b1.category = b2.category\n  JOIN event e2 ON b2.link_to_event = e2.event_id\n  WHERE b1.category = 'Advertisement'\n    AND e1.event_name = 'Yearly Kickoff'\n    AND e2.event_name = 'October Meeting'\n    AND b1.amount > b2.amount\n) subquery;",
+          "score": 1.1210924369747899,
+          "similarity_max": 0.7578151260504201,
+          "tables_used": [
+            "budget",
+            "b2",
+            "e2",
+            "event",
+            "b1",
+            "e1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    SUM(CASE \n        WHEN a_budget.amount > o_budget.amount THEN 1 \n        ELSE 0 \n    END) AS count\nFROM event e1\nJOIN budget a_budget ON e1.event_id = a_budget.link_to_event\nJOIN event e2\nJOIN budget o_budget ON e2.event_id = o_budget.link_to_event\nWHERE e1.event_name = 'Yearly Kickoff'\n  AND e2.event_name = 'October Meeting'\n  AND a_budget.category = 'Advertisement'\n  AND o_budget.category = 'Advertisement';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o_budget",
+        "budget",
+        "a_budget",
+        "e2",
+        "event",
+        "e1"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.93
+  }
+}

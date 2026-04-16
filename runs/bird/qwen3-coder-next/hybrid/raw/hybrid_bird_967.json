@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_967",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2153.436917004001,
+  "execution_time_ms": 6.113625000580214,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT code, nationality FROM drivers ORDER BY dob DESC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0319169998401776,
+      "result_signature": "63231811bab74768e6252ae0c0667e44438e7a8171d6f26188cb322f64fc051d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT code FROM drivers ORDER BY dob DESC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8662499967613257,
+      "result_signature": "05ab8ba16581345a70fc8f71d2c9504c30ea5624f1d002953bf4697cc935ad71",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT code, nationality FROM drivers ORDER BY dob DESC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7385839999187738,
+      "result_signature": "63231811bab74768e6252ae0c0667e44438e7a8171d6f26188cb322f64fc051d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT code, nationality FROM drivers ORDER BY dob DESC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8240000024670735,
+      "result_signature": "63231811bab74768e6252ae0c0667e44438e7a8171d6f26188cb322f64fc051d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT code FROM drivers ORDER BY dob DESC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1620829973253421,
+      "result_signature": "05ab8ba16581345a70fc8f71d2c9504c30ea5624f1d002953bf4697cc935ad71",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT code, nationality FROM drivers ORDER BY dob DESC LIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "63231811bab74768e6252ae0c0667e44438e7a8171d6f26188cb322f64fc051d": 3,
+        "05ab8ba16581345a70fc8f71d2c9504c30ea5624f1d002953bf4697cc935ad71": 2,
+        "044a671f65b55cb7372ccf78d129b573ece4f0cd3ada20f458b9ec6585814e66": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 1,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1569.0751250003814,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT code FROM drivers WHERE nationality = 'Dutch' ORDER BY dob DESC LIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.6815000053611584,
+        "result_signature": "044a671f65b55cb7372ccf78d129b573ece4f0cd3ada20f458b9ec6585814e66",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3728.892958999495
+}

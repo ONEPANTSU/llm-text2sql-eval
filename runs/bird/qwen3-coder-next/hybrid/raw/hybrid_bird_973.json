@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_973",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3976.52549999475,
+  "execution_time_ms": 230.87020799721358,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    d.forename, \n    d.surname, \n    MIN(l.milliseconds) AS fastest_lap_ms\nFROM \n    drivers d\nJOIN \n    lapTimes l ON d.driverId = l.driverId\nWHERE \n    d.nationality = 'Spanish' \n    AND d.dob < '1982-01-01'\nGROUP BY \n    d.driverId, d.forename, d.surname\nORDER BY \n    fastest_lap_ms ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 101.81754200311843,
+      "result_signature": "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    d.forename, \n    d.surname, \n    MIN(l.milliseconds) AS fastest_lap_ms\nFROM \n    drivers d\nJOIN \n    lapTimes l ON d.driverId = l.driverId\nWHERE \n    d.nationality = 'Spanish' \n    AND d.dob < '1982-01-01'\nGROUP BY \n    d.driverId, \n    d.forename, \n    d.surname\nORDER BY \n    fastest_lap_ms ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 30.961124997702427,
+      "result_signature": "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    d.forename, \n    d.surname, \n    MIN(l.milliseconds) AS fastest_lap_ms\nFROM \n    drivers d\nJOIN \n    lapTimes l ON d.driverId = l.driverId\nWHERE \n    d.nationality = 'Spanish' \n    AND d.dob < '1982-01-01'\nGROUP BY \n    d.driverId, \n    d.forename, \n    d.surname\nORDER BY \n    fastest_lap_ms ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 35.647958000481594,
+      "result_signature": "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.forename, d.surname, MIN(l.milliseconds) AS fastest_lap_ms\nFROM drivers d\nJOIN lapTimes l ON d.driverId = l.driverId\nWHERE d.nationality = 'Spanish' AND d.dob < '1982-01-01'\nGROUP BY d.driverId, d.forename, d.surname\nORDER BY fastest_lap_ms ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 30.82820800045738,
+      "result_signature": "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.forename, d.surname, MIN(l.milliseconds) AS fastest_lap_ms\nFROM drivers d\nJOIN lapTimes l ON d.driverId = l.driverId\nWHERE d.nationality = 'Spanish' AND d.dob < '1982-01-01'\nGROUP BY d.driverId, d.forename, d.surname\nORDER BY fastest_lap_ms ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 31.18249999533873,
+      "result_signature": "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT d.forename, d.surname, MIN(l.milliseconds) AS fastest_lap_ms\nFROM drivers d\nJOIN lapTimes l ON d.driverId = l.driverId\nWHERE d.nationality = 'Spanish' AND d.dob < '1982-01-01'\nGROUP BY d.driverId, d.forename, d.surname\nORDER BY fastest_lap_ms ASC\nLIMIT 10;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "31befe1df11b18c45bcefe804cee179f1accb502cdeace77519cf4b5f4509f0a": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4207.504958001664
+}

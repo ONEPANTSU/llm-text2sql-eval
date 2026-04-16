@@ -1,0 +1,171 @@
+{
+  "task_id": "bird_1191",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1314.859375001106,
+  "execution_time_ms": 1.4066670046304353,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.First Date LIKE '1981%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.38704200414940715,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (COUNT(CASE WHEN Diagnosis = 'BEHCET' THEN 1 END) * 100.0 / COUNT(*)) AS percentage\nFROM Patient\nWHERE SEX = 'M' AND First Date LIKE '1981%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.19304200395708904,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.First Date LIKE '1981%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.1860839984146878,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (COUNT(CASE WHEN Diagnosis = 'BEHCET' THEN 1 END) * 100.0 / COUNT(*)) AS percentage\nFROM Patient\nWHERE SEX = 'M' \n  AND First Date LIKE '1981%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.16650000179652125,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.First Date LIKE '1981%';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"Date\": syntax error",
+      "exec_time_ms": 0.15745800192235038,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.\"First Date\" LIKE '1981%';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "beea1914befa0292f9868bfe0af64939c34b7fbefc909ba5420152a2cd48869d": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "near \"Date\": syntax error",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.\"First Date\" LIKE '1981%';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.665083004103508,
+        "result_signature": "beea1914befa0292f9868bfe0af64939c34b7fbefc909ba5420152a2cd48869d",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    CAST(COUNT(CASE WHEN Patient.Diagnosis = 'BEHCET' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient\nWHERE Patient.SEX = 'M' \n  AND Patient.\"First Date\" LIKE '1981%';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.1322089994791895,
+        "result_signature": "beea1914befa0292f9868bfe0af64939c34b7fbefc909ba5420152a2cd48869d",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5312.978291003674
+}

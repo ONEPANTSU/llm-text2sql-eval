@@ -1,34 +1,28 @@
-# Hybrid / Гибридная архитектура
+# Hybrid
 
-## Overview / Обзор
+## Overview
 
 The best-performing architecture. Combines self-consistency with SGR grounding, seed expansion, diagnostic retry, smart early stop, and schema validation.
 
-Лучшая архитектура по результатам. Комбинирует самосогласованность с SGR-обоснованием, расширением зёрен, диагностическим повтором, умной ранней остановкой и валидацией схемы.
-
-## Algorithm / Алгоритм
+## Algorithm
 
 ### Phase 1: SGR Grounding (optional)
 
 LLM analyzes the question and identifies relevant tables/columns from schema. On error — graceful fallback to full schema.
 
-LLM анализирует вопрос и определяет релевантные таблицы/колонки. При ошибке — fallback на полную схему.
-
 ### Phase 2: Initial Generation (K=5)
 
-Generate 5 independent SQL candidates (parallel). Each candidate goes through:
+Generate 5 independent SQL candidates in parallel. Each candidate goes through:
 
 1. **Strip SQL fences** — remove markdown ` ```sql ``` ` wrappers
 2. **Placeholder check** — reject if contains `<...>`, `YourState`, `TODO`, `???`
-3. **Schema validation (fuzzy fix)** — edit distance <= 2 correction of table/column names
+3. **Schema validation (fuzzy fix)** — edit distance ≤ 2 correction of table/column names
 4. **Preflight + Execution** — validate and execute
 5. **Result signature** — SHA-256 hash for majority voting
 
 ### Phase 2.5: Diagnostic Retry (conditional)
 
 Triggered only if **all** K candidates failed with the **same error**. Generates 2 retry candidates with low temperature (0.3), including the error message in the prompt.
-
-Срабатывает только если **все** K кандидатов упали с **одинаковой** ошибкой. Генерирует 2 повторных кандидата с низкой temperature (0.3), включая текст ошибки в промпт.
 
 ### Phase 3: Seed Expansion (optional)
 
@@ -39,7 +33,7 @@ Triggered only if **all** K candidates failed with the **same error**. Generates
 **Expansion:**
 1. Pick top 2 seeds (greedy diverse selection, Jaccard < 0.85)
 2. Generate 2 variations per seed ("Provide a different but equivalent SQL")
-3. Filter by similarity (reject if Jaccard >= 0.85)
+3. Filter by similarity (reject if Jaccard ≥ 0.85)
 4. Execute accepted variations
 
 ### Phase 4: Aggregation
@@ -49,7 +43,7 @@ Triggered only if **all** K candidates failed with the **same error**. Generates
 2. **preflight_ok only** — group by normalized SQL, majority vote
 3. **fallback** — return empty (no valid SQL)
 
-## Parameters / Параметры
+## Parameters
 
 ```yaml
 architecture:
@@ -71,27 +65,31 @@ architecture:
     execution_timeout: 30
 ```
 
-| Parameter | Default | Description / Описание |
-|-----------|---------|------------------------|
-| `sgr_grounding` | true | Enable SGR schema analysis / Включить SGR-анализ |
-| `initial_candidates` | 5 | K parallel generations / Число начальных генераций |
-| `expansion_enabled` | true | Enable seed expansion / Включить расширение |
-| `expansion_seeds` | 2 | Seeds for expansion / Число зёрен |
-| `expansion_per_seed` | 2 | Variations per seed / Вариаций на зерно |
-| `expansion_sim_threshold` | 0.85 | Jaccard dedup threshold / Порог дедупликации |
-| `aggregation_mode` | hybrid | 3-level fallback aggregation / 3-уровневая агрегация |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `sgr_grounding` | true | Enable SGR schema analysis |
+| `initial_candidates` | 5 | K parallel generations |
+| `expansion_enabled` | true | Enable seed expansion |
+| `expansion_seeds` | 2 | Seeds for expansion |
+| `expansion_per_seed` | 2 | Variations per seed |
+| `expansion_sim_threshold` | 0.85 | Jaccard dedup threshold |
+| `aggregation_mode` | hybrid | 3-level fallback aggregation |
 
-## Max Candidates / Макс. кандидатов
+## Max Candidates
 
 5 initial + 2 retry + 4 expansion = **11 candidates** per task.
+
+In practice (BIRD, n=1534): average = 5.3 candidates, expansion is skipped on 85.5% of tasks due to smart early stop.
 
 ## CLI
 
 ```bash
-uv run python -m evalsuite run --model openrouter --bench bird_sqlite --architecture hybrid
+uv run python -m evalsuite run --model qwen3-coder-next --bench bird_sqlite --architecture hybrid
 ```
 
-## Results / Результаты
+## Results
+
+For qwen3-coder-next, `context_mode=toolchain`:
 
 | Benchmark | Accuracy | Failures | Avg Latency |
 |-----------|----------|----------|-------------|
@@ -100,6 +98,4 @@ uv run python -m evalsuite run --model openrouter --bench bird_sqlite --architec
 | TPC-DS | 9.1% (9/99) | 22 | 36.8s |
 | **Total** | **33.7%** (592/1756) | | |
 
-Key improvement: `pred_exec_fail` = **0** on BIRD and Spider2 (vs 426 and 90 in plain). Diagnostic retry + schema validation eliminate execution failures. Smart early stop reduces timeouts (12 vs 124 in self-consistency on BIRD).
-
-Ключевое улучшение: `pred_exec_fail` = **0** на BIRD и Spider2. Диагностический повтор + валидация схемы устраняют ошибки исполнения. Умная ранняя остановка сокращает таймауты.
+Key improvement: `pred_exec_fail` = **0** on BIRD and Spider2 (vs 59 and 26 in plain). Diagnostic retry + schema validation eliminate execution failures. Smart early stop reduces timeouts (12 vs 124 in self-consistency on BIRD).

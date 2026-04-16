@@ -1,0 +1,169 @@
+{
+  "task_id": "bird_146",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nINNER JOIN disp d ON c.client_id = d.client_id\nINNER JOIN card ca ON d.disp_id = ca.disp_id AND ca.type = 'credit'\nINNER JOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+          "score": 0.9165755919854283,
+          "similarity_max": 0.7668488160291438,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nINNER JOIN disp d ON c.client_id = d.client_id\nINNER JOIN card ca ON d.disp_id = ca.disp_id AND ca.type = 'credit'\nINNER JOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+          "score": 0.9165755919854283,
+          "similarity_max": 0.7668488160291438,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F' AND ca.type = 'credit';",
+          "score": 0.7955373406193079,
+          "similarity_max": 0.8089253187613843,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "loan",
+            "c",
+            "l"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT c.client_id, c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "card",
+        "ca",
+        "loan",
+        "c",
+        "l"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.5
+  }
+}

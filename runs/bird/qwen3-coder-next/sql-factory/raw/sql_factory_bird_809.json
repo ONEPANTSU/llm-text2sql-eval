@@ -1,0 +1,148 @@
+{
+  "task_id": "bird_809",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT publisher_name FROM publisher WHERE id = (SELECT publisher_id FROM superhero WHERE id = 38);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT publisher_name\nFROM publisher\nJOIN superhero ON publisher.id = superhero.publisher_id\nWHERE superhero.id = 38;",
+          "score": 0.7755681818181819,
+          "similarity_max": 0.5488636363636363,
+          "tables_used": [
+            "publisher"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT publisher_name FROM publisher WHERE id = (SELECT publisher_id FROM superhero WHERE id = 38);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT p.publisher_name \nFROM publisher p \nJOIN superhero s ON p.id = s.publisher_id \nWHERE s.id = 38;",
+          "score": 0.8152777777777778,
+          "similarity_max": 0.7694444444444445,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT publisher_name\nFROM publisher\nWHERE publisher.id = (\n    SELECT publisher_id\n    FROM superhero\n    WHERE id = 38\n);",
+          "score": 0.7779503105590064,
+          "similarity_max": 0.8440993788819876,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT publisher_name FROM publisher WHERE id = (SELECT publisher_id FROM superhero WHERE id = 38);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT p.publisher_name \nFROM publisher p \nJOIN superhero s ON p.id = s.publisher_id \nWHERE s.id = 38;",
+          "score": 0.8152777777777778,
+          "similarity_max": 0.7694444444444445,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT publisher_name\nFROM publisher\nWHERE publisher.id = (\n    SELECT publisher_id\n    FROM superhero\n    WHERE id = 38\n);",
+          "score": 0.7779503105590064,
+          "similarity_max": 0.8440993788819876,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT publisher_name FROM publisher WHERE id = (SELECT publisher_id FROM superhero WHERE id = 38);",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "publisher",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.32
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_1316",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.phone\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nINNER JOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+          "score": 0.9777500000000001,
+          "similarity_max": 0.8445,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer' AND m.position = 'Student';",
+          "score": 0.9146153846153846,
+          "similarity_max": 0.7707692307692308,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.phone\nFROM member m\nINNER JOIN attendance a ON m.member_id = a.link_to_member\nINNER JOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+          "score": 0.9777500000000001,
+          "similarity_max": 0.8445,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer' AND m.position = 'Student';",
+          "score": 0.9146153846153846,
+          "similarity_max": 0.7707692307692308,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "e",
+            "m",
+            "event"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT m.phone\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_name = 'Women''s Soccer';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "attendance",
+        "member",
+        "a",
+        "e",
+        "m",
+        "event"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.77
+  }
+}

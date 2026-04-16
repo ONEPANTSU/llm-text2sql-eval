@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_0",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7865.534957993077,
+  "execution_time_ms": 31.999250000808388,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS total_sales\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    JOIN products p ON oi.product_id = p.product_id\n    WHERE p.product_category_name = 'toys'\n      AND DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date_julian) AS x_mean,\n        AVG(total_sales) AS y_mean,\n        SUM((sale_date_julian - (SELECT AVG(sale_date_julian) FROM (\n            SELECT julianday(sale_date) AS sale_date_julian FROM daily_sales\n        ))) * (total_sales - (SELECT AVG(total_sales) FROM daily_sales))) /\n        NULLIF(SUM(POWER((sale_date_julian - (SELECT AVG(sale_date_julian) FROM (\n            SELECT julianday(sale_date) AS sale_date_julian FROM daily_sales\n        )), 2)), 0) AS slope,\n        (SELECT AVG(total_sales) FROM daily_sales) - \n        (SUM((sale_date_julian - (SELECT AVG(sale_date_julian) FROM (\n            SELECT julianday(sale_date) AS sale_date_julian FROM daily_sales\n        ))) * (total_sales - (SELECT AVG(total_sales) FROM daily_sales))) /\n        NULLIF(SUM(POWER((sale_date_julian - (SELECT AVG(sale_date_julian) FROM (\n            SELECT julianday(sale_date) AS sale_date_julian FROM daily_sales\n        )), 2)), 0)) * (SELECT AVG(sale_date_julian) FROM (\n            SELECT julianday(sale_date) AS sale_date_julian FROM daily_sales\n        )) AS intercept\n    FROM (\n        SELECT julianday(sale_date) AS sale_date_julian, total_sales\n        FROM daily_sales\n    )\n},\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date,\n        (SELECT slope FROM regression) * julianday('2018-12-05') + (SELECT intercept FROM regression) AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-06',\n        (SELECT slope FROM regression) * julianday('2018-12-06') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-07',\n        (SELECT slope FROM regression) * julianday('2018-12-07') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-08',\n        (SELECT slope FROM regression) * julianday('2018-12-08') + (SELECT intercept FROM regression)\n),\nmoving_averages AS (\n    SELECT \n        sale_date,\n        AVG(predicted) OVER (\n            ORDER BY sale_date\n            ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING\n        ) AS symmetric_5_day_ma\n    FROM predicted_sales\n)\nSELECT \n    SUM(symmetric_5_day_ma) AS total_symmetric_moving_averages\nFROM moving_averages\nWHERE sale_date BETWEEN '2018-12-05' AND '2018-12-08';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"AS\": syntax error",
+      "exec_time_ms": 2.1221670031081885,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS daily_sales_amount\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE o.order_purchase_timestamp >= '2017-01-01'\n      AND o.order_purchase_timestamp <= '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression_params AS (\n    SELECT \n        AVG(sale_date) AS mean_date,\n        AVG(daily_sales_amount) AS mean_sales,\n        SUM((strftime('%J', sale_date) - AVG(strftime('%J', sale_date))) * \n            (daily_sales_amount - AVG(daily_sales_amount))) /\n        NULLIF(SUM((strftime('%J', sale_date) - AVG(strftime('%J', sale_date))) * \n                   (strftime('%J', sale_date) - AVG(strftime('%J', sale_date)))), 0) AS slope,\n        AVG(daily_sales_amount) - \n        (SUM((strftime('%J', sale_date) - AVG(strftime('%J', sale_date))) * \n             (daily_sales_amount - AVG(daily_sales_amount))) /\n         NULLIF(SUM((strftime('%J', sale_date) - AVG(strftime('%J', sale_date))) * \n                    (strftime('%J', sale_date) - AVG(strftime('%J', sale_date)))), 0)) * \n        AVG(strftime('%J', sale_date)) AS intercept\n    FROM daily_sales\n),\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date,\n        (SELECT slope FROM regression_params) * strftime('%J', '2018-12-05') + \n        (SELECT intercept FROM regression_params) AS predicted_sales\n    UNION ALL\n    SELECT \n        '2018-12-06' AS sale_date,\n        (SELECT slope FROM regression_params) * strftime('%J', '2018-12-06') + \n        (SELECT intercept FROM regression_params) AS predicted_sales\n    UNION ALL\n    SELECT \n        '2018-12-07' AS sale_date,\n        (SELECT slope FROM regression_params) * strftime('%J', '2018-12-07') + \n        (SELECT intercept FROM regression_params) AS predicted_sales\n    UNION ALL\n    SELECT \n        '2018-12-08' AS sale_date,\n        (SELECT slope FROM regression_params) * strftime('%J', '2018-12-08') + \n        (SELECT intercept FROM regression_params) AS predicted_sales\n),\nsymmetric_ma AS (\n    SELECT \n        sale_date,\n        (LAG(predicted_sales, 2) OVER (ORDER BY sale_date) +\n         LAG(predicted_sales, 1) OVER (ORDER BY sale_date) +\n         predicted_sales +\n         LEAD(predicted_sales, 1) OVER (ORDER BY sale_date) +\n         LEAD(predicted_sales, 2) OVER (ORDER BY sale_date)) / 5.0 AS symmetric_ma\n    FROM predicted_sales\n)\nSELECT \n    SUM(symmetric_ma) AS sum_of_ma\nFROM symmetric_ma\nWHERE sale_date BETWEEN '2018-12-05' AND '2018-12-08';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "misuse of aggregate function AVG()",
+      "exec_time_ms": 1.2845840101363137,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS total_sales\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    JOIN products p ON oi.product_id = p.product_id\n    WHERE p.product_category_name = 'toys'\n      AND DATE(o.order_purchase_timestamp) BETWEEN '2017-01-01' AND '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression_params AS (\n    SELECT \n        COUNT(*) AS n,\n        SUM(DJULIAN(sale_date)) AS sum_x,\n        SUM(total_sales) AS sum_y,\n        SUM(DJULIAN(sale_date) * DJULIAN(sale_date)) AS sum_x2,\n        SUM(DJULIAN(sale_date) * total_sales) AS sum_xy\n    FROM daily_sales\n),\ncoefficients AS (\n    SELECT \n        (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x * sum_x) AS slope,\n        (sum_y - slope * sum_x) / n AS intercept\n    FROM regression_params\n),\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date,\n        (SELECT intercept FROM coefficients) + (SELECT slope FROM coefficients) * DJULIAN('2018-12-05') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-06' AS sale_date,\n        (SELECT intercept FROM coefficients) + (SELECT slope FROM coefficients) * DJULIAN('2018-12-06') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-07' AS sale_date,\n        (SELECT intercept FROM coefficients) + (SELECT slope FROM coefficients) * DJULIAN('2018-12-07') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-08' AS sale_date,\n        (SELECT intercept FROM coefficients) + (SELECT slope FROM coefficients) * DJULIAN('2018-12-08') AS predicted\n),\nsymmetric_ma AS (\n    SELECT \n        ps1.sale_date,\n        (ps1.predicted + ps2.predicted + ps3.predicted + ps4.predicted + ps5.predicted) / 5.0 AS ma5_symmetric\n    FROM predicted_sales ps1\n    JOIN predicted_sales ps2 ON ps2.sale_date = DATE(ps1.sale_date, '+1 day')\n    JOIN predicted_sales ps3 ON ps3.sale_date = DATE(ps1.sale_date, '+2 day')\n    JOIN predicted_sales ps4 ON ps4.sale_date = DATE(ps1.sale_date, '+3 day')\n    JOIN predicted_sales ps5 ON ps5.sale_date = DATE(ps1.sale_date, '+4 day')\n    WHERE ps1.sale_date IN ('2018-12-05', '2018-12-06', '2018-12-07')\n)\nSELECT \n    SUM(ma5_symmetric) AS total_ma5_symmetric\nFROM symmetric_ma;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such function: DJULIAN",
+      "exec_time_ms": 1.8425000016577542,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS daily_sales_amount\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE o.order_purchase_timestamp >= '2017-01-01' \n      AND o.order_purchase_timestamp <= '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_amount) AS avg_sales,\n        SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n            (daily_sales_amount - (SELECT AVG(daily_sales_amount) FROM daily_sales))) /\n        NULLIF(SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n                   (sale_date - (SELECT AVG(sale_date) FROM daily_sales))), 0) AS slope,\n        (SELECT AVG(daily_sales_amount) FROM daily_sales) - \n        (SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n             (daily_sales_amount - (SELECT AVG(daily_sales_amount) FROM daily_sales))) /\n         NULLIF(SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n                    (sale_date - (SELECT AVG(sale_date) FROM daily_sales))), 0) *\n         (SELECT AVG(sale_date) FROM daily_sales)) AS intercept\n    FROM daily_sales\n),\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date, \n        (SELECT slope FROM regression) * julianday('2018-12-05') + (SELECT intercept FROM regression) AS predicted_sales\n    UNION ALL\n    SELECT \n        '2018-12-06', \n        (SELECT slope FROM regression) * julianday('2018-12-06') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-07', \n        (SELECT slope FROM regression) * julianday('2018-12-07') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-08', \n        (SELECT slope FROM regression) * julianday('2018-12-08') + (SELECT intercept FROM regression)\n),\nmoving_avg AS (\n    SELECT \n        sale_date,\n        predicted_sales,\n        AVG(predicted_sales) OVER (\n            ORDER BY sale_date \n            ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING\n        ) AS symmetric_5day_ma\n    FROM predicted_sales\n    WHERE sale_date BETWEEN '2018-12-05' AND '2018-12-08'\n)\nSELECT \n    SUM(symmetric_5day_ma) AS total_symmetric_ma\nFROM moving_avg;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.095957999699749,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS daily_sales_amount\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE o.order_purchase_timestamp >= '2017-01-01'\n      AND o.order_purchase_timestamp <= '2018-08-29'\n      AND oi.shipping_limit_date IS NOT NULL\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression_params AS (\n    SELECT \n        COUNT(*) AS n,\n        SUM(JULIANDAY(sale_date)) AS sum_x,\n        SUM(daily_sales_amount) AS sum_y,\n        SUM(JULIANDAY(sale_date) * daily_sales_amount) AS sum_xy,\n        SUM(JULIANDAY(sale_date) * JULIANDAY(sale_date)) AS sum_xx\n    FROM daily_sales\n),\nslope_intercept AS (\n    SELECT \n        (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x) AS slope,\n        (sum_y - (SELECT slope FROM slope_intercept) * sum_x) / n AS intercept\n    FROM regression_params\n),\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date,\n        (SELECT intercept FROM slope_intercept) + (SELECT slope FROM slope_intercept) * JULIANDAY('2018-12-05') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-06' AS sale_date,\n        (SELECT intercept FROM slope_intercept) + (SELECT slope FROM slope_intercept) * JULIANDAY('2018-12-06') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-07' AS sale_date,\n        (SELECT intercept FROM slope_intercept) + (SELECT slope FROM slope_intercept) * JULIANDAY('2018-12-07') AS predicted\n    UNION ALL\n    SELECT \n        '2018-12-08' AS sale_date,\n        (SELECT intercept FROM slope_intercept) + (SELECT slope FROM slope_intercept) * JULIANDAY('2018-12-08') AS predicted\n),\nmoving_averages AS (\n    SELECT \n        sale_date,\n        AVG(predicted) OVER (\n            ORDER BY sale_date\n            ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING\n        ) AS sym_moving_avg\n    FROM predicted_sales\n)\nSELECT \n    SUM(sym_moving_avg) AS total_symmetric_moving_avg\nFROM moving_averages\nWHERE sale_date BETWEEN '2018-12-05' AND '2018-12-08';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "circular reference: slope_intercept",
+      "exec_time_ms": 0.37566700484603643,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH daily_sales AS (\n    SELECT \n        DATE(o.order_purchase_timestamp) AS sale_date,\n        SUM(oi.price) AS daily_sales_amount\n    FROM order_items oi\n    JOIN orders o ON oi.order_id = o.order_id\n    WHERE o.order_purchase_timestamp >= '2017-01-01' \n      AND o.order_purchase_timestamp <= '2018-08-29'\n    GROUP BY DATE(o.order_purchase_timestamp)\n),\nregression AS (\n    SELECT \n        AVG(sale_date) AS avg_date,\n        AVG(daily_sales_amount) AS avg_sales,\n        SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n            (daily_sales_amount - (SELECT AVG(daily_sales_amount) FROM daily_sales))) /\n        NULLIF(SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n                   (sale_date - (SELECT AVG(sale_date) FROM daily_sales))), 0) AS slope,\n        (SELECT AVG(daily_sales_amount) FROM daily_sales) - \n        (SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n             (daily_sales_amount - (SELECT AVG(daily_sales_amount) FROM daily_sales))) /\n         NULLIF(SUM((sale_date - (SELECT AVG(sale_date) FROM daily_sales)) * \n                    (sale_date - (SELECT AVG(sale_date) FROM daily_sales))), 0) *\n         (SELECT AVG(sale_date) FROM daily_sales)) AS intercept\n    FROM daily_sales\n),\npredicted_sales AS (\n    SELECT \n        '2018-12-05' AS sale_date, \n        (SELECT slope FROM regression) * julianday('2018-12-05') + (SELECT intercept FROM regression) AS predicted_sales\n    UNION ALL\n    SELECT \n        '2018-12-06', \n        (SELECT slope FROM regression) * julianday('2018-12-06') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-07', \n        (SELECT slope FROM regression) * julianday('2018-12-07') + (SELECT intercept FROM regression)\n    UNION ALL\n    SELECT \n        '2018-12-08', \n        (SELECT slope FROM regression) * julianday('2018-12-08') + (SELECT intercept FROM regression)\n),\nmoving_avg AS (\n    SELECT \n        sale_date,\n        predicted_sales,\n        AVG(predicted_sales) OVER (\n            ORDER BY sale_date \n            ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING\n        ) AS symmetric_5day_ma\n    FROM predicted_sales\n    WHERE sale_date BETWEEN '2018-12-05' AND '2018-12-08'\n)\nSELECT \n    SUM(symmetric_5day_ma) AS total_symmetric_ma\nFROM moving_avg;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7897.622541990131
+}

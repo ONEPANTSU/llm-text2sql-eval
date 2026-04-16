@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_382",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1306.4732079947134,
+  "execution_time_ms": 608.1202080022194,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT c.id\nFROM cards c\nJOIN foreign_data fd ON c.id = fd.id\nWHERE c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%online%'\n  AND fd.language = 'Japanese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 387.1558750033728,
+      "result_signature": "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT cards.id\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.id\nWHERE cards.availability LIKE '%paper%'\n  AND cards.availability NOT LIKE '%online%'\n  AND foreign_data.language = 'Japanese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.73495800548699,
+      "result_signature": "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT c.id\nFROM cards c\nJOIN foreign_data fd ON c.id = fd.id\nWHERE c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%online%'\n  AND fd.language = 'Japanese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 40.28983299940592,
+      "result_signature": "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT cards.id\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.id\nWHERE cards.availability LIKE '%paper%'\n  AND cards.availability NOT LIKE '%online%'\n  AND foreign_data.language = 'Japanese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 41.27675000199815,
+      "result_signature": "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT c.id\nFROM cards c\nJOIN foreign_data f ON c.id = f.id\nWHERE c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%online%'\n  AND f.language = 'Japanese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.303792000282556,
+      "result_signature": "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT c.id\nFROM cards c\nJOIN foreign_data f ON c.id = f.id\nWHERE c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%online%'\n  AND f.language = 'Japanese';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "11d294f60329d88e4db2153bfeb404e4211054417b5114bdf296c197e6757e2e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1914.638666996325
+}

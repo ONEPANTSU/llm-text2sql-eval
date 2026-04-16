@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_760",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1623.115708003752,
+  "execution_time_ms": 2.034832999925129,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_marvel\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.height_cm >= 150 AND superhero.height_cm <= 180;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0046669995062985,
+      "result_signature": "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) * 100.0 / COUNT(*)) AS marvel_percentage\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.height_cm >= 150 AND superhero.height_cm <= 180;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2816669948515482,
+      "result_signature": "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_marvel\nFROM \n    superhero\nJOIN \n    publisher ON superhero.publisher_id = publisher.id\nWHERE \n    superhero.height_cm >= 150 \n    AND superhero.height_cm <= 180;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.20120800036238506,
+      "result_signature": "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_marvel\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.height_cm >= 150 AND superhero.height_cm <= 180;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.185958000656683,
+      "result_signature": "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_marvel\nFROM \n    superhero\nJOIN \n    publisher ON superhero.publisher_id = publisher.id\nWHERE \n    superhero.height_cm >= 150 \n    AND superhero.height_cm <= 180;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1825420040404424,
+      "result_signature": "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_marvel\nFROM \n    superhero\nJOIN \n    publisher ON superhero.publisher_id = publisher.id\nWHERE \n    superhero.height_cm >= 150 \n    AND superhero.height_cm <= 180;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2d34ffb2eadbe0786a4fc3c361c8777fb895e1737cddf828b63c2fbcb1c2fca0": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1625.1810409958125
+}

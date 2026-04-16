@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_1497",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME' \n  AND strftime('%Y-%m', ym.Date) = '2012-06'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME'\n  AND ym.Date BETWEEN '2012-06-01' AND '2012-06-30'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 0.8472689075630251,
+          "similarity_max": 0.7054621848739496,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME' \n  AND strftime('%Y-%m', ym.Date) = '2012-06'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "WITH sme_consumption AS (\n  SELECT c.CustomerID, ym.Consumption\n  FROM customers c\n  JOIN yearmonth ym ON c.CustomerID = ym.CustomerID\n  WHERE c.Segment = 'SME'\n    AND strftime('%Y-%m', ym.Date) = '2012-06'\n)\nSELECT CustomerID\nFROM sme_consumption\nORDER BY Consumption ASC\nLIMIT 1;",
+          "score": 1.0875816993464054,
+          "similarity_max": 0.7248366013071894,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym",
+            "sme_consumption"
+          ]
+        },
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME'\n  AND ym.Date BETWEEN '2012-06-01' AND '2012-06-30'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 0.8472689075630251,
+          "similarity_max": 0.7054621848739496,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME' \n  AND strftime('%Y-%m', ym.Date) = '2012-06'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "WITH sme_consumption AS (\n  SELECT c.CustomerID, ym.Consumption\n  FROM customers c\n  JOIN yearmonth ym ON c.CustomerID = ym.CustomerID\n  WHERE c.Segment = 'SME'\n    AND strftime('%Y-%m', ym.Date) = '2012-06'\n)\nSELECT CustomerID\nFROM sme_consumption\nORDER BY Consumption ASC\nLIMIT 1;",
+          "score": 1.0875816993464054,
+          "similarity_max": 0.7248366013071894,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym",
+            "sme_consumption"
+          ]
+        },
+        {
+          "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME'\n  AND ym.Date BETWEEN '2012-06-01' AND '2012-06-30'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+          "score": 0.8472689075630251,
+          "similarity_max": 0.7054621848739496,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.CustomerID\nFROM customers c\nJOIN yearmonth ym ON c.CustomerID = ym.CustomerID\nWHERE c.Segment = 'SME' \n  AND strftime('%Y-%m', ym.Date) = '2012-06'\nORDER BY ym.Consumption ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "yearmonth",
+        "c",
+        "ym"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 53.98
+  }
+}

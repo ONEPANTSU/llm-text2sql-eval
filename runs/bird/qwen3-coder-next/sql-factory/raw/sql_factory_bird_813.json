@@ -1,0 +1,160 @@
+{
+  "task_id": "bird_813",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ha",
+            "alignment",
+            "a",
+            "hero_attribute",
+            "s",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ha",
+            "alignment",
+            "a",
+            "hero_attribute",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(attribute_value) \nFROM hero_attribute\nWHERE hero_id IN (\n    SELECT id \n    FROM superhero \n    WHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral')\n);",
+          "score": 0.9850543478260869,
+          "similarity_max": 0.529891304347826,
+          "tables_used": [
+            "alignment",
+            "hero_attribute",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nWHERE s.alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 0.8736363636363637,
+          "similarity_max": 0.7527272727272727,
+          "tables_used": [
+            "ha",
+            "alignment",
+            "hero_attribute",
+            "s",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ha",
+            "alignment",
+            "a",
+            "hero_attribute",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(attribute_value) \nFROM hero_attribute\nWHERE hero_id IN (\n    SELECT id \n    FROM superhero \n    WHERE alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral')\n);",
+          "score": 0.9850543478260869,
+          "similarity_max": 0.529891304347826,
+          "tables_used": [
+            "alignment",
+            "hero_attribute",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nWHERE s.alignment_id = (SELECT id FROM alignment WHERE alignment = 'neutral');",
+          "score": 0.8736363636363637,
+          "similarity_max": 0.7527272727272727,
+          "tables_used": [
+            "ha",
+            "alignment",
+            "hero_attribute",
+            "s",
+            "superhero"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(ha.attribute_value) \nFROM hero_attribute ha\nJOIN superhero s ON ha.hero_id = s.id\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'neutral';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ha",
+        "alignment",
+        "a",
+        "hero_attribute",
+        "s",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.41
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "task_id": "bird_457",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sets.name\nFROM cards\nJOIN sets ON cards.setCode = sets.code\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sets.name\nFROM cards\nJOIN sets ON cards.setCode = sets.code\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT 'CardKingdom' AS website\nFROM cards\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%'\nUNION\nSELECT DISTINCT 'TCGPlayer' AS website\nFROM cards\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 0.8161463414634147,
+          "similarity_max": 0.4677073170731707,
+          "tables_used": [
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sets.name\nFROM cards\nJOIN sets ON cards.setCode = sets.code\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT 'CardKingdom' AS website\nFROM cards\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%'\nUNION\nSELECT DISTINCT 'TCGPlayer' AS website\nFROM cards\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 0.8161463414634147,
+          "similarity_max": 0.4677073170731707,
+          "tables_used": [
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT 'CardKingdom' AS website\nFROM cards\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+          "score": 0.708408215661104,
+          "similarity_max": 0.6831835686777921,
+          "tables_used": [
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT sets.name\nFROM cards\nJOIN sets ON cards.setCode = sets.code\nWHERE cards.isPromo = 1 AND cards.availability LIKE '%bundle%';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 91.69
+  }
+}

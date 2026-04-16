@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_527",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 2,
+  "generation_time_ms": 7015.293583994207,
+  "execution_time_ms": 797.0952079995186,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT r.date, r.text\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nWHERE c.artist = 'Kev Walker'\nORDER BY r.date DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 635.8767499987152,
+      "result_signature": "a29a388675f1494ad21a9fd76fb8ec561408da38254e34bb61810f1d36f7033f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT rulings.date, rulings.text\nFROM cards\nJOIN rulings ON cards.id = rulings.uuid\nWHERE cards.artist = 'Kev Walker'\nORDER BY rulings.date DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.650666995497886,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT r.date, r.text\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nWHERE c.artist = 'Kev Walker'\nORDER BY r.date DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 63.382457999978215,
+      "result_signature": "a29a388675f1494ad21a9fd76fb8ec561408da38254e34bb61810f1d36f7033f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT rulings.date, rulings.text\nFROM cards\nJOIN rulings ON cards.id = rulings.uuid\nWHERE cards.artist = 'Kev Walker'\nORDER BY rulings.date DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.668708998418879,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT r.date, r.text\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nWHERE c.artist = 'Kev Walker'\nORDER BY r.date DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.61500000132946,
+      "result_signature": "a29a388675f1494ad21a9fd76fb8ec561408da38254e34bb61810f1d36f7033f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT r.date, r.text\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nWHERE c.artist = 'Kev Walker'\nORDER BY r.date DESC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a29a388675f1494ad21a9fd76fb8ec561408da38254e34bb61810f1d36f7033f": 3,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      1
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 3241.7704170002253,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11054.301874995872
+}

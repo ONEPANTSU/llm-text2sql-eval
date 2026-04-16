@@ -1,0 +1,176 @@
+{
+  "task_id": "bird_388",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name, fd.text\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name, fd.text\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name\nFROM cards c\nINNER JOIN sets s ON c.setCode = s.code\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 0.9793233082706768,
+          "similarity_max": 0.8413533834586466,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.flavorText\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 0.8900375939849625,
+          "similarity_max": 0.8199248120300752,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name, fd.text\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name\nFROM cards c\nINNER JOIN sets s ON c.setCode = s.code\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+          "score": 0.9793233082706768,
+          "similarity_max": 0.8413533834586466,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT c.faceName, f.language\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data f ON c.uuid = f.uuid\nWHERE s.code = '10E'\n  AND c.convertedManaCost = 5;",
+          "score": 0.9202380952380953,
+          "similarity_max": 0.7595238095238095,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.asciiName, c.convertedManaCost, fd.language, fd.name, fd.text\nFROM cards c\nJOIN sets s ON c.setCode = s.code\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE s.code = '10E' AND c.convertedManaCost = 5;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "fd",
+        "foreign_data",
+        "sets",
+        "cards",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "near \"set\": syntax error",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 105.48
+  }
+}

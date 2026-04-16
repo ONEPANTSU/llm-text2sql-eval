@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q74",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4696.160167004564,
+  "execution_time_ms": 10.094208002556115,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH yearly_sales AS (\n  SELECT \n    s.s_store_type,\n    d.d_year,\n    COUNT(DISTINCT ss.ss_customer_sk) AS customer_count\n  FROM store_sales ss\n  JOIN store s ON ss.ss_store_sk = s.s_store_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  GROUP BY s.s_store_type, d.d_year\n),\nyoy AS (\n  SELECT \n    y1.s_store_type,\n    y1.d_year AS current_year,\n    y1.customer_count AS current_year_customers,\n    y2.customer_count AS prev_year_customers,\n    CASE \n      WHEN y2.customer_count IS NULL OR y2.customer_count = 0 THEN NULL\n      ELSE (y1.customer_count - y2.customer_count) * 1.0 / y2.customer_count\n    END AS yoy_growth\n  FROM yearly_sales y1\n  LEFT JOIN yearly_sales y2 \n    ON y1.s_store_type = y2.s_store_type \n    AND y1.d_year = y2.d_year + 1\n)\nSELECT \n  s_store_type,\n  yoy_growth\nFROM yoy\nWHERE yoy_growth IS NOT NULL\nORDER BY yoy_growth DESC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"s\" does not have a column named \"s_store_type\"\n\nCandidate bindings: : \"s_street_type\"\n\nLINE 9:   GROUP BY s.s_store_type, d.d_year\n                   ^",
+      "exec_time_ms": 0.7145419949665666,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH yearly_sales AS (\n  SELECT \n    s.s_store_type,\n    d.d_year,\n    COUNT(DISTINCT ss.ss_customer_sk) AS customer_count\n  FROM store_sales ss\n  JOIN store s ON ss.ss_store_sk = s.s_store_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  GROUP BY s.s_store_type, d.d_year\n),\nyoy_growth AS (\n  SELECT \n    curr.s_store_type,\n    curr.d_year,\n    curr.customer_count,\n    prev.customer_count AS prev_customer_count,\n    CASE \n      WHEN prev.customer_count IS NULL OR prev.customer_count = 0 THEN NULL\n      ELSE (curr.customer_count - prev.customer_count) * 1.0 / prev.customer_count\n    END AS yoy_growth\n  FROM yearly_sales curr\n  LEFT JOIN yearly_sales prev \n    ON curr.s_store_type = prev.s_store_type \n    AND curr.d_year = prev.d_year + 1\n)\nSELECT \n  s_store_type,\n  yoy_growth\nFROM yoy_growth\nWHERE yoy_growth IS NOT NULL\nORDER BY yoy_growth DESC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"s\" does not have a column named \"s_store_type\"\n\nCandidate bindings: : \"s_street_type\"\n\nLINE 9:   GROUP BY s.s_store_type, d.d_year\n                   ^",
+      "exec_time_ms": 0.4610420000972226,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH yearly_sales AS (\n  SELECT \n    s.s_store_type,\n    d.d_year,\n    COUNT(DISTINCT ss.ss_customer_sk) AS customer_count\n  FROM store_sales ss\n  JOIN store s ON ss.ss_store_sk = s.s_store_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  GROUP BY s.s_store_type, d.d_year\n),\nyoy_growth AS (\n  SELECT \n    curr.s_store_type,\n    curr.d_year AS year,\n    curr.customer_count AS current_year_customers,\n    prev.customer_count AS prev_year_customers,\n    CASE \n      WHEN prev.customer_count = 0 THEN NULL\n      ELSE (curr.customer_count - prev.customer_count) * 1.0 / prev.customer_count\n    END AS yoy_growth\n  FROM yearly_sales curr\n  LEFT JOIN yearly_sales prev \n    ON curr.s_store_type = prev.s_store_type \n    AND curr.d_year = prev.d_year + 1\n)\nSELECT \n  s_store_type,\n  yoy_growth\nFROM yoy_growth\nWHERE yoy_growth IS NOT NULL\nORDER BY yoy_growth DESC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"s\" does not have a column named \"s_store_type\"\n\nCandidate bindings: : \"s_street_type\"\n\nLINE 9:   GROUP BY s.s_store_type, d.d_year\n                   ^",
+      "exec_time_ms": 0.4588750016409904,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH yearly_sales AS (\n  SELECT \n    s.s_store_type,\n    d.d_year,\n    COUNT(DISTINCT ss.ss_customer_sk) AS customer_count\n  FROM store_sales ss\n  JOIN store s ON ss.ss_store_sk = s.s_store_sk\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  GROUP BY s.s_store_type, d.d_year\n),\nyoy_growth AS (\n  SELECT \n    curr.s_store_type,\n    curr.d_year AS current_year,\n    curr.customer_count AS current_customers,\n    prev.customer_count AS prev_customers,\n    CASE \n      WHEN prev.customer_count > 0 THEN \n        (curr.customer_count - prev.customer_count) * 1.0 / prev.customer_count\n      ELSE NULL\n    END AS yoy_growth\n  FROM yearly_sales curr\n  LEFT JOIN yearly_sales prev \n    ON curr.s_store_type = prev.s_store_type \n    AND curr.d_year = prev.d_year + 1\n)\nSELECT \n  s_store_type,\n  yoy_growth\nFROM yoy_growth\nWHERE yoy_growth IS NOT NULL\nORDER BY yoy_growth DESC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"s\" does not have a column named \"s_store_type\"\n\nCandidate bindings: : \"s_street_type\"\n\nLINE 9:   GROUP BY s.s_store_type, d.d_year\n                   ^",
+      "exec_time_ms": 0.6462500023189932,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH yearly_customer_counts AS (\n    SELECT \n        s.s_store_type,\n        d.d_year,\n        COUNT(DISTINCT ss.ss_customer_sk) AS customer_count\n    FROM store_sales ss\n    JOIN store s ON ss.ss_store_sk = s.s_store_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    GROUP BY s.s_store_type, d.d_year\n),\nyoy_growth AS (\n    SELECT \n        curr.s_store_type,\n        curr.d_year AS year,\n        curr.customer_count AS current_year_customers,\n        prev.customer_count AS previous_year_customers,\n        CASE \n            WHEN prev.customer_count = 0 THEN NULL\n            ELSE CAST(curr.customer_count - prev.customer_count AS DOUBLE) / prev.customer_count\n        END AS yoy_growth\n    FROM yearly_customer_counts curr\n    LEFT JOIN yearly_customer_counts prev \n        ON curr.s_store_type = prev.s_store_type \n        AND curr.d_year = prev.d_year + 1\n)\nSELECT \n    s_store_type,\n    yoy_growth\nFROM yoy_growth\nWHERE yoy_growth IS NOT NULL\nORDER BY yoy_growth DESC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"s\" does not have a column named \"s_store_type\"\n\nCandidate bindings: : \"s_street_type\"\n\nLINE 9:     GROUP BY s.s_store_type, d.d_year\n                     ^",
+      "exec_time_ms": 0.44966599671170115,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 4706.277584002237
+}

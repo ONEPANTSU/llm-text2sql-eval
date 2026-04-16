@@ -1,0 +1,202 @@
+{
+  "task_id": "bird_1121",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 4,
+  "generation_time_ms": 8495.199375000084,
+  "execution_time_ms": 931.7215000046417,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON (\n    Match.home_player_X1 = Player.player_api_id OR\n    Match.home_player_X2 = Player.player_api_id OR\n    Match.home_player_X3 = Player.player_api_id OR\n    Match.home_player_X4 = Player.player_api_id OR\n    Match.home_player_X5 = Player.player_api_id OR\n    Match.home_player_X6 = Player.player_api_id OR\n    Match.home_player_X7 = Player.player_api_id OR\n    Match.home_player_X8 = Player.player_api_id OR\n    Match.home_player_X9 = Player.player_api_id OR\n    Match.home_player_X10 = Player.player_api_id OR\n    Match.home_player_X11 = Player.player_api_id\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 172.40770799980965,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X1 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X2 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X3 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X4 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X5 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X6 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X7 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X8 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X9 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X10 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30\n\nUNION ALL\n\nSELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON Match.home_player_X11 = Player.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 266.72704099473776,
+      "result_signature": "70c5a3e25ebb7ddaca8cd587a5db5afd92c9a1efc15dd7934212d60fd93ddf08",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON (\n    Match.home_player_X1 = Player.player_api_id OR\n    Match.home_player_X2 = Player.player_api_id OR\n    Match.home_player_X3 = Player.player_api_id OR\n    Match.home_player_X4 = Player.player_api_id OR\n    Match.home_player_X5 = Player.player_api_id OR\n    Match.home_player_X6 = Player.player_api_id OR\n    Match.home_player_X7 = Player.player_api_id OR\n    Match.home_player_X8 = Player.player_api_id OR\n    Match.home_player_X9 = Player.player_api_id OR\n    Match.home_player_X10 = Player.player_api_id OR\n    Match.home_player_X11 = Player.player_api_id\n)\nWHERE strftime('%Y', 'now') - strftime('%Y', Player.birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.93662499793572,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT SUM(Match.home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON (\n    Match.home_player_X1 = Player.player_api_id OR\n    Match.home_player_X2 = Player.player_api_id OR\n    Match.home_player_X3 = Player.player_api_id OR\n    Match.home_player_X4 = Player.player_api_id OR\n    Match.home_player_X5 = Player.player_api_id OR\n    Match.home_player_X6 = Player.player_api_id OR\n    Match.home_player_X7 = Player.player_api_id OR\n    Match.home_player_X8 = Player.player_api_id OR\n    Match.home_player_X9 = Player.player_api_id OR\n    Match.home_player_X10 = Player.player_api_id OR\n    Match.home_player_X11 = Player.player_api_id\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', Player.birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 61.299750006583054,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 11
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p1 ON m.home_player_1 = p1.player_api_id\nJOIN Player p2 ON m.home_player_2 = p2.player_api_id\nJOIN Player p3 ON m.home_player_3 = p3.player_api_id\nJOIN Player p4 ON m.home_player_4 = p4.player_api_id\nJOIN Player p5 ON m.home_player_5 = p5.player_api_id\nJOIN Player p6 ON m.home_player_6 = p6.player_api_id\nJOIN Player p7 ON m.home_player_7 = p7.player_api_id\nJOIN Player p8 ON m.home_player_8 = p8.player_api_id\nJOIN Player p9 ON m.home_player_9 = p9.player_api_id\nJOIN Player p10 ON m.home_player_10 = p10.player_api_id\nJOIN Player p11 ON m.home_player_11 = p11.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', p1.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p2.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p3.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p4.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p5.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p6.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p7.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p8.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p9.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p10.birthday)) <= 30\n   OR (strftime('%Y', 'now') - strftime('%Y', p11.birthday)) <= 30;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 325.79695800086483,
+      "result_signature": "f9370aa4d2b736a923c2479b62ee3cc90b77f3453a6d4613fc1207c679eea20c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match\nJOIN Player ON (\n    Match.home_player_X1 = Player.player_api_id OR\n    Match.home_player_X2 = Player.player_api_id OR\n    Match.home_player_X3 = Player.player_api_id OR\n    Match.home_player_X4 = Player.player_api_id OR\n    Match.home_player_X5 = Player.player_api_id OR\n    Match.home_player_X6 = Player.player_api_id OR\n    Match.home_player_X7 = Player.player_api_id OR\n    Match.home_player_X8 = Player.player_api_id OR\n    Match.home_player_X9 = Player.player_api_id OR\n    Match.home_player_X10 = Player.player_api_id OR\n    Match.home_player_X11 = Player.player_api_id\n)\nWHERE strftime('%Y', 'now') - strftime('%Y', Player.birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', Player.birthday)) <= 30;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 3,
+        "70c5a3e25ebb7ddaca8cd587a5db5afd92c9a1efc15dd7934212d60fd93ddf08": 1,
+        "f9370aa4d2b736a923c2479b62ee3cc90b77f3453a6d4613fc1207c679eea20c": 1,
+        "21888360a24ba3471500f917e7e680b0fd63df1925cff7e17969c330c1b3b249": 2,
+        "922e99edf6d7fcc64aa27c705b976bd8184109fae8fbc4614c1a926d51838746": 1,
+        "c0a72acb6d4996e29e0e5cb43939b9dd69e2e13dc373401566f711ecdb96e676": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 87416.0477080004,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match m\nWHERE EXISTS (\n    SELECT 1\n    FROM Player p\n    WHERE (\n        p.player_api_id = m.home_player_1 OR\n        p.player_api_id = m.home_player_2 OR\n        p.player_api_id = m.home_player_3 OR\n        p.player_api_id = m.home_player_4 OR\n        p.player_api_id = m.home_player_5 OR\n        p.player_api_id = m.home_player_6 OR\n        p.player_api_id = m.home_player_7 OR\n        p.player_api_id = m.home_player_8 OR\n        p.player_api_id = m.home_player_9 OR\n        p.player_api_id = m.home_player_10 OR\n        p.player_api_id = m.home_player_11\n    )\n    AND (strftime('%Y', 'now') - strftime('%Y', p.birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday))) <= 30\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 331.2393329979386,
+        "result_signature": "21888360a24ba3471500f917e7e680b0fd63df1925cff7e17969c330c1b3b249",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match m\nWHERE EXISTS (\n    SELECT 1\n    FROM Player p\n    WHERE (m.home_player_1 = p.player_api_id OR\n           m.home_player_2 = p.player_api_id OR\n           m.home_player_3 = p.player_api_id OR\n           m.home_player_4 = p.player_api_id OR\n           m.home_player_5 = p.player_api_id OR\n           m.home_player_6 = p.player_api_id OR\n           m.home_player_7 = p.player_api_id OR\n           m.home_player_8 = p.player_api_id OR\n           m.home_player_9 = p.player_api_id OR\n           m.home_player_10 = p.player_api_id OR\n           m.home_player_11 = p.player_api_id)\n      AND (strftime('%Y', 'now') - strftime('%Y', p.birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday))) <= 30\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 311.26058399968315,
+        "result_signature": "21888360a24ba3471500f917e7e680b0fd63df1925cff7e17969c330c1b3b249",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT SUM(home_team_goal) AS total_home_goals\nFROM Match m\nCROSS JOIN (\n    SELECT 1 AS pos, home_player_1 AS player_api_id FROM Match\n    UNION ALL\n    SELECT 2, home_player_2 FROM Match\n    UNION ALL\n    SELECT 3, home_player_3 FROM Match\n    UNION ALL\n    SELECT 4, home_player_4 FROM Match\n    UNION ALL\n    SELECT 5, home_player_5 FROM Match\n    UNION ALL\n    SELECT 6, home_player_6 FROM Match\n    UNION ALL\n    SELECT 7, home_player_7 FROM Match\n    UNION ALL\n    SELECT 8, home_player_8 FROM Match\n    UNION ALL\n    SELECT 9, home_player_9 FROM Match\n    UNION ALL\n    SELECT 10, home_player_10 FROM Match\n    UNION ALL\n    SELECT 11, home_player_11 FROM Match\n) players ON m.id = m.id\nJOIN Player p ON players.player_api_id = p.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) <= 30;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 82178.63974999636,
+        "result_signature": "922e99edf6d7fcc64aa27c705b976bd8184109fae8fbc4614c1a926d51838746",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH home_players AS (\n  SELECT home_team_goal, home_player_1 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_2 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_3 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_4 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_5 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_6 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_7 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_8 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_9 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_10 AS player_api_id FROM Match\n  UNION ALL\n  SELECT home_team_goal, home_player_11 AS player_api_id FROM Match\n)\nSELECT SUM(hp.home_team_goal) AS total_home_goals\nFROM home_players hp\nJOIN Player p ON hp.player_api_id = p.player_api_id\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) <= 30;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 510.3382080051233,
+        "result_signature": "c0a72acb6d4996e29e0e5cb43939b9dd69e2e13dc373401566f711ecdb96e676",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 96843.0870000011
+}

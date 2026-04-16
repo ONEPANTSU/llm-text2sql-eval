@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_1068",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3086.2577500010957,
+  "execution_time_ms": 357.09691700321855,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010-01-01' AND '2015-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 116.27054199925624,
+      "result_signature": "cffb7a026c767ce011811409801b7694ca4b3589647bab3d41e66a230022fba4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010-01-01' AND '2015-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 69.54525000037393,
+      "result_signature": "cffb7a026c767ce011811409801b7694ca4b3589647bab3d41e66a230022fba4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010-01-01' AND '2015-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.37929200020153,
+      "result_signature": "cffb7a026c767ce011811409801b7694ca4b3589647bab3d41e66a230022fba4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010-01-01' AND '2015-12-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 61.8401659958181,
+      "result_signature": "cffb7a026c767ce011811409801b7694ca4b3589647bab3d41e66a230022fba4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player_Attributes pa\nJOIN Player p ON pa.player_api_id = p.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010' AND '2015';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 52.696749997267034,
+      "result_signature": "30c75c4cf2e3de7e3b500ec47477c05ddbc14a92dc955a7463ea703d4da9f7ec",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.height > 170\n  AND pa.date BETWEEN '2010-01-01' AND '2015-12-31';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "cffb7a026c767ce011811409801b7694ca4b3589647bab3d41e66a230022fba4": 4,
+        "30c75c4cf2e3de7e3b500ec47477c05ddbc14a92dc955a7463ea703d4da9f7ec": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2633.218333001423,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6076.711417001206
+}

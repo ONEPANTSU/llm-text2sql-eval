@@ -1,0 +1,196 @@
+{
+  "task_id": "bird_531",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1709.6321249991888,
+  "execution_time_ms": 43.44412500358885,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT CASE WHEN Harlan.Reputation > Jarrod.Reputation THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM users Harlan, users Jarrod\nWHERE Harlan.DisplayName = 'Harlan'\n  AND Jarrod.DisplayName = 'Jarrod Dixon';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.61991699883947,
+      "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT CASE WHEN Harlan.Reputation > Jarrod.Reputation THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM users Harlan, users Jarrod\nWHERE Harlan.DisplayName = 'Harlan' AND Jarrod.DisplayName = 'Jarrod Dixon';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.899790998431854,
+      "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Reputation FROM users WHERE DisplayName = 'Harlan' UNION SELECT Reputation FROM users WHERE DisplayName = 'Jarrod Dixon'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.339874998957384,
+      "result_signature": "3b31ceaed027833345a1284956fcd011037c6d6918cf0f8c1456fe0282257e75",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DisplayName, Reputation FROM users WHERE DisplayName IN ('Harlan', 'Jarrod Dixon') ORDER BY Reputation DESC LIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.449834002822172,
+      "result_signature": "54ff8991dd79307202cf47d3ed08dec2ef61a39e86122ed265c1768740266df4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Reputation FROM users WHERE DisplayName = 'Harlan' UNION SELECT Reputation FROM users WHERE DisplayName = 'Jarrod Dixon' ORDER BY Reputation DESC LIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.960457994660828,
+      "result_signature": "6cd3bc23eb502c571baf89fd09ff58e684f203825bf4b19c32c36cc3b695d9c5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT CASE WHEN MAX(CASE WHEN DisplayName = 'Harlan' THEN Reputation END) > MAX(CASE WHEN DisplayName = 'Jarrod Dixon' THEN Reputation END) THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM users\nWHERE DisplayName IN ('Harlan', 'Jarrod Dixon');",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7": 6,
+        "3b31ceaed027833345a1284956fcd011037c6d6918cf0f8c1456fe0282257e75": 1,
+        "54ff8991dd79307202cf47d3ed08dec2ef61a39e86122ed265c1768740266df4": 1,
+        "6cd3bc23eb502c571baf89fd09ff58e684f203825bf4b19c32c36cc3b695d9c5": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1904.1837079930701,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CASE \n        WHEN Harlan.Reputation > Jarrod.Reputation THEN 'Harlan'\n        WHEN Jarrod.Reputation > Harlan.Reputation THEN 'Jarrod Dixon'\n        ELSE 'Tie'\n    END AS HigherReputationUser\nFROM \n    (SELECT Reputation FROM users WHERE DisplayName = 'Harlan') AS Harlan,\n    (SELECT Reputation FROM users WHERE DisplayName = 'Jarrod Dixon') AS Jarrod;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 7.920749994809739,
+        "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT CASE WHEN MAX(CASE WHEN DisplayName = 'Harlan' THEN Reputation END) > MAX(CASE WHEN DisplayName = 'Jarrod Dixon' THEN Reputation END) THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM users\nWHERE DisplayName IN ('Harlan', 'Jarrod Dixon');",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.882750002958346,
+        "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT CASE WHEN h.Reputation > j.Reputation THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM (SELECT Reputation FROM users WHERE DisplayName = 'Harlan') h,\n     (SELECT Reputation FROM users WHERE DisplayName = 'Jarrod Dixon') j",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 6.642125001235399,
+        "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT CASE WHEN h.Reputation > j.Reputation THEN 'Harlan' ELSE 'Jarrod Dixon' END AS HigherReputationUser\nFROM (SELECT Reputation FROM users WHERE DisplayName = 'Harlan') h,\n     (SELECT Reputation FROM users WHERE DisplayName = 'Jarrod Dixon') j",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 6.351291005557869,
+        "result_signature": "84a793fe1d31cbf5012f07c636ade84265a459b7a9d4a84b4967459f46d3e0c7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3657.344999999623
+}

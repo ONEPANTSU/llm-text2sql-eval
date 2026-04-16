@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_88",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3106.832499994198,
+  "execution_time_ms": 11.92054199782433,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT schools.School, schools.Email\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE satscores.NumGE1500 IS NOT NULL\nORDER BY satscores.NumGE1500 DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: schools.Email",
+      "exec_time_ms": 0.9987090015783906,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.School, s.AdministratorEmail\nFROM satscores sa\nJOIN schools s ON sa.cds = s.CDSCode\nORDER BY sa.NumGE1500 DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: s.AdministratorEmail",
+      "exec_time_ms": 1.6666670053382404,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT s.School, s.Email\nFROM satscores sa\nJOIN schools s ON sa.cds = s.CDSCode\nWHERE sa.NumGE1500 IS NOT NULL\nORDER BY sa.NumGE1500 DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: s.Email",
+      "exec_time_ms": 0.4124999977648258,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT s.School, s.School\nFROM satscores sa\nJOIN schools s ON sa.cds = s.CDSCode\nORDER BY sa.NumGE1500 DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.667249995691236,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.School, schools.School AS administrator_email_placeholder\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.NumGE1500 DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9837080001016147,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT schools.School, schools.School AS administrator_email_placeholder\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.NumGE1500 DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3118.8626249931986
+}

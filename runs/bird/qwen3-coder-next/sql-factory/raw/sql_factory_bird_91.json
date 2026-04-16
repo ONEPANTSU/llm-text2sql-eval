@@ -1,0 +1,126 @@
+{
+  "task_id": "bird_91",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    '1995' AS year, \n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio \nFROM district \nUNION ALL \nSELECT \n    '1996' AS year, \n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio \nFROM district;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1995) > AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1996) \n        THEN '1995' \n        ELSE '1996' \n    END AS higher_unemployment_year\nFROM district;",
+          "score": 0.8245454545454546,
+          "similarity_max": 0.3509090909090909,
+          "tables_used": []
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    '1995' AS year, \n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio \nFROM district \nUNION ALL \nSELECT \n    '1996' AS year, \n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio \nFROM district;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1995) > AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1996) \n        THEN '1995' \n        ELSE '1996' \n    END AS higher_unemployment_year\nFROM district;",
+          "score": 0.8245454545454546,
+          "similarity_max": 0.3509090909090909,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN AVG(CAST(A11 AS REAL)) > AVG(CAST(A12 AS REAL)) THEN '1995'\n        ELSE '1996'\n    END AS year_with_higher_unemployment_ratio,\n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio_1995,\n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio_1996\nFROM district;",
+          "score": 0.7477339901477833,
+          "similarity_max": 0.5045320197044334,
+          "tables_used": []
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    '1995' AS year, \n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio \nFROM district \nUNION ALL \nSELECT \n    '1996' AS year, \n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio \nFROM district;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1995) > AVG(CAST(A11 AS REAL)) FILTER (WHERE A10 = 1996) \n        THEN '1995' \n        ELSE '1996' \n    END AS higher_unemployment_year\nFROM district;",
+          "score": 0.8245454545454546,
+          "similarity_max": 0.3509090909090909,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN AVG(CAST(A11 AS REAL)) > AVG(CAST(A12 AS REAL)) THEN '1995'\n        ELSE '1996'\n    END AS year_with_higher_unemployment_ratio,\n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio_1995,\n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio_1996\nFROM district;",
+          "score": 0.7477339901477833,
+          "similarity_max": 0.5045320197044334,
+          "tables_used": []
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    '1995' AS year, \n    AVG(CAST(A11 AS REAL)) AS unemployment_ratio \nFROM district \nUNION ALL \nSELECT \n    '1996' AS year, \n    AVG(CAST(A12 AS REAL)) AS unemployment_ratio \nFROM district;",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.2,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.99
+  }
+}

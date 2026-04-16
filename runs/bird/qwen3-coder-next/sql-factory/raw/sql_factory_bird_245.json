@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_245",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(c.bond_id) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) AS iodine_bonds;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(c.bond_id) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) AS iodine_bonds;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cnt) \nFROM (\n    SELECT a.atom_id, COUNT(*) AS cnt\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) t;",
+          "score": 1.0220689655172412,
+          "similarity_max": 0.7558620689655172,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(*) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) iodine_bonds;",
+          "score": 0.9822222222222221,
+          "similarity_max": 0.8355555555555556,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(c.bond_id) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) AS iodine_bonds;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(cnt) \nFROM (\n    SELECT a.atom_id, COUNT(*) AS cnt\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) t;",
+          "score": 1.0220689655172412,
+          "similarity_max": 0.7558620689655172,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(*) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) iodine_bonds;",
+          "score": 0.9822222222222221,
+          "similarity_max": 0.8355555555555556,
+          "tables_used": [
+            "c",
+            "connected",
+            "a",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(bond_count) \nFROM (\n    SELECT a.atom_id, COUNT(c.bond_id) AS bond_count\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    WHERE a.element = 'I'\n    GROUP BY a.atom_id\n) AS iodine_bonds;",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "connected",
+        "a",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.31
+  }
+}

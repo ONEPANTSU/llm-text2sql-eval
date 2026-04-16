@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_330",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2503.4215839987155,
+  "execution_time_ms": 65.18858300114516,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.label = 'carcinogenic' AND a.element = 'H' AND b.bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nJOIN connected c ON a.atom_id = c.atom_id\nJOIN bond b ON c.bond_id = b.bond_id AND m.molecule_id = b.molecule_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE (a.element = 'H' AND a2.element = 'H') OR (a.element = 'H' AND a2.element = 'H');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 41.48233400337631,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.label = 'carcinogenic' AND a.element = 'H' AND b.bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nJOIN connected c ON m.molecule_id = c.atom_id OR m.molecule_id = c.atom_id2\nJOIN bond b ON c.bond_id = b.bond_id\nWHERE a.element = 'H' AND b.bond_type = 'triple';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.134041003359016,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN a1.element = 'H' AND a2.element = 'H' AND b.bond_type = 'triple' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nJOIN connected c ON a.atom_id = c.atom_id\nJOIN bond b ON c.bond_id = b.bond_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE a.element = 'H' OR a2.element = 'H';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: a1.element",
+      "exec_time_ms": 0.2442920012981631,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IN (\n        SELECT a.molecule_id \n        FROM atom a \n        WHERE a.element = 'H' \n        AND EXISTS (\n            SELECT 1 \n            FROM connected c \n            JOIN bond b ON c.bond_id = b.bond_id \n            WHERE (c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id) \n            AND b.bond_type = 'triple'\n        )\n    ) THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM molecule m\nWHERE m.molecule_id IN (\n    SELECT DISTINCT a.molecule_id \n    FROM atom a \n    WHERE a.element = 'C' OR a.element = 'N' OR a.element = 'O' OR a.element = 'S' OR a.element = 'P' OR a.element = 'Se' OR a.element = 'As' OR a.element = 'Sb' OR a.element = 'Bi' OR a.element = 'Te' OR a.element = 'Po'\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.1460839963983744,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN a.element = 'H' AND b.bond_type = 'triple' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nJOIN atom a ON m.molecule_id = a.molecule_id\nJOIN connected c ON a.atom_id = c.atom_id\nJOIN bond b ON c.bond_id = b.bond_id\nWHERE m.label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.688792001223192,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IN (\n        SELECT a.molecule_id \n        FROM atom a \n        WHERE a.element = 'H' \n        AND EXISTS (\n            SELECT 1 \n            FROM connected c \n            JOIN bond b ON c.bond_id = b.bond_id \n            WHERE (c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id) \n            AND b.bond_type = 'triple'\n        )\n    ) THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM molecule m\nWHERE m.molecule_id IN (\n    SELECT DISTINCT a.molecule_id \n    FROM atom a \n    WHERE a.element = 'C' OR a.element = 'N' OR a.element = 'O' OR a.element = 'S' OR a.element = 'P' OR a.element = 'Se' OR a.element = 'As' OR a.element = 'Sb' OR a.element = 'Bi' OR a.element = 'Te' OR a.element = 'Po'\n);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2568.6541670002043
+}

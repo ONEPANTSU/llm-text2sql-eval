@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1300",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1913.24600000371,
+  "execution_time_ms": 26.36141599941766,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT Patient.Description \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE Laboratory.TG IS NOT NULL \nORDER BY Laboratory.TG DESC \nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.264166001637932,
+      "result_signature": "28946a7211fd42f682323b0cdd9d243b8db30561521d4e51ac3a712b6607ea6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Description\nFROM Laboratory l\nJOIN Patient p ON l.ID = p.ID\nWHERE l.TG <= 150\nORDER BY l.TG DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.941292001400143,
+      "result_signature": "4b07001ad83a365582aaf95dbf73dc537b21e06b3ffccc35faab4bbb6840682b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Patient.Description\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.TG <= 150\nORDER BY Laboratory.TG DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.040208001038991,
+      "result_signature": "4b07001ad83a365582aaf95dbf73dc537b21e06b3ffccc35faab4bbb6840682b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT Patient.Description \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nORDER BY Laboratory.TG DESC \nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.5767090012086555,
+      "result_signature": "28946a7211fd42f682323b0cdd9d243b8db30561521d4e51ac3a712b6607ea6f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Description \nFROM Laboratory \nJOIN Patient ON Laboratory.ID = Patient.ID \nWHERE TG <= (SELECT MAX(TG) FROM Laboratory WHERE TG <= 150) \nORDER BY TG DESC \nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.2277499960619025,
+      "result_signature": "4b07001ad83a365582aaf95dbf73dc537b21e06b3ffccc35faab4bbb6840682b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT Patient.Description\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.TG <= 150\nORDER BY Laboratory.TG DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "28946a7211fd42f682323b0cdd9d243b8db30561521d4e51ac3a712b6607ea6f": 2,
+        "4b07001ad83a365582aaf95dbf73dc537b21e06b3ffccc35faab4bbb6840682b": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2549.8828749987297,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4489.577457999985
+}

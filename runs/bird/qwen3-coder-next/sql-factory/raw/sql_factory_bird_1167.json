@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1167",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date >= '1998-01-01'\n  AND L.Date <= '1998-12-31';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date >= '1998-01-01'\n  AND L.Date <= '1998-12-31';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(monthly_count) AS average_male_patients_per_month\nFROM (\n  SELECT strftime('%Y-%m', L.Date) AS month, COUNT(DISTINCT P.ID) AS monthly_count\n  FROM Laboratory L\n  JOIN Patient P ON L.ID = P.ID\n  WHERE P.SEX = 'M'\n    AND L.Date >= '1998-01-01'\n    AND L.Date <= '1998-12-31'\n  GROUP BY month\n);",
+          "score": 1.0887137452711222,
+          "similarity_max": 0.6225725094577553,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT P.ID) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date BETWEEN '1998-01-01' AND '1998-12-31';",
+          "score": 0.8147727272727272,
+          "similarity_max": 0.7704545454545455,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date >= '1998-01-01'\n  AND L.Date <= '1998-12-31';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(monthly_count) AS average_male_patients_per_month\nFROM (\n  SELECT strftime('%Y-%m', L.Date) AS month, COUNT(DISTINCT P.ID) AS monthly_count\n  FROM Laboratory L\n  JOIN Patient P ON L.ID = P.ID\n  WHERE P.SEX = 'M'\n    AND L.Date >= '1998-01-01'\n    AND L.Date <= '1998-12-31'\n  GROUP BY month\n);",
+          "score": 1.0887137452711222,
+          "similarity_max": 0.6225725094577553,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT CASE WHEN P.SEX = 'M' THEN L.ID END) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE L.Date >= '1998-01-01'\n  AND L.Date <= '1998-12-31';",
+          "score": 0.8334821428571428,
+          "similarity_max": 0.7330357142857142,
+          "tables_used": [
+            "Laboratory",
+            "L",
+            "Patient",
+            "P"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) * 1.0 / 12 AS average_male_patients_per_month\nFROM Laboratory L\nJOIN Patient P ON L.ID = P.ID\nWHERE P.SEX = 'M'\n  AND L.Date >= '1998-01-01'\n  AND L.Date <= '1998-12-31';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "L",
+        "Patient",
+        "P"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.85
+  }
+}

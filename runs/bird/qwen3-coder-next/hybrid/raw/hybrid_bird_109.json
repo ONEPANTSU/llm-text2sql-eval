@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_109",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1993.124082997383,
+  "execution_time_ms": 17.748624995874707,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nWHERE client.gender = 'F' AND account.district_id = (SELECT district_id FROM district WHERE A2 = 'Jesenik');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.495542002085131,
+      "result_signature": "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE client.gender = 'F' AND district.A2 = 'Jesenik';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.507250003167428,
+      "result_signature": "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nWHERE client.gender = 'F' AND account.district_id = (SELECT district_id FROM district WHERE A2 = 'Jesenik');",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.270167002279777,
+      "result_signature": "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON disp.client_id = client.client_id\nJOIN account ON disp.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE client.gender = 'F' AND district.A2 = 'Jesenik';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.674708994163666,
+      "result_signature": "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE client.gender = 'F' AND district.A2 = 'Jesenik';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2367089986801147,
+      "result_signature": "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(client.client_id) AS count\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN account ON disp.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE client.gender = 'F' AND district.A2 = 'Jesenik';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "974beaa6db865287a43c07c1aff93ca7bed43c77f05c70268f8b97ad6e4cafc0": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2010.9419159998652
+}

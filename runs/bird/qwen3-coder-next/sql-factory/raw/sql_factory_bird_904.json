@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_904",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT r.year, r.name\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher'\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "res",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT r.year, r.name\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher'\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "res",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher' AND res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 0.8990469208211145,
+          "similarity_max": 0.8019061583577712,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "res",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT r.year, r.name\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher'\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "res",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher'\n  AND res.fastestLapTime IS NOT NULL\n  AND res.fastestLapTime = (\n    SELECT MIN(res2.fastestLapTime)\n    FROM results res2\n    JOIN drivers d2 ON res2.driverId = d2.driverId\n    WHERE d2.forename = 'Michael' AND d2.surname = 'Schumacher'\n      AND res2.fastestLapTime IS NOT NULL\n  );",
+          "score": 1.1039473684210526,
+          "similarity_max": 0.5921052631578947,
+          "tables_used": [
+            "d2",
+            "drivers",
+            "d",
+            "r",
+            "res",
+            "res2",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT r.name, r.year\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher' AND res.fastestLapTime IS NOT NULL\nORDER BY CAST(res.fastestLapTime AS REAL)\nLIMIT 1;",
+          "score": 0.9090871710526317,
+          "similarity_max": 0.7818256578947367,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "res",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT r.year, r.name\nFROM races r\nJOIN results res ON r.raceId = res.raceId\nJOIN drivers d ON res.driverId = d.driverId\nWHERE d.forename = 'Michael' AND d.surname = 'Schumacher'\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "drivers",
+        "d",
+        "res",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 9.74
+  }
+}

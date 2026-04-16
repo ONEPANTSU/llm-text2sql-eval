@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1174",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2130.536292002944,
+  "execution_time_ms": 8.81587500043679,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.605750000337139,
+      "result_signature": "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0055000020656735,
+      "result_signature": "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0896250023506582,
+      "result_signature": "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9781249973457307,
+      "result_signature": "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9234579993062653,
+      "result_signature": "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT AVG(1999 - CAST(strftime('%Y', Birthday) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Laboratory.Date LIKE '1991-10%';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "03df6eebe36546de9cc680579c4166a938cdd5c1574787c1f9454b124e3052ce": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2139.393083001778
+}

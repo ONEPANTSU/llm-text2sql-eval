@@ -1,0 +1,177 @@
+{
+  "task_id": "spider2_30",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    COUNT(*) FILTER (WHERE cd.year_founded BETWEEN 2019 AND 2021) AS new_companies_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry\n  ORDER BY new_companies_count DESC\n  LIMIT 1\n)\nSELECT \n  CAST(new_companies_count AS REAL) / 3 AS avg_new_per_year\nFROM industry_counts;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "companies_industries",
+            "ci",
+            "cd",
+            "companies_dates"
+          ]
+        },
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    strftime('%Y', cd.date_joined) AS year,\n    COUNT(*) AS new_unicorns\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.date_joined >= '2019-01-01' AND cd.date_joined <= '2021-12-31'\n  GROUP BY ci.industry, strftime('%Y', cd.date_joined)\n),\ntop_industry AS (\n  SELECT industry\n  FROM industry_counts\n  GROUP BY industry\n  ORDER BY SUM(new_unicorns) DESC\n  LIMIT 1\n)\nSELECT \n  ROUND(AVG(ic.new_...",
+          "score": 1.163312693498452,
+          "similarity_max": 0.473374613003096,
+          "tables_used": [
+            "companies_industries",
+            "companies_dates",
+            "ic",
+            "top_industry",
+            "industry_counts",
+            "ci",
+            "cd",
+            "ti"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    COUNT(*) FILTER (WHERE cd.year_founded BETWEEN 2019 AND 2021) AS new_companies_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry\n  ORDER BY new_companies_count DESC\n  LIMIT 1\n)\nSELECT \n  CAST(new_companies_count AS REAL) / 3 AS avg_new_per_year\nFROM industry_counts;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "companies_industries",
+            "ci",
+            "cd",
+            "companies_dates"
+          ]
+        },
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    strftime('%Y', cd.date_joined) AS year,\n    COUNT(*) AS new_unicorns\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.date_joined >= '2019-01-01' AND cd.date_joined <= '2021-12-31'\n  GROUP BY ci.industry, strftime('%Y', cd.date_joined)\n),\ntop_industry AS (\n  SELECT industry\n  FROM industry_counts\n  GROUP BY industry\n  ORDER BY SUM(new_unicorns) DESC\n  LIMIT 1\n)\nSELECT \n  ROUND(AVG(ic.new_...",
+          "score": 1.163312693498452,
+          "similarity_max": 0.473374613003096,
+          "tables_used": [
+            "companies_industries",
+            "companies_dates",
+            "ic",
+            "top_industry",
+            "industry_counts",
+            "ci",
+            "cd",
+            "ti"
+          ]
+        },
+        {
+          "sql": "WITH industry_yearly_counts AS (\n  SELECT \n    ci.industry,\n    cd.year_founded,\n    COUNT(*) AS yearly_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry, cd.year_founded\n),\ntop_industry AS (\n  SELECT \n    industry,\n    SUM(yearly_count) AS total_new_companies\n  FROM industry_yearly_counts\n  GROUP BY industry\n  ORDER BY total_new_companies DESC\n  LIMIT 1\n)\nSELECT \n  CAST(total_new_c...",
+          "score": 1.11010101010101,
+          "similarity_max": 0.6797979797979798,
+          "tables_used": [
+            "companies_industries",
+            "companies_dates",
+            "ci",
+            "industry_yearly_counts",
+            "cd"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    COUNT(*) FILTER (WHERE cd.year_founded BETWEEN 2019 AND 2021) AS new_companies_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry\n  ORDER BY new_companies_count DESC\n  LIMIT 1\n)\nSELECT \n  CAST(new_companies_count AS REAL) / 3 AS avg_new_per_year\nFROM industry_counts;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "companies_industries",
+            "ci",
+            "cd",
+            "companies_dates"
+          ]
+        },
+        {
+          "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    strftime('%Y', cd.date_joined) AS year,\n    COUNT(*) AS new_unicorns\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.date_joined >= '2019-01-01' AND cd.date_joined <= '2021-12-31'\n  GROUP BY ci.industry, strftime('%Y', cd.date_joined)\n),\ntop_industry AS (\n  SELECT industry\n  FROM industry_counts\n  GROUP BY industry\n  ORDER BY SUM(new_unicorns) DESC\n  LIMIT 1\n)\nSELECT \n  ROUND(AVG(ic.new_...",
+          "score": 1.163312693498452,
+          "similarity_max": 0.473374613003096,
+          "tables_used": [
+            "companies_industries",
+            "companies_dates",
+            "ic",
+            "top_industry",
+            "industry_counts",
+            "ci",
+            "cd",
+            "ti"
+          ]
+        },
+        {
+          "sql": "WITH industry_yearly_counts AS (\n  SELECT \n    ci.industry,\n    cd.year_founded,\n    COUNT(*) AS yearly_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry, cd.year_founded\n),\ntop_industry AS (\n  SELECT \n    industry,\n    SUM(yearly_count) AS total_new_companies\n  FROM industry_yearly_counts\n  GROUP BY industry\n  ORDER BY total_new_companies DESC\n  LIMIT 1\n)\nSELECT \n  CAST(total_new_c...",
+          "score": 1.11010101010101,
+          "similarity_max": 0.6797979797979798,
+          "tables_used": [
+            "companies_industries",
+            "companies_dates",
+            "ci",
+            "industry_yearly_counts",
+            "cd"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH industry_counts AS (\n  SELECT \n    ci.industry,\n    COUNT(*) FILTER (WHERE cd.year_founded BETWEEN 2019 AND 2021) AS new_companies_count\n  FROM companies_industries ci\n  JOIN companies_dates cd ON ci.company_id = cd.company_id\n  WHERE cd.year_founded BETWEEN 2019 AND 2021\n  GROUP BY ci.industry\n  ORDER BY new_companies_count DESC\n  LIMIT 1\n)\nSELECT \n  CAST(new_companies_count AS REAL) / 3 AS avg_new_per_year\nFROM industry_counts;",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "companies_industries",
+        "ci",
+        "cd",
+        "companies_dates"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.03
+  }
+}

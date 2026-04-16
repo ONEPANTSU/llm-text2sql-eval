@@ -1,0 +1,170 @@
+{
+  "task_id": "bird_506",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nWHERE c.id IN (\n    SELECT DISTINCT c2.id\n    FROM cards c2\n    JOIN foreign_data fd ON c2.uuid = fd.uuid\n    WHERE fd.language = 'Japanese'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "c2",
+            "fd",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese';",
+          "score": 0.9966228893058162,
+          "similarity_max": 0.6067542213883677,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nWHERE c.id IN (\n    SELECT DISTINCT c2.id\n    FROM cards c2\n    JOIN foreign_data fd ON c2.uuid = fd.uuid\n    WHERE fd.language = 'Japanese'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "c2",
+            "fd",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese';",
+          "score": 0.9966228893058162,
+          "similarity_max": 0.6067542213883677,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese';",
+          "score": 0.8885548814120243,
+          "similarity_max": 0.8228902371759514,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nWHERE c.id IN (\n    SELECT DISTINCT c2.id\n    FROM cards c2\n    JOIN foreign_data fd ON c2.uuid = fd.uuid\n    WHERE fd.language = 'Japanese'\n);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "c2",
+            "fd",
+            "foreign_data",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH cards_with_jp AS (\n  SELECT DISTINCT c.id, c.hasFoil, c.hasNonFoil\n  FROM cards c\n  JOIN foreign_data f ON c.uuid = f.uuid\n  WHERE f.language = 'Japanese'\n),\nonly_non_foil AS (\n  SELECT COUNT(*) AS count_only_non_foil\n  FROM cards_with_jp\n  WHERE hasFoil = 0 AND hasNonFoil = 1\n),\ntotal_with_jp AS (\n  SELECT COUNT(*) AS total_count\n  FROM cards_with_jp\n)\nSELECT \n  CAST(onf.count_only_non_foil AS REAL) * 100 / tj.total_count AS percentage_only_non_foil\nFROM only_non_foil onf, total_with_jp tj...",
+          "score": 1.2089787234042553,
+          "similarity_max": 0.48204255319148936,
+          "tables_used": [
+            "c",
+            "f",
+            "foreign_data",
+            "onf",
+            "cards_with_jp",
+            "only_non_foil",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nINNER JOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese';",
+          "score": 0.9966228893058162,
+          "similarity_max": 0.6067542213883677,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN c.hasNonFoil = 1 AND c.hasFoil = 0 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_only_non_foil\nFROM cards c\nWHERE c.id IN (\n    SELECT DISTINCT c2.id\n    FROM cards c2\n    JOIN foreign_data fd ON c2.uuid = fd.uuid\n    WHERE fd.language = 'Japanese'\n);",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "c2",
+        "fd",
+        "foreign_data",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 191.42
+  }
+}

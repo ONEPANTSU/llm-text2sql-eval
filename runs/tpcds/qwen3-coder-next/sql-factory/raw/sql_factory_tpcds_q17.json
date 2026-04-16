@@ -1,0 +1,224 @@
+{
+  "task_id": "tpcds_q17",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH q1_sales AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        ss_quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_quarter_name = '2001Q1'\n),\nq1_returns AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        sr_return_quantity\n    FROM store_returns\n    JOIN store ON sr_store_sk = s_store_sk\n    JOIN item...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d3",
+            "c",
+            "q1_catalog",
+            "s",
+            "store_sales",
+            "date_dim",
+            "q1_returns",
+            "q1_sales",
+            "d2",
+            "r",
+            "store_returns",
+            "catalog_sales",
+            "item",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    s_state,\n    COUNT(ss_quantity) AS ss_quantity_count,\n    AVG(ss_quantity) AS ss_quantity_avg,\n    STDDEV(ss_quantity) AS ss_quantity_stddev,\n    COVAR_POP(ss_quantity, ss_quantity) AS ss_quantity_cov,\n    COUNT(sr_return_quantity) AS sr_return_quantity_count,\n    AVG(sr_return_quantity) AS sr_return_quantity_avg,\n    STDDEV(sr_return_quantity) AS sr_return_quantity_stddev,\n    COVAR_POP(sr_return_quantity, sr_return_quantity) AS sr_return_quantity_cov...",
+          "score": 0.8098464753637168,
+          "similarity_max": 0.4803070492725665,
+          "tables_used": [
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH q1_sales AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        ss_quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_quarter_name = '2001Q1'\n),\nq1_returns AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        sr_return_quantity\n    FROM store_returns\n    JOIN store ON sr_store_sk = s_store_sk\n    JOIN item...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d3",
+            "c",
+            "q1_catalog",
+            "s",
+            "store_sales",
+            "date_dim",
+            "q1_returns",
+            "q1_sales",
+            "d2",
+            "r",
+            "store_returns",
+            "catalog_sales",
+            "item",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    s_state,\n    COUNT(ss_quantity) AS ss_quantity_count,\n    AVG(ss_quantity) AS ss_quantity_avg,\n    STDDEV(ss_quantity) AS ss_quantity_stddev,\n    COVAR_POP(ss_quantity, ss_quantity) AS ss_quantity_cov,\n    COUNT(sr_return_quantity) AS sr_return_quantity_count,\n    AVG(sr_return_quantity) AS sr_return_quantity_avg,\n    STDDEV(sr_return_quantity) AS sr_return_quantity_stddev,\n    COVAR_POP(sr_return_quantity, sr_return_quantity) AS sr_return_quantity_cov...",
+          "score": 0.8098464753637168,
+          "similarity_max": 0.4803070492725665,
+          "tables_used": [
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "WITH q1_sales AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        ss_quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_year = 2001 AND d1.d_quarter_name = '2001Q1'\n),\nq1_returns AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        sr_return_quantity\n    FROM store_returns\n    JOIN store ON sr_store_sk = s_s...",
+          "score": 0.7118968339071055,
+          "similarity_max": 0.6762063321857892,
+          "tables_used": [
+            "d3",
+            "c",
+            "q1_catalog",
+            "s",
+            "store_sales",
+            "date_dim",
+            "q1_returns",
+            "q1_sales",
+            "item",
+            "d2",
+            "r",
+            "store_returns",
+            "catalog_sales",
+            "combined",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH q1_sales AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        ss_quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_quarter_name = '2001Q1'\n),\nq1_returns AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        sr_return_quantity\n    FROM store_returns\n    JOIN store ON sr_store_sk = s_store_sk\n    JOIN item...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d3",
+            "c",
+            "q1_catalog",
+            "s",
+            "store_sales",
+            "date_dim",
+            "q1_returns",
+            "q1_sales",
+            "d2",
+            "r",
+            "store_returns",
+            "catalog_sales",
+            "item",
+            "d1"
+          ]
+        },
+        {
+          "sql": "WITH q1_data AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        'ss' AS src,\n        ss_quantity AS quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_quarter_name = '2001Q1'\n    \n    UNION ALL\n    \n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        'sr' AS src,\n        sr_return_quantity AS quantity\n    FROM ...",
+          "score": 1.0453502583189822,
+          "similarity_max": 0.6092994833620353,
+          "tables_used": [
+            "q1_data",
+            "store_sales",
+            "date_dim",
+            "d2",
+            "d3",
+            "store_returns",
+            "catalog_sales",
+            "item",
+            "d1"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    i_item_desc,\n    s_state,\n    COUNT(ss_quantity) AS ss_quantity_count,\n    AVG(ss_quantity) AS ss_quantity_avg,\n    STDDEV(ss_quantity) AS ss_quantity_stddev,\n    COVAR_POP(ss_quantity, ss_quantity) AS ss_quantity_cov,\n    COUNT(sr_return_quantity) AS sr_return_quantity_count,\n    AVG(sr_return_quantity) AS sr_return_quantity_avg,\n    STDDEV(sr_return_quantity) AS sr_return_quantity_stddev,\n    COVAR_POP(sr_return_quantity, sr_return_quantity) AS sr_return_quantity_cov...",
+          "score": 0.8098464753637168,
+          "similarity_max": 0.4803070492725665,
+          "tables_used": [
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH q1_sales AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        ss_quantity\n    FROM store_sales\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN date_dim d1 ON ss_sold_date_sk = d1.d_date_sk\n    WHERE d1.d_quarter_name = '2001Q1'\n),\nq1_returns AS (\n    SELECT \n        i_item_id,\n        i_item_desc,\n        s_state,\n        sr_return_quantity\n    FROM store_returns\n    JOIN store ON sr_store_sk = s_store_sk\n    JOIN item...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "d3",
+        "c",
+        "q1_catalog",
+        "s",
+        "store_sales",
+        "date_dim",
+        "q1_returns",
+        "q1_sales",
+        "d2",
+        "r",
+        "store_returns",
+        "catalog_sales",
+        "item",
+        "d1"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_runtime_fail": 1,
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_runtime_fail",
+        "message_head": "Not implemented Error: Cannot perform non-inner join on subquery!",
+        "count": 1
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Values list \"ss\" does not have a column named \"ss_customer_sk\"\n\nLI",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 61.84
+  }
+}

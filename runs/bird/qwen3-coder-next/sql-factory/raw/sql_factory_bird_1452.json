@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1452",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(amount) \nFROM income \nWHERE link_to_member IN (\n    SELECT member_id \n    FROM member \n    WHERE position != 'member'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(income.amount) \nFROM member \nJOIN income ON member.member_id = income.link_to_member \nWHERE member.position != 'member';",
+          "score": 0.7601973684210527,
+          "similarity_max": 0.5796052631578947,
+          "tables_used": [
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(amount) \nFROM income \nWHERE link_to_member IN (\n    SELECT member_id \n    FROM member \n    WHERE position != 'member'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(i.amount) \nFROM income i\nJOIN member m ON m.member_id = i.link_to_member \nWHERE m.position <> 'member';",
+          "score": 0.8285714285714285,
+          "similarity_max": 0.7428571428571429,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(amount) \nFROM income i\nJOIN member m ON i.link_to_member = m.member_id\nWHERE m.position != 'member';",
+          "score": 0.7839285714285714,
+          "similarity_max": 0.8321428571428571,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(amount) \nFROM income \nWHERE link_to_member IN (\n    SELECT member_id \n    FROM member \n    WHERE position != 'member'\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(i.amount) \nFROM income i\nJOIN member m ON m.member_id = i.link_to_member \nWHERE m.position <> 'member';",
+          "score": 0.8285714285714285,
+          "similarity_max": 0.7428571428571429,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(amount) \nFROM income i\nJOIN member m ON i.link_to_member = m.member_id\nWHERE m.position != 'member';",
+          "score": 0.7839285714285714,
+          "similarity_max": 0.8321428571428571,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(amount) \nFROM income \nWHERE link_to_member IN (\n    SELECT member_id \n    FROM member \n    WHERE position != 'member'\n);",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "income",
+        "member"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.8
+  }
+}

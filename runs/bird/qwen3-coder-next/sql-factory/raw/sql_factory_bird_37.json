@@ -1,0 +1,140 @@
+{
+  "task_id": "bird_37",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY `Percent (%) Eligible FRPM (K-12)` ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "schools"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY `Percent (%) Eligible FRPM (K-12)` ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.Street, s.City, s.Zip, s.State\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Percent (%) Eligible FRPM (K-12)` IS NOT NULL\nORDER BY CAST(f.`Percent (%) Eligible FRPM (K-12)` AS REAL) ASC\nLIMIT 1;",
+          "score": 0.8185714285714285,
+          "similarity_max": 0.7628571428571429,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode IN (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY CAST(`Percent (%) Eligible FRPM (K-12)` AS REAL) ASC\n    LIMIT 1\n);",
+          "score": 0.7983870967741937,
+          "similarity_max": 0.8032258064516129,
+          "tables_used": [
+            "frpm",
+            "schools"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY `Percent (%) Eligible FRPM (K-12)` ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT s.Street, s.City, s.Zip, s.State\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Percent (%) Eligible FRPM (K-12)` IS NOT NULL\nORDER BY CAST(f.`Percent (%) Eligible FRPM (K-12)` AS REAL) ASC\nLIMIT 1;",
+          "score": 0.8185714285714285,
+          "similarity_max": 0.7628571428571429,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode IN (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY CAST(`Percent (%) Eligible FRPM (K-12)` AS REAL) ASC\n    LIMIT 1\n);",
+          "score": 0.7983870967741937,
+          "similarity_max": 0.8032258064516129,
+          "tables_used": [
+            "frpm",
+            "schools"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT Street, City, Zip, State\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    WHERE `Percent (%) Eligible FRPM (K-12)` IS NOT NULL\n    ORDER BY `Percent (%) Eligible FRPM (K-12)` ASC\n    LIMIT 1\n);",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "frpm",
+        "schools"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 9.34
+  }
+}

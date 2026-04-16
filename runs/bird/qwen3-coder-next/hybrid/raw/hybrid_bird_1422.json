@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1422",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1661.7836250006803,
+  "execution_time_ms": 8.605292001448106,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT budget.category\nFROM event\nJOIN budget ON budget.link_to_event = event.event_id\nWHERE event.location = 'MU 215';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.166375001252163,
+      "result_signature": "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT budget.category\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.location = 'MU 215';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.89633400097955,
+      "result_signature": "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT budget.category\nFROM budget\nJOIN event ON budget.link_to_event = event.event_id\nWHERE event.location = 'MU 215';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9297079959651455,
+      "result_signature": "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT budget.category\nFROM event\nJOIN budget ON event.event_id = budget.link_to_event\nWHERE event.location = 'MU 215';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8379999999306165,
+      "result_signature": "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT budget.category\nFROM event\nJOIN budget ON budget.link_to_event = event.event_id\nWHERE event.location = 'MU 215';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9975409993785433,
+      "result_signature": "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT DISTINCT budget.category\nFROM event\nJOIN budget ON event.event_id = budget.link_to_event\nWHERE event.location = 'MU 215';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2e75ed80e5a5575afa78a75903d6c025047cfdc65448d0ba192c8a318d4b67c7": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1670.6360000025597
+}

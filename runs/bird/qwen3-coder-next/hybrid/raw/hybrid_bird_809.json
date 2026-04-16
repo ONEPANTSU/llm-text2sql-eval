@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_809",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1174.797874999058,
+  "execution_time_ms": 0.9354159992653877,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT publisher.publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2957499964395538,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT publisher.publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1520000005257316,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.13587500143330544,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.12687499838648364,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.12133299605920911,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT publisher_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE superhero.id = 38;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1175.7574999937788
+}

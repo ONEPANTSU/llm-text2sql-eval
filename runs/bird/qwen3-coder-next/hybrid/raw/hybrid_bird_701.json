@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_701",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2256.0982499999227,
+  "execution_time_ms": 280.31791700050235,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH most_influential_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(COUNT(CASE WHEN p.Score > 50 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts p\nJOIN most_influential_user m ON p.OwnerUserId = m.Id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 67.9027079968364,
+      "result_signature": "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH top_user AS (\n  SELECT Id AS user_id\n  FROM users\n  ORDER BY Reputation DESC\n  LIMIT 1\n),\ntop_user_posts AS (\n  SELECT Score\n  FROM posts\n  WHERE OwnerUserId = (SELECT user_id FROM top_user)\n)\nSELECT \n  CAST(COUNT(CASE WHEN Score > 50 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM top_user_posts;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 49.366457998985425,
+      "result_signature": "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH top_user AS (\n  SELECT Id AS user_id\n  FROM users\n  ORDER BY Reputation DESC\n  LIMIT 1\n)\nSELECT \n  CAST(SUM(CASE WHEN p.Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts p\nJOIN top_user tu ON p.OwnerUserId = tu.user_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 59.15120799909346,
+      "result_signature": "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH top_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n),\ntop_user_posts AS (\n    SELECT Score\n    FROM posts\n    WHERE OwnerUserId = (SELECT Id FROM top_user)\n)\nSELECT \n    CAST(SUM(CASE WHEN Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM top_user_posts;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 49.80729100498138,
+      "result_signature": "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH most_influential_user AS (\n    SELECT Id\n    FROM users\n    ORDER BY Reputation DESC\n    LIMIT 1\n)\nSELECT \n    CAST(SUM(CASE WHEN p.Score > 50 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts p\nJOIN most_influential_user m ON p.OwnerUserId = m.Id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 52.336542001285125,
+      "result_signature": "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "WITH top_user AS (\n  SELECT Id AS user_id\n  FROM users\n  ORDER BY Reputation DESC\n  LIMIT 1\n),\ntop_user_posts AS (\n  SELECT Score\n  FROM posts\n  WHERE OwnerUserId = (SELECT user_id FROM top_user)\n)\nSELECT \n  CAST(COUNT(CASE WHEN Score > 50 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM top_user_posts;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f13aa2cf0935d675cf9a3f88e0396836221eada7adf766d8735b551024ac1e05": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2536.4546659984626
+}

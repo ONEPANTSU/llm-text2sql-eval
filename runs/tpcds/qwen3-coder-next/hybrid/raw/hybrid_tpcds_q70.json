@@ -1,0 +1,137 @@
+{
+  "task_id": "tpcds_q70",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4643.1300830008695,
+  "execution_time_ms": 102.00654101208784,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    customer_address.ca_state, \n    item.i_category, \n    SUM(web_sales.ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200 \n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    customer_address.ca_state, \n    item.i_category\nORDER BY \n    customer_address.ca_state, \n    item.i_category\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 36.60554099769797,
+      "result_signature": "c9e2646256c2540bb6f15a16268a8849183b0519049417890891aa305cd901df",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  ca_state,\n  i_category,\n  SUM(ws_ext_sales_price) AS total_web_sales\nFROM\n  web_sales,\n  customer,\n  customer_address,\n  item,\n  date_dim\nWHERE\n  ws_bill_customer_sk = c_customer_sk\n  AND c_current_addr_sk = ca_address_sk\n  AND ws_item_sk = i_item_sk\n  AND ws_sold_date_sk = d_date_sk\n  AND d_month_seq >= 1200\n  AND d_month_seq <= 1200\nGROUP BY\n  ca_state,\n  i_category\nORDER BY\n  ca_state,\n  i_category\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.818084005033597,
+      "result_signature": "c9e2646256c2540bb6f15a16268a8849183b0519049417890891aa305cd901df",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    ca_state,\n    i_category,\n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200\n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    ca_state,\n    i_category\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.3743750017602,
+      "result_signature": "1529b72203cdf5276e08167c3bbb59ebed7eb2080f797735d2997a5ca0e7aeb4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    ca_state, \n    i_category, \n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\n    JOIN customer ON ws_bill_customer_sk = c_customer_sk\n    JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    JOIN item ON ws_item_sk = i_item_sk\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\nWHERE \n    d_month_seq >= 1200 \n    AND d_month_seq <= 1200\nGROUP BY \n    ca_state, \n    i_category\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.00420800584834,
+      "result_signature": "0c3f48736f43af3d36e6ea6a554b129620be9e491f7b9e20fc1ddbd1393f3624",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    ca_state,\n    i_category,\n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200\n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    ca_state,\n    i_category\nORDER BY \n    ca_state,\n    i_category\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.98200000403449,
+      "result_signature": "c9e2646256c2540bb6f15a16268a8849183b0519049417890891aa305cd901df",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    ca_state,\n    i_category,\n    SUM(ws_ext_sales_price) AS total_web_sales\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN item ON web_sales.ws_item_sk = item.i_item_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    date_dim.d_month_seq >= 1200\n    AND date_dim.d_month_seq <= 1200\nGROUP BY \n    ca_state,\n    i_category\nORDER BY \n    ca_state,\n    i_category\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c9e2646256c2540bb6f15a16268a8849183b0519049417890891aa305cd901df": 3,
+        "1529b72203cdf5276e08167c3bbb59ebed7eb2080f797735d2997a5ca0e7aeb4": 1,
+        "0c3f48736f43af3d36e6ea6a554b129620be9e491f7b9e20fc1ddbd1393f3624": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1964.6145419974346,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6709.906042000512
+}

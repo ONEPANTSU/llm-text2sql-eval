@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_618",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3694.22924999526,
+  "execution_time_ms": 149.06141699611908,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT u.Age\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location = 'Vienna, Austria';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 48.52283400396118,
+      "result_signature": "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT users.Age\nFROM users\nJOIN badges ON badges.UserId = users.Id\nWHERE users.Location = 'Vienna, Austria';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 23.49412499461323,
+      "result_signature": "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT u.Age\nFROM users u\nJOIN badges b ON u.Id = b.UserId\nWHERE u.Location = 'Vienna, Austria';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.667582995898556,
+      "result_signature": "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT u.Age\nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nWHERE u.Location = 'Vienna, Austria';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 23.360666004009545,
+      "result_signature": "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT users.Age\nFROM users\nINNER JOIN badges ON badges.UserId = users.Id\nWHERE users.Location = 'Vienna, Austria';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 23.4919170034118,
+      "result_signature": "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT u.Age\nFROM users u\nINNER JOIN badges b ON u.Id = b.UserId\nWHERE u.Location = 'Vienna, Austria';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3b65de48116a052c0849191fe13fa63a634a9bf31b17a80c349f22dbf47f864c": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3843.412750000425
+}

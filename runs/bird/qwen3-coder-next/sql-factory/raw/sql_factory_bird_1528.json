@@ -1,0 +1,81 @@
+{
+  "task_id": "bird_1528",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN c.Segment = 'premium' THEN 1 END) * 100.0 / COUNT(*)) AS premium_percentage\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nJOIN gasstations g ON t.GasStationID = g.GasStationID\nWHERE g.Country = 'SVK';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gasstations",
+            "g"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (COUNT(CASE WHEN c.Segment = 'premium' THEN 1 END) * 100.0 / COUNT(*)) AS premium_percentage\nFROM gasstations g\nJOIN customers c ON g.GasStationID IN (\n    SELECT t.GasStationID \n    FROM transactions_1k t \n    WHERE t.CustomerID = c.CustomerID\n)\nWHERE g.Country = 'SVK';",
+          "score": 1.0367694805194807,
+          "similarity_max": 0.7264610389610389,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "gasstations",
+            "g"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    (COUNT(CASE WHEN c.Segment = 'premium' THEN 1 END) * 100.0 / COUNT(*)) AS premium_percentage\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nJOIN gasstations g ON t.GasStationID = g.GasStationID\nWHERE g.Country = 'SVK';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "c",
+        "t",
+        "transactions_1k",
+        "gasstations",
+        "g"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 454482.83
+  }
+}

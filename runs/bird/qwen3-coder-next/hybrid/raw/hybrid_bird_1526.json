@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1526",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 11281.826540995098,
+  "execution_time_ms": 6.022958004905377,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST((ym2012.Consumption - ym2013.Consumption) AS REAL) / ym2012.Consumption AS ConsumptionDecreaseRate\nFROM transactions_1k t\nJOIN yearmonth ym2012 ON t.CustomerID = ym2012.CustomerID AND ym2012.Date LIKE '2012%'\nJOIN yearmonth ym2013 ON t.CustomerID = ym2013.CustomerID AND ym2013.Date LIKE '2013%'\nWHERE t.Date = '2012-08-25' AND t.Amount = 634.8;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.5207500002579764,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (ym2012.Consumption - ym2013.Consumption) * 1.0 / ym2012.Consumption AS ConsumptionDecreaseRate\nFROM transactions_1k t\nJOIN yearmonth ym2012 ON t.CustomerID = ym2012.CustomerID AND ym2012.Date LIKE '2012%'\nJOIN yearmonth ym2013 ON t.CustomerID = ym2013.CustomerID AND ym2013.Date LIKE '2013%'\nWHERE t.Date = '2012-08-25' AND t.Amount = 634.8;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6186660029925406,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH customer_2012 AS (\n    SELECT ym.Consumption AS Consumption2012\n    FROM yearmonth ym\n    JOIN transactions_1k t ON ym.CustomerID = t.CustomerID\n    WHERE t.Date = '2012-08-25' AND t.Amount = 634.8 AND ym.Date LIKE '2012%'\n),\ncustomer_2013 AS (\n    SELECT ym.Consumption AS Consumption2013\n    FROM yearmonth ym\n    JOIN transactions_1k t ON ym.CustomerID = t.CustomerID\n    WHERE t.Date = '2012-08-25' AND t.Amount = 634.8 AND ym.Date LIKE '2013%'\n)\nSELECT \n    (CAST(c2012.Consumption2012 - c2013.Consumption2013 AS REAL) / c2012.Consumption2012) * 100 AS ConsumptionDecreaseRate\nFROM customer_2012 c2012, customer_2013 c2013;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5418750006356277,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (ym2012.Consumption - ym2013.Consumption) * 1.0 / ym2012.Consumption AS ConsumptionDecreaseRate\nFROM transactions_1k t\nJOIN yearmonth ym2012 ON t.CustomerID = ym2012.CustomerID\nJOIN yearmonth ym2013 ON t.CustomerID = ym2013.CustomerID\nWHERE \n    t.Date = '2012-08-25' \n    AND t.Amount = 634.8\n    AND ym2012.Date LIKE '2012%'\n    AND ym2013.Date LIKE '2013%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4686250031227246,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH customer_2012_2013 AS (\n    SELECT \n        t.CustomerID,\n        y1.Consumption AS Consumption_2012,\n        y2.Consumption AS Consumption_2013\n    FROM transactions_1k t\n    JOIN yearmonth y1 ON t.CustomerID = y1.CustomerID\n    JOIN yearmonth y2 ON t.CustomerID = y2.CustomerID\n    WHERE t.Date = '2012-08-25'\n      AND t.Amount = 634.8\n      AND y1.Date LIKE '2012%'\n      AND y2.Date LIKE '2013%'\n)\nSELECT \n    (Consumption_2012 - Consumption_2013) * 1.0 / Consumption_2012 AS ConsumptionDecreaseRate\nFROM customer_2012_2013;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4547499993350357,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH customer_2012_2013 AS (\n    SELECT \n        t.CustomerID,\n        y1.Consumption AS Consumption_2012,\n        y2.Consumption AS Consumption_2013\n    FROM transactions_1k t\n    JOIN yearmonth y1 ON t.CustomerID = y1.CustomerID\n    JOIN yearmonth y2 ON t.CustomerID = y2.CustomerID\n    WHERE t.Date = '2012-08-25'\n      AND t.Amount = 634.8\n      AND y1.Date LIKE '2012%'\n      AND y2.Date LIKE '2013%'\n)\nSELECT \n    (Consumption_2012 - Consumption_2013) * 1.0 / Consumption_2012 AS ConsumptionDecreaseRate\nFROM customer_2012_2013;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 11287.999915999535
+}

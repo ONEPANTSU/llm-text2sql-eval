@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_193",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2643.331332998059,
+  "execution_time_ms": 1760.7342499977676,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1 AND 'OWNER' IN (SELECT type FROM disp WHERE client_id = c.client_id);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 457.6930000039283,
+      "result_signature": "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2614169977023266,
+      "result_signature": "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1 AND 'OWNER' IN (SELECT type FROM disp WHERE client_id = c.client_id);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 425.8616660008556,
+      "result_signature": "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1\nAND 'OWNER' IN (SELECT type FROM disp WHERE client_id = c.client_id);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 427.49758300487883,
+      "result_signature": "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1 AND 'OWNER' IN (SELECT type FROM disp WHERE client_id = c.client_id);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 431.40562500047963,
+      "result_signature": "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT c.client_id, c.district_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nWHERE d.type IN ('OWNER', 'DISPENSER')\nGROUP BY c.client_id, c.district_id\nHAVING COUNT(DISTINCT d.type) = 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f6c51e9718f241cdb9a05fc07ae6717a411614fc8546308e53015a14f6cf6b97": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4404.165125000873
+}

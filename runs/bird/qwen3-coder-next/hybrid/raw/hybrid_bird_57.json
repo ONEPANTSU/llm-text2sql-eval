@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_57",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3639.2732080057613,
+  "execution_time_ms": 30.506583003443666,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT schools.Phone, schools.Ext\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.AvgScrWrite DESC\nLIMIT 1 OFFSET 332;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.717666998971254,
+      "result_signature": "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT schools.Phone, schools.Ext\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.AvgScrWrite DESC\nLIMIT 1 OFFSET 332;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.8757500009960495,
+      "result_signature": "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT s.Phone, s.Ext\nFROM satscores sa\nJOIN schools s ON sa.cds = s.CDSCode\nORDER BY sa.AvgScrWrite DESC\nLIMIT 1 OFFSET 332;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.394124996906612,
+      "result_signature": "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT schools.Phone, schools.Ext\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.AvgScrWrite DESC\nLIMIT 1 OFFSET 332;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.898459003015887,
+      "result_signature": "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.Phone, schools.Ext\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.AvgScrWrite DESC\nLIMIT 1 OFFSET 332",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.950708000047598,
+      "result_signature": "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT schools.Phone, schools.Ext\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nORDER BY satscores.AvgScrWrite DESC\nLIMIT 1 OFFSET 332",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "34ba29375d2cf715b772ce77d606780295110215850dc09cb891c351677345c8": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3669.898916996317
+}

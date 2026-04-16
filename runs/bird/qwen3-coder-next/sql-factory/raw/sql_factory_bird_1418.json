@@ -1,0 +1,142 @@
+{
+  "task_id": "bird_1418",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT type\nFROM event\nWHERE location = 'MU 215';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT category \nFROM budget \nJOIN event ON budget.link_to_event = event.event_id \nWHERE event.location = 'MU 215';",
+          "score": 0.805072463768116,
+          "similarity_max": 0.4898550724637681,
+          "tables_used": [
+            "budget"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT type\nFROM event\nWHERE location = 'MU 215';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT category \nFROM budget \nJOIN event ON budget.link_to_event = event.event_id \nWHERE event.location = 'MU 215';",
+          "score": 0.805072463768116,
+          "similarity_max": 0.4898550724637681,
+          "tables_used": [
+            "budget"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT category\nFROM budget b\nJOIN event e ON b.link_to_event = e.event_id\nWHERE e.location = 'MU 215';",
+          "score": 0.8038011695906433,
+          "similarity_max": 0.7923976608187134,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT type\nFROM event\nWHERE location = 'MU 215';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT category \nFROM budget \nJOIN event ON budget.link_to_event = event.event_id \nWHERE event.location = 'MU 215';",
+          "score": 0.805072463768116,
+          "similarity_max": 0.4898550724637681,
+          "tables_used": [
+            "budget"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT category\nFROM budget b\nJOIN event e ON b.link_to_event = e.event_id\nWHERE e.location = 'MU 215';",
+          "score": 0.8038011695906433,
+          "similarity_max": 0.7923976608187134,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT type\nFROM event\nWHERE location = 'MU 215';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "event"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.1
+  }
+}

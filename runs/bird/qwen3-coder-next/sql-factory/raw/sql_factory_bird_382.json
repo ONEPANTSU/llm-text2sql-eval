@@ -1,0 +1,185 @@
+{
+  "task_id": "bird_382",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND c.isOnlineOnly = 0\n  AND s.isOnlineOnly = 0\n  AND s.isForeignOnly = 0;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND s.isForeignOnly = 0\n  AND s.isOnlineOnly = 0\n  AND c.isOnlineOnly = 0\n  AND c.availability LIKE '%paper%';",
+          "score": 0.8956716417910449,
+          "similarity_max": 0.8086567164179105,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND c.isOnlineOnly = 0\n  AND s.isOnlineOnly = 0\n  AND s.isForeignOnly = 0;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese'\n  AND c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%digital%'\n  AND c.availability NOT LIKE '%mtgo%';",
+          "score": 0.8968792401628222,
+          "similarity_max": 0.6062415196743556,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND s.isForeignOnly = 0\n  AND s.isOnlineOnly = 0\n  AND c.isOnlineOnly = 0\n  AND c.availability LIKE '%paper%';",
+          "score": 0.8956716417910449,
+          "similarity_max": 0.8086567164179105,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND c.isOnlineOnly = 0\n  AND s.isOnlineOnly = 0\n  AND s.isForeignOnly = 0;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Japanese'\n  AND c.availability LIKE '%paper%'\n  AND c.availability NOT LIKE '%digital%'\n  AND c.availability NOT LIKE '%mtgo%';",
+          "score": 0.8968792401628222,
+          "similarity_max": 0.6062415196743556,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND s.isForeignOnly = 0\n  AND s.isOnlineOnly = 0\n  AND c.isOnlineOnly = 0\n  AND c.availability LIKE '%paper%';",
+          "score": 0.8956716417910449,
+          "similarity_max": 0.8086567164179105,
+          "tables_used": [
+            "c",
+            "fd",
+            "foreign_data",
+            "sets",
+            "cards",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT c.id, c.asciiName\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nJOIN sets s ON c.setCode = s.code\nWHERE fd.language = 'Japanese'\n  AND c.isOnlineOnly = 0\n  AND s.isOnlineOnly = 0\n  AND s.isForeignOnly = 0;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "fd",
+        "foreign_data",
+        "sets",
+        "cards",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.2,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: c.isFoilOnly",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 113.37
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1443",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4185.285958003078,
+  "execution_time_ms": 6.6093749992433,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.924333995906636,
+      "result_signature": "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.669708002533298,
+      "result_signature": "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4335830017225817,
+      "result_signature": "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7224579967441969,
+      "result_signature": "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8264999996754341,
+      "result_signature": "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT event_id, location, status\nFROM event\nWHERE event_date >= '2019-11-01' AND event_date <= '2020-03-31';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db5135baacdd77c4e9f204b14238d4c813dc45ff8875213277f02e02b828afc6": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4192.114583005605
+}

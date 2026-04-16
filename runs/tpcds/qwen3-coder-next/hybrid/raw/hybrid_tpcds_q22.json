@@ -1,0 +1,135 @@
+{
+  "task_id": "tpcds_q22",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3579.8469169967575,
+  "execution_time_ms": 82.8099589998601,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n      AND dd.d_month_seq = :given_year_month_seq\n)\nAND EXISTS (\n    SELECT 1\n    FROM web_sales ws\n    JOIN date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk\n    WHERE ws.ws_bill_customer_sk = c.c_customer_sk\n      AND dd.d_month_seq = :given_year_month_seq\n)\nGROUP BY \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count\nORDER BY \n    cd.cd_gender ASC,\n    cd.cd_marital_status ASC,\n    cd.cd_education_status ASC,\n    cd.cd_purchase_estimate ASC,\n    cd.cd_credit_rating ASC,\n    cd.cd_dep_count ASC,\n    cd.cd_dep_employed_count ASC,\n    cd.cd_dep_college_count ASC\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_parse_fail",
+      "exec_ok": false,
+      "exec_error": "Parser Error: syntax error at or near \":\"\n\nLINE 18:       AND dd.d_month_seq = :given_year_month_seq\n                                    ^",
+      "exec_time_ms": 34.13187499972992,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer\nJOIN customer_demographics ON customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\nJOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq = ?\n  AND EXISTS (\n      SELECT 1 \n      FROM store_sales ss2 \n      WHERE ss2.ss_customer_sk = customer.c_customer_sk \n        AND ss2.ss_sold_date_sk = date_dim.d_date_sk\n  )\n  AND EXISTS (\n      SELECT 1 \n      FROM web_sales ws2 \n      WHERE ws2.ws_bill_customer_sk = customer.c_customer_sk \n        AND ws2.ws_sold_date_sk = date_dim.d_date_sk\n  )\nGROUP BY \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count\nORDER BY \n    cd_gender ASC,\n    cd_marital_status ASC,\n    cd_education_status ASC,\n    cd_purchase_estimate ASC,\n    cd_credit_rating ASC,\n    cd_dep_count ASC,\n    cd_dep_employed_count ASC,\n    cd_dep_college_count ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 14.751333990716375,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM \n    customer c\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\n    JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk AND ws.ws_sold_date_sk = d.d_date_sk\nWHERE \n    d.d_month_seq = :given_year_month_seq\nGROUP BY \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count\nORDER BY \n    cd.cd_gender ASC,\n    cd.cd_marital_status ASC,\n    cd.cd_education_status ASC,\n    cd.cd_purchase_estimate ASC,\n    cd.cd_credit_rating ASC,\n    cd.cd_dep_count ASC,\n    cd.cd_dep_employed_count ASC,\n    cd.cd_dep_college_count ASC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_parse_fail",
+      "exec_ok": false,
+      "exec_error": "Parser Error: syntax error at or near \":\"\n\nLINE 18:     d.d_month_seq = :given_year_month_seq\n                             ^",
+      "exec_time_ms": 11.906250001629815,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE EXISTS (\n    SELECT 1 \n    FROM store_sales ss\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n      AND dd.d_month_seq = ?\n)\nAND EXISTS (\n    SELECT 1 \n    FROM web_sales ws\n    JOIN date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk\n    WHERE ws.ws_bill_customer_sk = c.c_customer_sk\n      AND dd.d_month_seq = ?\n)\nGROUP BY \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count\nORDER BY \n    cd.cd_gender ASC,\n    cd.cd_marital_status ASC,\n    cd.cd_education_status ASC,\n    cd.cd_purchase_estimate ASC,\n    cd.cd_credit_rating ASC,\n    cd.cd_dep_count ASC,\n    cd.cd_dep_employed_count ASC,\n    cd.cd_dep_college_count ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1, 2",
+      "exec_time_ms": 10.749332999694161,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer\nJOIN customer_demographics ON customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\nJOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq = ?\nGROUP BY \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count\nORDER BY \n    cd_gender ASC,\n    cd_marital_status ASC,\n    cd_education_status ASC,\n    cd_purchase_estimate ASC,\n    cd_credit_rating ASC,\n    cd_dep_count ASC,\n    cd_dep_employed_count ASC,\n    cd_dep_college_count ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 10.6174170068698,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer\nJOIN customer_demographics ON customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk\nJOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\nJOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_month_seq = ?\nGROUP BY \n    cd_gender,\n    cd_marital_status,\n    cd_education_status,\n    cd_purchase_estimate,\n    cd_credit_rating,\n    cd_dep_count,\n    cd_dep_employed_count,\n    cd_dep_college_count\nORDER BY \n    cd_gender ASC,\n    cd_marital_status ASC,\n    cd_education_status ASC,\n    cd_purchase_estimate ASC,\n    cd_credit_rating ASC,\n    cd_dep_count ASC,\n    cd_dep_employed_count ASC,\n    cd_dep_college_count ASC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority_by_normalized_sql (preflight_ok)",
+    "votes": {
+      "by_sql": {
+        "select cd_gender, cd_marital_status, cd_education_status, cd_purchase_estimate, cd_credit_rating, cd_dep_count, cd_dep_employed_count, cd_dep_college_count, count(*) as cnt from customer join customer_demographics on customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk join store_sales on customer.c_customer_sk = store_sales.ss_customer_sk join web_sales on customer.c_customer_sk = web_sales.ws_bill_customer_sk join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk where date_dim.d_month_seq = ? and exists ( select 1 from store_sales ss2 where ss2.ss_customer_sk = customer.c_customer_sk and ss2.ss_sold_date_sk = date_dim.d_date_sk ) and exists ( select 1 from web_sales ws2 where ws2.ws_bill_customer_sk = customer.c_customer_sk and ws2.ws_sold_date_sk = date_dim.d_date_sk ) group by cd_gender, cd_marital_status, cd_education_status, cd_purchase_estimate, cd_credit_rating, cd_dep_count, cd_dep_employed_count, cd_dep_college_count order by cd_gender asc, cd_marital_status asc, cd_education_status asc, cd_purchase_estimate asc, cd_credit_rating asc, cd_dep_count asc, cd_dep_employed_count asc, cd_dep_college_count asc limit 100": 1,
+        "select cd.cd_gender, cd.cd_marital_status, cd.cd_education_status, cd.cd_purchase_estimate, cd.cd_credit_rating, cd.cd_dep_count, cd.cd_dep_employed_count, cd.cd_dep_college_count, count(*) as cnt from customer c join customer_demographics cd on c.c_current_cdemo_sk = cd.cd_demo_sk where exists ( select 1 from store_sales ss join date_dim dd on ss.ss_sold_date_sk = dd.d_date_sk where ss.ss_customer_sk = c.c_customer_sk and dd.d_month_seq = ? ) and exists ( select 1 from web_sales ws join date_dim dd on ws.ws_sold_date_sk = dd.d_date_sk where ws.ws_bill_customer_sk = c.c_customer_sk and dd.d_month_seq = ? ) group by cd.cd_gender, cd.cd_marital_status, cd.cd_education_status, cd.cd_purchase_estimate, cd.cd_credit_rating, cd.cd_dep_count, cd.cd_dep_employed_count, cd.cd_dep_college_count order by cd.cd_gender asc, cd.cd_marital_status asc, cd.cd_education_status asc, cd.cd_purchase_estimate asc, cd.cd_credit_rating asc, cd.cd_dep_count asc, cd.cd_dep_employed_count asc, cd.cd_dep_college_count asc limit 100": 1,
+        "select cd_gender, cd_marital_status, cd_education_status, cd_purchase_estimate, cd_credit_rating, cd_dep_count, cd_dep_employed_count, cd_dep_college_count, count(*) as cnt from customer join customer_demographics on customer.c_current_cdemo_sk = customer_demographics.cd_demo_sk join store_sales on customer.c_customer_sk = store_sales.ss_customer_sk join web_sales on customer.c_customer_sk = web_sales.ws_bill_customer_sk join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk where date_dim.d_month_seq = ? group by cd_gender, cd_marital_status, cd_education_status, cd_purchase_estimate, cd_credit_rating, cd_dep_count, cd_dep_employed_count, cd_dep_college_count order by cd_gender asc, cd_marital_status asc, cd_education_status asc, cd_purchase_estimate asc, cd_credit_rating asc, cd_dep_count asc, cd_dep_employed_count asc, cd_dep_college_count asc limit 100": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 3662.8603330027545
+}

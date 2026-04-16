@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1119",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT SUM(home_team_goal)\nFROM Match m\nJOIN Player p ON m.home_player_1 = p.player_api_id OR m.home_player_2 = p.player_api_id OR m.home_player_3 = p.player_api_id OR m.home_player_4 = p.player_api_id OR m.home_player_5 = p.player_api_id OR m.home_player_6 = p.player_api_id OR m.home_player_7 = p.player_api_id OR m.home_player_8 = p.player_api_id OR m.home_player_9 = p.player_api_id OR m.home_player_10 = p.player_api_id OR m.home_player_11 = p.player_api_id\nWHERE p.player_name = 'Aaron Lennon';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT SUM(home_team_goal)\nFROM Match m\nJOIN Player p ON m.home_player_1 = p.player_api_id OR m.home_player_2 = p.player_api_id OR m.home_player_3 = p.player_api_id OR m.home_player_4 = p.player_api_id OR m.home_player_5 = p.player_api_id OR m.home_player_6 = p.player_api_id OR m.home_player_7 = p.player_api_id OR m.home_player_8 = p.player_api_id OR m.home_player_9 = p.player_api_id OR m.home_player_10 = p.player_api_id OR m.home_player_11 = p.player_api_id\nWHERE p.player_name = 'Aaron Lennon';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4, m.home_player_5,\n    m.home_player_6, m.home_player_7, m.home_player_8, m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE p.player_name = 'Aaron Lennon';",
+          "score": 0.8521715228147333,
+          "similarity_max": 0.6956569543705332,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_name = 'Aaron Lennon'\n  AND (m.home_player_1 = p.player_api_id\n       OR m.home_player_2 = p.player_api_id\n       OR m.home_player_3 = p.player_api_id\n       OR m.home_player_4 = p.player_api_id\n       OR m.home_player_5 = p.player_api_id\n       OR m.home_player_6 = p.player_api_id\n       OR m.home_player_7 = p.player_api_id\n       OR m.home_player_8 = p.player_api_id\n       OR m.home_player_9 = p.player_api_id\n       OR m.home_pl...",
+          "score": 0.7848484848484848,
+          "similarity_max": 0.8303030303030303,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT SUM(home_team_goal)\nFROM Match m\nJOIN Player p ON m.home_player_1 = p.player_api_id OR m.home_player_2 = p.player_api_id OR m.home_player_3 = p.player_api_id OR m.home_player_4 = p.player_api_id OR m.home_player_5 = p.player_api_id OR m.home_player_6 = p.player_api_id OR m.home_player_7 = p.player_api_id OR m.home_player_8 = p.player_api_id OR m.home_player_9 = p.player_api_id OR m.home_player_10 = p.player_api_id OR m.home_player_11 = p.player_api_id\nWHERE p.player_name = 'Aaron Lennon';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id = m.home_player_1\nWHERE p.player_name = 'Aaron Lennon'\nUNION ALL\nSELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id = m.home_player_2\nWHERE p.player_name = 'Aaron Lennon'\nUNION ALL\nSELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id = m.home_player_3\nWHERE p.player_name = 'Aaron Lennon'\nUNION ALL\nSELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id = m.h...",
+          "score": 0.8830743618201997,
+          "similarity_max": 0.6338512763596004,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal)\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4, m.home_player_5,\n    m.home_player_6, m.home_player_7, m.home_player_8, m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE p.player_name = 'Aaron Lennon';",
+          "score": 0.8521715228147333,
+          "similarity_max": 0.6956569543705332,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT SUM(home_team_goal)\nFROM Match m\nJOIN Player p ON m.home_player_1 = p.player_api_id OR m.home_player_2 = p.player_api_id OR m.home_player_3 = p.player_api_id OR m.home_player_4 = p.player_api_id OR m.home_player_5 = p.player_api_id OR m.home_player_6 = p.player_api_id OR m.home_player_7 = p.player_api_id OR m.home_player_8 = p.player_api_id OR m.home_player_9 = p.player_api_id OR m.home_player_10 = p.player_api_id OR m.home_player_11 = p.player_api_id\nWHERE p.player_name = 'Aaron Lennon';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player",
+        "p",
+        "m",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 379.35
+  }
+}

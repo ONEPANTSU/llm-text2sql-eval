@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_1257",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > (SELECT MAX(CRE) * 1.5 FROM Laboratory) -- Assuming abnormal if > 1.5x normal (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL \n  AND (l.CRE < (SELECT MIN(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 0.9 \n       OR l.CRE > (SELECT MAX(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 1.1)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 0.9377836929111796,
+          "similarity_max": 0.5244326141776408,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > (SELECT MAX(CRE) * 1.5 FROM Laboratory) -- Assuming abnormal if > 1.5x normal (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL \n  AND (l.CRE < (SELECT MIN(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 0.9 \n       OR l.CRE > (SELECT MAX(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 1.1)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 0.9377836929111796,
+          "similarity_max": 0.5244326141776408,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > 1.2 * (SELECT AVG(CRE) FROM Laboratory WHERE CRE IS NOT NULL) -- Using 1.2x average as abnormal threshold (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 0.8822222222222222,
+          "similarity_max": 0.6355555555555555,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > (SELECT MAX(CRE) * 1.5 FROM Laboratory) -- Assuming abnormal if > 1.5x normal (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL \n  AND (l.CRE < (SELECT MIN(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 0.9 \n       OR l.CRE > (SELECT MAX(CRE) FROM Laboratory WHERE CRE IS NOT NULL) * 1.1)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 0.9377836929111796,
+          "similarity_max": 0.5244326141776408,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > 1.2 * (SELECT AVG(CRE) FROM Laboratory WHERE CRE IS NOT NULL) -- Using 1.2x average as abnormal threshold (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+          "score": 0.8822222222222222,
+          "similarity_max": 0.6355555555555555,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE > (SELECT MAX(CRE) * 1.5 FROM Laboratory) -- Assuming abnormal if > 1.5x normal (best effort)\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 13.3
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "task_id": "bird_1208",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4103.2530829979805,
+  "execution_time_ms": 25.97691599657992,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT Laboratory.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\nAND Laboratory.GPT > (SELECT GPT FROM Laboratory WHERE GPT IS NOT NULL ORDER BY GPT LIMIT 1 OFFSET 0) * 0;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.501708996656816,
+      "result_signature": "7513557cfe8f5d67fa5f2be35d85ac4246c47e3995c38b6ccb48138456763096",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT Patient.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\n  AND Laboratory.GPT > (SELECT MAX(GPT) FROM Laboratory WHERE GPT <= 40);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1829170000273734,
+      "result_signature": "70eedb894df0030751f218ca26480081c1c89de88afe2d29658d0354ffa12dc4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT Patient.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M' AND Laboratory.GPT > (SELECT MAX(GPT) FROM Laboratory WHERE GPT <= 50);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9325000030221418,
+      "result_signature": "540a6fa3c69efa0b6bb649ba81159a43f465e46f9465756b3ab94eaecc73f66d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT Laboratory.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M'\nAND Laboratory.GPT > (\n    SELECT GPT \n    FROM Laboratory \n    WHERE GPT > (SELECT MAX(GPT) * 0.9 FROM Laboratory) \n    LIMIT 1\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.835041996149812,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'M'\n  AND l.GPT > (SELECT GPT FROM Laboratory WHERE GPT IS NOT NULL ORDER BY GPT LIMIT 1 OFFSET 0) -- placeholder for normal range logic\n  AND l.GPT IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1278340063872747,
+      "result_signature": "7513557cfe8f5d67fa5f2be35d85ac4246c47e3995c38b6ccb48138456763096",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 7,
+    "selected_sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'M'\n  AND l.GPT > 40\n  AND l.GPT IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "7513557cfe8f5d67fa5f2be35d85ac4246c47e3995c38b6ccb48138456763096": 2,
+        "70eedb894df0030751f218ca26480081c1c89de88afe2d29658d0354ffa12dc4": 3,
+        "540a6fa3c69efa0b6bb649ba81159a43f465e46f9465756b3ab94eaecc73f66d": 3,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 2044.4460829967284,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT Patient.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M' AND Laboratory.GPT > 50;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.9496250058873557,
+        "result_signature": "540a6fa3c69efa0b6bb649ba81159a43f465e46f9465756b3ab94eaecc73f66d",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT Patient.ID\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE Patient.SEX = 'M' AND Laboratory.GPT > 50;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.6708750006509945,
+        "result_signature": "540a6fa3c69efa0b6bb649ba81159a43f465e46f9465756b3ab94eaecc73f66d",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'M'\n  AND l.GPT > 40\n  AND l.GPT IS NOT NULL;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.6239169961190782,
+        "result_signature": "70eedb894df0030751f218ca26480081c1c89de88afe2d29658d0354ffa12dc4",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.SEX = 'M'\n  AND l.GPT > 40\n  AND l.GPT IS NOT NULL;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.7026670064078644,
+        "result_signature": "70eedb894df0030751f218ca26480081c1c89de88afe2d29658d0354ffa12dc4",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6173.787375002576
+}

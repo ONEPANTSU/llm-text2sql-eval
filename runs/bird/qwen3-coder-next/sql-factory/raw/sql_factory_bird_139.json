@@ -1,0 +1,108 @@
+{
+  "task_id": "bird_139",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nWHERE c.type = 'high-level' \n  AND d.type = 'OWNER';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "c",
+            "card",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nWHERE c.type = 'high-level' \n  AND d.type = 'OWNER';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "c",
+            "card",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nWHERE c.type = 'high-level' \n  AND d.type = 'OWNER';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "c",
+            "card",
+            "d"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nWHERE c.type = 'high-level' \n  AND d.type = 'OWNER';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "c",
+        "card",
+        "d"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.8333333333333334,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.58
+  }
+}

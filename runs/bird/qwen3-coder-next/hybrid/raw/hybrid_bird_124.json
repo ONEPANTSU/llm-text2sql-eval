@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_124",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6978.417959006038,
+  "execution_time_ms": 10.467374995641876,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT l.loan_id, d.A2, AVG(l.amount) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.535332994943019,
+      "result_signature": "3c4e789347f3d8ab13069856abc1468212ccc5b56c4b0e21f6a09c06c64df2e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT l.loan_id, d.A2, AVG(l.amount * 1.0 / l.duration) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0430830006953329,
+      "result_signature": "f8bb97407e12e6a988a308b470f6c7382d816ed56b5266e6ac6c960dfa9cf34c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT l.loan_id, d.A2, AVG(l.amount) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8238750015152618,
+      "result_signature": "3c4e789347f3d8ab13069856abc1468212ccc5b56c4b0e21f6a09c06c64df2e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT l.loan_id, d.A2, AVG(l.amount) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8904170026653446,
+      "result_signature": "3c4e789347f3d8ab13069856abc1468212ccc5b56c4b0e21f6a09c06c64df2e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT l.loan_id, d.A2, AVG(l.amount) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9374580040457658,
+      "result_signature": "3c4e789347f3d8ab13069856abc1468212ccc5b56c4b0e21f6a09c06c64df2e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT l.loan_id, d.A2, AVG(l.amount) AS average_salary\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.duration = 60\nGROUP BY l.loan_id, d.A2;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3c4e789347f3d8ab13069856abc1468212ccc5b56c4b0e21f6a09c06c64df2e2": 4,
+        "f8bb97407e12e6a988a308b470f6c7382d816ed56b5266e6ac6c960dfa9cf34c": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      2
+    ],
+    "variations_requested": 2,
+    "variations_generated": 1,
+    "variations_accepted": 0,
+    "expansion_time_ms": 3218.0343750005704,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 10207.180208002683
+}

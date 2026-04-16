@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_725",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1526.0838339963811,
+  "execution_time_ms": 4.401250000228174,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.4327499961364083,
+      "result_signature": "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2545409952290356,
+      "result_signature": "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.20775000302819535,
+      "result_signature": "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1948749995790422,
+      "result_signature": "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1845419974415563,
+      "result_signature": "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(*) \nFROM superhero \nJOIN publisher ON superhero.publisher_id = publisher.id \nWHERE publisher.publisher_name = 'Marvel Comics';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "09f5ee8b8e9e79cdde65c17a0d3a112ea37d599b54dc0771cdaec96f8cf77315": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1530.5208749996382
+}

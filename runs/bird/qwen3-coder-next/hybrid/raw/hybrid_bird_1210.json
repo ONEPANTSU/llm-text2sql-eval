@@ -1,0 +1,195 @@
+{
+  "task_id": "bird_1210",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2532.644416001858,
+  "execution_time_ms": 9.891166002489626,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH BETWEEN 125 AND 220;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.832416998397093,
+      "result_signature": "29722a6ca6322f6d40f7fbe52ad4099ce7ff4fea3405369c214b5d510091cea7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH BETWEEN 120 AND 250;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.362875002087094,
+      "result_signature": "703518bf064bbe06ad1aff2ce2cf3c1da433adfd9074644e60250fe0e27da097",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2340839966782369,
+      "result_signature": "ed65d6961d703715137bc950c34495749e49386fda0829007a8bfa89a6885057",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH BETWEEN 125 AND 220;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1406659978092648,
+      "result_signature": "29722a6ca6322f6d40f7fbe52ad4099ce7ff4fea3405369c214b5d510091cea7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH BETWEEN 120 AND 250;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1452909966465086,
+      "result_signature": "703518bf064bbe06ad1aff2ce2cf3c1da433adfd9074644e60250fe0e27da097",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH BETWEEN 125 AND 220;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "29722a6ca6322f6d40f7fbe52ad4099ce7ff4fea3405369c214b5d510091cea7": 4,
+        "703518bf064bbe06ad1aff2ce2cf3c1da433adfd9074644e60250fe0e27da097": 4,
+        "ed65d6961d703715137bc950c34495749e49386fda0829007a8bfa89a6885057": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 2139.418749997276,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH >= 125 AND LDH <= 220;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.5409580009873025,
+        "result_signature": "29722a6ca6322f6d40f7fbe52ad4099ce7ff4fea3405369c214b5d510091cea7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH >= 125 AND LDH <= 220;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.4604999960283749,
+        "result_signature": "29722a6ca6322f6d40f7fbe52ad4099ce7ff4fea3405369c214b5d510091cea7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH >= 120 AND LDH <= 250;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.1303749997750856,
+        "result_signature": "703518bf064bbe06ad1aff2ce2cf3c1da433adfd9074644e60250fe0e27da097",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT AVG(LDH) AS avg_LDH\nFROM Laboratory\nWHERE LDH >= 120 AND LDH <= 250;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.4310420010588132,
+        "result_signature": "703518bf064bbe06ad1aff2ce2cf3c1da433adfd9074644e60250fe0e27da097",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4682.0423750032205
+}

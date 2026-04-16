@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_792",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4920.5202919984,
+  "execution_time_ms": 3.4359169949311763,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT superpower.power_name\nFROM superhero\nJOIN hero_power ON superhero.id = hero_power.hero_id\nJOIN superpower ON hero_power.power_id = superpower.id\nWHERE superhero.superhero_name = 'Abomination';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4395419930224307,
+      "result_signature": "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.superhero_name = 'Abomination';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5159169959370047,
+      "result_signature": "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT superpower.power_name\nFROM superhero\nJOIN hero_power ON superhero.id = hero_power.hero_id\nJOIN superpower ON hero_power.power_id = superpower.id\nWHERE superhero.superhero_name = 'Abomination';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.45354200119618326,
+      "result_signature": "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT superpower.power_name\nFROM superhero\nJOIN hero_power ON superhero.id = hero_power.hero_id\nJOIN superpower ON hero_power.power_id = superpower.id\nWHERE superhero.superhero_name = 'Abomination';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4339580045780167,
+      "result_signature": "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.superhero_name = 'Abomination';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4286250041332096,
+      "result_signature": "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.superhero_name = 'Abomination';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "43e4a364fe20960448ff8025578dcac9ce9c614a90377749c84b132ae67b03ce": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4923.986165995302
+}

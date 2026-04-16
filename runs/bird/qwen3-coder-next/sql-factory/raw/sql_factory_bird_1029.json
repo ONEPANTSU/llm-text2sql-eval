@@ -1,0 +1,142 @@
+{
+  "task_id": "bird_1029",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE buildUpPlaySpeed IS NOT NULL\nORDER BY buildUpPlaySpeed DESC\nLIMIT 4;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE team_api_id IN (\n    SELECT team_api_id\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    ORDER BY AVG(buildUpPlaySpeed) DESC\n    LIMIT 4\n)\nORDER BY buildUpPlaySpeed DESC;",
+          "score": 0.9317741935483872,
+          "similarity_max": 0.4364516129032258,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE buildUpPlaySpeed IS NOT NULL\nORDER BY buildUpPlaySpeed DESC\nLIMIT 4;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE team_api_id IN (\n    SELECT team_api_id\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    ORDER BY AVG(buildUpPlaySpeed) DESC\n    LIMIT 4\n)\nORDER BY buildUpPlaySpeed DESC;",
+          "score": 0.9317741935483872,
+          "similarity_max": 0.4364516129032258,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE team_api_id IN (\n    SELECT team_api_id\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    HAVING AVG(buildUpPlaySpeed) IS NOT NULL\n    ORDER BY AVG(buildUpPlaySpeed) DESC\n    LIMIT 4\n)\nORDER BY buildUpPlaySpeed DESC;",
+          "score": 0.7989510489510491,
+          "similarity_max": 0.7020979020979021,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH TopTeams AS (\n    SELECT team_api_id, AVG(buildUpPlaySpeed) AS avg_speed\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    ORDER BY avg_speed DESC\n    LIMIT 4\n)\nSELECT ta.buildUpPlaySpeed\nFROM Team_Attributes ta\nJOIN TopTeams tt ON ta.team_api_id = tt.team_api_id\nORDER BY ta.buildUpPlaySpeed DESC;",
+          "score": 1.1642857142857141,
+          "similarity_max": 0.4714285714285714,
+          "tables_used": [
+            "Team_Attributes",
+            "TopTeams",
+            "tt",
+            "ta"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE buildUpPlaySpeed IS NOT NULL\nORDER BY buildUpPlaySpeed DESC\nLIMIT 4;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlaySpeed\nFROM Team_Attributes\nWHERE team_api_id IN (\n    SELECT team_api_id\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    ORDER BY AVG(buildUpPlaySpeed) DESC\n    LIMIT 4\n)\nORDER BY buildUpPlaySpeed DESC;",
+          "score": 0.9317741935483872,
+          "similarity_max": 0.4364516129032258,
+          "tables_used": [
+            "Team_Attributes"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH TopTeams AS (\n    SELECT team_api_id, AVG(buildUpPlaySpeed) AS avg_speed\n    FROM Team_Attributes\n    GROUP BY team_api_id\n    ORDER BY avg_speed DESC\n    LIMIT 4\n)\nSELECT ta.buildUpPlaySpeed\nFROM Team_Attributes ta\nJOIN TopTeams tt ON ta.team_api_id = tt.team_api_id\nORDER BY ta.buildUpPlaySpeed DESC;",
+    "meta": {
+      "score": 1.1642857142857141,
+      "similarity_max": 0.4714285714285714,
+      "tables_used": [
+        "Team_Attributes",
+        "TopTeams",
+        "tt",
+        "ta"
+      ],
+      "phase": "exp",
+      "round_idx": 2,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.7
+  }
+}

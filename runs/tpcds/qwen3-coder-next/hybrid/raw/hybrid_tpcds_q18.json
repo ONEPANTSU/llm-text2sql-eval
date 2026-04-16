@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q18",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4752.218583002104,
+  "execution_time_ms": 148.5040000115987,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F'\n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1, 6, 8, 9, 12, 2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS', 'IN', 'ND', 'OK', 'NM', 'VA')\nGROUP BY ROLLUP (i_item_id, ca_country, ca_state, ca_county)\nORDER BY \n    ca_country ASC,\n    ca_state ASC,\n    ca_county ASC,\n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.1816250042757,
+      "result_signature": "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F'\n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1, 6, 8, 9, 12, 2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS', 'IN', 'ND', 'OK', 'NM', 'VA')\nGROUP BY ROLLUP(i_item_id, ca_country, ca_state, ca_county)\nORDER BY \n    ca_country ASC,\n    ca_state ASC,\n    ca_county ASC,\n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 26.27158300310839,
+      "result_signature": "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM \n    catalog_sales\n    JOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\n    JOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F'\n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1, 6, 8, 9, 12, 2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS', 'IN', 'ND', 'OK', 'NM', 'VA')\nGROUP BY ROLLUP(i_item_id, ca_country, ca_state, ca_county)\nORDER BY \n    ca_country ASC, \n    ca_state ASC, \n    ca_county ASC, \n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.577916006208397,
+      "result_signature": "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM catalog_sales\nJOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\nJOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F' \n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1,6,8,9,12,2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS','IN','ND','OK','NM','VA')\nGROUP BY ROLLUP(i_item_id, ca_country, ca_state, ca_county)\nORDER BY ca_country ASC, ca_state ASC, ca_county ASC, i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.397041986347176,
+      "result_signature": "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM catalog_sales\nJOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\nJOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F' \n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1, 6, 8, 9, 12, 2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS', 'IN', 'ND', 'OK', 'NM', 'VA')\nGROUP BY ROLLUP(i_item_id, ca_country, ca_state, ca_county)\nORDER BY \n    ca_country ASC, \n    ca_state ASC, \n    ca_county ASC, \n    i_item_id ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.067125009722076,
+      "result_signature": "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    i_item_id,\n    ca_country,\n    ca_state,\n    ca_county,\n    AVG(cs_quantity) AS avg_cs_quantity,\n    AVG(cs_list_price) AS avg_cs_list_price,\n    AVG(cs_coupon_amt) AS avg_cs_coupon_amt,\n    AVG(cs_sales_price) AS avg_cs_sales_price,\n    AVG(cs_net_profit) AS avg_cs_net_profit,\n    AVG(c_birth_year) AS avg_c_birth_year,\n    AVG(cd_dep_count) AS avg_cd_dep_count\nFROM catalog_sales\nJOIN item ON catalog_sales.cs_item_sk = item.i_item_sk\nJOIN customer_address ON catalog_sales.cs_bill_addr_sk = customer_address.ca_address_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_demographics cd1 ON customer.c_current_cdemo_sk = cd1.cd_demo_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    cd1.cd_gender = 'F' \n    AND cd1.cd_education_status = 'Unknown'\n    AND customer.c_birth_month IN (1, 6, 8, 9, 12, 2)\n    AND date_dim.d_year = 1998\n    AND customer_address.ca_state IN ('MS', 'IN', 'ND', 'OK', 'NM', 'VA')\nGROUP BY ROLLUP(i_item_id, ca_country, ca_state, ca_county)\nORDER BY \n    ca_country ASC, \n    ca_state ASC, \n    ca_county ASC, \n    i_item_id ASC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3724b6aa7311911a97a0beed5bdd153f262317f61e8d87fc9e2b0d8aa19c7da5": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4900.86362499278
+}

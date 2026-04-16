@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_75",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3252.3062079999363,
+  "execution_time_ms": 10.78429099288769,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT lt.state\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'F'\n  AND lt.term_end >= '12-31'\nGROUP BY lt.state\nORDER BY COUNT(l.id_bioguide) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.1364999894285575,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT lt.state\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'F'\n  AND lt.term_end >= '12-31'\nGROUP BY lt.state\nORDER BY COUNT(l.id_bioguide) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0383750050095841,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT lt.state\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'F'\n  AND lt.term_end >= '12-31'\nGROUP BY lt.state\nORDER BY COUNT(l.id_bioguide) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8464999991701916,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT lt.state\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'F'\n  AND lt.term_end >= '12-31'\nGROUP BY lt.state\nORDER BY COUNT(l.id_bioguide) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5717909953091294,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT legislators_terms.state\nFROM legislators\nJOIN legislators_terms ON legislators.id_bioguide = legislators_terms.id_bioguide\nWHERE legislators.gender = 'F'\n  AND legislators_terms.term_end >= '12-31'\nGROUP BY legislators_terms.state\nORDER BY COUNT(legislators.id_bioguide) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.421667005866766,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT legislators_terms.state\nFROM legislators\nJOIN legislators_terms ON legislators.id_bioguide = legislators_terms.id_bioguide\nWHERE legislators.gender = 'F'\n  AND legislators_terms.term_end >= '12-31'\nGROUP BY legislators_terms.state\nORDER BY COUNT(legislators.id_bioguide) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3263.284291999298
+}

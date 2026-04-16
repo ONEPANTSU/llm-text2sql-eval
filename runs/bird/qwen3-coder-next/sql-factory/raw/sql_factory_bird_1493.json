@@ -1,0 +1,156 @@
+{
+  "task_id": "bird_1493",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH monthly_consumption AS (\n    SELECT \n        CustomerID,\n        SUM(Consumption) AS TotalConsumption\n    FROM yearmonth\n    WHERE Date LIKE '2012-02%'\n    GROUP BY CustomerID\n),\ntotal_customers AS (\n    SELECT COUNT(*) AS TotalCount\n    FROM monthly_consumption\n),\nhigh_consumers AS (\n    SELECT COUNT(*) AS HighCount\n    FROM monthly_consumption\n    WHERE TotalConsumption > 528.3\n)\nSELECT \n    ROUND((hc.HighCount * 100.0) / tc.TotalCount, 2) AS Percentage\nFROM total_customers tc, high_consu...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_consumption",
+            "yearmonth",
+            "total_customers",
+            "tc"
+          ]
+        },
+        {
+          "sql": "WITH feb_consumption AS (\n    SELECT \n        CustomerID,\n        Consumption\n    FROM \n        yearmonth\n    WHERE \n        Date >= '2012-02-01' AND Date <= '2012-02-29'\n),\nabove_threshold AS (\n    SELECT \n        COUNT(*) AS above_count\n    FROM \n        feb_consumption\n    WHERE \n        Consumption > 528.3\n),\ntotal_customers AS (\n    SELECT \n        COUNT(*) AS total_count\n    FROM \n        feb_consumption\n)\nSELECT \n    ROUND(100.0 * above_count / total_count, 2) AS percentage\nFROM \n    abov...",
+          "score": 1.0899999999999999,
+          "similarity_max": 0.52,
+          "tables_used": [
+            "yearmonth",
+            "above_threshold",
+            "feb_consumption"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH monthly_consumption AS (\n    SELECT \n        CustomerID,\n        SUM(Consumption) AS TotalConsumption\n    FROM yearmonth\n    WHERE Date LIKE '2012-02%'\n    GROUP BY CustomerID\n),\ntotal_customers AS (\n    SELECT COUNT(*) AS TotalCount\n    FROM monthly_consumption\n),\nhigh_consumers AS (\n    SELECT COUNT(*) AS HighCount\n    FROM monthly_consumption\n    WHERE TotalConsumption > 528.3\n)\nSELECT \n    ROUND((hc.HighCount * 100.0) / tc.TotalCount, 2) AS Percentage\nFROM total_customers tc, high_consu...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_consumption",
+            "yearmonth",
+            "total_customers",
+            "tc"
+          ]
+        },
+        {
+          "sql": "WITH feb_consumption AS (\n    SELECT \n        CustomerID,\n        Consumption\n    FROM \n        yearmonth\n    WHERE \n        Date >= '2012-02-01' AND Date <= '2012-02-29'\n),\nabove_threshold AS (\n    SELECT \n        COUNT(*) AS above_count\n    FROM \n        feb_consumption\n    WHERE \n        Consumption > 528.3\n),\ntotal_customers AS (\n    SELECT \n        COUNT(*) AS total_count\n    FROM \n        feb_consumption\n)\nSELECT \n    ROUND(100.0 * above_count / total_count, 2) AS percentage\nFROM \n    abov...",
+          "score": 1.0899999999999999,
+          "similarity_max": 0.52,
+          "tables_used": [
+            "yearmonth",
+            "above_threshold",
+            "feb_consumption"
+          ]
+        },
+        {
+          "sql": "WITH monthly_consumption AS (\n    SELECT \n        CustomerID,\n        SUM(Consumption) AS TotalConsumption\n    FROM yearmonth\n    WHERE Date LIKE '2012-02%'\n    GROUP BY CustomerID\n)\nSELECT \n    ROUND(\n        (SELECT COUNT(*) FROM monthly_consumption WHERE TotalConsumption > 528.3) * 100.0 / \n        (SELECT COUNT(*) FROM monthly_consumption), \n        2\n    ) AS Percentage;",
+          "score": 0.9983333333333334,
+          "similarity_max": 0.6033333333333333,
+          "tables_used": [
+            "yearmonth",
+            "monthly_consumption"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH monthly_consumption AS (\n    SELECT \n        CustomerID,\n        SUM(Consumption) AS TotalConsumption\n    FROM yearmonth\n    WHERE Date LIKE '2012-02%'\n    GROUP BY CustomerID\n),\ntotal_customers AS (\n    SELECT COUNT(*) AS TotalCount\n    FROM monthly_consumption\n),\nhigh_consumers AS (\n    SELECT COUNT(*) AS HighCount\n    FROM monthly_consumption\n    WHERE TotalConsumption > 528.3\n)\nSELECT \n    ROUND((hc.HighCount * 100.0) / tc.TotalCount, 2) AS Percentage\nFROM total_customers tc, high_consu...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_consumption",
+            "yearmonth",
+            "total_customers",
+            "tc"
+          ]
+        },
+        {
+          "sql": "WITH feb_consumption AS (\n    SELECT \n        CustomerID,\n        Consumption\n    FROM \n        yearmonth\n    WHERE \n        Date >= '2012-02-01' AND Date <= '2012-02-29'\n),\nabove_threshold AS (\n    SELECT \n        COUNT(*) AS above_count\n    FROM \n        feb_consumption\n    WHERE \n        Consumption > 528.3\n),\ntotal_customers AS (\n    SELECT \n        COUNT(*) AS total_count\n    FROM \n        feb_consumption\n)\nSELECT \n    ROUND(100.0 * above_count / total_count, 2) AS percentage\nFROM \n    abov...",
+          "score": 1.0899999999999999,
+          "similarity_max": 0.52,
+          "tables_used": [
+            "yearmonth",
+            "above_threshold",
+            "feb_consumption"
+          ]
+        },
+        {
+          "sql": "WITH feb_data AS (\n    SELECT \n        CustomerID,\n        Consumption\n    FROM \n        yearmonth\n    WHERE \n        Date LIKE '2012-02%'\n),\nstats AS (\n    SELECT \n        SUM(CASE WHEN Consumption > 528.3 THEN 1 ELSE 0 END) AS above_count,\n        COUNT(*) AS total_count\n    FROM \n        feb_data\n)\nSELECT \n    ROUND(100.0 * above_count / total_count, 2) AS percentage\nFROM \n    stats;",
+          "score": 1.0310379918588874,
+          "similarity_max": 0.5379240162822253,
+          "tables_used": [
+            "yearmonth",
+            "feb_data"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH monthly_consumption AS (\n    SELECT \n        CustomerID,\n        SUM(Consumption) AS TotalConsumption\n    FROM yearmonth\n    WHERE Date LIKE '2012-02%'\n    GROUP BY CustomerID\n),\ntotal_customers AS (\n    SELECT COUNT(*) AS TotalCount\n    FROM monthly_consumption\n),\nhigh_consumers AS (\n    SELECT COUNT(*) AS HighCount\n    FROM monthly_consumption\n    WHERE TotalConsumption > 528.3\n)\nSELECT \n    ROUND((hc.HighCount * 100.0) / tc.TotalCount, 2) AS Percentage\nFROM total_customers tc, high_consu...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "monthly_consumption",
+        "yearmonth",
+        "total_customers",
+        "tc"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 33.77
+  }
+}

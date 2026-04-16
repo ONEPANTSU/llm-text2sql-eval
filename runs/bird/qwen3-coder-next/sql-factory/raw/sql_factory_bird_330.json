@@ -1,0 +1,199 @@
+{
+  "task_id": "bird_330",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) carcinogenic_with_triple_h ON m.molecule_id = carcinogenic_with_triple_h.molecule_id\nWHERE m.label LIKE '%carcinogenic%';",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) carcinogenic_with_triple_h ON m.molecule_id = carcinogenic_with_triple_h.molecule_id\nWHERE m.label LIKE '%carcinogenic%';",
+          "score": 0.9856823979591837,
+          "similarity_max": 0.8286352040816325,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) carcinogenic_with_triple_h ON m.molecule_id = carcinogenic_with_triple_h.molecule_id\nWHERE m.label LIKE '%carcinogenic%';",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' AND h_triple.molecule_id IS NOT NULL THEN h_triple.molecule_id END) * 100.0 / COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' THEN m.molecule_id END), 2) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) h_trip...",
+          "score": 1.0433816425120772,
+          "similarity_max": 0.7132367149758454,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' AND h_triple.molecule_id IS NOT NULL THEN m.molecule_id END) AS FLOAT) * 100 /\n    COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' THEN m.molecule_id END) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) h_triple ON m.molecule_id = h_tr...",
+          "score": 1.0009929906542054,
+          "similarity_max": 0.7980140186915887,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) carcinogenic_with_triple_h ON m.molecule_id = carcinogenic_with_triple_h.molecule_id\nWHERE m.label LIKE '%carcinogenic%';",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' AND h_triple.molecule_id IS NOT NULL THEN h_triple.molecule_id END) * 100.0 / COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' THEN m.molecule_id END), 2) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) h_trip...",
+          "score": 1.0433816425120772,
+          "similarity_max": 0.7132367149758454,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' AND t.molecule_id IS NOT NULL THEN m.molecule_id END) AS FLOAT) * 100.0 / \n    COUNT(DISTINCT CASE WHEN m.label LIKE '%carcinogenic%' THEN m.molecule_id END) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) t ON m.mol...",
+          "score": 1.0055652173913043,
+          "similarity_max": 0.7888695652173914,
+          "tables_used": [
+            "connected",
+            "a",
+            "m",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN m.molecule_id IS NOT NULL THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM molecule m\nLEFT JOIN (\n    SELECT DISTINCT a.molecule_id\n    FROM atom a\n    JOIN connected c ON a.atom_id = c.atom_id OR a.atom_id = c.atom_id2\n    JOIN bond b ON c.bond_id = b.bond_id\n    WHERE a.element = 'H' AND b.bond_type = 'triple'\n) carcinogenic_with_triple_h ON m.molecule_id = carcinogenic_with_triple_h.molecule_id\nWHERE m.label LIKE '%carcinogenic%';",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "connected",
+        "a",
+        "m",
+        "atom",
+        "molecule",
+        "c",
+        "bond",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.44
+  }
+}

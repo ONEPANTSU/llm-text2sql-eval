@@ -1,0 +1,228 @@
+{
+  "task_id": "bird_232",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Be', 'Cd', 'Cr6+', 'Co', 'Ni', 'As', 'Pb', 'Hg', 'Se', 'Si', 'Ti', 'Zn')\n       OR m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n  )\n  AND m.label NOT IN (\n    SELECT DISTINCT m3.label\n    FROM molecule m3\n    JOIN...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "m2",
+            "connected",
+            "a",
+            "m",
+            "a1",
+            "m3",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'single'\n  AND a1.element != a2.element\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('C', 'H', 'O', 'N', 'Cl', 'Br', 'F', 'I')\n    GROUP BY m2.molecule_id\n    HAVING COUNT(...",
+          "score": 1.0062181199902842,
+          "similarity_max": 0.4875637600194316,
+          "tables_used": [
+            "connected",
+            "m2",
+            "a",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Be', 'Cd', 'Cr6+', 'Co', 'Ni', 'As', 'Pb', 'Hg', 'Se', 'Si', 'Ti', 'Zn')\n       OR m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n  )\n  AND m.label NOT IN (\n    SELECT DISTINCT m3.label\n    FROM molecule m3\n    JOIN...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "m2",
+            "connected",
+            "a",
+            "m",
+            "a1",
+            "m3",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'single'\n  AND a1.element != a2.element\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('C', 'H', 'O', 'N', 'Cl', 'Br', 'F', 'I')\n    GROUP BY m2.molecule_id\n    HAVING COUNT(...",
+          "score": 1.0062181199902842,
+          "similarity_max": 0.4875637600194316,
+          "tables_used": [
+            "connected",
+            "m2",
+            "a",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'single'\n  AND a1.element IS NOT NULL\n  AND a2.element IS NOT NULL\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    WHERE m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n       OR m2.label LIKE '%toxic%'\n  )\nGROUP BY m.molecule_id, m.label...",
+          "score": 0.9024276793679114,
+          "similarity_max": 0.5951446412641774,
+          "tables_used": [
+            "connected",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Be', 'Cd', 'Cr6+', 'Co', 'Ni', 'As', 'Pb', 'Hg', 'Se', 'Si', 'Ti', 'Zn')\n       OR m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n  )\n  AND m.label NOT IN (\n    SELECT DISTINCT m3.label\n    FROM molecule m3\n    JOIN...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "m2",
+            "connected",
+            "a",
+            "m",
+            "a1",
+            "m3",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'single'\n  AND a1.element != a2.element\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('C', 'H', 'O', 'N', 'Cl', 'Br', 'F', 'I')\n    GROUP BY m2.molecule_id\n    HAVING COUNT(...",
+          "score": 1.0062181199902842,
+          "similarity_max": 0.4875637600194316,
+          "tables_used": [
+            "connected",
+            "m2",
+            "a",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'single'\n  AND a1.element IS NOT NULL\n  AND a2.element IS NOT NULL\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    WHERE m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n       OR m2.label LIKE '%toxic%'\n  )\nGROUP BY m.molecule_id, m.label...",
+          "score": 0.9024276793679114,
+          "similarity_max": 0.5951446412641774,
+          "tables_used": [
+            "connected",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\n  AND m.label NOT IN (\n    SELECT DISTINCT m2.label\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Be', 'Cd', 'Cr6+', 'Co', 'Ni', 'As', 'Pb', 'Hg', 'Se', 'Si', 'Ti', 'Zn')\n       OR m2.label LIKE '%carcinogen%'\n       OR m2.label LIKE '%carcin%'\n  )\n  AND m.label NOT IN (\n    SELECT DISTINCT m3.label\n    FROM molecule m3\n    JOIN...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "m2",
+        "connected",
+        "a",
+        "m",
+        "a1",
+        "m3",
+        "a2",
+        "atom",
+        "molecule",
+        "c",
+        "bond",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.25,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 13.96
+  }
+}

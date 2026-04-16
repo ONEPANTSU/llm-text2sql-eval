@@ -1,0 +1,142 @@
+{
+  "task_id": "bird_507",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 5,
+  "generation_time_ms": 4655.807041999651,
+  "execution_time_ms": 450.1010829990264,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    COUNT(cards.id) AS total_count,\n    COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS online_count,\n    ROUND(100.0 * COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) / COUNT(cards.id), 2) AS percentage_online\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Brazil Portuguese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 331.50908300012816,
+      "result_signature": "a6b71aee30dfe5645af806984ad22be1f0d211ee2b37763afe7e4f1c595c9710",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    COUNT(cards.id) AS total_count,\n    COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS online_count,\n    ROUND(100.0 * COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) / COUNT(cards.id), 2) AS percentage_online\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Brazil Portuguese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.019417001109105,
+      "result_signature": "a6b71aee30dfe5645af806984ad22be1f0d211ee2b37763afe7e4f1c595c9710",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    COUNT(cards.id) AS total_count,\n    COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS online_count,\n    ROUND(100.0 * COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) / COUNT(cards.id), 2) AS percentage_online\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Brazil Portuguese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.020041998592205,
+      "result_signature": "a6b71aee30dfe5645af806984ad22be1f0d211ee2b37763afe7e4f1c595c9710",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS FLOAT) * 100 / COUNT(cards.id) AS percentage_online_only\nFROM \n    cards\nJOIN \n    foreign_data ON cards.id = foreign_data.uuid\nWHERE \n    foreign_data.language = 'Brazil Portuguese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.602292001072783,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS REAL) * 100 / COUNT(cards.id) AS online_percentage\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Brazil Portuguese';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 28.63916700152913,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 1
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT \n    COUNT(cards.id) AS total_count,\n    COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) AS online_count,\n    ROUND(100.0 * COUNT(CASE WHEN cards.isOnlineOnly = 1 THEN 1 END) / COUNT(cards.id), 2) AS percentage_online\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Brazil Portuguese';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a6b71aee30dfe5645af806984ad22be1f0d211ee2b37763afe7e4f1c595c9710": 3,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2756.427750005969,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7862.433583999518
+}

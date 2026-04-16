@@ -1,0 +1,195 @@
+{
+  "task_id": "bird_1436",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name, e.event_date, e.location, m.first_name, m.last_name, m.email\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT e.event_name, e.event_date, a.link_to_event\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 0.8188416422287391,
+          "similarity_max": 0.7623167155425219,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name, e.event_date, e.location, m.first_name, m.last_name, m.email\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.link_to_event\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nWHERE i.amount > 50;",
+          "score": 0.9632183908045977,
+          "similarity_max": 0.6735632183908046,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "i",
+            "m",
+            "income"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT e.event_name, e.event_date, a.link_to_event\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 0.8188416422287391,
+          "similarity_max": 0.7623167155425219,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name, e.event_date, e.location, m.first_name, m.last_name, m.email\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT a.link_to_event\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nWHERE i.amount > 50;",
+          "score": 0.9632183908045977,
+          "similarity_max": 0.6735632183908046,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "i",
+            "m",
+            "income"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT e.event_name, e.event_date, a.link_to_event\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+          "score": 0.8188416422287391,
+          "similarity_max": 0.7623167155425219,
+          "tables_used": [
+            "attendance",
+            "a",
+            "i",
+            "m",
+            "income",
+            "event",
+            "e",
+            "member"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT e.event_name, e.event_date, e.location, m.first_name, m.last_name, m.email\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE i.amount > 50;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "attendance",
+        "a",
+        "i",
+        "m",
+        "income",
+        "event",
+        "e",
+        "member"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.03
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "task_id": "spider2_7",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CASE \n        WHEN p.party_safety_equipment_1 = 'Helmet' OR p.party_safety_equipment_2 = 'Helmet' THEN 'Helmet'\n        ELSE 'No Helmet'\n    END AS helmet_usage,\n    SUM(v.victim_degree_of_injury = 'Fatal') * 100.0 / COUNT(*) AS fatality_rate\nFROM parties p\nJOIN victims v ON p.case_id = v.case_id AND p.party_number = v.party_number\nWHERE v.victim_role = 'Motorcyclist'\nGROUP BY \n    CASE \n        WHEN p.party_safety_equipment_1 = 'Helmet' OR p.party_safety_equipment_2 = 'Helmet' THEN ...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: v.party_number_killed",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 1.77
+  }
+}

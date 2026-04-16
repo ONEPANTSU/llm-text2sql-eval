@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q54",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 10237.585167007637,
+  "execution_time_ms": 113.45029198855627,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  customer.c_customer_id,\n  SUM(store_sales.ss_ext_sales_price) AS total_purchase_amount\nFROM \n  store_sales\nJOIN \n  date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n  customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE \n  date_dim.d_year = 1998 \n  AND date_dim.d_moy = 12\nGROUP BY \n  customer.c_customer_id\n\nUNION ALL\n\nSELECT \n  customer.c_customer_id,\n  SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM \n  web_sales\nJOIN \n  date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN \n  customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE \n  date_dim.d_year = 1998 \n  AND date_dim.d_moy = 12\nGROUP BY \n  customer.c_customer_id\n\nUNION ALL\n\nSELECT \n  customer.c_customer_id,\n  SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM \n  catalog_sales\nJOIN \n  date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n  customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE \n  date_dim.d_year = 1998 \n  AND date_dim.d_moy = 12\nGROUP BY \n  customer.c_customer_id\n\nORDER BY \n  total_purchase_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.78554101276677,
+      "result_signature": "d83e5cac75d81f1eec330d9c9854058ffbfb50c481edeae46648952073a54850",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n  customer.c_customer_id,\n  SUM(store_sales.ss_ext_sales_price) AS total_purchase_amount\nFROM\n  store_sales\nJOIN\n  date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN\n  customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE\n  date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY\n  customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM\n  web_sales\nJOIN\n  date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN\n  customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE\n  date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY\n  customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM\n  catalog_sales\nJOIN\n  date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN\n  customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE\n  date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY\n  customer.c_customer_id\n\nORDER BY\n  total_purchase_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 20.665374991949648,
+      "result_signature": "d83e5cac75d81f1eec330d9c9854058ffbfb50c481edeae46648952073a54850",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    customer.c_customer_id,\n    SUM(store_sales.ss_ext_sales_price) AS total_purchase_amount\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 \n    AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nUNION ALL\n\nSELECT \n    customer.c_customer_id,\n    SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM \n    web_sales\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 \n    AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nUNION ALL\n\nSELECT \n    customer.c_customer_id,\n    SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM \n    catalog_sales\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 \n    AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nORDER BY \n    total_purchase_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.870958010666072,
+      "result_signature": "d83e5cac75d81f1eec330d9c9854058ffbfb50c481edeae46648952073a54850",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT\n  customer.c_customer_id,\n  SUM(store_sales.ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM web_sales\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM catalog_sales\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.618707996211015,
+      "result_signature": "d83e5cac75d81f1eec330d9c9854058ffbfb50c481edeae46648952073a54850",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    customer.c_customer_id,\n    SUM(store_sales.ss_ext_sales_price) + SUM(web_sales.ws_ext_sales_price) + SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM \n    store_sales\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nUNION ALL\n\nSELECT \n    customer.c_customer_id,\n    SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM \n    web_sales\nJOIN \n    date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nUNION ALL\n\nSELECT \n    customer.c_customer_id,\n    SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM \n    catalog_sales\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE \n    date_dim.d_year = 1998 AND date_dim.d_moy = 12\nGROUP BY \n    customer.c_customer_id\n\nORDER BY \n    total_purchase_amount DESC\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced table \"web_sales\" not found!\nCandidate tables: \"store_sales\"\n\nLINE 3:     SUM(store_sales.ss_ext_sales_price) + SUM(web_sales.ws_ext_sales_price) + SUM(catalog_sales.cs_ext_sa...\n                                                      ^",
+      "exec_time_ms": 9.93704199208878,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT\n  customer.c_customer_id,\n  SUM(store_sales.ss_ext_sales_price) AS total_purchase_amount\nFROM store_sales\nJOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(web_sales.ws_ext_sales_price) AS total_purchase_amount\nFROM web_sales\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nUNION ALL\n\nSELECT\n  customer.c_customer_id,\n  SUM(catalog_sales.cs_ext_sales_price) AS total_purchase_amount\nFROM catalog_sales\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 12\nGROUP BY customer.c_customer_id\n\nORDER BY total_purchase_amount DESC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d83e5cac75d81f1eec330d9c9854058ffbfb50c481edeae46648952073a54850": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 10351.135499993688
+}

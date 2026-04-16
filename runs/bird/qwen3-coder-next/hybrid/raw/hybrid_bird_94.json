@@ -1,0 +1,182 @@
+{
+  "task_id": "bird_94",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4461.677541999961,
+  "execution_time_ms": 2465.2634170051897,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH female_avg_salary AS (\n    SELECT \n        a.account_id,\n        c.client_id,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\noldest_lowest_salary AS (\n    SELECT account_id, avg_salary\n    FROM female_avg_salary\n    ORDER BY birth_date ASC, avg_salary ASC\n    LIMIT 1\n),\nhighest_salary AS (\n    SELECT AVG(t.amount) AS max_avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n    ORDER BY AVG(t.amount) DESC\n    LIMIT 1\n)\nSELECT \n    ols.account_id,\n    ols.avg_salary,\n    hs.max_avg_salary - ols.avg_salary AS salary_gap\nFROM oldest_lowest_salary ols, highest_salary hs;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1164.0453330037417,
+      "result_signature": "648e5c99bd59de29ab53fd85ad5cb801cf31b5283879bdb077cc37319855c9a6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH FemaleAvgSalary AS (\n    SELECT \n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY a.account_id\n),\nOldestFemaleWithLowestSalary AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM FemaleAvgSalary\n    ORDER BY avg_salary ASC\n    LIMIT 1\n),\nHighestSalary AS (\n    SELECT \n        MAX(avg_salary) AS max_avg_salary\n    FROM FemaleAvgSalary\n)\nSELECT \n    account_id,\n    avg_salary,\n    (SELECT max_avg_salary FROM HighestSalary) - avg_salary AS salary_gap\nFROM OldestFemaleWithLowestSalary;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 349.69229100533994,
+      "result_signature": "96ae1b805be1d6cce0f706e4b8c72076a40b6287694bb656fe1c3c4f368c1d67",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH female_clients AS (\n    SELECT \n        c.client_id,\n        c.birth_date,\n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, c.birth_date, a.account_id\n),\noldest_lowest_salary AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM female_clients\n    ORDER BY birth_date ASC, avg_salary ASC\n    LIMIT 1\n),\nhighest_salary AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM female_clients\n    ORDER BY avg_salary DESC\n    LIMIT 1\n)\nSELECT \n    (SELECT account_id FROM oldest_lowest_salary) AS account_number,\n    (SELECT avg_salary FROM oldest_lowest_salary) AS lowest_avg_salary,\n    (SELECT avg_salary FROM highest_salary) AS highest_avg_salary,\n    (SELECT avg_salary FROM highest_salary) - (SELECT avg_salary FROM oldest_lowest_salary) AS salary_gap;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 489.2319159989711,
+      "result_signature": "97f85edf08a5d01da747be1558b46e57e444ddb27e2b378d7b6d431a18df0480",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH female_avg_salary AS (\n    SELECT \n        a.account_id,\n        c.client_id,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\noldest_lowest_salary AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM female_avg_salary\n    ORDER BY birth_date ASC, avg_salary ASC\n    LIMIT 1\n),\nhighest_salary AS (\n    SELECT \n        MAX(avg_salary) AS max_avg_salary\n    FROM female_avg_salary\n)\nSELECT \n    (SELECT account_id FROM oldest_lowest_salary) AS account_id,\n    (SELECT avg_salary FROM oldest_lowest_salary) - (SELECT max_avg_salary FROM highest_salary) AS salary_gap\nFROM oldest_lowest_salary, highest_salary\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 457.7300419987296,
+      "result_signature": "4397692ff86e89d2af361d9dde43aa310d480799d7b8caff9a5edbe8f2ce7ecf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH female_avg_salary AS (\n    SELECT \n        c.client_id,\n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\noldest_female_lowest_avg AS (\n    SELECT \n        account_id\n    FROM female_avg_salary\n    ORDER BY c.birth_date ASC, avg_salary ASC\n    LIMIT 1\n),\nall_avg_salaries AS (\n    SELECT \n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    GROUP BY a.account_id\n),\nmax_min_avg AS (\n    SELECT \n        MAX(avg_salary) AS max_avg_salary,\n        MIN(avg_salary) AS min_avg_salary\n    FROM all_avg_salaries\n)\nSELECT \n    (SELECT account_id FROM oldest_female_lowest_avg) AS account_id,\n    (SELECT max_avg_salary - min_avg_salary FROM max_min_avg) AS salary_gap;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.birth_date",
+      "exec_time_ms": 0.287124996248167,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "WITH FemaleAvgSalary AS (\n    SELECT \n        c.client_id,\n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\nRankedFemaleAccounts AS (\n    SELECT \n        account_id,\n        avg_salary,\n        ROW_NUMBER() OVER (ORDER BY c.birth_date ASC, avg_salary ASC) AS rn\n    FROM FemaleAvgSalary\n    JOIN client c ON FemaleAvgSalary.client_id = c.client_id\n),\nLowestSalaryAccount AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM RankedFemaleAccounts\n    WHERE rn = 1\n),\nHighestSalaryValue AS (\n    SELECT MAX(avg_salary) AS max_avg_salary\n    FROM FemaleAvgSalary\n)\nSELECT \n    lsa.account_id,\n    lsa.avg_salary,\n    hmv.max_avg_salary - lsa.avg_salary AS salary_gap\nFROM LowestSalaryAccount lsa, HighestSalaryValue hmv;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "648e5c99bd59de29ab53fd85ad5cb801cf31b5283879bdb077cc37319855c9a6": 2,
+        "96ae1b805be1d6cce0f706e4b8c72076a40b6287694bb656fe1c3c4f368c1d67": 2,
+        "97f85edf08a5d01da747be1558b46e57e444ddb27e2b378d7b6d431a18df0480": 1,
+        "4397692ff86e89d2af361d9dde43aa310d480799d7b8caff9a5edbe8f2ce7ecf": 2
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 6391.330624996044,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH FemaleAvgSalary AS (\n    SELECT \n        c.client_id,\n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\nRankedFemaleAccounts AS (\n    SELECT \n        account_id,\n        avg_salary,\n        ROW_NUMBER() OVER (ORDER BY avg_salary ASC) AS salary_rank\n    FROM FemaleAvgSalary\n),\nHighestSalary AS (\n    SELECT MAX(avg_salary) AS max_avg_salary\n    FROM FemaleAvgSalary\n)\nSELECT \n    r.account_id,\n    r.avg_salary,\n    (SELECT max_avg_salary FROM HighestSalary) - r.avg_salary AS salary_gap\nFROM RankedFemaleAccounts r\nWHERE r.salary_rank = 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 541.8223339947872,
+        "result_signature": "96ae1b805be1d6cce0f706e4b8c72076a40b6287694bb656fe1c3c4f368c1d67",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH FemaleAvgSalary AS (\n    SELECT \n        c.client_id,\n        a.account_id,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\nRankedFemaleAccounts AS (\n    SELECT \n        account_id,\n        avg_salary,\n        ROW_NUMBER() OVER (ORDER BY c.birth_date ASC, avg_salary ASC) AS rn\n    FROM FemaleAvgSalary\n    JOIN client c ON FemaleAvgSalary.client_id = c.client_id\n),\nLowestSalaryAccount AS (\n    SELECT \n        account_id,\n        avg_salary\n    FROM RankedFemaleAccounts\n    WHERE rn = 1\n),\nHighestSalaryValue AS (\n    SELECT MAX(avg_salary) AS max_avg_salary\n    FROM FemaleAvgSalary\n)\nSELECT \n    lsa.account_id,\n    lsa.avg_salary,\n    hmv.max_avg_salary - lsa.avg_salary AS salary_gap\nFROM LowestSalaryAccount lsa, HighestSalaryValue hmv;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 467.23283299797913,
+        "result_signature": "648e5c99bd59de29ab53fd85ad5cb801cf31b5283879bdb077cc37319855c9a6",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH female_avg_salary AS (\n    SELECT \n        a.account_id,\n        c.client_id,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F'\n    GROUP BY c.client_id, a.account_id\n),\nranked AS (\n    SELECT \n        account_id,\n        avg_salary,\n        ROW_NUMBER() OVER (ORDER BY birth_date ASC, avg_salary ASC) AS rn_asc,\n        ROW_NUMBER() OVER (ORDER BY avg_salary DESC) AS rn_desc\n    FROM female_avg_salary\n),\noldest_lowest AS (\n    SELECT account_id, avg_salary\n    FROM ranked\n    WHERE rn_asc = 1\n),\nhighest AS (\n    SELECT avg_salary AS max_avg_salary\n    FROM ranked\n    WHERE rn_desc = 1\n)\nSELECT \n    (SELECT account_id FROM oldest_lowest) AS account_id,\n    (SELECT avg_salary FROM oldest_lowest) - (SELECT max_avg_salary FROM highest) AS salary_gap\nFROM oldest_lowest, highest\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 460.99170800152933,
+        "result_signature": "4397692ff86e89d2af361d9dde43aa310d480799d7b8caff9a5edbe8f2ce7ecf",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 13318.359083001269
+}

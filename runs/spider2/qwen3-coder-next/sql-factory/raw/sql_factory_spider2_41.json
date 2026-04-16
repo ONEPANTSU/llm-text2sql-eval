@@ -1,0 +1,190 @@
+{
+  "task_id": "spider2_41",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH italian_customers AS (\n    SELECT \n        c.cust_id,\n        SUM(s.amount_sold - co.unit_cost * s.quantity_sold) AS profit_dec_2021\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co_country ON c.country_id = co_country.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs co ON s.prod_id = co.prod_id AND s.time_id = co.time_id AND s.channel_id = co.channel_id AND s.promo_id = co.promo_id\n    WHERE co_country.country_name = 'Italy'\n      AND ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "co_country",
+            "sales",
+            "co",
+            "italian_customers",
+            "c",
+            "s",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH italian_sales_dec2021 AS (\n    SELECT \n        s.cust_id,\n        SUM(s.amount_sold - c.unit_cost * s.quantity_sold) AS profit\n    FROM sales s\n    JOIN customers cu ON s.cust_id = cu.cust_id\n    JOIN countries co ON cu.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs c ON s.prod_id = c.prod_id AND s.time_id = c.time_id AND s.channel_id = c.channel_id AND s.promo_id = c.promo_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_desc = '2021-12...",
+          "score": 0.831578947368421,
+          "similarity_max": 0.8368421052631578,
+          "tables_used": [
+            "cu",
+            "italian_sales_dec2021",
+            "sales",
+            "co",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH italian_customers AS (\n    SELECT \n        c.cust_id,\n        SUM(s.amount_sold - co.unit_cost * s.quantity_sold) AS profit_dec_2021\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co_country ON c.country_id = co_country.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs co ON s.prod_id = co.prod_id AND s.time_id = co.time_id AND s.channel_id = co.channel_id AND s.promo_id = co.promo_id\n    WHERE co_country.country_name = 'Italy'\n      AND ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "co_country",
+            "sales",
+            "co",
+            "italian_customers",
+            "c",
+            "s",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH italian_sales_dec2021 AS (\n    SELECT \n        s.cust_id,\n        SUM(s.amount_sold - c.unit_cost * s.quantity_sold) AS profit\n    FROM sales s\n    JOIN customers cu ON s.cust_id = cu.cust_id\n    JOIN countries co ON cu.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs c ON s.prod_id = c.prod_id AND s.time_id = c.time_id AND s.channel_id = c.channel_id AND s.promo_id = c.promo_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_desc = '2021-12...",
+          "score": 0.831578947368421,
+          "similarity_max": 0.8368421052631578,
+          "tables_used": [
+            "cu",
+            "italian_sales_dec2021",
+            "sales",
+            "co",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH italian_customers AS (\n    SELECT \n        c.cust_id,\n        SUM(s.amount_sold - co.unit_cost * s.quantity_sold) AS profit_dec_2021\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co_country ON c.country_id = co_country.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs co ON s.prod_id = co.prod_id AND s.time_id = co.time_id AND s.channel_id = co.channel_id AND s.promo_id = co.promo_id\n    WHERE co_country.country_name = 'Italy'\n      AND ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "co_country",
+            "sales",
+            "co",
+            "italian_customers",
+            "c",
+            "s",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        },
+        {
+          "sql": "WITH italian_sales_dec2021 AS (\n    SELECT \n        s.cust_id,\n        SUM(s.amount_sold - c.unit_cost * s.quantity_sold) AS profit\n    FROM sales s\n    JOIN customers cu ON s.cust_id = cu.cust_id\n    JOIN countries co ON cu.country_id = co.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs c ON s.prod_id = c.prod_id AND s.time_id = c.time_id AND s.channel_id = c.channel_id AND s.promo_id = c.promo_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_desc = '2021-12...",
+          "score": 0.831578947368421,
+          "similarity_max": 0.8368421052631578,
+          "tables_used": [
+            "cu",
+            "italian_sales_dec2021",
+            "sales",
+            "co",
+            "s",
+            "c",
+            "times",
+            "countries",
+            "t",
+            "costs",
+            "customers"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH italian_customers AS (\n    SELECT \n        c.cust_id,\n        SUM(s.amount_sold - co.unit_cost * s.quantity_sold) AS profit_dec_2021\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co_country ON c.country_id = co_country.country_id\n    JOIN times t ON s.time_id = t.time_id\n    JOIN costs co ON s.prod_id = co.prod_id AND s.time_id = co.time_id AND s.channel_id = co.channel_id AND s.promo_id = co.promo_id\n    WHERE co_country.country_name = 'Italy'\n      AND ...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "co_country",
+        "sales",
+        "co",
+        "italian_customers",
+        "c",
+        "s",
+        "times",
+        "countries",
+        "t",
+        "costs",
+        "customers"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.6666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.86
+  }
+}

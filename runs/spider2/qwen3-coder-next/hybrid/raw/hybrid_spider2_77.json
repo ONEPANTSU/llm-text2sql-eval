@@ -1,0 +1,135 @@
+{
+  "task_id": "spider2_77",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6987.580667002476,
+  "execution_time_ms": 3.0036669922992587,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT words, COUNT(*) AS anagram_count\nFROM word_list\nWHERE words LIKE 'r%'\n  AND (LENGTH(words) = 4 OR LENGTH(words) = 5)\nGROUP BY words\nHAVING COUNT(*) > 1\nORDER BY words ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.374749990645796,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT words, \n       (SELECT COUNT(*) FROM word_list AS w2 \n        WHERE w2.words != word_list.words \n          AND LENGTH(w2.words) = LENGTH(word_list.words) \n          AND w2.words LIKE 'r%' \n          AND GROUP_CONCAT(SUBSTR(w2.words, n.n, 1)) = GROUP_CONCAT(SUBSTR(word_list.words, n.n, 1) ORDER BY SUBSTR(w2.words, n.n, 1))\n       ) AS anagram_count\nFROM word_list\nCROSS JOIN (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS n\nWHERE word_list.words LIKE 'r%'\n  AND LENGTH(word_list.words) IN (4, 5)\nGROUP BY word_list.words\nHAVING anagram_count > 0\nORDER BY word_list.words ASC\nLIMIT 10;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "misuse of aggregate: GROUP_CONCAT()",
+      "exec_time_ms": 0.7622920093126595,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    w.words AS word,\n    COUNT(*) AS anagram_count\nFROM word_list w\nJOIN word_list a \n    ON w.words != a.words \n    AND LENGTH(w.words) = LENGTH(a.words) \n    AND w.words = a.words COLLATE BINARY\nWHERE w.words LIKE 'r%' \n    AND (LENGTH(w.words) = 4 OR LENGTH(w.words) = 5)\nGROUP BY w.words\nHAVING COUNT(*) > 1\nORDER BY w.words ASC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4347500071162358,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    w.words AS word,\n    COUNT(*) AS anagram_count\nFROM word_list w\nJOIN word_list a \n    ON w.words != a.words \n    AND LENGTH(w.words) = LENGTH(a.words) \n    AND w.words = a.words COLLATE BINARY\nWHERE w.words LIKE 'r%' \n    AND (LENGTH(w.words) = 4 OR LENGTH(w.words) = 5)\nGROUP BY w.words\nHAVING COUNT(*) > 1\nORDER BY w.words ASC\nLIMIT 10;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6990.82766599895
+}

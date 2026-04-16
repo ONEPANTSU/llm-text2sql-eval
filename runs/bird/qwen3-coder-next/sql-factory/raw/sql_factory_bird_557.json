@@ -1,0 +1,159 @@
+{
+  "task_id": "bird_557",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN u.Age > 65 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_elder_users\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Score > 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH elder_users AS (\n    SELECT Id\n    FROM users\n    WHERE Age > 60\n),\nposts_over_5 AS (\n    SELECT Id, OwnerUserId\n    FROM posts\n    WHERE Score > 5\n)\nSELECT \n    CAST(COUNT(CASE WHEN p.OwnerUserId IN (SELECT Id FROM elder_users) THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts_over_5 p;",
+          "score": 1.1075295463210064,
+          "similarity_max": 0.484940907357987,
+          "tables_used": [
+            "posts",
+            "users",
+            "posts_over_5"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN u.Age > 65 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_elder_users\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Score > 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH elder_users AS (\n    SELECT Id\n    FROM users\n    WHERE Age > 60\n),\nposts_over_5 AS (\n    SELECT Id, OwnerUserId\n    FROM posts\n    WHERE Score > 5\n)\nSELECT \n    CAST(COUNT(CASE WHEN p.OwnerUserId IN (SELECT Id FROM elder_users) THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts_over_5 p;",
+          "score": 1.1075295463210064,
+          "similarity_max": 0.484940907357987,
+          "tables_used": [
+            "posts",
+            "users",
+            "posts_over_5"
+          ]
+        },
+        {
+          "sql": "WITH elder_users AS (\n    SELECT Id\n    FROM users\n    WHERE Age > 60\n),\nposts_over_5 AS (\n    SELECT Id, OwnerUserId\n    FROM posts\n    WHERE Score > 5\n)\nSELECT \n    ROUND(COUNT(CASE WHEN p.OwnerUserId IN (SELECT Id FROM elder_users) THEN 1 END) * 100.0 / COUNT(*), 2) AS percentage\nFROM posts_over_5 p;",
+          "score": 0.9683207797961895,
+          "similarity_max": 0.7633584404076207,
+          "tables_used": [
+            "posts",
+            "users",
+            "posts_over_5"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN u.Age > 65 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_elder_users\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Score > 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        },
+        {
+          "sql": "WITH elder_users AS (\n    SELECT Id\n    FROM users\n    WHERE Age > 60\n),\nposts_over_5 AS (\n    SELECT Id, OwnerUserId\n    FROM posts\n    WHERE Score > 5\n)\nSELECT \n    CAST(COUNT(CASE WHEN p.OwnerUserId IN (SELECT Id FROM elder_users) THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM posts_over_5 p;",
+          "score": 1.1075295463210064,
+          "similarity_max": 0.484940907357987,
+          "tables_used": [
+            "posts",
+            "users",
+            "posts_over_5"
+          ]
+        },
+        {
+          "sql": "WITH elder_users AS (\n    SELECT Id\n    FROM users\n    WHERE Age > 60\n),\nposts_over_5 AS (\n    SELECT Id, OwnerUserId\n    FROM posts\n    WHERE Score > 5\n)\nSELECT \n    ROUND(\n        (SELECT COUNT(*) \n         FROM posts_over_5 p \n         WHERE p.OwnerUserId IN (SELECT Id FROM elder_users)) * 100.0 / \n        (SELECT COUNT(*) FROM posts_over_5), \n        2\n    ) AS percentage;",
+          "score": 1.043371378402107,
+          "similarity_max": 0.7132572431957858,
+          "tables_used": [
+            "posts",
+            "p",
+            "users",
+            "posts_over_5"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN u.Age > 65 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_elder_users\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nWHERE p.Score > 5;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "posts",
+        "p",
+        "users"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 65.35
+  }
+}

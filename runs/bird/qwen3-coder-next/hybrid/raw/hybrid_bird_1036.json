@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1036",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2034.0828330008662,
+  "execution_time_ms": 7.669083002838306,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.date LIKE '2012%'\n  AND ta.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.157916999247391,
+      "result_signature": "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.date LIKE '2012%'\n  AND ta.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7851249974919483,
+      "result_signature": "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT T.team_long_name\nFROM Team T\nJOIN Team_Attributes TA ON T.team_api_id = TA.team_api_id\nWHERE TA.date LIKE '2012%'\n  AND TA.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7197919985628687,
+      "result_signature": "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.date LIKE '2012%'\n  AND ta.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7116249980754219,
+      "result_signature": "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.date LIKE '2012%'\n  AND ta.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6894580001244321,
+      "result_signature": "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT t.team_long_name\nFROM Team t\nJOIN Team_Attributes ta ON t.team_api_id = ta.team_api_id\nWHERE ta.date LIKE '2012%'\n  AND ta.buildUpPlayPassing > (\n    SELECT AVG(buildUpPlayPassing)\n    FROM Team_Attributes\n    WHERE date LIKE '2012%'\n  );",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a3489296478ff5c32c2dff9fd19e456f5bc9242737d3ac3878b50c3175aa82fc": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2041.8269580040942
+}

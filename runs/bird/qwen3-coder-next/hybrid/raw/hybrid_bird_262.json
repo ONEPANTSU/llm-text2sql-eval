@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_262",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2420.1671670016367,
+  "execution_time_ms": 12.46266700036358,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT molecule_id\n    FROM molecule\n    WHERE label LIKE '%carcinogen%'\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.252332997974008,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN bond b2 ON m2.molecule_id = b2.molecule_id\n    WHERE b2.bond_type = 'single'\n    AND m2.molecule_id IN (\n        SELECT molecule_id\n        FROM bond\n        WHERE bond_type = 'single'\n        GROUP BY molecule_id\n        HAVING COUNT(*) > 0\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8929170037154108,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN bond b2 ON m2.molecule_id = b2.molecule_id\n    WHERE b2.bond_type = 'single'\n    AND m2.molecule_id IN (\n        SELECT molecule_id\n        FROM bond\n        WHERE bond_type = 'single'\n        AND molecule_id IN (\n            SELECT molecule_id\n            FROM molecule\n            WHERE label LIKE '%carcinogen%'\n        )\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.408249998348765,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN bond b2 ON m2.molecule_id = b2.molecule_id\n    WHERE b2.bond_type = 'single'\n    AND m2.molecule_id IN (\n        SELECT DISTINCT m3.molecule_id\n        FROM molecule m3\n        JOIN bond b3 ON m3.molecule_id = b3.molecule_id\n        WHERE b3.bond_type = 'single'\n        AND m3.label LIKE '%carcinogenic%'\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1914170027012005,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN bond b2 ON m2.molecule_id = b2.molecule_id\n    WHERE b2.bond_type = 'single'\n    AND m2.label LIKE '%carcinogen%'\n)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1375419999239966,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single'\nAND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN bond b2 ON m2.molecule_id = b2.molecule_id\n    WHERE b2.bond_type = 'single'\n    AND m2.label LIKE '%carcinogen%'\n)",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2432.8180419979617
+}

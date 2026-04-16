@@ -1,0 +1,178 @@
+{
+  "task_id": "bird_1477",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT strftime('%Y', Date) AS year, SUM(Amount * Price) AS total_cost_eur\nFROM transactions_1k\nGROUP BY year\nORDER BY total_cost_eur DESC\nLIMIT 1;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT strftime('%Y', Date) AS year, SUM(Amount * Price) AS total_gas_cost_eur\nFROM transactions_1k\nWHERE ProductID IN (\n    SELECT ProductID \n    FROM products \n    WHERE Description LIKE '%gas%'\n)\nGROUP BY year\nORDER BY total_gas_cost_eur DESC\nLIMIT 1;",
+          "score": 0.8929107276819206,
+          "similarity_max": 0.6141785446361591,
+          "tables_used": [
+            "products",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH gas_transactions AS (\n    SELECT t.Date, t.Amount, t.Price\n    FROM transactions_1k t\n    JOIN products p ON t.ProductID = p.ProductID\n    WHERE p.Description LIKE '%gas%'\n),\neur_transactions AS (\n    SELECT gt.Date, gt.Amount, gt.Price\n    FROM gas_transactions gt\n    JOIN customers c ON EXISTS (\n        SELECT 1 FROM transactions_1k t2 \n        WHERE t2.Date = gt.Date \n          AND t2.CustomerID = c.CustomerID\n          AND c.Currency = 'EUR'\n    )\n)\nSELECT strftime('%Y', Date) AS year, ...",
+          "score": 1.0836996336996338,
+          "similarity_max": 0.43260073260073256,
+          "tables_used": [
+            "customers",
+            "products",
+            "t2",
+            "gt",
+            "t",
+            "transactions_1k",
+            "eur_transactions",
+            "p",
+            "gas_transactions",
+            "c"
+          ]
+        },
+        {
+          "sql": "SELECT strftime('%Y', Date) AS year, SUM(Amount * Price) AS total_cost_eur\nFROM transactions_1k\nGROUP BY year\nORDER BY total_cost_eur DESC\nLIMIT 1;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT strftime('%Y', Date) AS year, SUM(Amount * Price) AS total_gas_cost_eur\nFROM transactions_1k\nWHERE ProductID IN (\n    SELECT ProductID \n    FROM products \n    WHERE Description LIKE '%gas%'\n)\nGROUP BY year\nORDER BY total_gas_cost_eur DESC\nLIMIT 1;",
+          "score": 0.8929107276819206,
+          "similarity_max": 0.6141785446361591,
+          "tables_used": [
+            "products",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH yearly_gas_cost AS (\n    SELECT \n        strftime('%Y', Date) AS year,\n        SUM(Amount * Price) AS total_cost\n    FROM transactions_1k t\n    JOIN customers c ON t.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n    GROUP BY year\n)\nSELECT year\nFROM yearly_gas_cost\nORDER BY total_cost DESC\nLIMIT 1;",
+          "score": 1.1828623757195185,
+          "similarity_max": 0.5342752485609629,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "yearly_gas_cost"
+          ]
+        },
+        {
+          "sql": "WITH gas_transactions AS (\n    SELECT t.Date, t.Amount, t.Price\n    FROM transactions_1k t\n    JOIN products p ON t.ProductID = p.ProductID\n    WHERE p.Description LIKE '%gas%'\n),\neur_transactions AS (\n    SELECT gt.Date, gt.Amount, gt.Price\n    FROM gas_transactions gt\n    JOIN customers c ON EXISTS (\n        SELECT 1 FROM transactions_1k t2 \n        WHERE t2.Date = gt.Date \n          AND t2.CustomerID = c.CustomerID\n          AND c.Currency = 'EUR'\n    )\n)\nSELECT strftime('%Y', Date) AS year, ...",
+          "score": 1.0836996336996338,
+          "similarity_max": 0.43260073260073256,
+          "tables_used": [
+            "customers",
+            "products",
+            "t2",
+            "gt",
+            "t",
+            "transactions_1k",
+            "eur_transactions",
+            "p",
+            "gas_transactions",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH eur_gas_transactions AS (\n    SELECT t.Date, t.Amount, t.Price\n    FROM transactions_1k t\n    JOIN customers c ON t.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n      AND EXISTS (\n          SELECT 1 FROM products p \n          WHERE p.ProductID = t.ProductID \n            AND p.Description LIKE '%gas%'\n      )\n)\nSELECT strftime('%Y', Date) AS year, SUM(Amount * Price) AS total_gas_cost\nFROM eur_gas_transactions\nGROUP BY year\nORDER BY total_gas_cost DESC\nLIMIT 1;",
+          "score": 1.08125,
+          "similarity_max": 0.7375,
+          "tables_used": [
+            "customers",
+            "products",
+            "c",
+            "t",
+            "transactions_1k",
+            "eur_gas_transactions",
+            "p"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH yearly_gas_cost AS (\n    SELECT \n        strftime('%Y', Date) AS year,\n        SUM(Amount * Price) AS total_cost\n    FROM transactions_1k t\n    JOIN customers c ON t.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n    GROUP BY year\n)\nSELECT year\nFROM yearly_gas_cost\nORDER BY total_cost DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.1828623757195185,
+      "similarity_max": 0.5342752485609629,
+      "tables_used": [
+        "customers",
+        "c",
+        "t",
+        "transactions_1k",
+        "yearly_gas_cost"
+      ],
+      "phase": "exp",
+      "round_idx": 2,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: Currency",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.1
+  }
+}

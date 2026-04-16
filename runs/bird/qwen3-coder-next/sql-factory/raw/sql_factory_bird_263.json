@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_263",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS chlorine_percentage\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom",
+            "bond",
+            "a",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS chlorine_percentage\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nWHERE b.bond_type = 'single';",
+          "score": 0.9222009569377991,
+          "similarity_max": 0.7555980861244018,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "a",
+            "b",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS chlorine_percentage\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom",
+            "bond",
+            "a",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS FLOAT) * 100.0 / COUNT(*), 2) AS chlorine_percentage\nFROM atom a\nINNER JOIN (\n    SELECT DISTINCT molecule_id \n    FROM bond \n    WHERE bond_type = 'single'\n) s ON a.molecule_id = s.molecule_id;",
+          "score": 1.0475714285714284,
+          "similarity_max": 0.6048571428571429,
+          "tables_used": [
+            "bond",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*) AS chlorine_percentage\nFROM atom a\nWHERE a.molecule_id IN (\n    SELECT DISTINCT b.molecule_id \n    FROM bond b \n    WHERE b.bond_type = 'single'\n);",
+          "score": 0.9848188614146062,
+          "similarity_max": 0.6303622771707877,
+          "tables_used": [
+            "atom",
+            "bond",
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS chlorine_percentage\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom",
+            "bond",
+            "a",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS FLOAT) * 100.0 / COUNT(*), 2) AS chlorine_percentage\nFROM atom a\nINNER JOIN (\n    SELECT DISTINCT molecule_id \n    FROM bond \n    WHERE bond_type = 'single'\n) s ON a.molecule_id = s.molecule_id;",
+          "score": 1.0475714285714284,
+          "similarity_max": 0.6048571428571429,
+          "tables_used": [
+            "bond",
+            "a",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*) AS chlorine_percentage\nFROM atom a\nWHERE a.molecule_id IN (\n    SELECT DISTINCT b.molecule_id \n    FROM bond b \n    WHERE b.bond_type = 'single'\n);",
+          "score": 0.9848188614146062,
+          "similarity_max": 0.6303622771707877,
+          "tables_used": [
+            "atom",
+            "bond",
+            "a",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN a.element = 'Cl' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS chlorine_percentage\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nWHERE b.bond_type = 'single';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "atom",
+        "bond",
+        "a",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 8.9
+  }
+}

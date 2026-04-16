@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1481",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4358.977000003506,
+  "execution_time_ms": 503.34874999680324,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH avg_consumption_by_segment AS (\n  SELECT \n    customers.Segment,\n    AVG(yearmonth.Consumption) AS avg_consumption\n  FROM \n    yearmonth\n  JOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\n  WHERE \n    yearmonth.Date LIKE '2013%'\n  GROUP BY \n    customers.Segment\n),\nmin_consumption_segment AS (\n  SELECT \n    Segment\n  FROM \n    avg_consumption_by_segment\n  ORDER BY \n    avg_consumption ASC\n  LIMIT 1\n)\nSELECT \n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') - \n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') AS SME_vs_LAM,\n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') - \n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') AS LAM_vs_KAM,\n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') - \n  (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') AS KAM_vs_SME\nFROM \n  min_consumption_segment;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 125.20587499602698,
+      "result_signature": "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH avg_consumption_per_segment AS (\n  SELECT \n    customers.Segment,\n    AVG(yearmonth.Consumption) AS avg_consumption\n  FROM \n    yearmonth\n  JOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\n  WHERE \n    yearmonth.Date LIKE '2013%'\n  GROUP BY \n    customers.Segment\n)\nSELECT \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'SME') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'LAM') AS SME_vs_LAM,\n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'LAM') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'KAM') AS LAM_vs_KAM,\n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'KAM') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'SME') AS KAM_vs_SME",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 70.52850000036415,
+      "result_signature": "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH avg_consumption_per_segment AS (\n  SELECT \n    customers.Segment,\n    AVG(yearmonth.Consumption) AS avg_consumption\n  FROM \n    yearmonth\n  JOIN \n    customers ON yearmonth.CustomerID = customers.CustomerID\n  WHERE \n    yearmonth.Date LIKE '2013%'\n  GROUP BY \n    customers.Segment\n)\nSELECT \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'SME') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'LAM') AS SME_vs_LAM,\n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'LAM') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'KAM') AS LAM_vs_KAM,\n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'KAM') - \n  (SELECT avg_consumption FROM avg_consumption_per_segment WHERE Segment = 'SME') AS KAM_vs_SME",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 72.48812499892665,
+      "result_signature": "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH avg_consumption_by_segment AS (\n    SELECT \n        c.Segment,\n        AVG(ym.Consumption) AS avg_consumption\n    FROM \n        yearmonth ym\n    JOIN \n        customers c ON ym.CustomerID = c.CustomerID\n    WHERE \n        ym.Date LIKE '2013%'\n    GROUP BY \n        c.Segment\n),\nmin_segment AS (\n    SELECT \n        Segment\n    FROM \n        avg_consumption_by_segment\n    ORDER BY \n        avg_consumption ASC\n    LIMIT 1\n)\nSELECT \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') AS SME_LAM_diff,\n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') AS LAM_KAM_diff,\n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') AS KAM_SME_diff;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 70.16512499831151,
+      "result_signature": "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'SME' AND y.Date LIKE '2013%') -\n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'LAM' AND y.Date LIKE '2013%') AS SME_LAM,\n  \n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'LAM' AND y.Date LIKE '2013%') -\n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'KAM' AND y.Date LIKE '2013%') AS LAM_KAM,\n  \n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'KAM' AND y.Date LIKE '2013%') -\n  (SELECT AVG(Consumption) FROM yearmonth y JOIN customers c ON y.CustomerID = c.CustomerID WHERE c.Segment = 'SME' AND y.Date LIKE '2013%') AS KAM_SME",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 162.09679100575158,
+      "result_signature": "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH avg_consumption_by_segment AS (\n    SELECT \n        c.Segment,\n        AVG(ym.Consumption) AS avg_consumption\n    FROM \n        yearmonth ym\n    JOIN \n        customers c ON ym.CustomerID = c.CustomerID\n    WHERE \n        ym.Date LIKE '2013%'\n    GROUP BY \n        c.Segment\n),\nmin_segment AS (\n    SELECT \n        Segment\n    FROM \n        avg_consumption_by_segment\n    ORDER BY \n        avg_consumption ASC\n    LIMIT 1\n)\nSELECT \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') AS SME_LAM_diff,\n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'LAM') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') AS LAM_KAM_diff,\n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'KAM') - \n    (SELECT avg_consumption FROM avg_consumption_by_segment WHERE Segment = 'SME') AS KAM_SME_diff;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "598564c91cc9cce58af0d683b48528c42bfa630943489692f3fb45bf9fa79e22": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4862.398083998414
+}

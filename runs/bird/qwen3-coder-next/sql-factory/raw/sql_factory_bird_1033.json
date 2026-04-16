@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_1033",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE strftime('%Y', birthday) BETWEEN '1990' AND '1995';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE birthday BETWEEN '1990-01-01' AND '1995-12-31';",
+          "score": 0.7200000000000001,
+          "similarity_max": 0.6599999999999999,
+          "tables_used": [
+            "Player"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE strftime('%Y', birthday) BETWEEN '1990' AND '1995';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE birthday BETWEEN '1990-01-01' AND '1995-12-31';",
+          "score": 0.7200000000000001,
+          "similarity_max": 0.6599999999999999,
+          "tables_used": [
+            "Player"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE CAST(strftime('%Y', birthday) AS INTEGER) BETWEEN 1990 AND 1995;",
+          "score": 0.6714705882352942,
+          "similarity_max": 0.7570588235294118,
+          "tables_used": [
+            "Player"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE strftime('%Y', birthday) BETWEEN '1990' AND '1995';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE birthday BETWEEN '1990-01-01' AND '1995-12-31';",
+          "score": 0.7200000000000001,
+          "similarity_max": 0.6599999999999999,
+          "tables_used": [
+            "Player"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(height) \nFROM Player \nWHERE CAST(strftime('%Y', birthday) AS INTEGER) BETWEEN 1990 AND 1995;",
+          "score": 0.6714705882352942,
+          "similarity_max": 0.7570588235294118,
+          "tables_used": [
+            "Player"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(height) \nFROM Player \nWHERE strftime('%Y', birthday) BETWEEN '1990' AND '1995';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 16.99
+  }
+}

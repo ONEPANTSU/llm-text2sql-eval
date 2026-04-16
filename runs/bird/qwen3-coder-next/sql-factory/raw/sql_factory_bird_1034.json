@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_1034",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date BETWEEN '2010-01-01' AND '2010-12-31'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date BETWEEN '2010-01-01' AND '2010-12-31'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 0.7791666666666668,
+          "similarity_max": 0.7416666666666667,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n)\nSELECT player_api_id\nFROM Player_Attributes, avg_rating_2010\nWHERE date LIKE '2010%'\n  AND overall_rating > avg_rating\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 0.9213636363636364,
+          "similarity_max": 0.6572727272727272,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date BETWEEN '2010-01-01' AND '2010-12-31'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date BETWEEN '2010-01-01' AND '2010-12-31'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 0.7791666666666668,
+          "similarity_max": 0.7416666666666667,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n),\nabove_avg_players AS (\n  SELECT player_api_id, overall_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n    AND overall_rating > (SELECT avg_rating FROM avg_rating_2010)\n)\nSELECT player_api_id\nFROM above_avg_players\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 0.9483805668016195,
+          "similarity_max": 0.703238866396761,
+          "tables_used": [
+            "Player_Attributes",
+            "above_avg_players"
+          ]
+        },
+        {
+          "sql": "WITH avg_rating_2010 AS (\n  SELECT AVG(overall_rating) AS avg_rating\n  FROM Player_Attributes\n  WHERE date LIKE '2010%'\n)\nSELECT player_api_id\nFROM Player_Attributes, avg_rating_2010\nWHERE date LIKE '2010%'\n  AND overall_rating > avg_rating\nORDER BY overall_rating DESC\nLIMIT 1;",
+          "score": 0.9213636363636364,
+          "similarity_max": 0.6572727272727272,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT player_api_id\nFROM Player_Attributes\nWHERE date LIKE '2010%'\n  AND overall_rating > (\n    SELECT AVG(overall_rating)\n    FROM Player_Attributes\n    WHERE date LIKE '2010%'\n  )\nORDER BY overall_rating DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.1500000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player_Attributes"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.2,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 83.22
+  }
+}

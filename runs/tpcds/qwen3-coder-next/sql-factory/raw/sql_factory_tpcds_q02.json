@@ -1,0 +1,66 @@
+{
+  "task_id": "tpcds_q02",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH sales_by_week AS (\n    SELECT \n        d_week_seq,\n        d_day_name,\n        SUM(ext_sales_price) AS total_sales,\n        d_year\n    FROM (\n        SELECT \n            ws_sold_date_sk AS date_sk,\n            ws_ext_sales_price AS ext_sales_price,\n            d_week_seq,\n            d_day_name,\n            d_year\n        FROM web_sales\n        JOIN date_dim ON ws_sold_date_sk = d_date_sk\n        WHERE d_year IN (2001, 2002)\n        UNION ALL\n        SELECT \n            cs_sold_date_sk AS d...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"cs_ext_sales_price\" not found in FROM clause!\nC",
+        "count": 1
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Values list \"w1\" does not have a column named \"sun_sales\"\n\nLINE 37",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 38.16
+  }
+}

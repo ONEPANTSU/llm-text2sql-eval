@@ -1,0 +1,156 @@
+{
+  "task_id": "bird_1124",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high'\nAND p.player_api_id IN (\n    SELECT DISTINCT home_player_1 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_2 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_3 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_4 FROM Match WHERE...",
+          "score": 1.2318731671554253,
+          "similarity_max": 0.23625366568914957,
+          "tables_used": [
+            "Player",
+            "pa",
+            "Player_Attributes",
+            "p",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high' AND pa.defensive_work_rate = 'low';",
+          "score": 0.8347058823529412,
+          "similarity_max": 0.7305882352941176,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high'\nAND p.player_api_id IN (\n    SELECT DISTINCT home_player_1 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_2 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_3 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_4 FROM Match WHERE...",
+          "score": 1.2318731671554253,
+          "similarity_max": 0.23625366568914957,
+          "tables_used": [
+            "Player",
+            "pa",
+            "Player_Attributes",
+            "p",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes",
+            "Player",
+            "p",
+            "pa"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high'\nAND p.player_api_id IN (\n    SELECT player_id\n    FROM (\n        SELECT home_player_1 AS player_id FROM Match WHERE home_team_goal > away_team_goal\n        UNION ALL\n        SELECT home_player_2 AS player_id FROM Match WHERE home_team_goal > away_team_goal\n        UNION ALL\n        SELECT home_player_3 AS player_id FROM Match WHERE home_team_goal > awa...",
+          "score": 0.9555546675191817,
+          "similarity_max": 0.7888906649616367,
+          "tables_used": [
+            "Player",
+            "pa",
+            "Player_Attributes",
+            "p",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.attacking_work_rate = 'high'\nAND p.player_api_id IN (\n    SELECT DISTINCT home_player_1 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_2 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_3 FROM Match WHERE home_team_goal > away_team_goal\n    UNION\n    SELECT DISTINCT home_player_4 FROM Match WHERE...",
+    "meta": {
+      "score": 1.2318731671554253,
+      "similarity_max": 0.23625366568914957,
+      "tables_used": [
+        "Player",
+        "pa",
+        "Player_Attributes",
+        "p",
+        "Match"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 382.93
+  }
+}

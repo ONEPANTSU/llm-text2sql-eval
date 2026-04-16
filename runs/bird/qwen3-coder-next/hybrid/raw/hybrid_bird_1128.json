@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1128",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3983.4785829953034,
+  "execution_time_ms": 5236.6449589972035,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 256.7990409952472,
+      "result_signature": "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1\nJOIN Country c ON m.country_id = c.id\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 153.9967089993297,
+      "result_signature": "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.away_player_1\nJOIN Country c ON m.country_id = c.id\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4293.36995799531,
+      "result_signature": "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1 OR p.player_api_id = m.away_player_1\nJOIN League l ON m.league_id = l.id\nJOIN Country c ON l.country_id = c.id\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 378.07379200239666,
+      "result_signature": "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1\nJOIN Country c ON m.country_id = c.id\nWHERE p.weight IS NOT NULL\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 153.84445900417631,
+      "result_signature": "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT c.name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nJOIN Match m ON p.player_api_id = m.home_player_1\nJOIN Country c ON m.country_id = c.id\nWHERE p.weight IS NOT NULL\nGROUP BY c.name\nORDER BY AVG(p.weight) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f4fa50e1f77ef0846a0560729089c5cfdf0d47f95c4f535b4f669eade4870ffe": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 9220.28866600158
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1029",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1501.1752089994843,
+  "execution_time_ms": 8.469083004456479,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT Team.team_long_name, Team_Attributes.buildUpPlaySpeed\nFROM Team_Attributes\nJOIN Team ON Team_Attributes.team_api_id = Team.team_api_id\nORDER BY Team_Attributes.buildUpPlaySpeed DESC\nLIMIT 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.067167003289796,
+      "result_signature": "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Team.team_long_name, Team_Attributes.buildUpPlaySpeed\nFROM Team_Attributes\nJOIN Team ON Team_Attributes.team_api_id = Team.team_api_id\nORDER BY Team_Attributes.buildUpPlaySpeed DESC\nLIMIT 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9201249995385297,
+      "result_signature": "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT T.team_long_name, TA.buildUpPlaySpeed\nFROM Team_Attributes TA\nJOIN Team T ON TA.team_api_id = T.team_api_id\nORDER BY TA.buildUpPlaySpeed DESC\nLIMIT 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7916670001577586,
+      "result_signature": "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT Team.team_long_name, Team_Attributes.buildUpPlaySpeed\nFROM Team_Attributes\nJOIN Team ON Team_Attributes.team_api_id = Team.team_api_id\nORDER BY Team_Attributes.buildUpPlaySpeed DESC\nLIMIT 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7628750026924536,
+      "result_signature": "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT T.team_long_name, TA.buildUpPlaySpeed\nFROM Team_Attributes TA\nJOIN Team T ON TA.team_api_id = T.team_api_id\nORDER BY TA.buildUpPlaySpeed DESC\nLIMIT 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7435420047841035,
+      "result_signature": "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT T.team_long_name, TA.buildUpPlaySpeed\nFROM Team_Attributes TA\nJOIN Team T ON TA.team_api_id = T.team_api_id\nORDER BY TA.buildUpPlaySpeed DESC\nLIMIT 4;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "33668e5829e1ccad816d87eefe01de52217d6e268f3db2b4d68e32b2b96d7a2d": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1509.6762090033735
+}

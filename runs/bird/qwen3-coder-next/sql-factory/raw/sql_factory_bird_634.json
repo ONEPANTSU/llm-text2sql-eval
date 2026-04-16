@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_634",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\npopularity AS (\n    SELECT \n        DisplayName,\n        SUM(Score) AS total_score,\n        SUM(ViewCount) AS total_views,\n        SUM(AnswerCount) AS total_answers,\n        SUM(CommentCou...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "user_posts",
+            "p",
+            "popularity"
+          ]
+        },
+        {
+          "sql": "SELECT \n    u.DisplayName,\n    p.Id AS PostId,\n    p.Score,\n    p.ViewCount,\n    p.AnswerCount,\n    p.CommentCount,\n    p.FavoriteCount,\n    COALESCE(SUM(v.BountyAmount), 0) + p.Score + p.ViewCount / 100 + p.AnswerCount * 5 + p.CommentCount * 2 + p.FavoriteCount * 10 AS PopularityScore\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nLEFT JOIN votes v ON p.Id = v.PostId\nWHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\nGROUP BY u.DisplayName, p.Id, p.Score, p.ViewCount, p.AnswerCount, p...",
+          "score": 1.1488931297709926,
+          "similarity_max": 0.5022137404580153,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\npopularity AS (\n    SELECT \n        DisplayName,\n        SUM(Score) AS total_score,\n        SUM(ViewCount) AS total_views,\n        SUM(AnswerCount) AS total_answers,\n        SUM(CommentCou...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "user_posts",
+            "p",
+            "popularity"
+          ]
+        },
+        {
+          "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\nweighted_engagement AS (\n    SELECT \n        DisplayName,\n        COUNT(*) AS post_count,\n        AVG(Score) AS avg_score,\n        AVG(ViewCount) AS avg_views,\n        AVG(AnswerCount) AS ...",
+          "score": 1.198168249660787,
+          "similarity_max": 0.603663500678426,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "user_posts",
+            "weighted_engagement",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    u.DisplayName,\n    p.Id AS PostId,\n    p.Score,\n    p.ViewCount,\n    p.AnswerCount,\n    p.CommentCount,\n    p.FavoriteCount,\n    COALESCE(SUM(v.BountyAmount), 0) + p.Score + p.ViewCount / 100 + p.AnswerCount * 5 + p.CommentCount * 2 + p.FavoriteCount * 10 AS PopularityScore\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nLEFT JOIN votes v ON p.Id = v.PostId\nWHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\nGROUP BY u.DisplayName, p.Id, p.Score, p.ViewCount, p.AnswerCount, p...",
+          "score": 1.1488931297709926,
+          "similarity_max": 0.5022137404580153,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\npopularity AS (\n    SELECT \n        DisplayName,\n        SUM(Score) AS total_score,\n        SUM(ViewCount) AS total_views,\n        SUM(AnswerCount) AS total_answers,\n        SUM(CommentCou...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "user_posts",
+            "p",
+            "popularity"
+          ]
+        },
+        {
+          "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\nweighted_engagement AS (\n    SELECT \n        DisplayName,\n        COUNT(*) AS post_count,\n        AVG(Score) AS avg_score,\n        AVG(ViewCount) AS avg_views,\n        AVG(AnswerCount) AS ...",
+          "score": 1.198168249660787,
+          "similarity_max": 0.603663500678426,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "user_posts",
+            "weighted_engagement",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    u.DisplayName,\n    p.Id AS PostId,\n    p.Score,\n    p.ViewCount,\n    p.AnswerCount,\n    p.CommentCount,\n    p.FavoriteCount,\n    COALESCE(SUM(v.BountyAmount), 0) + p.Score + p.ViewCount / 100 + p.AnswerCount * 5 + p.CommentCount * 2 + p.FavoriteCount * 10 AS PopularityScore\nFROM posts p\nJOIN users u ON p.OwnerUserId = u.Id\nLEFT JOIN votes v ON p.Id = v.PostId\nWHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\nGROUP BY u.DisplayName, p.Id, p.Score, p.ViewCount, p.AnswerCount, p...",
+          "score": 1.1488931297709926,
+          "similarity_max": 0.5022137404580153,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH user_posts AS (\n    SELECT \n        p.Id AS PostId,\n        p.Score,\n        p.ViewCount,\n        p.AnswerCount,\n        p.CommentCount,\n        p.FavoriteCount,\n        u.DisplayName\n    FROM posts p\n    JOIN users u ON p.OwnerUserId = u.Id\n    WHERE u.DisplayName IN ('Harvey Motulsky', 'Noah Snyder')\n),\npopularity AS (\n    SELECT \n        DisplayName,\n        SUM(Score) AS total_score,\n        SUM(ViewCount) AS total_views,\n        SUM(AnswerCount) AS total_answers,\n        SUM(CommentCou...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "posts",
+        "users",
+        "user_posts",
+        "p",
+        "popularity"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 99.52
+  }
+}

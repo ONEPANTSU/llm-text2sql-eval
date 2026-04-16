@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_1257",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6854.849875002401,
+  "execution_time_ms": 42.99908399843844,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday) - \n       (strftime('%m%d', 'now') < strftime('%m%d', p.Birthday))) < 70;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.466165999299847,
+      "result_signature": "1b0dd1dd43a952882af2aec16fe69b4016ea80876920f656234ae23fbcb33358",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday) - (strftime('%m%d', 'now') < strftime('%m%d', p.Birthday))) < 70;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.113375002518296,
+      "result_signature": "1b0dd1dd43a952882af2aec16fe69b4016ea80876920f656234ae23fbcb33358",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8516250060638413,
+      "result_signature": "f08daa0fc19c19b65d9f87582f2b5ee2e965179affc77ff0dfcfc597eb49a547",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND strftime('%Y', 'now') - strftime('%Y', p.Birthday) < 70\n  AND NOT (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday) AND strftime('%Y', 'now') - strftime('%Y', p.Birthday) = 70);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.968749996100087,
+      "result_signature": "f08daa0fc19c19b65d9f87582f2b5ee2e965179affc77ff0dfcfc597eb49a547",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL \n  AND (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) < 70;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.285791001166217,
+      "result_signature": "f08daa0fc19c19b65d9f87582f2b5ee2e965179affc77ff0dfcfc597eb49a547",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND julianday('now') - julianday(p.Birthday) < 70 * 365.25;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "1b0dd1dd43a952882af2aec16fe69b4016ea80876920f656234ae23fbcb33358": 4,
+        "f08daa0fc19c19b65d9f87582f2b5ee2e965179affc77ff0dfcfc597eb49a547": 3
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      2
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1818.3230829963577,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND (julianday('now') - julianday(p.Birthday)) / 365.25 < 70;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.0625419967691414,
+        "result_signature": "1b0dd1dd43a952882af2aec16fe69b4016ea80876920f656234ae23fbcb33358",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT COUNT(*)\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.CRE IS NOT NULL\n  AND julianday('now') - julianday(p.Birthday) < 70 * 365.25;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.2964170057093725,
+        "result_signature": "1b0dd1dd43a952882af2aec16fe69b4016ea80876920f656234ae23fbcb33358",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8716.280458997062
+}

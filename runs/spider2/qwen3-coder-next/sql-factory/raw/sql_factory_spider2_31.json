@@ -1,0 +1,61 @@
+{
+  "task_id": "spider2_31",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH best_selling_artist AS (\n    SELECT a.ArtistId, SUM(il.Quantity * il.UnitPrice) AS total_sales\n    FROM albums a\n    JOIN tracks t ON a.AlbumId = t.AlbumId\n    JOIN invoice_items il ON t.TrackId = il.TrackId\n    GROUP BY a.ArtistId\n    ORDER BY total_sales DESC\n    LIMIT 1\n),\ncustomer_spending AS (\n    SELECT c.FirstName, SUM(il.Quantity * il.UnitPrice) AS amount_spent\n    FROM customers c\n    JOIN invoices i ON c.CustomerId = i.CustomerId\n    JOIN invoice_items il ON i.InvoiceId = il.Invoi...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such table: customers",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 1.03
+  }
+}

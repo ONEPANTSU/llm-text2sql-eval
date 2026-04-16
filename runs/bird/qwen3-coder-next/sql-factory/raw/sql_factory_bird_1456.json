@@ -1,0 +1,160 @@
+{
+  "task_id": "bird_1456",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(i.amount) DESC\nLIMIT 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name\nFROM member m\nJOIN (\n    SELECT link_to_member, SUM(cost) AS total_spent\n    FROM expense\n    GROUP BY link_to_member\n) e ON m.member_id = e.link_to_member\nORDER BY e.total_spent DESC\nLIMIT 5;",
+          "score": 0.9578443877551021,
+          "similarity_max": 0.5843112244897959,
+          "tables_used": [
+            "member",
+            "expense",
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(i.amount) DESC\nLIMIT 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name\nFROM member m\nJOIN (\n    SELECT link_to_member, SUM(cost) AS total_spent\n    FROM expense\n    GROUP BY link_to_member\n) e ON m.member_id = e.link_to_member\nORDER BY e.total_spent DESC\nLIMIT 5;",
+          "score": 0.9578443877551021,
+          "similarity_max": 0.5843112244897959,
+          "tables_used": [
+            "member",
+            "expense",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nWHERE e.approved = 1\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(e.cost) DESC\nLIMIT 5;",
+          "score": 0.8531249999999999,
+          "similarity_max": 0.69375,
+          "tables_used": [
+            "member",
+            "expense",
+            "m",
+            "e"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(i.amount) DESC\nLIMIT 5;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "income",
+            "member",
+            "i",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name\nFROM member m\nJOIN (\n    SELECT link_to_member, SUM(cost) AS total_spent\n    FROM expense\n    GROUP BY link_to_member\n) e ON m.member_id = e.link_to_member\nORDER BY e.total_spent DESC\nLIMIT 5;",
+          "score": 0.9578443877551021,
+          "similarity_max": 0.5843112244897959,
+          "tables_used": [
+            "member",
+            "expense",
+            "m"
+          ]
+        },
+        {
+          "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nWHERE e.approved = 1\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(e.cost) DESC\nLIMIT 5;",
+          "score": 0.8531249999999999,
+          "similarity_max": 0.69375,
+          "tables_used": [
+            "member",
+            "expense",
+            "m",
+            "e"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT m.first_name, m.last_name\nFROM member m\nJOIN income i ON m.member_id = i.link_to_member\nGROUP BY m.member_id, m.first_name, m.last_name\nORDER BY SUM(i.amount) DESC\nLIMIT 5;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "income",
+        "member",
+        "i",
+        "m"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.21
+  }
+}

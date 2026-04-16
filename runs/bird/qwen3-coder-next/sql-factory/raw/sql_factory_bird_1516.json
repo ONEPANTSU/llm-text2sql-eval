@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_1516",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'CZK'\n  AND t.Date = '2012-08-26'\n  AND t.Time >= '00:00:00' \n  AND t.Time < '12:00:00';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE t.Date = '2012-08-26' \n  AND c.Currency = 'CZK' \n  AND t.Time BETWEEN '00:00:00' AND '11:59:59';",
+          "score": 0.8301136363636363,
+          "similarity_max": 0.7397727272727272,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'CZK'\n  AND t.Date = '2012-08-26'\n  AND t.Time >= '00:00:00' \n  AND t.Time < '12:00:00';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c USING (CustomerID)\nWHERE t.Date = '2012-08-26' \n  AND c.Currency = 'CZK' \n  AND CAST(t.Time AS TEXT) >= '00:00:00' \n  AND CAST(t.Time AS TEXT) < '12:00:00';",
+          "score": 0.8465909090909091,
+          "similarity_max": 0.7068181818181818,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE t.Date = '2012-08-26' \n  AND c.Currency = 'CZK' \n  AND t.Time BETWEEN '00:00:00' AND '11:59:59';",
+          "score": 0.8301136363636363,
+          "similarity_max": 0.7397727272727272,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'CZK'\n  AND t.Date = '2012-08-26'\n  AND t.Time >= '00:00:00' \n  AND t.Time < '12:00:00';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c USING (CustomerID)\nWHERE t.Date = '2012-08-26' \n  AND c.Currency = 'CZK' \n  AND CAST(t.Time AS TEXT) >= '00:00:00' \n  AND CAST(t.Time AS TEXT) < '12:00:00';",
+          "score": 0.8465909090909091,
+          "similarity_max": 0.7068181818181818,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE t.Date = '2012-08-26' \n  AND c.Currency = 'CZK' \n  AND t.Time BETWEEN '00:00:00' AND '11:59:59';",
+          "score": 0.8301136363636363,
+          "similarity_max": 0.7397727272727272,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM transactions_1k t\nJOIN customers c ON t.CustomerID = c.CustomerID\nWHERE c.Currency = 'CZK'\n  AND t.Date = '2012-08-26'\n  AND t.Time >= '00:00:00' \n  AND t.Time < '12:00:00';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "c",
+        "t",
+        "transactions_1k"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.08
+  }
+}

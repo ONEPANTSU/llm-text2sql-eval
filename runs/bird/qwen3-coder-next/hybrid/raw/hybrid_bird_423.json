@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_423",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1263.8927079970017,
+  "execution_time_ms": 284.78795899718534,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT cardKingdomFoilId\nFROM cards\nWHERE hasFoil = 1\nORDER BY cardKingdomFoilId ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 246.60166700050468,
+      "result_signature": "ca409214c34e6743e7e38688e08782d1de43f67583580ce9bec5a0bb19bbcd8f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT cardKingdomFoilId AS id\nFROM cards\nWHERE hasFoil = 1\n  AND cardKingdomFoilId IS NOT NULL\nORDER BY cardKingdomFoilId ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.93779200327117,
+      "result_signature": "97e774e4fc47df471971fb54a2ee59eaeae04c446b515a7cffc16fc9ab7de9ee",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT cardKingdomFoilId\nFROM cards\nWHERE hasFoil = 1\nORDER BY cardKingdomFoilId ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.50345899583772,
+      "result_signature": "ca409214c34e6743e7e38688e08782d1de43f67583580ce9bec5a0bb19bbcd8f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT id FROM cards WHERE hasFoil = 1 ORDER BY id ASC LIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3389160046936013,
+      "result_signature": "c8ded5ccf6abf264aaea9d14a1eab4f636b329db20f7fc9dc9be5f928177d188",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT id\nFROM cards\nWHERE hasFoil = 1\nORDER BY id ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1837090021581389,
+      "result_signature": "c8ded5ccf6abf264aaea9d14a1eab4f636b329db20f7fc9dc9be5f928177d188",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT cardKingdomFoilId\nFROM cards\nWHERE hasFoil = 1\nORDER BY cardKingdomFoilId ASC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ca409214c34e6743e7e38688e08782d1de43f67583580ce9bec5a0bb19bbcd8f": 2,
+        "97e774e4fc47df471971fb54a2ee59eaeae04c446b515a7cffc16fc9ab7de9ee": 2,
+        "c8ded5ccf6abf264aaea9d14a1eab4f636b329db20f7fc9dc9be5f928177d188": 2
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1623.1680419950862,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT cardKingdomFoilId AS id\nFROM cards\nWHERE hasFoil = 1\n  AND cardKingdomFoilId IS NOT NULL\nORDER BY cardKingdomFoilId ASC\nLIMIT 3;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 21.29633299773559,
+        "result_signature": "97e774e4fc47df471971fb54a2ee59eaeae04c446b515a7cffc16fc9ab7de9ee",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3171.9411669982946
+}

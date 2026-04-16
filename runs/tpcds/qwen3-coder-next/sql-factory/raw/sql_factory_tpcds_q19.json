@@ -1,0 +1,164 @@
+{
+  "task_id": "tpcds_q19",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN customer ON ss_customer_sk = c_customer_sk\n    JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND SUBSTRING(ca_zip, 1, 5) <> SUBSTRING(s_...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN customer ON ss_customer_sk = c_customer_sk\n    JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND SUBSTRING(ca_zip, 1, 5) <> SUBSTRING(s_...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH sales_data AS (\n    SELECT \n        i_brand_id,\n        i_brand,\n        i_manufact_id,\n        i_manufact,\n        ss_ext_sales_price\n    FROM \n        store_sales\n        JOIN date_dim ON ss_sold_date_sk = d_date_sk\n        JOIN item ON ss_item_sk = i_item_sk\n        JOIN customer ON ss_customer_sk = c_customer_sk\n        JOIN customer_address ON c_current_addr_sk = ca_address_sk\n        JOIN store ON ss_store_sk = s_store_sk\n    WHERE \n        d_moy = 11 \n        AND d_year = 1998 \n     ...",
+          "score": 1.1373015873015873,
+          "similarity_max": 0.7253968253968254,
+          "tables_used": [
+            "sales_data",
+            "store",
+            "store_sales",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    INNER JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    INNER JOIN item ON ss_item_sk = i_item_sk\n    INNER JOIN customer ON ss_customer_sk = c_customer_sk\n    INNER JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    INNER JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND ca_zip NO...",
+          "score": 1.0020707070707071,
+          "similarity_max": 0.7958585858585858,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "date_dim",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN customer ON ss_customer_sk = c_customer_sk\n    JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND SUBSTRING(ca_zip, 1, 5) <> SUBSTRING(s_...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH sales_data AS (\n    SELECT \n        i_brand_id,\n        i_brand,\n        i_manufact_id,\n        i_manufact,\n        ss_ext_sales_price\n    FROM \n        store_sales\n        JOIN date_dim ON ss_sold_date_sk = d_date_sk\n        JOIN item ON ss_item_sk = i_item_sk\n        JOIN customer ON ss_customer_sk = c_customer_sk\n        JOIN customer_address ON c_current_addr_sk = ca_address_sk\n        JOIN store ON ss_store_sk = s_store_sk\n    WHERE \n        d_moy = 11 \n        AND d_year = 1998 \n     ...",
+          "score": 1.1373015873015873,
+          "similarity_max": 0.7253968253968254,
+          "tables_used": [
+            "sales_data",
+            "store",
+            "store_sales",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    INNER JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    INNER JOIN item ON ss_item_sk = i_item_sk\n    INNER JOIN customer ON ss_customer_sk = c_customer_sk\n    INNER JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    INNER JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND ca_zip NO...",
+          "score": 1.0020707070707071,
+          "similarity_max": 0.7958585858585858,
+          "tables_used": [
+            "store",
+            "store_sales",
+            "date_dim",
+            "customer_address",
+            "customer",
+            "item"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_brand_id,\n    i_brand,\n    i_manufact_id,\n    i_manufact,\n    SUM(ss_ext_sales_price) AS ext_price\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN customer ON ss_customer_sk = c_customer_sk\n    JOIN customer_address ON c_current_addr_sk = ca_address_sk\n    JOIN store ON ss_store_sk = s_store_sk\nWHERE \n    d_moy = 11 \n    AND d_year = 1998 \n    AND i_manager_id = 8\n    AND SUBSTRING(ca_zip, 1, 5) <> SUBSTRING(s_...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "store",
+        "store_sales",
+        "customer_address",
+        "customer",
+        "item"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 43.55
+  }
+}

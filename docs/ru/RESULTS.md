@@ -1,119 +1,132 @@
-# Evaluation Results / Результаты оценки
+# Результаты оценки
 
-## Datasets / Датасеты
+## Датасеты
 
 - [BIRD](https://bird-bench.github.io) — 1534 задачи. Dev-split из полного датасета (12 751 задач). Остальное — для обучения/файнтюнинга.
 - [Spider2-Lite](https://spider2-sql.github.io) — 123 задачи. Только SQLite-часть; Snowflake и BigQuery исключены (проблемы с доступом).
-- [TPC-DS NL](https://www.tpc.org/tpcds/) — 99 задач. Не text-to-SQL бенчмарк изначально — это 99 аналитических SQL-запросов, для которых сгенерированы NL-описания задач.
+- [TPC-DS NL](https://www.tpc.org/tpcds/) — 99 задач. NL-описания задач сгенерированы для 99 аналитических SQL-запросов TPC-DS.
 
-## Models / Модели
+## Модели
 
-Модели запускались в **plain-режиме** с `context_mode=toolchain`.
+Все модели тестировались в **plain-режиме** с `context_mode=toolchain`.
 
-| Model / Модель        | BIRD                     | Spider2              | TPC-DS              | Total / Всего          |
+| Модель                | BIRD                     | Spider2              | TPC-DS              | Всего                  |
 |-----------------------|--------------------------|----------------------|---------------------|------------------------|
-| qwen3-coder-next      | **0.263** (403 / 1534)   | 0.122 (15 / 123)     | 0.030 (3 / 99)      | **0.240** (421 / 1756) |
-| qwen3-32b | 0.229 (352 / 1534)       | **0.293** (36 / 123) | **0.101** (10 / 99)  | 0.227 (398 / 1756)     |
-| gpt-oss-120b          | 0.080 (123 / 1534)       | 0.065 (8 / 123)      | 0.061 (6 / 99)       | 0.078 (137 / 1756)     |
+| qwen3-coder-next      | **0.314** (481 / 1534)   | **0.480** (59 / 123) | **0.081** (8 / 99)  | **0.312** (548 / 1756) |
+| qwen3-32b             | 0.075 (115 / 1534)       | 0.065 (8 / 123)      | 0.051 (5 / 99)      | 0.073 (128 / 1756)     |
+| gpt-oss-120b          | 0.060 (92 / 1534)        | 0.057 (7 / 123)      | 0.051 (5 / 99)      | 0.059 (104 / 1756)     |
 
-## Architectures / Архитектуры
+qwen3-coder-next значительно превосходит две другие модели: на BIRD в 4.2 раза больше правильных ответов, чем у qwen3-32b, и в 5.2 раза больше, чем у gpt-oss-120b. Основная причина — qwen3-32b и gpt-oss-120b являются thinking-моделями: они генерируют рассуждения вместо финального SQL, из-за чего toolchain не может извлечь исполняемый запрос.
 
-Результаты для **qwen3-coder-next**. Подробное описание каждой архитектуры: [docs/architectures/](docs/architectures/).
+## Архитектуры
 
-| Architecture / Архитектура | BIRD                     | Spider2                  | TPC-DS                 | Total / Всего            |
-|----------------------------|--------------------------|--------------------------|------------------------|--------------------------|
-| Plain                      | 0.263 (403 / 1534)       | 0.122 (15 / 123)         | 0.030 (3 / 99)         | 0.240 (421 / 1756)       |
-| Self-consistency           | 0.308 (472 / 1534)       | 0.650 (80 / 123)         | **0.101 (10 / 99)**     | 0.320 (562 / 1756)       |
-| SGR                        | 0.301 (461 / 1534)       | 0.674 (83 / 123)         | 0.040 (4 / 99)         | 0.312 (548 / 1756)       |
-| SQL Factory                | 0.298 (457 / 1534)       | 0.577 (71 / 123)         | 0.081 (8 / 99)         | 0.305 (536 / 1756)       |
-| **Hybrid**                 | **0.323 (495 / 1534)**   | **0.715 (88 / 123)**     | 0.091 (9 / 99)         | **0.337 (592 / 1756)**   |
+Результаты для **qwen3-coder-next**, `context_mode=toolchain`. Описание архитектур: [docs/ru/architectures/](architectures/).
 
-## Latency / Латентность (avg ms per task)
+| Архитектура          | BIRD                     | Spider2                  | TPC-DS                 | Всего                    |
+|----------------------|--------------------------|--------------------------|------------------------|--------------------------|
+| Plain                | 0.314 (481 / 1534)       | 0.480 (59 / 123)         | 0.081 (8 / 99)         | 0.312 (548 / 1756)       |
+| Self-consistency     | 0.308 (472 / 1534)       | 0.650 (80 / 123)         | **0.101 (10 / 99)**     | 0.320 (562 / 1756)       |
+| SGR                  | 0.301 (461 / 1534)       | 0.674 (83 / 123)         | 0.040 (4 / 99)         | 0.312 (548 / 1756)       |
+| SQL Factory          | 0.298 (457 / 1534)       | 0.577 (71 / 123)         | 0.081 (8 / 99)         | 0.305 (536 / 1756)       |
+| **Hybrid**           | **0.323 (495 / 1534)**   | **0.715 (88 / 123)**     | 0.091 (9 / 99)         | **0.337 (592 / 1756)**   |
 
-### By model (plain) / По моделям
+**Примечание:** Результаты Plain получены в апрельском прогоне 2026 года с корректной постобработкой (strip_sql_fences). Более ранний февральский прогон показывал 26.3% на BIRD из-за бага с markdown-обёртками, который раздувал число pred_exec_fail. Прогоны Self-consistency, SGR, SQL Factory и Hybrid не были затронуты, так как уже включали корректную постобработку.
 
-| Model / Модель        | BIRD       | Spider2     | TPC-DS      |
+## Потребление токенов (toolchain, BIRD, n=10)
+
+### По моделям (plain)
+
+| Модель                | Ср. вызовов | Ср. prompt | Ср. compl | Ср. всего |
+|-----------------------|-------------|------------|-----------|-----------|
+| qwen3-coder-next      | 4.7         | 3 983      | 113       | 4 096     |
+| qwen3-32b             | 2.3         | 939        | 1 245     | 2 184     |
+| gpt-oss-120b          | 2.0         | 932        | 1 040     | 1 972     |
+
+### По архитектурам (qwen3-coder-next)
+
+| Архитектура          | Ср. вызовов | Ср. prompt | Ср. compl | Ср. всего | vs plain |
+|----------------------|-------------|------------|-----------|-----------|----------|
+| Plain                | 4.7         | 3 983      | 113       | 4 096     | 1.0x     |
+| Self-consistency     | 21.3        | 16 648     | 531       | 17 179    | 4.2x     |
+| SQL Factory          | 10.4        | 6 572      | 441       | 7 013     | 1.7x     |
+| SGR                  | 12.0        | 8 541      | 725       | 9 266     | 2.3x     |
+| Hybrid               | 11.4        | 7 559      | 650       | 8 210     | 2.0x     |
+
+Hybrid дешевле SGR (2.0x vs 2.3x) за счёт умной ранней остановки: фаза расширения пропущена на 85.5% задач BIRD (1312 из 1534), так как консенсус достигнут уже среди начальных кандидатов. Среднее число кандидатов на задачу: 5.3 (теоретический максимум: 11).
+
+## Латентность (среднее мс на задачу, из полных прогонов)
+
+### По моделям (plain)
+
+| Модель                | BIRD       | Spider2     | TPC-DS      |
 |-----------------------|------------|-------------|-------------|
 | qwen3-coder-next      | 8 267      | 12 801      | 20 536      |
-| qwen3-32b | **5 149**  | **8 293**   | **12 638**  |
+| qwen3-32b             | **5 149**  | **8 293**   | **12 638**  |
 | gpt-oss-120b          | 21 250     | 16 947      | 19 747      |
 
-### By architecture (qwen3-coder-next) / По архитектурам
+### По архитектурам (qwen3-coder-next)
 
-| Architecture / Архитектура | BIRD       | Spider2     | TPC-DS      |
-|----------------------------|------------|-------------|-------------|
-| Plain                      | **8 267**  | **12 801**  | **20 536**  |
-| Self-consistency           | 12 265     | 12 928      | 25 307      |
-| SGR                        | 16 767     | 29 162      | 21 968      |
-| SQL Factory                | 14 679     | 30 142      | 39 454      |
-| Hybrid                     | 16 164     | 30 893      | 36 758      |
+| Архитектура          | BIRD       | Spider2     | TPC-DS      |
+|----------------------|------------|-------------|-------------|
+| Plain                | **8 267**  | **12 801**  | **20 536**  |
+| Self-consistency     | 12 265     | 12 928      | 25 307      |
+| SGR                  | 16 767     | 29 162      | 21 968      |
+| SQL Factory          | 14 679     | 30 142      | 39 454      |
+| Hybrid               | 16 164     | 30 893      | 36 758      |
 
-## Error Analysis / Анализ ошибок
+## Анализ ошибок
 
-### Error types / Типы ошибок
+### Типы ошибок
 
-| Error type | Description / Описание |
-|------------|------------------------|
-| `pred_exec_fail` | SQL generated but failed at execution (syntax error, missing column/table) |
-| `pred_bind_fail` | DuckDB binder error (strict column/table resolution) |
-| `pred_parse_fail` | SQL parsing failed (usually markdown artifacts) |
-| `pred_invalid_sql` | Placeholders left in SQL (`{{year}}`, `<replace>`) |
-| `pred_generation_fail` | Toolchain failed to extract SQL from LLM response |
-| `task_timeout` | Task exceeded total timeout (generation + execution) |
-| `gold_exec_fail` | Gold SQL itself failed (test data issue, not model) |
+| Тип ошибки | Описание |
+|------------|----------|
+| `pred_exec_fail` | SQL сгенерирован, но упал при исполнении (syntax error, missing column/table) |
+| `pred_bind_fail` | Ошибка связывания DuckDB (строгое разрешение имён) |
+| `pred_parse_fail` | SQL не прошёл парсинг |
+| `pred_invalid_sql` | Плейсхолдеры в SQL (`{{year}}`, `<replace>`) |
+| `pred_generation_fail` | Toolchain не извлёк SQL из ответа LLM |
+| `task_timeout` | Задача превысила таймаут |
+| `gold_exec_fail` | Эталонный SQL сам упал (проблема данных) |
 
-### By architecture, BIRD (qwen3-coder-next) / По архитектурам, BIRD
+### Классификация exec_fail (plain, qwen3-coder-next)
 
-| Error type             | Plain | Self-consistency | SGR  | SQL Factory | Hybrid      |
+| Бенчмарк  | Всего exec_fail | Schema mismatch | Syntax | Прочее |
+|-----------|-----------------|-----------------|--------|--------|
+| BIRD      | 59              | 45 (76%)        | 12     | 2      |
+| Spider2   | 26              | 24 (92%)        | 1      | 1      |
+| TPC-DS    | 24              | 24 (100%)       | 0      | 0      |
+
+Доминирующая категория: **schema mismatch** (галлюцинация имён колонок/таблиц). Именно её закрывают fuzzy schema validation (edit distance ≤ 2) и diagnostic retry в Hybrid.
+
+### Ошибки по моделям (plain, BIRD)
+
+| Тип ошибки             | qwen3-coder-next | qwen3-32b | gpt-oss-120b |
+|------------------------|------------------|-----------|--------------|
+| pred_generation_fail   | 22               | **618**   | **914**      |
+| pred_exec_fail         | 59               | 475       | 348          |
+| task_timeout           | 8                | 38        | 52           |
+| **Всего failures**     | **89**           | 1131      | 1314         |
+
+qwen3-32b и gpt-oss-120b оба страдают от **toolchain_no_sql** — модель генерирует токены рассуждений (thinking) вместо финального SQL, и toolchain не может извлечь исполняемый запрос. qwen3-coder-next значительно надёжнее в производстве структурированного SQL-вывода.
+
+### Ошибки по архитектурам (qwen3-coder-next, BIRD)
+
+| Тип ошибки             | Plain | Self-consistency | SGR  | SQL Factory | Hybrid      |
 |------------------------|-------|------------------|------|-------------|-------------|
-| pred_exec_fail         | 426   | 18               | 85   | 61          | **0**       |
-| pred_generation_fail   | 26    | **0**            | **0**| **0**       | 4           |
-| task_timeout           | 21    | 124              | 22   | 34          | **12**      |
-| **Total failures**     | 473   | 142              | 108  | 101         | **16**      |
+| pred_exec_fail         | 59    | 18               | 85   | 61          | **0**       |
+| pred_generation_fail   | 22    | **0**            | **0**| **0**       | 4           |
+| task_timeout           | 8     | 124              | 22   | 34          | **12**      |
+| **Всего failures**     | 89    | 142              | 108  | 101         | **16**      |
 
-Hybrid радикально снижает failures (16 vs 473 у plain). Diagnostic retry + schema validation устраняют `pred_exec_fail` полностью. Smart early stop сокращает таймауты (12 vs 124 у self-consistency).
+Hybrid достигает pred_exec_fail = **0** на BIRD (vs 59 в plain). Оставшиеся 16 failures — таймауты (12) и ошибки генерации (4).
 
-### By architecture, Spider2 (qwen3-coder-next) / По архитектурам, Spider2
+### Корневые причины
 
-| Error type             | Plain | Self-consistency | SGR  | SQL Factory | Hybrid      |
-|------------------------|-------|------------------|------|-------------|-------------|
-| pred_exec_fail         | 90    | 10               | 13   | 25          | **0**       |
-| pred_generation_fail   | 0     | **0**            | **0**| **0**       | 5           |
-| task_timeout           | **0** | 9                | **0**| **0**       | 2           |
-| gold_exec_fail         | 5     | 5                | 5    | 5           | 5           |
-| **Total failures**     | 96    | 19               | 16   | 27          | **12**      |
+1. **Schema mismatch** — модель галлюцинирует имена колонок (`CreationDate` вместо `creation_date`). Закрывается fuzzy schema validation (edit distance ≤ 2) и diagnostic retry в Hybrid
+2. **Таймауты** — K генераций × toolchain-вызовы превышают task_timeout (124 на BIRD в self-consistency)
+3. **Toolchain extraction failures** — thinking-модели (qwen3-32b, gpt-oss-120b) генерируют рассуждения вместо SQL; извлечение выдаёт `toolchain_no_sql` (618 и 914 случаев соответственно на BIRD)
+4. **Проблемы данных** — 4-5 gold_exec_fail в Spider2 (отсутствующие таблицы в fixtures)
 
-Hybrid — лучший результат (12 failures, из них 5 — gold_exec_fail, т.е. только 7 реальных ошибок модели).
+### Аномалия TPC-DS
 
-### By architecture, TPC-DS (qwen3-coder-next) / По архитектурам, TPC-DS
-
-| Error type             | Plain | Self-consistency | SGR  | SQL Factory | Hybrid  |
-|------------------------|-------|------------------|------|-------------|---------|
-| pred_parse_fail        | 32    | **0**            | **0**| **0**       | **0**   |
-| pred_bind_fail         | 12    | 8                | 13   | 9           | **0**   |
-| pred_generation_fail   | 23    | **0**            | 27   | **0**       | 1       |
-| pred_invalid_sql       | **0** | 2                | **0**| **0**       | 16      |
-| pred_runtime_fail      | **0** | **0**            | **0**| **0**       | 2       |
-| task_timeout           | **0** | 7                | **0**| 10          | 3       |
-| **Total failures**     | 69    | 20               | 44   | 25          | 22      |
-
-TPC-DS — самый сложный бенчмарк (accuracy 9.1%). Hybrid показывает 16 `pred_invalid_sql` — плейсхолдеры в SQL, вероятно от SGR grounding промпта.
-
-### By model (plain, BIRD) / По моделям
-
-| Error type             | qwen3-coder | qwen3-32b | gpt-oss-120b |
-|------------------------|-------------|--------------|--------------|
-| pred_exec_fail         | 426         | **129**      | 237          |
-| pred_generation_fail   | **26**      | 236          | 966          |
-| task_timeout           | 21          | **0**        | **0**        |
-| **Total failures**     | 473         | **370**      | 1206         |
-
-gpt-oss-120b критически плох — 966 generation failures (63%), модель не генерирует SQL. qwen3-coder — самый надёжный генератор.
-
-### Root Causes / Корневые причины
-
-1. **Schema mismatch** — модель галлюцинирует имена: `CreationDate` вместо `creation_date`, `s_store_type` вместо `s_street_type`
-2. **Markdown artifacts** — 32 parse_fail на TPC-DS plain (модель оборачивает SQL в ` ```sql ``` `)
-3. **Timeouts** — K генераций x toolchain-вызовы > task_timeout (124 на BIRD SC)
-4. **Toolchain extraction failures** — gpt-oss-120b «разговаривает» вместо SQL (966 случаев)
-5. **Test data issues** — 5 gold_exec_fail в Spider2 (отсутствующие таблицы в fixtures)
+На TPC-DS Self-consistency (10.1%) опережает Hybrid (9.1%). Причина: SGR grounding фаза Hybrid генерирует 16 ошибок `pred_invalid_sql` (плейсхолдеры `{{year}}`, `<state>`) vs 2 у Self-consistency. SGR-промпт на аналитическом домене TPC-DS заставляет модель оставлять параметры нерезрешёнными.

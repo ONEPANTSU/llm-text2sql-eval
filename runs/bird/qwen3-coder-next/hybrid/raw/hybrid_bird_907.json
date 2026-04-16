@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_907",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1429.9978749986622,
+  "execution_time_ms": 2.0620840004994534,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT races.name, circuits.country, races.date\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8302499991259538,
+      "result_signature": "54961fe599ea88edaddf6cbb99780260c32aa7b0c1fdc455b4641ac6924555fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT races.name, circuits.country, races.date\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.27429200417827815,
+      "result_signature": "54961fe599ea88edaddf6cbb99780260c32aa7b0c1fdc455b4641ac6924555fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT races.name, circuits.country\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.24012500216485932,
+      "result_signature": "7a28b4b25ddf1df539163854a10f8017dd6ec9eabbcf784c8311f7d9a8552661",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT races.name, circuits.country, races.date\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.231916994380299,
+      "result_signature": "54961fe599ea88edaddf6cbb99780260c32aa7b0c1fdc455b4641ac6924555fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT races.name, circuits.country, races.date\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.22362500021699816,
+      "result_signature": "54961fe599ea88edaddf6cbb99780260c32aa7b0c1fdc455b4641ac6924555fc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT races.name, circuits.country, races.date\nFROM races\nJOIN circuits ON races.circuitId = circuits.circuitId\nWHERE races.year = 2017\nORDER BY races.date ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "54961fe599ea88edaddf6cbb99780260c32aa7b0c1fdc455b4641ac6924555fc": 4,
+        "7a28b4b25ddf1df539163854a10f8017dd6ec9eabbcf784c8311f7d9a8552661": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 930.5374169998686,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2362.6723749985103
+}

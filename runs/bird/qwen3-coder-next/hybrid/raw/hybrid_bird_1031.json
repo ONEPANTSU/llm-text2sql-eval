@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_1031",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3945.4760840017116,
+  "execution_time_ms": 122.65883299551206,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    Player.player_api_id,\n    Player.birthday,\n    Player_Attributes.date,\n    CAST((julianday(Player_Attributes.date) - julianday(Player.birthday)) / 365.25 AS INTEGER) AS age\nFROM \n    Player\nJOIN \n    Player_Attributes \nON \n    Player.player_api_id = Player_Attributes.player_api_id\nWHERE \n    Player_Attributes.sprint_speed >= 97\n    AND Player_Attributes.date BETWEEN '2013-01-01' AND '2015-12-31'\nGROUP BY \n    Player.player_api_id, Player.birthday, Player_Attributes.date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 90.65874999942025,
+      "result_signature": "954be118fecd64bf607bcce8bb6200cbb035420a92af04e5c5fb7a761b7ad670",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    Player.player_name,\n    CAST((strftime('%Y', Player_Attributes.date) AS INTEGER) - strftime('%Y', Player.birthday) AS INTEGER) AS age\nFROM \n    Player\nJOIN \n    Player_Attributes ON Player.player_api_id = Player_Attributes.player_api_id\nWHERE \n    Player_Attributes.sprint_speed >= 97\n    AND Player_Attributes.date BETWEEN '2013-01-01' AND '2015-12-31'\nGROUP BY \n    Player.player_api_id, Player.birthday, Player_Attributes.date;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"AS\": syntax error",
+      "exec_time_ms": 0.3404580056667328,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    Player.player_api_id,\n    Player.birthday,\n    Player_Attributes.date,\n    CAST((julianday(Player_Attributes.date) - julianday(Player.birthday)) / 365.25 AS INTEGER) AS age\nFROM \n    Player\nJOIN \n    Player_Attributes ON Player.player_api_id = Player_Attributes.player_api_id\nWHERE \n    Player_Attributes.sprint_speed >= 97\n    AND Player_Attributes.date BETWEEN '2013-01-01' AND '2015-12-31'\nGROUP BY \n    Player.player_api_id, Player.birthday, Player_Attributes.date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 31.33591599907959,
+      "result_signature": "954be118fecd64bf607bcce8bb6200cbb035420a92af04e5c5fb7a761b7ad670",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    Player.player_api_id,\n    Player.birthday,\n    Player_Attributes.date,\n    CAST((julianday(Player_Attributes.date) - julianday(Player.birthday)) / 365.25 AS INTEGER) AS age\nFROM \n    Player\nJOIN \n    Player_Attributes ON Player.player_api_id = Player_Attributes.player_api_id\nWHERE \n    Player_Attributes.sprint_speed >= 97\n    AND Player_Attributes.date BETWEEN '2013-01-01' AND '2015-12-31'\nGROUP BY \n    Player.player_api_id, Player.birthday, Player_Attributes.date;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "954be118fecd64bf607bcce8bb6200cbb035420a92af04e5c5fb7a761b7ad670": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4068.3167910028715
+}

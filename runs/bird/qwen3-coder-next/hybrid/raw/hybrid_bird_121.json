@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_121",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4906.758583005285,
+  "execution_time_ms": 15.573750002658926,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT a.account_id, a.date\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nWHERE d.A2 = 'Prachatice';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.345249995822087,
+      "result_signature": "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT account_id, date FROM account JOIN district ON account.district_id = district.district_id WHERE district.A2 = 'Prachatice';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.3782079990487546,
+      "result_signature": "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT account_id, date\nFROM account\nJOIN district ON account.district_id = district.district_id\nWHERE district.A2 = 'Prachatice';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.510749996872619,
+      "result_signature": "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT account_id, date\nFROM account\nJOIN district ON account.district_id = district.district_id\nWHERE district.A2 = 'Prachatice';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8928339995909482,
+      "result_signature": "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT account.account_id, account.date\nFROM account\nJOIN district ON account.district_id = district.district_id\nWHERE district.A2 = 'Prachatice';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8886670004576445,
+      "result_signature": "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT account.account_id, account.date\nFROM account\nJOIN district ON account.district_id = district.district_id\nWHERE district.A2 = 'Prachatice';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "92a015b243b019218284a1f960b1418bb7f1d24f17fd3cb838b4a4a4d20e603e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4922.571541996149
+}

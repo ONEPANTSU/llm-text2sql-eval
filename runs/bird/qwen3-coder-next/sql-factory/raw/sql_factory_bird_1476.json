@@ -1,0 +1,166 @@
+{
+  "task_id": "bird_1476",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT SUM(ym.Consumption) AS czk_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK'\n),\neur_consumption AS (\n    SELECT SUM(ym.Consumption) AS eur_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n)\nSELECT \n    (SELECT czk_total FROM czk_consumption) - (SELECT eur_total FROM eur_consumption) AS consumption_difference",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT AVG(ym.Consumption) \n     FROM yearmonth ym\n     JOIN customers c ON ym.CustomerID = c.CustomerID\n     WHERE c.Currency = 'CZK' AND strftime('%Y', ym.Date) = '2012') -\n    (SELECT AVG(ym.Consumption) \n     FROM yearmonth ym\n     JOIN customers c ON ym.CustomerID = c.CustomerID\n     WHERE c.Currency = 'EUR' AND strftime('%Y', ym.Date) = '2012') AS consumption_difference",
+          "score": 1.0314438502673797,
+          "similarity_max": 0.5371122994652406,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT SUM(ym.Consumption) AS czk_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK'\n),\neur_consumption AS (\n    SELECT SUM(ym.Consumption) AS eur_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n)\nSELECT \n    (SELECT czk_total FROM czk_consumption) - (SELECT eur_total FROM eur_consumption) AS consumption_difference",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT AVG(ym.Consumption) AS avg_czk\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK' AND strftime('%Y', ym.Date) = '2012'\n),\neur_consumption AS (\n    SELECT AVG(ym.Consumption) AS avg_eur\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR' AND strftime('%Y', ym.Date) = '2012'\n)\nSELECT avg_czk - avg_eur AS consumption_difference\nFROM czk_consumption, eur_consu...",
+          "score": 1.0948131443298967,
+          "similarity_max": 0.7103737113402062,
+          "tables_used": [
+            "customers",
+            "czk_consumption",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT AVG(ym.Consumption) \n     FROM yearmonth ym\n     JOIN customers c ON ym.CustomerID = c.CustomerID\n     WHERE c.Currency = 'CZK' AND strftime('%Y', ym.Date) = '2012') -\n    (SELECT AVG(ym.Consumption) \n     FROM yearmonth ym\n     JOIN customers c ON ym.CustomerID = c.CustomerID\n     WHERE c.Currency = 'EUR' AND strftime('%Y', ym.Date) = '2012') AS consumption_difference",
+          "score": 1.0314438502673797,
+          "similarity_max": 0.5371122994652406,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT SUM(ym.Consumption) AS czk_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK'\n),\neur_consumption AS (\n    SELECT SUM(ym.Consumption) AS eur_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n)\nSELECT \n    (SELECT czk_total FROM czk_consumption) - (SELECT eur_total FROM eur_consumption) AS consumption_difference",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT AVG(ym.Consumption) AS avg_czk\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK' AND strftime('%Y', ym.Date) = '2012'\n),\neur_consumption AS (\n    SELECT AVG(ym.Consumption) AS avg_eur\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR' AND strftime('%Y', ym.Date) = '2012'\n)\nSELECT avg_czk - avg_eur AS consumption_difference\nFROM czk_consumption, eur_consu...",
+          "score": 1.0948131443298967,
+          "similarity_max": 0.7103737113402062,
+          "tables_used": [
+            "customers",
+            "czk_consumption",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        },
+        {
+          "sql": "WITH czk_consumption AS (\n    SELECT SUM(ym.Consumption) AS czk_total\n    FROM yearmonth ym\n    INNER JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK'\n),\neur_consumption AS (\n    SELECT SUM(ym.Consumption) AS eur_total\n    FROM yearmonth ym\n    INNER JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n)\nSELECT czk_total - eur_total AS consumption_difference\nFROM czk_consumption, eur_consumption",
+          "score": 1.0460084033613446,
+          "similarity_max": 0.8079831932773108,
+          "tables_used": [
+            "customers",
+            "czk_consumption",
+            "yearmonth",
+            "c",
+            "ym"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH czk_consumption AS (\n    SELECT SUM(ym.Consumption) AS czk_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'CZK'\n),\neur_consumption AS (\n    SELECT SUM(ym.Consumption) AS eur_total\n    FROM yearmonth ym\n    JOIN customers c ON ym.CustomerID = c.CustomerID\n    WHERE c.Currency = 'EUR'\n)\nSELECT \n    (SELECT czk_total FROM czk_consumption) - (SELECT eur_total FROM eur_consumption) AS consumption_difference",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "yearmonth",
+        "c",
+        "ym"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 108.62
+  }
+}

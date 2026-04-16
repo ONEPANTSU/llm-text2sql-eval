@@ -1,0 +1,120 @@
+{
+  "task_id": "bird_606",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE Date = '2010-07-19 19:39:08';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE Date = '2010-07-19 19:39:08';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE strftime('%Y-%m-%d %H:%M:%S', Date) = '2010-07-19 19:39:08';",
+          "score": 0.7573426573426574,
+          "similarity_max": 0.5853146853146853,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE Date = '2010-07-19 19:39:08';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE strftime('%Y-%m-%d %H:%M:%S', Date) = '2010-07-19 19:39:08';",
+          "score": 0.7573426573426574,
+          "similarity_max": 0.5853146853146853,
+          "tables_used": [
+            "badges"
+          ]
+        },
+        {
+          "sql": "SELECT Name\nFROM badges\nWHERE Date LIKE '2010-07-19%19:39:08';",
+          "score": 0.6564935064935066,
+          "similarity_max": 0.7870129870129869,
+          "tables_used": [
+            "badges"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT Name\nFROM badges\nWHERE Date = '2010-07-19 19:39:08';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "badges"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 11.11
+  }
+}

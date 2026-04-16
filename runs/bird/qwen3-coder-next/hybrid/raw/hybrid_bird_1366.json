@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1366",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2739.7697089982103,
+  "execution_time_ms": 9.426417003851384,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.120959001535084,
+      "result_signature": "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8864579940563999,
+      "result_signature": "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.150749998691026,
+      "result_signature": "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2660829961532727,
+      "result_signature": "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8255829961854033,
+      "result_signature": "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT m.first_name, m.last_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nWHERE e.event_name = 'October Meeting';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "06545f26d0642a652a1c66ca29a2dc4eff99c6bdd9878878e872e64d60c11636": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2749.4034999981523
+}

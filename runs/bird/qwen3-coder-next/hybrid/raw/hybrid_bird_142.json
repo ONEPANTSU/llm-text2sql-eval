@@ -1,0 +1,171 @@
+{
+  "task_id": "bird_142",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1866.5455000009388,
+  "execution_time_ms": 0.7294579991139472,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN order o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.2637920042616315,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN order o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.1070829966920428,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT account.account_id\nFROM account\nJOIN district ON account.district_id = district.district_id\nJOIN order ON account.account_id = order.account_id\nWHERE district.A2 = 'Pisek'\n  AND order.k_symbol = 'household payment';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.09187500108964741,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN order o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.08679199527250603,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN order o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"order\": syntax error",
+      "exec_time_ms": 0.08387499838136137,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN \"order\" o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "near \"order\": syntax error",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN \"order\" o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.769540995766874,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT a.account_id\nFROM account a\nJOIN district d ON a.district_id = d.district_id\nJOIN \"order\" o ON a.account_id = o.account_id\nWHERE d.A2 = 'Pisek'\n  AND o.k_symbol = 'household payment';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.5215000021271408,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3941.1498340050457
+}

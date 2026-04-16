@@ -1,0 +1,152 @@
+{
+  "task_id": "bird_1121",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) - \n      (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday)) <= 30;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) - \n      (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday)) <= 30;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON (\n    p.player_api_id = m.home_player_1 OR\n    p.player_api_id = m.home_player_2 OR\n    p.player_api_id = m.home_player_3 OR\n    p.player_api_id = m.home_player_4 OR\n    p.player_api_id = m.home_player_5 OR\n    p.player_api_id = m.home_player_6 OR\n    p.player_api_id = m.home_player_7 OR\n    p.player_api_id = m.home_player_8 OR\n    p.player_api_id = m.home_player_9 OR\n    p.player_api_id = m.home_player_10 OR\n    p.pl...",
+          "score": 0.8614861032331254,
+          "similarity_max": 0.6770277935337493,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE CAST((julianday('now') - julianday(p.birthday)) / 365.25 AS INTEGER) <= 30;",
+          "score": 0.8346601073345259,
+          "similarity_max": 0.7306797853309481,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) - \n      (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday)) <= 30;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON (\n    p.player_api_id = m.home_player_1 OR\n    p.player_api_id = m.home_player_2 OR\n    p.player_api_id = m.home_player_3 OR\n    p.player_api_id = m.home_player_4 OR\n    p.player_api_id = m.home_player_5 OR\n    p.player_api_id = m.home_player_6 OR\n    p.player_api_id = m.home_player_7 OR\n    p.player_api_id = m.home_player_8 OR\n    p.player_api_id = m.home_player_9 OR\n    p.player_api_id = m.home_player_10 OR\n    p.pl...",
+          "score": 0.8614861032331254,
+          "similarity_max": 0.6770277935337493,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE CAST((julianday('now') - julianday(p.birthday)) / 365.25 AS INTEGER) <= 30;",
+          "score": 0.8346601073345259,
+          "similarity_max": 0.7306797853309481,
+          "tables_used": [
+            "Player",
+            "p",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT SUM(m.home_team_goal) AS total_home_goals\nFROM Match m\nJOIN Player p ON p.player_api_id IN (\n    m.home_player_1, m.home_player_2, m.home_player_3, m.home_player_4,\n    m.home_player_5, m.home_player_6, m.home_player_7, m.home_player_8,\n    m.home_player_9, m.home_player_10, m.home_player_11\n)\nWHERE (strftime('%Y', 'now') - strftime('%Y', p.birthday)) - \n      (strftime('%m-%d', 'now') < strftime('%m-%d', p.birthday)) <= 30;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player",
+        "p",
+        "m",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 486.51
+  }
+}

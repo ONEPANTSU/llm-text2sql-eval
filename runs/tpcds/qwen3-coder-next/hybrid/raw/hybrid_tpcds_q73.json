@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q73",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3944.9199160007993,
+  "execution_time_ms": 4.107374988961965,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    ib.ib_lower_bound, \n    ib.ib_upper_bound, \n    d.d_year, \n    AVG(ss.ss_sales_price) AS avg_sales_per_order\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n    JOIN income_band ib ON ca.ca_income_band_sk = ib.ib_income_band_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    ib.ib_lower_bound, \n    ib.ib_upper_bound, \n    d.d_year\nORDER BY \n    ib.ib_lower_bound, \n    ib.ib_upper_bound, \n    d.d_year",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"ca\" does not have a column named \"ca_income_band_sk\"\n\nCandidate bindings: : \"ca_county\"\n\nLINE 10:     JOIN income_band ib ON ca.ca_income_band_sk = ib.ib_income_band_sk\n                                    ^",
+      "exec_time_ms": 0.5118750123074278,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year, \n    AVG(store_sales.ss_sales_price) AS avg_sales_per_order\nFROM \n    store_sales\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN income_band ON customer_address.ca_income_band_sk = income_band.ib_income_band_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"customer_address\" does not have a column named \"ca_income_band_sk\"\n\nCandidate bindings: : \"ca_county\"\n\nLINE 10:     JOIN income_band ON customer_address.ca_income_band_sk = income_band.ib_income_...\n                                 ^",
+      "exec_time_ms": 0.4011669952888042,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year, \n    AVG(store_sales.ss_sales_price) AS avg_sales_per_order\nFROM \n    store_sales\nJOIN \n    customer ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    income_band ON customer_address.ca_income_band_sk = income_band.ib_income_band_sk\nJOIN \n    date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"customer_address\" does not have a column named \"ca_income_band_sk\"\n\nCandidate bindings: : \"ca_county\"\n\nLINE 13:     income_band ON customer_address.ca_income_band_sk = income_band.ib_income_...\n                            ^",
+      "exec_time_ms": 0.3162079956382513,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    ib.ib_lower_bound,\n    ib.ib_upper_bound,\n    d.d_year,\n    AVG(ss.ss_sales_price) AS avg_sales_per_order\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n    JOIN income_band ib ON ca.ca_income_band_sk = ib.ib_income_band_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    ib.ib_lower_bound,\n    ib.ib_upper_bound,\n    d.d_year;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"ca\" does not have a column named \"ca_income_band_sk\"\n\nCandidate bindings: : \"ca_county\"\n\nLINE 10:     JOIN income_band ib ON ca.ca_income_band_sk = ib.ib_income_band_sk\n                                    ^",
+      "exec_time_ms": 0.29133399948477745,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year, \n    AVG(store_sales.ss_sales_price) AS avg_sales_per_order\nFROM \n    store_sales\n    JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN income_band ON customer_address.ca_income_band_sk = income_band.ib_income_band_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    income_band.ib_lower_bound, \n    income_band.ib_upper_bound, \n    date_dim.d_year",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Table \"customer_address\" does not have a column named \"ca_income_band_sk\"\n\nCandidate bindings: : \"ca_county\"\n\nLINE 10:     JOIN income_band ON customer_address.ca_income_band_sk = income_band.ib_income_...\n                                 ^",
+      "exec_time_ms": 0.2908750029746443,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 3949.092832990573
+}

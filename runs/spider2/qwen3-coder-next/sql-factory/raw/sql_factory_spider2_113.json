@@ -1,0 +1,197 @@
+{
+  "task_id": "spider2_113",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        session,\n        action,\n        path,\n        search_type,\n        stamp,\n        MIN(CASE \n            WHEN action IN ('/detail', '/complete') THEN stamp \n            ELSE NULL \n        END) OVER (PARTITION BY session) AS first_conversion_stamp\n    FROM activity_log\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type\n    FROM pre_conversion_events\n    WHERE stamp < first_conversion_stamp\n      AND search_typ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "filtered_events",
+            "f",
+            "sc",
+            "pre_conversion_events",
+            "session_counts",
+            "min_counts",
+            "mc",
+            "activity_log"
+          ]
+        },
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        a1.session,\n        a1.path,\n        a1.search_type,\n        a1.stamp AS event_stamp,\n        (\n            SELECT MIN(a2.stamp)\n            FROM activity_log a2\n            WHERE a2.session = a1.session\n              AND (a2.action = '/detail' OR a2.action = '/complete')\n        ) AS conversion_stamp\n    FROM activity_log a1\n    WHERE a1.search_type IS NOT NULL\n      AND a1.search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,...",
+          "score": 1.1312905551550108,
+          "similarity_max": 0.5374188896899783,
+          "tables_used": [
+            "filtered_events",
+            "min_count",
+            "f",
+            "a1",
+            "pre_conversion_events",
+            "a2",
+            "m",
+            "activity_log"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        session,\n        action,\n        path,\n        search_type,\n        stamp,\n        MIN(CASE \n            WHEN action IN ('/detail', '/complete') THEN stamp \n            ELSE NULL \n        END) OVER (PARTITION BY session) AS first_conversion_stamp\n    FROM activity_log\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type\n    FROM pre_conversion_events\n    WHERE stamp < first_conversion_stamp\n      AND search_typ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "filtered_events",
+            "f",
+            "sc",
+            "pre_conversion_events",
+            "session_counts",
+            "min_counts",
+            "mc",
+            "activity_log"
+          ]
+        },
+        {
+          "sql": "WITH event_sequences AS (\n    SELECT \n        session,\n        stamp,\n        action,\n        path,\n        search_type,\n        SUM(CASE WHEN action IN ('/detail', '/complete') THEN 1 ELSE 0 END) \n            OVER (PARTITION BY session ORDER BY stamp, rowid ROWS UNBOUNDED PRECEDING) AS conversion_flag\n    FROM activity_log\n),\npre_conversion AS (\n    SELECT \n        session,\n        stamp,\n        path,\n        search_type\n    FROM event_sequences\n    WHERE conversion_flag = 0\n      AND search_t...",
+          "score": 1.1561934389140271,
+          "similarity_max": 0.5876131221719457,
+          "tables_used": [
+            "session_aggregates",
+            "pre_conversion",
+            "min_event_sessions",
+            "activity_log",
+            "pc",
+            "mes",
+            "event_sequences"
+          ]
+        },
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        a1.session,\n        a1.path,\n        a1.search_type,\n        a1.stamp AS event_stamp,\n        (\n            SELECT MIN(a2.stamp)\n            FROM activity_log a2\n            WHERE a2.session = a1.session\n              AND (a2.action = '/detail' OR a2.action = '/complete')\n        ) AS conversion_stamp\n    FROM activity_log a1\n    WHERE a1.search_type IS NOT NULL\n      AND a1.search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,...",
+          "score": 1.1312905551550108,
+          "similarity_max": 0.5374188896899783,
+          "tables_used": [
+            "filtered_events",
+            "min_count",
+            "f",
+            "a1",
+            "pre_conversion_events",
+            "a2",
+            "m",
+            "activity_log"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        session,\n        action,\n        path,\n        search_type,\n        stamp,\n        MIN(CASE \n            WHEN action IN ('/detail', '/complete') THEN stamp \n            ELSE NULL \n        END) OVER (PARTITION BY session) AS first_conversion_stamp\n    FROM activity_log\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type\n    FROM pre_conversion_events\n    WHERE stamp < first_conversion_stamp\n      AND search_typ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "filtered_events",
+            "f",
+            "sc",
+            "pre_conversion_events",
+            "session_counts",
+            "min_counts",
+            "mc",
+            "activity_log"
+          ]
+        },
+        {
+          "sql": "WITH event_sequences AS (\n    SELECT \n        session,\n        stamp,\n        action,\n        path,\n        search_type,\n        SUM(CASE WHEN action IN ('/detail', '/complete') THEN 1 ELSE 0 END) \n            OVER (PARTITION BY session ORDER BY stamp, rowid ROWS UNBOUNDED PRECEDING) AS conversion_flag\n    FROM activity_log\n),\npre_conversion AS (\n    SELECT \n        session,\n        stamp,\n        path,\n        search_type\n    FROM event_sequences\n    WHERE conversion_flag = 0\n      AND search_t...",
+          "score": 1.1561934389140271,
+          "similarity_max": 0.5876131221719457,
+          "tables_used": [
+            "session_aggregates",
+            "pre_conversion",
+            "min_event_sessions",
+            "activity_log",
+            "pc",
+            "mes",
+            "event_sequences"
+          ]
+        },
+        {
+          "sql": "WITH pre_conversion_events AS (\n    SELECT \n        a1.session,\n        a1.path,\n        a1.search_type,\n        a1.stamp AS event_stamp,\n        (\n            SELECT MIN(a2.stamp)\n            FROM activity_log a2\n            WHERE a2.session = a1.session\n              AND (a2.action = '/detail' OR a2.action = '/complete')\n        ) AS conversion_stamp\n    FROM activity_log a1\n    WHERE a1.search_type IS NOT NULL\n      AND a1.search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,...",
+          "score": 1.1312905551550108,
+          "similarity_max": 0.5374188896899783,
+          "tables_used": [
+            "filtered_events",
+            "min_count",
+            "f",
+            "a1",
+            "pre_conversion_events",
+            "a2",
+            "m",
+            "activity_log"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH pre_conversion_events AS (\n    SELECT \n        session,\n        action,\n        path,\n        search_type,\n        stamp,\n        MIN(CASE \n            WHEN action IN ('/detail', '/complete') THEN stamp \n            ELSE NULL \n        END) OVER (PARTITION BY session) AS first_conversion_stamp\n    FROM activity_log\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type\n    FROM pre_conversion_events\n    WHERE stamp < first_conversion_stamp\n      AND search_typ...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "filtered_events",
+        "f",
+        "sc",
+        "pre_conversion_events",
+        "session_counts",
+        "min_counts",
+        "mc",
+        "activity_log"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.63
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "task_id": "bird_736",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT superhero_name \nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute att ON ha.attribute_id = att.id\nWHERE a.alignment = 'bad' AND att.attribute_name = 'intelligence'\nORDER BY ha.attribute_value ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "att",
+            "superhero",
+            "s",
+            "ha",
+            "hero_attribute",
+            "attribute",
+            "alignment"
+          ]
+        },
+        {
+          "sql": "SELECT superhero_name\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'bad'\nORDER BY RANDOM()\nLIMIT 1;",
+          "score": 0.9544817927170868,
+          "similarity_max": 0.49103641456582636,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT superhero_name \nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute att ON ha.attribute_id = att.id\nWHERE a.alignment = 'bad' AND att.attribute_name = 'intelligence'\nORDER BY ha.attribute_value ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "att",
+            "superhero",
+            "s",
+            "ha",
+            "hero_attribute",
+            "attribute",
+            "alignment"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE a.attribute_name = 'intelligence'\nORDER BY CAST(ha.attribute_value AS INTEGER)\nLIMIT 1;",
+          "score": 0.9892857142857143,
+          "similarity_max": 0.6214285714285714,
+          "tables_used": [
+            "ha",
+            "a",
+            "hero_attribute",
+            "attribute",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT superhero_name\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'bad'\nORDER BY RANDOM()\nLIMIT 1;",
+          "score": 0.9544817927170868,
+          "similarity_max": 0.49103641456582636,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT superhero_name \nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute att ON ha.attribute_id = att.id\nWHERE a.alignment = 'bad' AND att.attribute_name = 'intelligence'\nORDER BY ha.attribute_value ASC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "att",
+            "superhero",
+            "s",
+            "ha",
+            "hero_attribute",
+            "attribute",
+            "alignment"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nWHERE a.attribute_name = 'intelligence'\nORDER BY CAST(ha.attribute_value AS INTEGER)\nLIMIT 1;",
+          "score": 0.9892857142857143,
+          "similarity_max": 0.6214285714285714,
+          "tables_used": [
+            "ha",
+            "a",
+            "hero_attribute",
+            "attribute",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT superhero_name\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nWHERE a.alignment = 'bad'\nORDER BY RANDOM()\nLIMIT 1;",
+          "score": 0.9544817927170868,
+          "similarity_max": 0.49103641456582636,
+          "tables_used": [
+            "a",
+            "superhero",
+            "alignment",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT superhero_name \nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute att ON ha.attribute_id = att.id\nWHERE a.alignment = 'bad' AND att.attribute_name = 'intelligence'\nORDER BY ha.attribute_value ASC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "a",
+        "att",
+        "superhero",
+        "s",
+        "ha",
+        "hero_attribute",
+        "attribute",
+        "alignment"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.17
+  }
+}

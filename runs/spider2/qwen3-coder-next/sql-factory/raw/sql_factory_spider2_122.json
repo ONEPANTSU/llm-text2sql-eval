@@ -1,0 +1,189 @@
+{
+  "task_id": "spider2_122",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nWHERE d.driver_id IN (\n    SELECT driver_id\n    FROM (\n        SELECT \n            driver_id,\n            SUM(CASE WHEN position_change < 0 THEN 1 ELSE 0 END) AS times_overtaken,\n            SUM(CASE WHEN position_change > 0 THEN 1 ELSE 0 END) AS times_overtaking\n        FROM (\n            SELECT \n                lp1.driver_id,\n                lp1.position - lp2.position AS position_change\n            FROM lap_positions l...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "lp1",
+            "drivers",
+            "lap_positions",
+            "lp2"
+          ]
+        },
+        {
+          "sql": "WITH overtaking_events AS (\n    SELECT \n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        CASE WHEN lp1.position < lp2.position THEN 1 ELSE 0 END AS was_overtaken,\n        CASE WHEN lp1.position > lp2.position THEN 1 ELSE 0 END AS did_overtake\n    FROM lap_positions lp1\n    JOIN lap_positions lp2 \n        ON lp1.race_id = lp2.race_id \n        AND lp1.driver_id = lp2.driver_id \n        AND lp1....",
+          "score": 1.0824542897327707,
+          "similarity_max": 0.6350914205344584,
+          "tables_used": [
+            "lp1",
+            "overtaking_events",
+            "drivers",
+            "driver_overtake_stats",
+            "lp2",
+            "d",
+            "dos",
+            "lap_positions"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nWHERE d.driver_id IN (\n    SELECT driver_id\n    FROM (\n        SELECT \n            driver_id,\n            SUM(CASE WHEN position_change < 0 THEN 1 ELSE 0 END) AS times_overtaken,\n            SUM(CASE WHEN position_change > 0 THEN 1 ELSE 0 END) AS times_overtaking\n        FROM (\n            SELECT \n                lp1.driver_id,\n                lp1.position - lp2.position AS position_change\n            FROM lap_positions l...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "lp1",
+            "drivers",
+            "lap_positions",
+            "lp2"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nJOIN (\n    SELECT \n        driver_id,\n        SUM(CASE WHEN pos_diff < 0 THEN 1 ELSE 0 END) AS overtaken_count,\n        SUM(CASE WHEN pos_diff > 0 THEN 1 ELSE 0 END) AS overtaking_count\n    FROM (\n        SELECT \n            lp1.driver_id,\n            lp1.position - lp2.position AS pos_diff\n        FROM lap_positions lp1\n        JOIN lap_positions lp2 \n            ON lp1.driver_id = lp2.driver_id \n            AND lp1.race...",
+          "score": 1.0937254901960785,
+          "similarity_max": 0.7125490196078431,
+          "tables_used": [
+            "d",
+            "lp1",
+            "drivers",
+            "lap_positions",
+            "lp2"
+          ]
+        },
+        {
+          "sql": "WITH overtaking_events AS (\n    SELECT \n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        CASE WHEN lp1.position < lp2.position THEN 1 ELSE 0 END AS was_overtaken,\n        CASE WHEN lp1.position > lp2.position THEN 1 ELSE 0 END AS did_overtake\n    FROM lap_positions lp1\n    JOIN lap_positions lp2 \n        ON lp1.race_id = lp2.race_id \n        AND lp1.driver_id = lp2.driver_id \n        AND lp1....",
+          "score": 1.0824542897327707,
+          "similarity_max": 0.6350914205344584,
+          "tables_used": [
+            "lp1",
+            "overtaking_events",
+            "drivers",
+            "driver_overtake_stats",
+            "lp2",
+            "d",
+            "dos",
+            "lap_positions"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nWHERE d.driver_id IN (\n    SELECT driver_id\n    FROM (\n        SELECT \n            driver_id,\n            SUM(CASE WHEN position_change < 0 THEN 1 ELSE 0 END) AS times_overtaken,\n            SUM(CASE WHEN position_change > 0 THEN 1 ELSE 0 END) AS times_overtaking\n        FROM (\n            SELECT \n                lp1.driver_id,\n                lp1.position - lp2.position AS position_change\n            FROM lap_positions l...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "d",
+            "lp1",
+            "drivers",
+            "lap_positions",
+            "lp2"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nJOIN (\n    SELECT \n        driver_id,\n        SUM(CASE WHEN pos_diff < 0 THEN 1 ELSE 0 END) AS overtaken_count,\n        SUM(CASE WHEN pos_diff > 0 THEN 1 ELSE 0 END) AS overtaking_count\n    FROM (\n        SELECT \n            lp1.driver_id,\n            lp1.position - lp2.position AS pos_diff\n        FROM lap_positions lp1\n        JOIN lap_positions lp2 \n            ON lp1.driver_id = lp2.driver_id \n            AND lp1.race...",
+          "score": 1.0937254901960785,
+          "similarity_max": 0.7125490196078431,
+          "tables_used": [
+            "d",
+            "lp1",
+            "drivers",
+            "lap_positions",
+            "lp2"
+          ]
+        },
+        {
+          "sql": "WITH overtaking_events AS (\n    SELECT \n        lp1.race_id,\n        lp1.driver_id,\n        lp1.lap,\n        lp1.position AS current_position,\n        lp2.position AS previous_position,\n        CASE WHEN lp1.position < lp2.position THEN 1 ELSE 0 END AS was_overtaken,\n        CASE WHEN lp1.position > lp2.position THEN 1 ELSE 0 END AS did_overtake\n    FROM lap_positions lp1\n    JOIN lap_positions lp2 \n        ON lp1.race_id = lp2.race_id \n        AND lp1.driver_id = lp2.driver_id \n        AND lp1....",
+          "score": 1.0824542897327707,
+          "similarity_max": 0.6350914205344584,
+          "tables_used": [
+            "lp1",
+            "overtaking_events",
+            "drivers",
+            "driver_overtake_stats",
+            "lp2",
+            "d",
+            "dos",
+            "lap_positions"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT d.forename || ' ' || d.surname AS full_name\nFROM drivers d\nWHERE d.driver_id IN (\n    SELECT driver_id\n    FROM (\n        SELECT \n            driver_id,\n            SUM(CASE WHEN position_change < 0 THEN 1 ELSE 0 END) AS times_overtaken,\n            SUM(CASE WHEN position_change > 0 THEN 1 ELSE 0 END) AS times_overtaking\n        FROM (\n            SELECT \n                lp1.driver_id,\n                lp1.position - lp2.position AS position_change\n            FROM lap_positions l...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "d",
+        "lp1",
+        "drivers",
+        "lap_positions",
+        "lp2"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such table: overtaking_analysis",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.67
+  }
+}

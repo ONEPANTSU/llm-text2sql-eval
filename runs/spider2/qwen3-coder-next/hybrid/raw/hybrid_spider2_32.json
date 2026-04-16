@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_32",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6390.6105420028325,
+  "execution_time_ms": 6.505041994387284,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS total_albums_sold\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    WHERE total_albums_sold = (SELECT MAX(total_albums_sold) FROM artist_sales)\n    ORDER BY ArtistId\n    LIMIT 1\n),\nbottom_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    WHERE total_albums_sold = (SELECT MIN(total_albums_sold) FROM artist_sales)\n    ORDER BY ArtistId\n    LIMIT 1\n),\ncustomer_spending AS (\n    SELECT \n        c.CustomerId,\n        SUM(i.UnitPrice * i.Quantity) AS total_spent\n    FROM customers c\n    JOIN invoices i ON c.CustomerId = i.CustomerId\n    JOIN invoice_items ii ON i.InvoiceId = ii.InvoiceId\n    JOIN albums a ON ii.AlbumId = a.AlbumId\n    WHERE a.ArtistId IN ((SELECT ArtistId FROM top_artist), (SELECT ArtistId FROM bottom_artist))\n    GROUP BY c.CustomerId\n),\ntop_artist_customers AS (\n    SELECT \n        cs.CustomerId,\n        cs.total_spent\n    FROM customer_spending cs\n    JOIN invoices i ON cs.CustomerId = i.CustomerId\n    JOIN invoice_items ii ON i.InvoiceId = ii.InvoiceId\n    JOIN albums a ON ii.AlbumId = a.AlbumId\n    WHERE a.ArtistId = (SELECT ArtistId FROM top_artist)\n),\nbottom_artist_customers AS (\n    SELECT \n        cs.CustomerId,\n        cs.total_spent\n    FROM customer_spending cs\n    JOIN invoices i ON cs.CustomerId = i.CustomerId\n    JOIN invoice_items ii ON i.InvoiceId = ii.InvoiceId\n    JOIN albums a ON ii.AlbumId = a.AlbumId\n    WHERE a.ArtistId = (SELECT ArtistId FROM bottom_artist)\n),\ntop_avg AS (\n    SELECT AVG(total_spent) AS avg_top\n    FROM top_artist_customers\n),\nbottom_avg AS (\n    SELECT AVG(total_spent) AS avg_bottom\n    FROM bottom_artist_customers\n)\nSELECT ABS(COALESCE(t.avg_top, 0) - COALESCE(b.avg_bottom, 0))\nFROM top_avg t, bottom_avg b;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 1.9305829919176176,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS album_count\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count DESC, ArtistId ASC\n    LIMIT 1\n),\nbottom_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count ASC, ArtistId ASC\n    LIMIT 1\n)\nSELECT \n    ABS(\n        (SELECT AVG(album_count) FROM artist_sales WHERE ArtistId = (SELECT ArtistId FROM top_artist))\n        -\n        (SELECT AVG(album_count) FROM artist_sales WHERE ArtistId = (SELECT ArtistId FROM bottom_artist))\n    ) AS abs_diff_avg_sales\nFROM top_artist;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6554159917868674,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS album_count\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_bottom_artists AS (\n    SELECT \n        ArtistId,\n        album_count,\n        ROW_NUMBER() OVER (ORDER BY album_count DESC, ArtistId ASC) AS top_rank,\n        ROW_NUMBER() OVER (ORDER BY album_count ASC, ArtistId ASC) AS bottom_rank\n    FROM artist_sales\n),\ntop_artist AS (\n    SELECT ArtistId AS top_artist_id\n    FROM top_bottom_artists\n    WHERE top_rank = 1\n),\nbottom_artist AS (\n    SELECT ArtistId AS bottom_artist_id\n    FROM top_bottom_artists\n    WHERE bottom_rank = 1\n),\ntop_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT top_artist_id FROM top_artist)\n),\nbottom_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT bottom_artist_id FROM bottom_artist)\n),\ntop_customers AS (\n    SELECT DISTINCT il.CustomerId, SUM(il.UnitPrice * il.Quantity) AS total_spent_top\n    FROM invoice_items il\n    JOIN top_albums ta ON il.AlbumId = ta.AlbumId\n    GROUP BY il.CustomerId\n),\nbottom_customers AS (\n    SELECT DISTINCT il.CustomerId, SUM(il.UnitPrice * il.Quantity) AS total_spent_bottom\n    FROM invoice_items il\n    JOIN bottom_albums ba ON il.AlbumId = ba.AlbumId\n    GROUP BY il.CustomerId\n),\ntop_avg AS (\n    SELECT AVG(total_spent_top) AS avg_top\n    FROM top_customers\n),\nbottom_avg AS (\n    SELECT AVG(total_spent_bottom) AS avg_bottom\n    FROM bottom_customers\n)\nSELECT ABS(t.avg_top - b.avg_bottom)\nFROM top_avg t, bottom_avg b;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: invoice_items",
+      "exec_time_ms": 0.36708299012389034,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS album_count\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count DESC, ArtistId ASC\n    LIMIT 1\n),\nbottom_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count ASC, ArtistId ASC\n    LIMIT 1\n),\ntop_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT ArtistId FROM top_artist)\n),\nbottom_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT ArtistId FROM bottom_artist)\n),\ncustomer_spending AS (\n    SELECT \n        il.CustomerId,\n        CASE \n            WHEN il.AlbumId IN (SELECT AlbumId FROM top_albums) THEN (SELECT ArtistId FROM top_artist)\n            WHEN il.AlbumId IN (SELECT AlbumId FROM bottom_albums) THEN (SELECT ArtistId FROM bottom_artist)\n        END AS ArtistId,\n        SUM(il.UnitPrice * il.Quantity) AS TotalSpent\n    FROM invoice_items il\n    WHERE il.AlbumId IN (SELECT AlbumId FROM top_albums) \n       OR il.AlbumId IN (SELECT AlbumId FROM bottom_albums)\n    GROUP BY il.CustomerId, ArtistId\n),\ntop_avg AS (\n    SELECT AVG(TotalSpent) AS avg_top\n    FROM customer_spending\n    WHERE ArtistId = (SELECT ArtistId FROM top_artist)\n),\nbottom_avg AS (\n    SELECT AVG(TotalSpent) AS avg_bottom\n    FROM customer_spending\n    WHERE ArtistId = (SELECT ArtistId FROM bottom_artist)\n)\nSELECT \n    ABS(COALESCE((SELECT avg_top FROM top_avg), 0) - COALESCE((SELECT avg_bottom FROM bottom_avg), 0)) AS difference\n;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: invoice_items",
+      "exec_time_ms": 0.29424999956972897,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS album_count\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count DESC, ArtistId ASC\n    LIMIT 1\n),\nbottom_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count ASC, ArtistId ASC\n    LIMIT 1\n),\ntop_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT ArtistId FROM top_artist)\n),\nbottom_albums AS (\n    SELECT AlbumId\n    FROM albums\n    WHERE ArtistId = (SELECT ArtistId FROM bottom_artist)\n),\ncustomer_top_sales AS (\n    SELECT \n        il.CustomerId,\n        SUM(il.Quantity * il.UnitPrice) AS total_spent_top\n    FROM invoice_lines il\n    INNER JOIN top_albums ta ON il.AlbumId = ta.AlbumId\n    GROUP BY il.CustomerId\n),\ncustomer_bottom_sales AS (\n    SELECT \n        il.CustomerId,\n        SUM(il.Quantity * il.UnitPrice) AS total_spent_bottom\n    FROM invoice_lines il\n    INNER JOIN bottom_albums ba ON il.AlbumId = ba.AlbumId\n    GROUP BY il.CustomerId\n),\ntop_avg AS (\n    SELECT AVG(total_spent_top) AS avg_top\n    FROM customer_top_sales\n),\nbottom_avg AS (\n    SELECT AVG(total_spent_bottom) AS avg_bottom\n    FROM customer_bottom_sales\n)\nSELECT \n    ABS(t.avg_top - b.avg_bottom) AS absolute_difference\nFROM top_avg t, bottom_avg b;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: invoice_lines",
+      "exec_time_ms": 0.24983299954328686,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "WITH artist_sales AS (\n    SELECT \n        ArtistId,\n        COUNT(*) AS album_count\n    FROM albums\n    GROUP BY ArtistId\n),\ntop_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count DESC, ArtistId ASC\n    LIMIT 1\n),\nbottom_artist AS (\n    SELECT ArtistId\n    FROM artist_sales\n    ORDER BY album_count ASC, ArtistId ASC\n    LIMIT 1\n)\nSELECT \n    ABS(\n        (SELECT AVG(album_count) FROM artist_sales WHERE ArtistId = (SELECT ArtistId FROM top_artist))\n        -\n        (SELECT AVG(album_count) FROM artist_sales WHERE ArtistId = (SELECT ArtistId FROM bottom_artist))\n    ) AS abs_diff_avg_sales\nFROM top_artist;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6397.283874990535
+}

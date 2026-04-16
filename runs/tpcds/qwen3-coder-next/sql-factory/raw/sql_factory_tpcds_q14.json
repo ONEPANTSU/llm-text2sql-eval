@@ -1,0 +1,67 @@
+{
+  "task_id": "tpcds_q14",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH cross_items AS (\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM store_sales ss\n    JOIN item i ON ss.ss_item_sk = i.i_item_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERSECT\n    SELECT DISTINCT i_brand_id, i_class_id, i_category_id\n    FROM catalog_sales cs\n    JOIN item i ON cs.cs_item_sk = i.i_item_sk\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE d.d_year BETWEEN 1999 AND 2001\n    INTERS...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_runtime_fail": 1,
+      "pred_parse_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_runtime_fail",
+        "message_head": "Not implemented Error: Correlated IN/ANY/ALL with multiple columns not yet suppo",
+        "count": 1
+      },
+      {
+        "error_type": "pred_parse_fail",
+        "message_head": "Parser Error: syntax error at or near \"GROUP\"\n\nLINE 89: GROUP BY ROLLUP(channel,",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 36.04
+  }
+}

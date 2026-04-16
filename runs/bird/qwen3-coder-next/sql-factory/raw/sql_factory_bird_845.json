@@ -1,0 +1,161 @@
+{
+  "task_id": "bird_845",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > (\n    SELECT AVG(height_cm) * 0.8\n    FROM superhero\n);",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "superpower",
+            "sp",
+            "hero_power",
+            "hp",
+            "s",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > (\n    SELECT AVG(height_cm) * 0.8\n    FROM superhero\n);",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "superpower",
+            "sp",
+            "hero_power",
+            "hp",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "WITH avg_height AS (\n    SELECT AVG(height_cm) * 0.8 AS threshold\n    FROM superhero\n)\nSELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nCROSS JOIN avg_height ah\nWHERE s.height_cm > ah.threshold;",
+          "score": 1.052217741935484,
+          "similarity_max": 0.6955645161290323,
+          "tables_used": [
+            "superpower",
+            "hero_power",
+            "avg_height",
+            "superhero",
+            "s",
+            "ah",
+            "sp",
+            "hp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > (\n    SELECT AVG(height_cm) * 0.8\n    FROM superhero\n);",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "superpower",
+            "sp",
+            "hero_power",
+            "hp",
+            "s",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "WITH avg_height AS (\n    SELECT AVG(height_cm) * 0.8 AS threshold\n    FROM superhero\n)\nSELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nCROSS JOIN avg_height ah\nWHERE s.height_cm > ah.threshold;",
+          "score": 1.052217741935484,
+          "similarity_max": 0.6955645161290323,
+          "tables_used": [
+            "superpower",
+            "hero_power",
+            "avg_height",
+            "superhero",
+            "s",
+            "ah",
+            "sp",
+            "hp"
+          ]
+        },
+        {
+          "sql": "WITH threshold_calc AS (\n    SELECT AVG(height_cm) * 0.8 AS threshold_height\n    FROM superhero\n)\nSELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nJOIN threshold_calc tc ON s.height_cm > tc.threshold_height;",
+          "score": 1.0209907834101382,
+          "similarity_max": 0.7580184331797235,
+          "tables_used": [
+            "superpower",
+            "hero_power",
+            "sp",
+            "superhero",
+            "s",
+            "threshold_calc",
+            "tc",
+            "hp"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > (\n    SELECT AVG(height_cm) * 0.8\n    FROM superhero\n);",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "superpower",
+        "sp",
+        "hero_power",
+        "hp",
+        "s",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 5.15
+  }
+}

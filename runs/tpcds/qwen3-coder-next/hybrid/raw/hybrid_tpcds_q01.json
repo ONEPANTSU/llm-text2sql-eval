@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q01",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8531.878958005109,
+  "execution_time_ms": 125.03450000076555,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH store_avg AS (\n    SELECT\n        sr.sr_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM (\n        SELECT\n            sr.sr_store_sk,\n            sr.sr_customer_sk,\n            SUM(sr.sr_return_amt) AS total_return_amt\n        FROM store_returns sr\n        JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n        JOIN store s ON sr.sr_store_sk = s.s_store_sk\n        WHERE d.d_year = 2000\n          AND s.s_state = 'TN'\n        GROUP BY sr.sr_store_sk, sr.sr_customer_sk\n    ) t\n    GROUP BY sr_store_sk\n),\nhigh_return_customers AS (\n    SELECT\n        c.c_customer_id,\n        sr.sr_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_sk, sr.sr_store_sk\n    HAVING SUM(sr.sr_return_amt) > 1.2 * (\n        SELECT avg_return_amt\n        FROM store_avg sa\n        WHERE sa.sr_store_sk = sr.sr_store_sk\n    )\n)\nSELECT c_customer_id\nFROM high_return_customers\nORDER BY c_customer_id\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced table \"sr\" not found!\nCandidate tables: \"t\"\n\nLINE 3:         sr.sr_store_sk,\n                ^",
+      "exec_time_ms": 32.27133399923332,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH store_avg AS (\n    SELECT \n        sr.sr_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM (\n        SELECT \n            sr.sr_store_sk,\n            sr.sr_customer_sk,\n            SUM(sr.sr_return_amt) AS total_return_amt\n        FROM store_returns sr\n        JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n        JOIN store s ON sr.sr_store_sk = s.s_store_sk\n        WHERE d.d_year = 2000\n          AND s.s_state = 'TN'\n        GROUP BY sr.sr_store_sk, sr.sr_customer_sk\n    ) AS customer_store_totals\n    GROUP BY sr_store_sk\n),\nhigh_return_customers AS (\n    SELECT \n        c.c_customer_id,\n        sr.sr_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    JOIN store_avg sa ON sr.sr_store_sk = sa.sr_store_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_id, sr.sr_store_sk, sa.avg_return_amt\n    HAVING SUM(sr.sr_return_amt) > 1.2 * sa.avg_return_amt\n)\nSELECT c_customer_id\nFROM high_return_customers\nORDER BY c_customer_id\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced table \"sr\" not found!\nCandidate tables: \"customer_store_totals\"\n\nLINE 3:         sr.sr_store_sk,\n                ^",
+      "exec_time_ms": 13.839042003382929,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH store_customer_returns AS (\n    SELECT \n        c.c_customer_sk,\n        c.c_customer_id,\n        s.s_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_sk, c.c_customer_id, s.s_store_sk\n),\nstore_averages AS (\n    SELECT \n        s_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM store_customer_returns\n    GROUP BY s_store_sk\n)\nSELECT \n    scr.c_customer_id\nFROM store_customer_returns scr\nJOIN store_averages sa ON scr.s_store_sk = sa.s_store_sk\nWHERE scr.total_return_amt > 1.2 * sa.avg_return_amt\nORDER BY scr.c_customer_id\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 30.90683299524244,
+      "result_signature": "989e3dc8c5284c844b4e5486648c3d3947ba1997357c147c781371a5289ecb00",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH store_return_totals AS (\n    SELECT \n        c.c_customer_sk,\n        c.c_customer_id,\n        s.s_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_sk, c.c_customer_id, s.s_store_sk\n),\nstore_avg_returns AS (\n    SELECT \n        s_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM store_return_totals\n    GROUP BY s_store_sk\n)\nSELECT \n    srt.c_customer_id\nFROM store_return_totals srt\nJOIN store_avg_returns sar ON srt.s_store_sk = sar.s_store_sk\nWHERE srt.total_return_amt > 1.2 * sar.avg_return_amt\nORDER BY srt.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.16333399922587,
+      "result_signature": "989e3dc8c5284c844b4e5486648c3d3947ba1997357c147c781371a5289ecb00",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH store_customer_totals AS (\n    SELECT \n        c.c_customer_sk,\n        c.c_customer_id,\n        s.s_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_sk, c.c_customer_id, s.s_store_sk\n),\nstore_averages AS (\n    SELECT \n        s_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM store_customer_totals\n    GROUP BY s_store_sk\n)\nSELECT \n    sct.c_customer_id\nFROM store_customer_totals sct\nJOIN store_averages sa ON sct.s_store_sk = sa.s_store_sk\nWHERE sct.total_return_amt > 1.2 * sa.avg_return_amt\nORDER BY sct.c_customer_id\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.316625005449168,
+      "result_signature": "989e3dc8c5284c844b4e5486648c3d3947ba1997357c147c781371a5289ecb00",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH store_customer_totals AS (\n    SELECT \n        c.c_customer_sk,\n        c.c_customer_id,\n        s.s_store_sk,\n        SUM(sr.sr_return_amt) AS total_return_amt\n    FROM store_returns sr\n    JOIN customer c ON sr.sr_customer_sk = c.c_customer_sk\n    JOIN store s ON sr.sr_store_sk = s.s_store_sk\n    JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk\n    WHERE d.d_year = 2000\n      AND s.s_state = 'TN'\n    GROUP BY c.c_customer_sk, c.c_customer_id, s.s_store_sk\n),\nstore_averages AS (\n    SELECT \n        s_store_sk,\n        AVG(total_return_amt) AS avg_return_amt\n    FROM store_customer_totals\n    GROUP BY s_store_sk\n)\nSELECT \n    sct.c_customer_id\nFROM store_customer_totals sct\nJOIN store_averages sa ON sct.s_store_sk = sa.s_store_sk\nWHERE sct.total_return_amt > 1.2 * sa.avg_return_amt\nORDER BY sct.c_customer_id\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "989e3dc8c5284c844b4e5486648c3d3947ba1997357c147c781371a5289ecb00": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8657.027124994784
+}

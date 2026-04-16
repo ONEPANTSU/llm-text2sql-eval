@@ -1,0 +1,128 @@
+{
+  "task_id": "bird_172",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id BETWEEN 1 AND 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id BETWEEN 1 AND 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE account_id BETWEEN 1 AND 10 \n  AND type = 'owner' OR (account_id BETWEEN 1 AND 10 AND type = 'disponent');",
+          "score": 0.724384236453202,
+          "similarity_max": 0.651231527093596,
+          "tables_used": [
+            "disp"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id >= 1 \n  AND account_id <= 10;",
+          "score": 0.6837662337662338,
+          "similarity_max": 0.7324675324675324,
+          "tables_used": [
+            "disp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id BETWEEN 1 AND 10;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE account_id BETWEEN 1 AND 10 \n  AND type = 'owner' OR (account_id BETWEEN 1 AND 10 AND type = 'disponent');",
+          "score": 0.724384236453202,
+          "similarity_max": 0.651231527093596,
+          "tables_used": [
+            "disp"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id >= 1 \n  AND account_id <= 10;",
+          "score": 0.6837662337662338,
+          "similarity_max": 0.7324675324675324,
+          "tables_used": [
+            "disp"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM disp \nWHERE type IN ('owner', 'disponent') \n  AND account_id BETWEEN 1 AND 10;",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.4
+  }
+}

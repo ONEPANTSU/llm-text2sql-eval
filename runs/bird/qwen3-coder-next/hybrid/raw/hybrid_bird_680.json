@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_680",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7665.125917003024,
+  "execution_time_ms": 647.3235829980695,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 203.3895839995239,
+      "result_signature": "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 109.41066600207705,
+      "result_signature": "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 113.86041600053431,
+      "result_signature": "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 119.94104200130096,
+      "result_signature": "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 100.09441599686397,
+      "result_signature": "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT AVG(posts.Score) AS average_score\nFROM posts\nJOIN users ON posts.OwnerUserId = users.Id\nWHERE users.DisplayName = 'Stephen Turner';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0c0f10e0ff4836ec5c515bde1adcaabba93fb765961c84897dcdc14bbd5cb96a": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8312.594541996077
+}

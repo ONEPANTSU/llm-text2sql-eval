@@ -1,0 +1,196 @@
+{
+  "task_id": "tpcds_q24",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2359.474124998087,
+  "execution_time_ms": 302.03925000387244,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT\n  c_customer_sk,\n  c_customer_id\nFROM customer\nJOIN catalog_sales ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN date_dim cat_date ON catalog_sales.cs_sold_date_sk = cat_date.d_date_sk\nJOIN store_sales ON store_sales.ss_customer_sk = customer.c_customer_sk\nJOIN date_dim store_date ON store_sales.ss_sold_date_sk = store_date.d_date_sk\nWHERE cat_date.d_year = store_date.d_year - 1\nORDER BY c_customer_sk\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 47.40141700312961,
+      "result_signature": "3576832a1eb90607a373dcf567214e13eba7ccb9e199497b3e7375dd578a1537",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT c.c_customer_sk, c.c_customer_id\nFROM customer c\nJOIN catalog_sales cs1 ON c.c_customer_sk = cs1.cs_bill_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON c.c_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY c.c_customer_sk, c.c_customer_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 34.895125005277805,
+      "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT\n    c.c_customer_sk,\n    c.c_customer_id\nFROM customer c\nJOIN catalog_sales cs1 ON c.c_customer_sk = cs1.cs_bill_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON c.c_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY c.c_customer_sk, c.c_customer_id\nHAVING COUNT(DISTINCT d1.d_year) >= 1 AND COUNT(DISTINCT d2.d_year) >= 1",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 35.179749989765696,
+      "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT\n    c_customer_sk,\n    c_customer_id\nFROM customer\nJOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year IN (\n    SELECT d_year\n    FROM date_dim\n)\nAND EXISTS (\n    SELECT 1\n    FROM store_sales\n    JOIN date_dim ds ON store_sales.ss_sold_date_sk = ds.d_date_sk\n    WHERE store_sales.ss_customer_sk = customer.c_customer_sk\n    AND ds.d_year = date_dim.d_year + 1\n)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 140.02458400500473,
+      "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT\n  c.c_customer_sk,\n  c.c_customer_id\nFROM customer c\nJOIN catalog_sales cs1 ON c.c_customer_sk = cs1.cs_bill_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON c.c_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY c.c_customer_sk, c.c_customer_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 31.15783300017938,
+      "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT\n  c.c_customer_sk,\n  c.c_customer_id\nFROM customer c\nJOIN catalog_sales cs1 ON c.c_customer_sk = cs1.cs_bill_customer_sk\nJOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\nJOIN store_sales ss2 ON c.c_customer_sk = ss2.ss_customer_sk\nJOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\nWHERE d1.d_year = d2.d_year - 1\nGROUP BY c.c_customer_sk, c.c_customer_id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3576832a1eb90607a373dcf567214e13eba7ccb9e199497b3e7375dd578a1537": 1,
+        "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174": 6,
+        "031dfd8eb22dc7c61a1ff8392addb0e979f93b45c6ac3f2367c4e2064fc459af": 1,
+        "7153b63468fca0aa6e33a6d0604f08343c03d4ad0161304cdb56a4c1eefddc71": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 9082.96270800929,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT\n  c.c_customer_sk,\n  c.c_customer_id\nFROM customer c\nWHERE EXISTS (\n  SELECT 1\n  FROM catalog_sales cs\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  WHERE cs.cs_bill_customer_sk = c.c_customer_sk\n)\nAND EXISTS (\n  SELECT 1\n  FROM store_sales ss\n  JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n  WHERE ss.ss_customer_sk = c.c_customer_sk\n)\nAND EXISTS (\n  SELECT 1\n  FROM catalog_sales cs1\n  JOIN date_dim d1 ON cs1.cs_sold_date_sk = d1.d_date_sk\n  JOIN store_sales ss2 ON cs1.cs_bill_customer_sk = ss2.ss_customer_sk\n  JOIN date_dim d2 ON ss2.ss_sold_date_sk = d2.d_date_sk\n  WHERE cs1.cs_bill_customer_sk = c.c_customer_sk\n    AND d1.d_year = d2.d_year - 1\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 89.89750000182539,
+        "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT\n  c.c_customer_sk,\n  c.c_customer_id\nFROM customer c\nWHERE EXISTS (\n  SELECT 1\n  FROM catalog_sales cs\n  JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n  WHERE cs.cs_bill_customer_sk = c.c_customer_sk\n)\nAND EXISTS (\n  SELECT 1\n  FROM store_sales ss\n  JOIN date_dim d1 ON ss.ss_sold_date_sk = d1.d_date_sk\n  JOIN date_dim d2 ON d1.d_date_sk = d2.d_date_sk + 365\n  WHERE ss.ss_customer_sk = c.c_customer_sk\n)\nGROUP BY c.c_customer_sk, c.c_customer_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 41.05329199228436,
+        "result_signature": "031dfd8eb22dc7c61a1ff8392addb0e979f93b45c6ac3f2367c4e2064fc459af",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT\n    c.c_customer_sk,\n    c.c_customer_id\nFROM customer c\nWHERE EXISTS (\n    SELECT 1\n    FROM catalog_sales cs\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE cs.cs_bill_customer_sk = c.c_customer_sk\n)\nAND EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d1 ON ss.ss_sold_date_sk = d1.d_date_sk\n    JOIN date_dim d2 ON d1.d_year = d2.d_year - 1\n    JOIN catalog_sales cs2 ON cs2.cs_bill_customer_sk = c.c_customer_sk\n    JOIN date_dim d3 ON cs2.cs_sold_date_sk = d3.d_date_sk\n    WHERE d3.d_year = d2.d_year - 1\n      AND ss.ss_customer_sk = c.c_customer_sk\n)\nORDER BY c.c_customer_sk, c.c_customer_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1575.5055420013377,
+        "result_signature": "7153b63468fca0aa6e33a6d0604f08343c03d4ad0161304cdb56a4c1eefddc71",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT DISTINCT\n    c.c_customer_sk,\n    c.c_customer_id\nFROM customer c\nWHERE EXISTS (\n    SELECT 1\n    FROM catalog_sales cs\n    JOIN date_dim d ON cs.cs_sold_date_sk = d.d_date_sk\n    WHERE cs.cs_bill_customer_sk = c.c_customer_sk\n)\nAND EXISTS (\n    SELECT 1\n    FROM store_sales ss\n    JOIN date_dim d1 ON ss.ss_sold_date_sk = d1.d_date_sk\n    JOIN date_dim d2 ON d1.d_date_sk + 365 <= d2.d_date_sk AND d2.d_date_sk < d1.d_date_sk + 370\n    JOIN catalog_sales cs2 ON cs2.cs_bill_customer_sk = c.c_customer_sk\n    JOIN date_dim d3 ON cs2.cs_sold_date_sk = d3.d_date_sk\n    WHERE ss.ss_customer_sk = c.c_customer_sk\n    AND d3.d_year = d1.d_year - 1\n)\nORDER BY c.c_customer_sk, c.c_customer_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 375.22449999232776,
+        "result_signature": "4dca21e9be1cff035b30522431370157e3c55ff762d6139f8b14cb8bc3513174",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11744.583334002527
+}

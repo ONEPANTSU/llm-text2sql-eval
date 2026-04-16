@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_360",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7411.264417001803,
+  "execution_time_ms": 708.2885419949889,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 607.8389160029474,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 44.674834003672004,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.set = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"set\": syntax error",
+      "exec_time_ms": 0.16358400171156973,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code  -- This join is incorrect per schema; sets.code is not linked to cards.id\nWHERE cards.name = 'Angel of Mercy';\n\n-- Correction: sets are linked to cards via cards.set (not shown in allowed columns), but not in schema.\n-- Since sets.code is not joinable to cards directly per provided schema, and no column like cards.set exists in allowed columns,\n-- we cannot join sets directly.\n\nHowever, the prompt says \"cards are not directly linked to language but through table 'set'\", and \"add set in covered table\".\n\nRe-examining schema: sets table has code, cards table does NOT have a set column listed in allowed columns \u2014 but typically MTG data models have cards.set = sets.code.\n\nGiven the constraints and allowed columns only, and that sets.code is not joinable to cards, the only possible path is via foreign_data.uuid = cards.id, but that doesn't involve sets.\n\nBut the prompt insists on using 'set' table. Likely, in the real model, cards has a column like `set` (not listed in allowed columns), but since it's missing, and the instruction says \"rephrase your question\" and \"add set in covered table\", perhaps we assume:\n\n- cards has a column `set` (not in allowed columns list, but implied by context)\n- sets.code = cards.set\n\nSince the rules say \"Use only provided tables/columns\", and `cards.set` is not in allowed columns for cards, this is impossible.\n\nBut per the instruction: \"you need to add set in covered table & rephrase your question\", and the required joins include sets, we must assume that `cards` has a column `set` (even if not listed), or that `cards.id` is not the right join \u2014 but foreign_data.uuid = cards.id is fixed.\n\nAlternative interpretation: The set of a card is stored via the card's `uuid` linking to `sets`? Not in schema.\n\nGiven the constraints and the instruction, and that the only way to get set info is via sets.code = cards.set (assumed missing column), but since it's required, and the prompt says \"add set in covered table\", we assume the join is:\n\ncards.id = foreign_data.uuid  \nforeign_data.uuid = cards.id  \ncards.set = sets.code   -- even though `set` not in allowed columns, it's implied\n\nSo:\n\nSELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.set = sets.code\nWHERE cards.name = 'Angel of Mercy';\n\nBut `cards.set` is not in allowed columns.\n\nSince the schema says allowed columns for cards: id, name \u2014 no set \u2014 and the instruction says \"add set in covered table\", we interpret that as: assume the join exists via a hidden or assumed column `cards.set` \u2192 `sets.code`.\n\nGiven the strict rules, but the prompt's requirement, and that this is a known MTG schema where cards have a `set` field, we proceed with that assumption.\n\nThus:\n\nSELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.set = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "You can only execute one statement at a time.",
+      "exec_time_ms": 0.5028750019846484,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 51.41337499662768,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT DISTINCT foreign_data.language\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.id = sets.code\nWHERE cards.name = 'Angel of Mercy';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8119.653166002536
+}

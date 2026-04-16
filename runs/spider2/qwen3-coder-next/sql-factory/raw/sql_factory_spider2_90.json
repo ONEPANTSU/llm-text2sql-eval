@@ -1,0 +1,227 @@
+{
+  "task_id": "spider2_90",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(CASE WHEN wt.player_out IS NOT NULL THEN 1 END) AS total_wickets,\n        SUM(COALESCE(bs.runs_scored, 0)) AS total_runs_conceded_off_bat,\n        COUNT(bb.ball_id) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n    LEFT JOIN batsman_scored bs...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "batsman_scored",
+            "wt",
+            "best_bowling"
+          ]
+        },
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        b.bowler,\n        COUNT(w.player_out) AS wickets,\n        SUM(bs.runs_scored) AS runs_conceded,\n        COUNT(b.ball_id) AS balls_bowled\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n        AND b.striker = w.player_out\n    LEFT JOIN batsman_scored bs \n        ON b.match_id = bs.match_id \n        AND b...",
+          "score": 0.9071154531254282,
+          "similarity_max": 0.5857690937491437,
+          "tables_used": [
+            "w",
+            "b",
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "player",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "p",
+            "batsman_scored",
+            "best_bowling"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(CASE WHEN wt.player_out IS NOT NULL THEN 1 END) AS total_wickets,\n        SUM(COALESCE(bs.runs_scored, 0)) AS total_runs_conceded_off_bat,\n        COUNT(bb.ball_id) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n    LEFT JOIN batsman_scored bs...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "batsman_scored",
+            "wt",
+            "best_bowling"
+          ]
+        },
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        b.bowler,\n        COUNT(w.player_out) AS wickets,\n        SUM(bs.runs_scored) AS runs_conceded,\n        COUNT(b.ball_id) AS balls_bowled\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n        AND b.striker = w.player_out\n    LEFT JOIN batsman_scored bs \n        ON b.match_id = bs.match_id \n        AND b...",
+          "score": 0.9071154531254282,
+          "similarity_max": 0.5857690937491437,
+          "tables_used": [
+            "w",
+            "b",
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "player",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "p",
+            "batsman_scored",
+            "best_bowling"
+          ]
+        },
+        {
+          "sql": "WITH bowler_wickets AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(wt.player_out) AS total_wickets,\n        SUM(COALESCE(bs.runs_scored, 0)) AS total_runs_conceded_off_bat,\n        COUNT(*) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt \n        ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n        AND wt.kind_out != 'run out'\n    LEFT JOIN batsman_sco...",
+          "score": 0.9006870063832089,
+          "similarity_max": 0.6986259872335822,
+          "tables_used": [
+            "top_bowling",
+            "ball_by_ball",
+            "tb",
+            "bb",
+            "match_bowling",
+            "bowler_wickets",
+            "bs",
+            "bw",
+            "wicket_taken",
+            "batsman_scored",
+            "wt"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(CASE WHEN wt.player_out IS NOT NULL THEN 1 END) AS total_wickets,\n        SUM(COALESCE(bs.runs_scored, 0)) AS total_runs_conceded_off_bat,\n        COUNT(bb.ball_id) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n    LEFT JOIN batsman_scored bs...",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "batsman_scored",
+            "wt",
+            "best_bowling"
+          ]
+        },
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(wt.player_out) AS total_wickets,\n        SUM(bs.runs_scored) AS total_runs_conceded_off_bat,\n        COUNT(*) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt \n        ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n        AND wt.kind_out != 'run out'\n    LEFT JOIN batsman_scored bs \n       ...",
+          "score": 0.9638838475499093,
+          "similarity_max": 0.7722323049001814,
+          "tables_used": [
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "batsman_scored",
+            "wt",
+            "best_bowling"
+          ]
+        },
+        {
+          "sql": "WITH bowler_stats AS (\n    SELECT \n        b.bowler,\n        COUNT(w.player_out) AS wickets,\n        SUM(bs.runs_scored) AS runs_conceded,\n        COUNT(b.ball_id) AS balls_bowled\n    FROM ball_by_ball b\n    LEFT JOIN wicket_taken w \n        ON b.match_id = w.match_id \n        AND b.over_id = w.over_id \n        AND b.ball_id = w.ball_id \n        AND b.innings_no = w.innings_no\n        AND b.striker = w.player_out\n    LEFT JOIN batsman_scored bs \n        ON b.match_id = bs.match_id \n        AND b...",
+          "score": 0.9071154531254282,
+          "similarity_max": 0.5857690937491437,
+          "tables_used": [
+            "w",
+            "b",
+            "ball_by_ball",
+            "bb",
+            "match_bowler_stats",
+            "player",
+            "bs",
+            "wicket_taken",
+            "bowler_stats",
+            "p",
+            "batsman_scored",
+            "best_bowling"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH bowler_stats AS (\n    SELECT \n        bb.bowler AS player_id,\n        COUNT(CASE WHEN wt.player_out IS NOT NULL THEN 1 END) AS total_wickets,\n        SUM(COALESCE(bs.runs_scored, 0)) AS total_runs_conceded_off_bat,\n        COUNT(bb.ball_id) AS total_balls_bowled\n    FROM ball_by_ball bb\n    LEFT JOIN wicket_taken wt ON bb.match_id = wt.match_id \n        AND bb.over_id = wt.over_id \n        AND bb.ball_id = wt.ball_id \n        AND bb.innings_no = wt.innings_no\n    LEFT JOIN batsman_scored bs...",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ball_by_ball",
+        "bb",
+        "match_bowler_stats",
+        "bs",
+        "wicket_taken",
+        "bowler_stats",
+        "batsman_scored",
+        "wt",
+        "best_bowling"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: bi.runs_conceded",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.71
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "task_id": "bird_1251",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2251.719542000501,
+  "execution_time_ms": 16.26941600261489,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(IGG) FROM Laboratory)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.682916002115235,
+      "result_signature": "b229c3d5903cc642aadf4b90dfe53d2a1a5eb94adf616c2d6107bf0b5785fec1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(IGG) FROM Laboratory)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.675333002116531,
+      "result_signature": "b229c3d5903cc642aadf4b90dfe53d2a1a5eb94adf616c2d6107bf0b5785fec1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(IGG) FROM Laboratory);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3305830036406405,
+      "result_signature": "b229c3d5903cc642aadf4b90dfe53d2a1a5eb94adf616c2d6107bf0b5785fec1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(Laboratory.IGG) FROM Laboratory WHERE Laboratory.IGG IS NOT NULL);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.7478340052766725,
+      "result_signature": "b229c3d5903cc642aadf4b90dfe53d2a1a5eb94adf616c2d6107bf0b5785fec1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(IGG) FROM Laboratory) * 1.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.577915998699609,
+      "result_signature": "59887537acdb4c7724819bf510c916c894cd650851074b209f2b8a22f51c0fb6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT AVG(IGG) FROM Laboratory);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b229c3d5903cc642aadf4b90dfe53d2a1a5eb94adf616c2d6107bf0b5785fec1": 4,
+        "59887537acdb4c7724819bf510c916c894cd650851074b209f2b8a22f51c0fb6": 1,
+        "24227028f5989317de063afa979c6b34bfd191537b8fd2ed796a820bf47b2024": 2,
+        "cc90a6aa2590e51f82efc353a731a80974e65cdefc993e1371e8cb9adca28bdb": 1,
+        "6324932519342a3d7a6441fbe3984971cce089997eeb4e2c48e1a657aaa46daf": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 6691.122541000368,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > (SELECT MAX(IGG) * 0.9 FROM Laboratory WHERE IGG IS NOT NULL);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5.608584004221484,
+        "result_signature": "24227028f5989317de063afa979c6b34bfd191537b8fd2ed796a820bf47b2024",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT COUNT(Laboratory.ID) AS patient_count  \nFROM Laboratory  \nWHERE Laboratory.IGG > (SELECT MAX(IGG) * 0.85 FROM Laboratory);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.2574579998035915,
+        "result_signature": "24227028f5989317de063afa979c6b34bfd191537b8fd2ed796a820bf47b2024",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > 1400;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.3352500027394854,
+        "result_signature": "cc90a6aa2590e51f82efc353a731a80974e65cdefc993e1371e8cb9adca28bdb",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT COUNT(Laboratory.ID) AS patient_count\nFROM Laboratory\nWHERE Laboratory.IGG > 1500;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.2904999966849573,
+        "result_signature": "6324932519342a3d7a6441fbe3984971cce089997eeb4e2c48e1a657aaa46daf",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8959.282458003145
+}

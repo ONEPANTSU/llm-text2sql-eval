@@ -1,0 +1,258 @@
+{
+  "task_id": "bird_272",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN atom a1 ON b.molecule_id = a1.molecule_id\nJOIN atom a2 ON b.molecule_id = a2.molecule_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND a1.atom_id != a2.atom_id\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Cd', 'Cr', 'Hg', 'Ni', 'Pb', 'Se', 'Sb', 'Te')\n     ...",
+          "score": 0.85,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "a3",
+            "a7",
+            "a5",
+            "molecule",
+            "atom",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m7",
+            "m6",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN atom a1 ON b.molecule_id = a1.molecule_id\nJOIN atom a2 ON b.molecule_id = a2.molecule_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND a1.atom_id != a2.atom_id\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Cd', 'Cr', 'Hg', 'Ni', 'Pb', 'Se', 'Sb', 'Te')\n     ...",
+          "score": 0.85,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "a3",
+            "a7",
+            "a5",
+            "molecule",
+            "atom",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m7",
+            "m6",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND a1.molecule_id = m.molecule_id\n  AND a2.molecule_id = m.molecule_id\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.e...",
+          "score": 0.4737253100597151,
+          "similarity_max": 0.7525493798805696,
+          "tables_used": [
+            "connected",
+            "a",
+            "a3",
+            "a5",
+            "molecule",
+            "atom",
+            "c",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m6",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Cd', 'Cr', 'Hg', 'Ni', 'Pb', 'Se', 'Sb', 'Te')\n       OR...",
+          "score": 0.3354933954933954,
+          "similarity_max": 0.829013209013209,
+          "tables_used": [
+            "connected",
+            "a",
+            "a3",
+            "a7",
+            "a5",
+            "molecule",
+            "atom",
+            "c",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m7",
+            "m6",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN atom a1 ON b.molecule_id = a1.molecule_id\nJOIN atom a2 ON b.molecule_id = a2.molecule_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND m.label NOT LIKE '%carcinogen%'\nGROUP BY m.molecule_id\nHAVING COUNT(*) >= 1\nLIMIT 2;",
+          "score": 1.0659947684259117,
+          "similarity_max": 0.3680104631481766,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN atom a1 ON b.molecule_id = a1.molecule_id\nJOIN atom a2 ON b.molecule_id = a2.molecule_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND a1.atom_id != a2.atom_id\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.element IN ('As', 'Cd', 'Cr', 'Hg', 'Ni', 'Pb', 'Se', 'Sb', 'Te')\n     ...",
+          "score": 0.85,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "a",
+            "a3",
+            "a7",
+            "a5",
+            "molecule",
+            "atom",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m7",
+            "m6",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND a1.molecule_id = m.molecule_id\n  AND a2.molecule_id = m.molecule_id\n  AND m.molecule_id NOT IN (\n    SELECT DISTINCT m2.molecule_id\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE a.e...",
+          "score": 0.4737253100597151,
+          "similarity_max": 0.7525493798805696,
+          "tables_used": [
+            "connected",
+            "a",
+            "a3",
+            "a5",
+            "molecule",
+            "atom",
+            "c",
+            "bond",
+            "m4",
+            "a6",
+            "m5",
+            "m2",
+            "m",
+            "a1",
+            "a2",
+            "m3",
+            "a4",
+            "m6",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT m.molecule_id\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nJOIN atom a1 ON b.molecule_id = a1.molecule_id\nJOIN atom a2 ON b.molecule_id = a2.molecule_id\nWHERE b.bond_type = 'triple'\n  AND a1.element = 'C'\n  AND a2.element = 'C'\n  AND m.label NOT LIKE '%carcinogen%'\nGROUP BY m.molecule_id\nHAVING COUNT(*) >= 1\nLIMIT 2;",
+    "meta": {
+      "score": 1.0659947684259117,
+      "similarity_max": 0.3680104631481766,
+      "tables_used": [
+        "molecule",
+        "bond",
+        "m",
+        "b",
+        "a1",
+        "a2",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 2,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: m2.molecule_id",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 10.76
+  }
+}

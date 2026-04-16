@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_507",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN c.isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language = 'Brazil Portuguese';",
+          "score": 0.8818421052631579,
+          "similarity_max": 0.6363157894736842,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH sets_with_brazil_portuguese AS (\n    SELECT DISTINCT fd.uuid\n    FROM foreign_data fd\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN c.isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards c\nINNER JOIN sets_with_brazil_portuguese sbp ON c.uuid = sbp.uuid;",
+          "score": 1.1384615384615384,
+          "similarity_max": 0.7230769230769232,
+          "tables_used": [
+            "c",
+            "fd",
+            "sets_with_brazil_portuguese",
+            "foreign_data",
+            "sbp",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    ROUND(CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 2) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+          "score": 1.002421307506053,
+          "similarity_max": 0.7951573849878935,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH sets_with_brazil_portuguese AS (\n    SELECT DISTINCT fd.uuid\n    FROM foreign_data fd\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN c.isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards c\nINNER JOIN sets_with_brazil_portuguese sbp ON c.uuid = sbp.uuid;",
+          "score": 1.1384615384615384,
+          "similarity_max": 0.7230769230769232,
+          "tables_used": [
+            "c",
+            "fd",
+            "sets_with_brazil_portuguese",
+            "foreign_data",
+            "sbp",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    ROUND(CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 2) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+          "score": 1.002421307506053,
+          "similarity_max": 0.7951573849878935,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH cards_with_brazil_portuguese AS (\n    SELECT DISTINCT c.id, c.isOnlineOnly\n    FROM cards c\n    INNER JOIN foreign_data fd ON c.uuid = fd.uuid\n    WHERE fd.language = 'Brazil Portuguese'\n)\nSELECT \n    CAST(SUM(CASE WHEN isOnlineOnly = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage_online_only\nFROM cards_with_brazil_portuguese;",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "foreign_data",
+        "fd",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 43.72
+  }
+}

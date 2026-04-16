@@ -1,0 +1,194 @@
+{
+  "task_id": "spider2_50",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6974.48245799751,
+  "execution_time_ms": 24.13183299358934,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_customers_per_month AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        positive_customer_count,\n        avg_balance,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count DESC) AS rank_high,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count ASC) AS rank_low\n    FROM positive_customers_per_month\n)\nSELECT \n    (SELECT avg_balance FROM ranked_months WHERE rank_high = 1) - \n    (SELECT avg_balance FROM ranked_months WHERE rank_low = 1) AS difference\nFROM ranked_months\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.541584002552554,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(\n            CASE \n                WHEN txn_type = 'deposit' THEN txn_amount\n                WHEN txn_type = 'withdrawal' THEN -txn_amount\n                ELSE 0\n            END\n        ) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_customers_per_month AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance_positive_customers\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nextreme_months AS (\n    SELECT \n        month,\n        positive_customer_count,\n        avg_balance_positive_customers,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count DESC) AS desc_rank,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count ASC) AS asc_rank\n    FROM positive_customers_per_month\n)\nSELECT \n    (SELECT avg_balance_positive_customers FROM extreme_months WHERE desc_rank = 1) - \n    (SELECT avg_balance_positive_customers FROM extreme_months WHERE asc_rank = 1) AS difference\nFROM extreme_months\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.041832995018922,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nextremes AS (\n    SELECT \n        month,\n        positive_customer_count,\n        avg_balance,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count DESC) AS rn_desc,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count ASC) AS rn_asc\n    FROM positive_counts\n)\nSELECT \n    (SELECT avg_balance FROM extremes WHERE rn_desc = 1) - \n    (SELECT avg_balance FROM extremes WHERE rn_asc = 1) AS difference\nFROM extremes\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.49733299238141626,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(\n            CASE \n                WHEN txn_type = 'deposit' THEN txn_amount\n                WHEN txn_type = 'withdrawal' THEN -txn_amount\n                ELSE 0\n            END\n        ) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        positive_customer_count,\n        avg_balance,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count DESC) AS desc_rank,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count ASC) AS asc_rank\n    FROM positive_counts\n),\ntop_bottom_months AS (\n    SELECT \n        MAX(CASE WHEN desc_rank = 1 THEN avg_balance END) AS highest_avg_balance,\n        MAX(CASE WHEN asc_rank = 1 THEN avg_balance END) AS lowest_avg_balance\n    FROM ranked_months\n)\nSELECT \n    highest_avg_balance - lowest_avg_balance AS difference\nFROM top_bottom_months;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5322080105543137,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_customer_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customers,\n        AVG(month_end_balance) AS avg_balance_positive_customers\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nhighest_positive AS (\n    SELECT \n        month,\n        avg_balance_positive_customers\n    FROM positive_customer_counts\n    ORDER BY positive_customers DESC, month ASC\n    LIMIT 1\n),\nlowest_positive AS (\n    SELECT \n        month,\n        avg_balance_positive_customers\n    FROM positive_customer_counts\n    ORDER BY positive_customers ASC, month ASC\n    LIMIT 1\n)\nSELECT \n    h.avg_balance_positive_customers - l.avg_balance_positive_customers AS difference\nFROM highest_positive h, lowest_positive l;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.43562499922700226,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(\n            CASE \n                WHEN txn_type = 'deposit' THEN txn_amount\n                WHEN txn_type = 'withdrawal' THEN -txn_amount\n                ELSE 0\n            END\n        ) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        positive_customer_count,\n        avg_balance,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count DESC) AS desc_rank,\n        ROW_NUMBER() OVER (ORDER BY positive_customer_count ASC) AS asc_rank\n    FROM positive_counts\n),\ntop_bottom_months AS (\n    SELECT \n        MAX(CASE WHEN desc_rank = 1 THEN avg_balance END) AS highest_avg_balance,\n        MAX(CASE WHEN asc_rank = 1 THEN avg_balance END) AS lowest_avg_balance\n    FROM ranked_months\n)\nSELECT \n    highest_avg_balance - lowest_avg_balance AS difference\nFROM top_bottom_months;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 4327.285750012379,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\nmonthly_stats AS (\n    SELECT \n        month,\n        COUNT(*) FILTER (WHERE month_end_balance > 0) AS positive_customers,\n        AVG(CASE WHEN month_end_balance > 0 THEN month_end_balance END) AS avg_balance_positive_customers\n    FROM monthly_balances\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        positive_customers,\n        avg_balance_positive_customers,\n        ROW_NUMBER() OVER (ORDER BY positive_customers DESC, month ASC) AS rank_highest,\n        ROW_NUMBER() OVER (ORDER BY positive_customers ASC, month ASC) AS rank_lowest\n    FROM monthly_stats\n)\nSELECT \n    MAX(CASE WHEN rank_highest = 1 THEN avg_balance_positive_customers END) -\n    MAX(CASE WHEN rank_lowest = 1 THEN avg_balance_positive_customers END) AS difference\nFROM ranked_months\nWHERE rank_highest = 1 OR rank_lowest = 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.0401660003699362,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n      AND txn_type IN ('deposit', 'withdrawal')\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nextremes AS (\n    SELECT \n        month,\n        avg_balance,\n        ROW_NUMBER() OVER (ORDER BY positive_count DESC, month ASC) AS rn_high,\n        ROW_NUMBER() OVER (ORDER BY positive_count ASC, month ASC) AS rn_low\n    FROM positive_counts\n)\nSELECT \n    MAX(CASE WHEN rn_high = 1 THEN avg_balance END) -\n    MAX(CASE WHEN rn_low = 1 THEN avg_balance END) AS difference\nFROM extremes;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.7685000018682331,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        avg_balance,\n        RANK() OVER (ORDER BY positive_customer_count DESC) AS desc_rank,\n        RANK() OVER (ORDER BY positive_customer_count ASC) AS asc_rank\n    FROM positive_counts\n)\nSELECT \n    (SELECT avg_balance FROM ranked_months WHERE desc_rank = 1) - \n    (SELECT avg_balance FROM ranked_months WHERE asc_rank = 1) AS difference\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.242916001705453,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE txn_date LIKE '2020%'\n      AND txn_type IN ('deposit', 'withdrawal')\n    GROUP BY customer_id, strftime('%m', txn_date)\n),\npositive_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n    WHERE month_end_balance > 0\n    GROUP BY month\n),\nranked_months AS (\n    SELECT \n        month,\n        avg_balance,\n        RANK() OVER (ORDER BY positive_customer_count DESC) AS rank_high,\n        RANK() OVER (ORDER BY positive_customer_count ASC) AS rank_low\n    FROM positive_counts\n)\nSELECT \n    (SELECT avg_balance FROM ranked_months WHERE rank_high = 1) - \n    (SELECT avg_balance FROM ranked_months WHERE rank_low = 1) AS difference\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.6416249962057918,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 11326.053625001805
+}

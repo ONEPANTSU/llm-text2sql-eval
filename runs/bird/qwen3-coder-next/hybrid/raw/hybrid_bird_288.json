@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_288",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4157.226874995104,
+  "execution_time_ms": 2.1264169990899973,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.molecule_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.atom_id = 'TR001_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2249159990460612,
+      "result_signature": "084a2b4cdc578b8bfe71314dc9a25fa1c813080901877252ed27774bb13b920a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.molecule_id\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.atom_id = 'TR001_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.23741699988022447,
+      "result_signature": "084a2b4cdc578b8bfe71314dc9a25fa1c813080901877252ed27774bb13b920a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT 'Carcinogenic' AS result\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.atom_id = 'TR001_1'\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.20833400049014017,
+      "result_signature": "822afbf66e87c77c52768a67839c7da1485aef9dadb8d8be633b2b950e401270",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT molecule.molecule_id FROM atom JOIN molecule ON atom.molecule_id = molecule.molecule_id WHERE atom.atom_id = 'TR001_1';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1917080007842742,
+      "result_signature": "084a2b4cdc578b8bfe71314dc9a25fa1c813080901877252ed27774bb13b920a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT 'unknown' AS carcinogenic_status;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.11579100100789219,
+      "result_signature": "a3ace70ec005f219342b01459629885aa5124ffe216b71f948d580ee48497f9c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT molecule.molecule_id FROM atom JOIN molecule ON atom.molecule_id = molecule.molecule_id WHERE atom.atom_id = 'TR001_1';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "084a2b4cdc578b8bfe71314dc9a25fa1c813080901877252ed27774bb13b920a": 3,
+        "822afbf66e87c77c52768a67839c7da1485aef9dadb8d8be633b2b950e401270": 1,
+        "a3ace70ec005f219342b01459629885aa5124ffe216b71f948d580ee48497f9c": 2
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1364.1267079947283,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT 'unknown' AS carcinogenic_status",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.5470830001286231,
+        "result_signature": "a3ace70ec005f219342b01459629885aa5124ffe216b71f948d580ee48497f9c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5523.570833000122
+}

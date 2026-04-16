@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_1206",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1876.0733749950305,
+  "execution_time_ms": 13.63541699538473,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT Date\nFROM Laboratory\nWHERE ID = 48473 AND GOT > (SELECT MAX(CASE WHEN GOT > 40 THEN 40 END) FROM Laboratory WHERE ID = 48473)\n-- Note: Since normal range for GOT is not explicitly stored, and assuming >40 is abnormal per typical clinical norms\n-- This query finds dates where GOT exceeds typical upper limit (40 U/L) for patient 48473",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6564170000492595,
+      "result_signature": "ab381aa2a156fd9628244ef7dc87fa7b343e8e687da0208374c23f1f274742f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Laboratory.Date\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Laboratory.ID = '48473' AND Laboratory.GOT > 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3663750030682422,
+      "result_signature": "ab381aa2a156fd9628244ef7dc87fa7b343e8e687da0208374c23f1f274742f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (SELECT MAX(GOT) FROM Laboratory WHERE ID = 48473 GROUP BY ID HAVING COUNT(*) = 1)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1642079951125197,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (SELECT MAX(CASE WHEN GOT IS NOT NULL THEN GOT END) FROM Laboratory WHERE ID != 48473)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.455042003537528,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (SELECT MAX(GOT) FROM Laboratory WHERE ID != 48473)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.755541998136323,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (SELECT MAX(GOT) FROM Laboratory WHERE ID = 48473 GROUP BY ID HAVING COUNT(*) = 1)",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ab381aa2a156fd9628244ef7dc87fa7b343e8e687da0208374c23f1f274742f7": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3,
+        "e6c91f7df0ad2a057125e9330fc3b465fcdccbd4c458d2a8badda1d0a88c8835": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1563.424458996451,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (\n    SELECT AVG(GOT) \n    FROM Laboratory \n    WHERE ID = 48473\n)",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.38962500548223034,
+        "result_signature": "e6c91f7df0ad2a057125e9330fc3b465fcdccbd4c458d2a8badda1d0a88c8835",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT Date \nFROM Laboratory \nWHERE ID = 48473 AND GOT > (SELECT AVG(GOT) FROM Laboratory WHERE ID = 48473)",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.23916699865367264,
+        "result_signature": "e6c91f7df0ad2a057125e9330fc3b465fcdccbd4c458d2a8badda1d0a88c8835",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3453.224875003798
+}

@@ -28,8 +28,9 @@ data/raw/
 data/bird/__MACOSX/
 data/tpcds/*.db.bak.*
 
-# Run outputs
-runs/
+# Run outputs (committed; excluding temp/working dirs)
+runs_fresh/
+runs_tmp/
 
 # Databases
 *.sqlite

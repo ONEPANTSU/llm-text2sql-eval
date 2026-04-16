@@ -1,0 +1,150 @@
+{
+  "task_id": "bird_875",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT * FROM seasons WHERE year = (SELECT year FROM races WHERE raceId = 901);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "seasons",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT s.year, s.url\nFROM seasons s\nJOIN races r ON s.year = r.year\nWHERE r.raceId = 901;",
+          "score": 1.0,
+          "similarity_max": 0.4,
+          "tables_used": [
+            "r",
+            "seasons",
+            "races",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT * FROM seasons WHERE year = (SELECT year FROM races WHERE raceId = 901);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "seasons",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT s.year, s.url\nFROM seasons s\nJOIN races r ON s.year = r.year\nWHERE r.raceId = 901;",
+          "score": 1.0,
+          "similarity_max": 0.4,
+          "tables_used": [
+            "r",
+            "seasons",
+            "races",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT year, url\nFROM seasons\nWHERE year = (SELECT year FROM races WHERE raceId = 901);",
+          "score": 0.7350000000000001,
+          "similarity_max": 0.73,
+          "tables_used": [
+            "seasons",
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT * FROM seasons WHERE year = (SELECT year FROM races WHERE raceId = 901);",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "seasons",
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT s.year, s.url\nFROM seasons s\nJOIN races r ON s.year = r.year\nWHERE r.raceId = 901;",
+          "score": 1.0,
+          "similarity_max": 0.4,
+          "tables_used": [
+            "r",
+            "seasons",
+            "races",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT year FROM races WHERE raceId = 901;",
+          "score": 0.7637362637362638,
+          "similarity_max": 0.5725274725274725,
+          "tables_used": [
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT * FROM seasons WHERE year = (SELECT year FROM races WHERE raceId = 901);",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "seasons",
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.99
+  }
+}

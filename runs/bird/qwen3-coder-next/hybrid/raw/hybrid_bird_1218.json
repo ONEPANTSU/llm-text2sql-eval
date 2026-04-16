@@ -1,0 +1,154 @@
+{
+  "task_id": "bird_1218",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1930.584000001545,
+  "execution_time_ms": 24.740834000112955,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN L.UA > (SELECT UA FROM Laboratory ORDER BY UA LIMIT 1 OFFSET (SELECT COUNT(*) FROM Laboratory)/2) THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.60987500124611,
+      "result_signature": "79ee8524d5f8a60784408aff0664021045441e09f4beaeaa36f0f5e363e19aeb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (COUNT(CASE WHEN L.UA > (SELECT UA FROM Laboratory LIMIT 1) THEN 1 END) * 100.0 / COUNT(*)) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3167500039562583,
+      "result_signature": "d0ce0ceb1440b78edcb66222d4c97be4dd72782c0b46de8bee9dce5a97a94b54",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN L.UA > (SELECT UA FROM Laboratory LIMIT 1 OFFSET 0) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8680000066524372,
+      "result_signature": "d0ce0ceb1440b78edcb66222d4c97be4dd72782c0b46de8bee9dce5a97a94b54",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN L.UA > (SELECT UA FROM Laboratory WHERE UA IS NOT NULL ORDER BY UA LIMIT 1) THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F' AND L.UA IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.882959000999108,
+      "result_signature": "d129f43ec2532401ac39be9b11bb5c94c058353d8d300d629d6657ce58c63c23",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    (COUNT(CASE WHEN L.UA > (SELECT UA FROM Laboratory LIMIT 1) THEN 1 END) * 100.0 / COUNT(*)) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8049999998765998,
+      "result_signature": "d0ce0ceb1440b78edcb66222d4c97be4dd72782c0b46de8bee9dce5a97a94b54",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    (COUNT(CASE WHEN L.UA > (SELECT UA FROM Laboratory LIMIT 1) THEN 1 END) * 100.0 / COUNT(*)) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "79ee8524d5f8a60784408aff0664021045441e09f4beaeaa36f0f5e363e19aeb": 1,
+        "d0ce0ceb1440b78edcb66222d4c97be4dd72782c0b46de8bee9dce5a97a94b54": 3,
+        "d129f43ec2532401ac39be9b11bb5c94c058353d8d300d629d6657ce58c63c23": 1,
+        "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 4709.361999994144,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN L.UA > (SELECT MAX(UA) * 0.9 FROM Laboratory WHERE UA IS NOT NULL) THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE P.SEX = 'F';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.6863749992335215,
+        "result_signature": "c752b96f9e20964ab7cf627f2998e2673f6852298fd52deb2e2e0f094a518877",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6664.785125001799
+}

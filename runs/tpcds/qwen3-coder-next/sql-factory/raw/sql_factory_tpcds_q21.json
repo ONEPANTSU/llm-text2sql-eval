@@ -1,0 +1,177 @@
+{
+  "task_id": "tpcds_q21",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    w_warehouse_name,\n    i_item_id,\n    inv_before,\n    inv_after\nFROM (\n    SELECT \n        w_warehouse_name,\n        i_item_id,\n        SUM(CASE WHEN d_date < '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_before,\n        SUM(CASE WHEN d_date >= '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_after\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "inventory",
+            "item"
+          ]
+        },
+        {
+          "sql": "SELECT \n    w.w_warehouse_name,\n    i.i_item_id,\n    SUM(CASE WHEN d.d_date < '2000-03-11' THEN inv.inv_quantity_on_hand ELSE 0 END) AS inv_before,\n    SUM(CASE WHEN d.d_date >= '2000-03-11' THEN inv.inv_quantity_on_hand ELSE 0 END) AS inv_after\nFROM \n    inventory inv\nJOIN \n    warehouse w ON inv.inv_warehouse_sk = w.w_warehouse_sk\nJOIN \n    item i ON inv.inv_item_sk = i.i_item_sk\nJOIN \n    date_dim d ON inv.inv_date_sk = d.d_date_sk\nWHERE \n    i.i_current_price BETWEEN 0.99 AND 1.49\n    AND d....",
+          "score": 0.8779575596816976,
+          "similarity_max": 0.6440848806366047,
+          "tables_used": [
+            "inv",
+            "date_dim",
+            "inventory",
+            "d",
+            "w",
+            "warehouse",
+            "i",
+            "item"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    w_warehouse_name,\n    i_item_id,\n    inv_before,\n    inv_after\nFROM (\n    SELECT \n        w_warehouse_name,\n        i_item_id,\n        SUM(CASE WHEN d_date < '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_before,\n        SUM(CASE WHEN d_date >= '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_after\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "inventory",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH filtered_inventory AS (\n    SELECT\n        w_warehouse_name,\n        i_item_id,\n        d_date,\n        inv_quantity_on_hand\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim ON inventory.inv_date_sk = date_dim.d_date_sk\n    WHERE item.i_current_price BETWEEN 0.99 AND 1.49\n      AND date_dim.d_date BETWEEN '2000-02-10' AND '2000-04-10'\n),\naggregated AS (\n    SELECT\n        ...",
+          "score": 1.0795661063153112,
+          "similarity_max": 0.7408677873693775,
+          "tables_used": [
+            "aggregated",
+            "item",
+            "date_dim",
+            "inventory",
+            "filtered_inventory"
+          ]
+        },
+        {
+          "sql": "WITH inv_summary AS (\n    SELECT \n        w.w_warehouse_name,\n        i.i_item_id,\n        d.d_date,\n        inv.inv_quantity_on_hand\n    FROM \n        inventory inv\n    JOIN \n        warehouse w ON inv.inv_warehouse_sk = w.w_warehouse_sk\n    JOIN \n        item i ON inv.inv_item_sk = i.i_item_sk\n    JOIN \n        date_dim d ON inv.inv_date_sk = d.d_date_sk\n    WHERE \n        i.i_current_price BETWEEN 0.99 AND 1.49\n        AND d.d_date BETWEEN '2000-02-10' AND '2000-04-10'\n),\naggregated AS (\n    ...",
+          "score": 0.9118208955223881,
+          "similarity_max": 0.7763582089552239,
+          "tables_used": [
+            "aggregated",
+            "inv_summary",
+            "inv",
+            "date_dim",
+            "inventory",
+            "d",
+            "w",
+            "warehouse",
+            "i",
+            "item"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    w_warehouse_name,\n    i_item_id,\n    inv_before,\n    inv_after\nFROM (\n    SELECT \n        w_warehouse_name,\n        i_item_id,\n        SUM(CASE WHEN d_date < '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_before,\n        SUM(CASE WHEN d_date >= '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_after\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim...",
+          "score": 1.3499999999999999,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "date_dim",
+            "inventory",
+            "item"
+          ]
+        },
+        {
+          "sql": "WITH filtered_inventory AS (\n    SELECT\n        w_warehouse_name,\n        i_item_id,\n        d_date,\n        inv_quantity_on_hand\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim ON inventory.inv_date_sk = date_dim.d_date_sk\n    WHERE item.i_current_price BETWEEN 0.99 AND 1.49\n      AND date_dim.d_date BETWEEN '2000-02-10' AND '2000-04-10'\n),\naggregated AS (\n    SELECT\n        ...",
+          "score": 1.0795661063153112,
+          "similarity_max": 0.7408677873693775,
+          "tables_used": [
+            "aggregated",
+            "item",
+            "date_dim",
+            "inventory",
+            "filtered_inventory"
+          ]
+        },
+        {
+          "sql": "WITH inv_summary AS (\n    SELECT \n        w.w_warehouse_name,\n        i.i_item_id,\n        d.d_date,\n        inv.inv_quantity_on_hand\n    FROM \n        inventory inv\n    JOIN \n        warehouse w ON inv.inv_warehouse_sk = w.w_warehouse_sk\n    JOIN \n        item i ON inv.inv_item_sk = i.i_item_sk\n    JOIN \n        date_dim d ON inv.inv_date_sk = d.d_date_sk\n    WHERE \n        i.i_current_price BETWEEN 0.99 AND 1.49\n        AND d.d_date BETWEEN '2000-02-10' AND '2000-04-10'\n),\naggregated AS (\n    ...",
+          "score": 0.9118208955223881,
+          "similarity_max": 0.7763582089552239,
+          "tables_used": [
+            "aggregated",
+            "inv_summary",
+            "inv",
+            "date_dim",
+            "inventory",
+            "d",
+            "w",
+            "warehouse",
+            "i",
+            "item"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    w_warehouse_name,\n    i_item_id,\n    inv_before,\n    inv_after\nFROM (\n    SELECT \n        w_warehouse_name,\n        i_item_id,\n        SUM(CASE WHEN d_date < '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_before,\n        SUM(CASE WHEN d_date >= '2000-03-11' THEN inv_quantity_on_hand ELSE 0 END) AS inv_after\n    FROM inventory\n    JOIN warehouse ON inventory.inv_warehouse_sk = warehouse.w_warehouse_sk\n    JOIN item ON inventory.inv_item_sk = item.i_item_sk\n    JOIN date_dim...",
+    "meta": {
+      "score": 1.3499999999999999,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "date_dim",
+        "inventory",
+        "item"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 70.38
+  }
+}

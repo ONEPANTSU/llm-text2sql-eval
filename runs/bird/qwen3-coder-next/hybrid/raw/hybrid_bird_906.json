@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_906",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2613.1135000032373,
+  "execution_time_ms": 19.25870899867732,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT races.name, results.points\nFROM drivers\nJOIN results ON drivers.driverId = results.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton'\nORDER BY races.year ASC, races.round ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.193875000462867,
+      "result_signature": "74c158a5f34ec282307b7df69b09b791dc6e2d30018bace1184e2e380891855c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT races.name, races.date, results.points\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON races.raceId = results.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton'\nORDER BY races.year ASC, races.round ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2828750045155175,
+      "result_signature": "a24abee5c4ec8576c1e0c9c5a936a2a81c8b69626b1a19ff7a501c4bc20f138e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT races.name, results.points\nFROM drivers\nJOIN results ON results.driverId = drivers.driverId\nJOIN races ON races.raceId = results.raceId\nWHERE drivers.forename = 'Lewis' AND drivers.surname = 'Hamilton'\nORDER BY races.year ASC, races.round ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.1928749958751723,
+      "result_signature": "74c158a5f34ec282307b7df69b09b791dc6e2d30018bace1184e2e380891855c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT r.name, res.points\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.year ASC, r.round ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.200582999852486,
+      "result_signature": "74c158a5f34ec282307b7df69b09b791dc6e2d30018bace1184e2e380891855c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT r.name, res.points\nFROM drivers d\nJOIN results res ON d.driverId = res.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.year ASC, r.round ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.1406669950229116,
+      "result_signature": "74c158a5f34ec282307b7df69b09b791dc6e2d30018bace1184e2e380891855c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT r.name, res.points\nFROM drivers d\nJOIN results res ON d.driverId = res.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'\nORDER BY r.year ASC, r.round ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "74c158a5f34ec282307b7df69b09b791dc6e2d30018bace1184e2e380891855c": 4,
+        "a24abee5c4ec8576c1e0c9c5a936a2a81c8b69626b1a19ff7a501c4bc20f138e": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1521.2401250028051,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4153.68758400291
+}

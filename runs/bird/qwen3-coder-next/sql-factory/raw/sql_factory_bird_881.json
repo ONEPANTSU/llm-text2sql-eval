@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_881",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    CAST(SUM(CASE WHEN r.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    COUNT(CASE WHEN r.statusId = 1 THEN 1 END) * 1.0 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+          "score": 0.905835380835381,
+          "similarity_max": 0.7883292383292383,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    CAST(SUM(CASE WHEN r.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    ROUND(\n        CAST(SUM(CASE WHEN r.position IS NOT NULL AND r.position != 'R' AND r.position != 'D' AND r.position != 'E' AND r.position != 'F' AND r.position != 'W' THEN 1 ELSE 0 END) AS REAL) / COUNT(*),\n        4\n    ) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname\nHAVING COUNT(*) > 0;",
+          "score": 0.9967464114832536,
+          "similarity_max": 0.6065071770334928,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    COUNT(CASE WHEN r.statusId = 1 THEN 1 END) * 1.0 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+          "score": 0.905835380835381,
+          "similarity_max": 0.7883292383292383,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    CAST(SUM(CASE WHEN r.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    ROUND(\n        CAST(SUM(CASE WHEN r.position IS NOT NULL AND r.position != 'R' AND r.position != 'D' AND r.position != 'E' AND r.position != 'F' AND r.position != 'W' THEN 1 ELSE 0 END) AS REAL) / COUNT(*),\n        4\n    ) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname\nHAVING COUNT(*) > 0;",
+          "score": 0.9967464114832536,
+          "similarity_max": 0.6065071770334928,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    ROUND(\n        1.0 * SUM(CASE WHEN r.positionOrder IS NOT NULL THEN 1 ELSE 0 END) / COUNT(*),\n        4\n    ) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname\nORDER BY completion_rate DESC;",
+          "score": 0.9515822784810127,
+          "similarity_max": 0.6968354430379746,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "ra",
+            "races",
+            "results"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    d.driverId,\n    d.forename,\n    d.surname,\n    CAST(SUM(CASE WHEN r.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_rate\nFROM races ra\nJOIN results r ON ra.raceId = r.raceId\nJOIN drivers d ON r.driverId = d.driverId\nWHERE ra.date = '1983-07-16'\nGROUP BY d.driverId, d.forename, d.surname;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "drivers",
+        "d",
+        "ra",
+        "races",
+        "results"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 9.69
+  }
+}

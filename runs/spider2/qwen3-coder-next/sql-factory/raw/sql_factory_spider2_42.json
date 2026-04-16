@@ -1,0 +1,66 @@
+{
+  "task_id": "spider2_42",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH city_dates AS (\n    SELECT DISTINCT\n        city_name,\n        date\n    FROM cities_currencies cc\n    JOIN cities_countries cco ON cc.country_code_2 = cco.country_code_2\n    JOIN cities c ON cco.country_id = c.country_id\n    WHERE cc.country_code_2 = 'cn'\n      AND date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ndate_groups AS (\n    SELECT\n        city_name,\n        date,\n        julianday(date) - ROW_NUMBER() OVER (PARTITION BY city_name ORDER BY date) AS grp\n    FROM city_dates\n),\nstreaks A...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "misuse of window function row_number()",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such function: LEFT",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.95
+  }
+}

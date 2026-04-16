@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_6",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5281.882124996628,
+  "execution_time_ms": 14.06387500173878,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POW(SIN((a2.coordinates[1] - a1.coordinates[1]) * 0.0174532925 / 2), 2) +\n                    COS(a1.coordinates[1] * 0.0174532925) * COS(a2.coordinates[1] * 0.0174532925) *\n                    POW(SIN((a2.coordinates[0] - a1.coordinates[0]) * 0.0174532925 / 2), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city < a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, city2,\n        CASE \n            WHEN avg_distance < 1000 THEN 0\n            WHEN avg_distance < 2000 THEN 1000\n            WHEN avg_distance < 3000 THEN 2000\n            WHEN avg_distance < 4000 THEN 3000\n            WHEN avg_distance < 5000 THEN 4000\n            WHEN avg_distance < 6000 THEN 5000\n            ELSE 6000\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count)\nFROM range_counts;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"[1]\": syntax error",
+      "exec_time_ms": 1.0645419970387593,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POW(SIN((a2.coordinates[1] - a1.coordinates[1]) * 0.0174532925 / 2), 2) +\n                    COS(a1.coordinates[1] * 0.0174532925) * \n                    COS(a2.coordinates[1] * 0.0174532925) * \n                    POW(SIN((a2.coordinates[0] - a1.coordinates[0]) * 0.0174532925 / 2), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city < a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, \n        city2, \n        avg_distance,\n        CASE \n            WHEN avg_distance < 1000 THEN '0-999'\n            WHEN avg_distance < 2000 THEN '1000-1999'\n            WHEN avg_distance < 3000 THEN '2000-2999'\n            WHEN avg_distance < 4000 THEN '3000-3999'\n            WHEN avg_distance < 5000 THEN '4000-4999'\n            WHEN avg_distance < 6000 THEN '5000-5999'\n            ELSE '6000+'\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT distance_range, COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count)\nFROM range_counts;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"[1]\": syntax error",
+      "exec_time_ms": 0.4060829960508272,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POW(\n                        SIN(\n                            (RADIANS(a2.coordinates[1]) - RADIANS(a1.coordinates[1])) / 2\n                        )\n                    , 2) +\n                    COS(RADIANS(a1.coordinates[1])) * COS(RADIANS(a2.coordinates[1])) *\n                    POW(\n                        SIN(\n                            (RADIANS(a2.coordinates[0]) - RADIANS(a1.coordinates[0])) / 2\n                        )\n                    , 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city < a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, \n        city2, \n        avg_distance,\n        CASE \n            WHEN avg_distance < 1000 THEN '0-999'\n            WHEN avg_distance < 2000 THEN '1000-1999'\n            WHEN avg_distance < 3000 THEN '2000-2999'\n            WHEN avg_distance < 4000 THEN '3000-3999'\n            WHEN avg_distance < 5000 THEN '4000-4999'\n            WHEN avg_distance < 6000 THEN '5000-5999'\n            ELSE '6000+'\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT pair_count\nFROM range_counts\nORDER BY pair_count ASC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"[1]\": syntax error",
+      "exec_time_ms": 0.5101249989820644,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POWER(SIN((a2.coordinates[1] - a1.coordinates[1]) * 3.14159265358979 / 360), 2) +\n                    COS(a1.coordinates[1] * 3.14159265358979 / 180) * \n                    COS(a2.coordinates[1] * 3.14159265358979 / 180) * \n                    POWER(SIN((a2.coordinates[0] - a1.coordinates[0]) * 3.14159265358979 / 360), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city <> a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, \n        city2, \n        avg_distance,\n        CASE \n            WHEN avg_distance < 1000 THEN '0-999'\n            WHEN avg_distance < 2000 THEN '1000-1999'\n            WHEN avg_distance < 3000 THEN '2000-2999'\n            WHEN avg_distance < 4000 THEN '3000-3999'\n            WHEN avg_distance < 5000 THEN '4000-4999'\n            WHEN avg_distance < 6000 THEN '5000-5999'\n            ELSE '6000+'\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count) \nFROM range_counts;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"[1]\": syntax error",
+      "exec_time_ms": 0.2753750013653189,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POW(SIN((a2.coordinates[1] - a1.coordinates[1]) * 3.14159265358979 / 360), 2) +\n                    COS(a1.coordinates[1] * 3.14159265358979 / 180) * \n                    COS(a2.coordinates[1] * 3.14159265358979 / 180) * \n                    POW(SIN((a2.coordinates[0] - a1.coordinates[0]) * 3.14159265358979 / 360), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city <> a2.city\n    GROUP BY LEAST(a1.city, a2.city), GREATEST(a1.city, a2.city)\n),\ndistance_ranges AS (\n    SELECT \n        city1,\n        city2,\n        avg_distance,\n        CASE \n            WHEN avg_distance < 1000 THEN '0-999'\n            WHEN avg_distance < 2000 THEN '1000-1999'\n            WHEN avg_distance < 3000 THEN '2000-2999'\n            WHEN avg_distance < 4000 THEN '3000-3999'\n            WHEN avg_distance < 5000 THEN '4000-4999'\n            WHEN avg_distance < 6000 THEN '5000-5999'\n            ELSE '6000+'\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count) \nFROM range_counts;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"[1]\": syntax error",
+      "exec_time_ms": 0.346208005794324,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "near \"[1]\": syntax error",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POWER(SIN((CAST(SUBSTR(a2.coordinates, INSTR(a2.coordinates, ',') + 1) AS REAL) - CAST(SUBSTR(a1.coordinates, INSTR(a1.coordinates, ',') + 1) AS REAL)) * 0.0174532925 / 2), 2) +\n                    COS(CAST(SUBSTR(a1.coordinates, INSTR(a1.coordinates, ',') + 1) AS REAL) * 0.0174532925) * \n                    COS(CAST(SUBSTR(a2.coordinates, INSTR(a2.coordinates, ',') + 1) AS REAL) * 0.0174532925) *\n                    POWER(SIN((CAST(SUBSTR(a2.coordinates, 1, INSTR(a2.coordinates, ',') - 1) AS REAL) - CAST(SUBSTR(a1.coordinates, 1, INSTR(a1.coordinates, ',') - 1) AS REAL)) * 0.0174532925 / 2), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city < a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, city2,\n        CASE \n            WHEN avg_distance < 1000 THEN 0\n            WHEN avg_distance < 2000 THEN 1000\n            WHEN avg_distance < 3000 THEN 2000\n            WHEN avg_distance < 4000 THEN 3000\n            WHEN avg_distance < 5000 THEN 4000\n            WHEN avg_distance < 6000 THEN 5000\n            ELSE 6000\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count)\nFROM range_counts;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such function: LEAST",
+        "exec_time_ms": 0.8592919912189245,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH city_pairs AS (\n    SELECT \n        LEAST(a1.city, a2.city) AS city1,\n        GREATEST(a1.city, a2.city) AS city2,\n        AVG(\n            6371 * 2 * ASIN(\n                SQRT(\n                    POWER(SIN((CAST(SUBSTR(a2.coordinates, INSTR(a2.coordinates, ',') + 1) AS REAL) - CAST(SUBSTR(a1.coordinates, INSTR(a1.coordinates, ',') + 1) AS REAL)) * 0.0174532925 / 2), 2) +\n                    COS(CAST(SUBSTR(a1.coordinates, INSTR(a1.coordinates, ',') + 1) AS REAL) * 0.0174532925) * \n                    COS(CAST(SUBSTR(a2.coordinates, INSTR(a2.coordinates, ',') + 1) AS REAL) * 0.0174532925) *\n                    POWER(SIN((CAST(SUBSTR(a2.coordinates, 1, INSTR(a2.coordinates, ',') - 1) AS REAL) - CAST(SUBSTR(a1.coordinates, 1, INSTR(a1.coordinates, ',') - 1) AS REAL)) * 0.0174532925 / 2), 2)\n                )\n            )\n        ) AS avg_distance\n    FROM flights f\n    JOIN airports_data a1 ON f.departure_airport = a1.airport_code\n    JOIN airports_data a2 ON f.arrival_airport = a2.airport_code\n    WHERE a1.city < a2.city\n    GROUP BY a1.city, a2.city\n),\ndistance_ranges AS (\n    SELECT \n        city1, city2,\n        CASE \n            WHEN avg_distance < 1000 THEN 0\n            WHEN avg_distance < 2000 THEN 1000\n            WHEN avg_distance < 3000 THEN 2000\n            WHEN avg_distance < 4000 THEN 3000\n            WHEN avg_distance < 5000 THEN 4000\n            WHEN avg_distance < 6000 THEN 5000\n            ELSE 6000\n        END AS distance_range\n    FROM city_pairs\n),\nrange_counts AS (\n    SELECT \n        distance_range,\n        COUNT(*) AS pair_count\n    FROM distance_ranges\n    GROUP BY distance_range\n)\nSELECT MIN(pair_count)\nFROM range_counts;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such function: LEAST",
+        "exec_time_ms": 1.1819170031230897,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 14513.662124998518
+}

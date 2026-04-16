@@ -1,0 +1,137 @@
+{
+  "task_id": "spider2_70",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7916.354667002452,
+  "execution_time_ms": 7.286791995284148,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH daily_volume AS (\n    SELECT \n        ticker,\n        txn_date,\n        SUM(\n            CASE \n                WHEN quantity LIKE '%K' THEN CAST(REPLACE(quantity, 'K', '') AS REAL) * 1000\n                WHEN quantity LIKE '%M' THEN CAST(REPLACE(quantity, 'M', '') AS REAL) * 1000000\n                WHEN quantity = '-' THEN 0\n                ELSE CAST(quantity AS REAL)\n            END\n        ) AS total_volume\n    FROM bitcoin_transactions\n    WHERE txn_date >= '2021-08-01' AND txn_date <= '2021-08-10'\n    GROUP BY ticker, txn_date\n),\nvolume_with_prev AS (\n    SELECT \n        ticker,\n        txn_date,\n        total_volume,\n        LAG(total_volume) OVER (PARTITION BY ticker ORDER BY txn_date) AS prev_volume\n    FROM daily_volume\n)\nSELECT \n    ticker,\n    txn_date,\n    CASE \n        WHEN prev_volume IS NULL OR prev_volume = 0 THEN NULL\n        ELSE ROUND(((total_volume - prev_volume) / prev_volume) * 100, 2)\n    END AS pct_change\nFROM volume_with_prev\nORDER BY ticker, txn_date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.225041004247032,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "WITH daily_volume AS (\n    SELECT \n        ticker,\n        txn_date,\n        SUM(\n            CASE \n                WHEN quantity LIKE '%K' THEN CAST(REPLACE(quantity, 'K', '') AS REAL) * 1000\n                WHEN quantity LIKE '%M' THEN CAST(REPLACE(quantity, 'M', '') AS REAL) * 1000000\n                WHEN quantity = '-' THEN 0\n                ELSE CAST(quantity AS REAL)\n            END\n        ) AS total_volume\n    FROM bitcoin_transactions\n    WHERE txn_date >= '2021-08-01' AND txn_date <= '2021-08-10'\n    GROUP BY ticker, txn_date\n),\nvolume_with_prev AS (\n    SELECT \n        ticker,\n        txn_date,\n        total_volume,\n        LAG(total_volume) OVER (PARTITION BY ticker ORDER BY txn_date) AS prev_volume\n    FROM daily_volume\n)\nSELECT \n    ticker,\n    txn_date,\n    CASE \n        WHEN prev_volume IS NULL OR prev_volume = 0 THEN NULL\n        ELSE ROUND(((total_volume - prev_volume) / prev_volume) * 100, 2)\n    END AS pct_change\nFROM volume_with_prev\nORDER BY ticker, txn_date;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7923.741457998403
+}

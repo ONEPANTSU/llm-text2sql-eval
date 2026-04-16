@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_600",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2604.389499996614,
+  "execution_time_ms": 12.782999998307787,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    p.Id AS PostId, \n    p.Title, \n    p.Score, \n    p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217 OR pl.RelatedPostId = 61217;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.5738749947049655,
+      "result_signature": "d75302071316ad9c1b8360b1c48613e60f4c1c533eb528e1927075d9d29777e8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.Title, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217\n\nUNION\n\nSELECT p.Title, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.PostId = p.Id\nWHERE pl.RelatedPostId = 61217;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.244959003292024,
+      "result_signature": "aa63de5c8bc8c4eae1bfd9e2ac4e0dc3cd6e12f42ede59d345696996952ebe87",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.Id, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217 OR pl.RelatedPostId = 61217;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2696249978034757,
+      "result_signature": "c578b83916a28785d76e2ac152b143820db0b468d4f9435eaa72b3a6975988cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.Id, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217 OR pl.RelatedPostId = 61217;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6475830014096573,
+      "result_signature": "c578b83916a28785d76e2ac152b143820db0b468d4f9435eaa72b3a6975988cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.Id, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217 OR pl.RelatedPostId = 61217;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8132090006256476,
+      "result_signature": "c578b83916a28785d76e2ac152b143820db0b468d4f9435eaa72b3a6975988cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT p.Id, p.Score, p.ViewCount\nFROM postLinks pl\nJOIN posts p ON pl.RelatedPostId = p.Id\nWHERE pl.PostId = 61217 OR pl.RelatedPostId = 61217;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d75302071316ad9c1b8360b1c48613e60f4c1c533eb528e1927075d9d29777e8": 1,
+        "aa63de5c8bc8c4eae1bfd9e2ac4e0dc3cd6e12f42ede59d345696996952ebe87": 1,
+        "c578b83916a28785d76e2ac152b143820db0b468d4f9435eaa72b3a6975988cf": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1239.8799579968909,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3857.0808750009746
+}

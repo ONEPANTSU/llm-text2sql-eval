@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1437",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5986.676166001416,
+  "execution_time_ms": 14.573916996596381,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10' AND e.event_date <= '2019-11-19';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.6402499972609803,
+      "result_signature": "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10' AND e.event_date <= '2019-11-19';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3448329991661012,
+      "result_signature": "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10' AND e.event_date <= '2019-11-19';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7170829960377887,
+      "result_signature": "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM attendance a\nJOIN member m ON a.link_to_member = m.member_id\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10'\n  AND e.event_date <= '2019-11-19';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0861249975278042,
+      "result_signature": "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10' AND e.event_date <= '2019-11-19';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.06591700023273,
+      "result_signature": "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT m.first_name, m.last_name, a.link_to_event\nFROM member m\nJOIN attendance a ON m.member_id = a.link_to_member\nJOIN event e ON a.link_to_event = e.event_id\nWHERE e.event_date >= '2019-01-10' AND e.event_date <= '2019-11-19';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "07a5c2e1211592f81f05f530d2e5dcca60e434808ffa0bbc25e57ac6f563f504": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6001.45170900214
+}

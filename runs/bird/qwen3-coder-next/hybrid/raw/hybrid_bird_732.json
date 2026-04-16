@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_732",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8713.764958003594,
+  "execution_time_ms": 1.8625829980010167,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT publisher_name\nFROM publisher p\nJOIN superhero s ON p.id = s.publisher_id\nWHERE s.id = (\n    SELECT id\n    FROM superhero\n    ORDER BY height_cm ASC\n    LIMIT 1\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1180000001331791,
+      "result_signature": "f3eaf93b389df4cef6f8fbedd4edb0e9ddffac1dbadc77cfbcbd3090cc6cee8d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT publisher_name\nFROM publisher p\nJOIN superhero s ON p.id = s.publisher_id\nORDER BY s.id ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.16891700215637684,
+      "result_signature": "56e3a3149ed1e28cb764cf86cbca201e1117b7e8c13c1e421bce6d66c0c39807",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT publisher_name\nFROM publisher p\nJOIN superhero s ON p.id = s.publisher_id\nWHERE s.id = (\n    SELECT id\n    FROM superhero\n    ORDER BY height_cm ASC\n    LIMIT 1\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.1889160048449412,
+      "result_signature": "f3eaf93b389df4cef6f8fbedd4edb0e9ddffac1dbadc77cfbcbd3090cc6cee8d",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT publisher_name\nFROM publisher\nJOIN superhero ON publisher.id = superhero.publisher_id\nORDER BY superhero.id\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.13500000204658136,
+      "result_signature": "56e3a3149ed1e28cb764cf86cbca201e1117b7e8c13c1e421bce6d66c0c39807",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT publisher_name\nFROM publisher p\nJOIN superhero s ON p.id = s.publisher_id\nORDER BY s.id DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.13004199718125165,
+      "result_signature": "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT publisher_name\nFROM publisher\nJOIN superhero ON publisher.id = superhero.publisher_id\nORDER BY superhero.id\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f3eaf93b389df4cef6f8fbedd4edb0e9ddffac1dbadc77cfbcbd3090cc6cee8d": 2,
+        "56e3a3149ed1e28cb764cf86cbca201e1117b7e8c13c1e421bce6d66c0c39807": 3,
+        "ce1228c5f19d3a06e1b1b197bebea6ad000c16a32db699b151b0712b4307d150": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1187.7807499986375,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT publisher_name\nFROM publisher\nJOIN superhero ON publisher.id = superhero.publisher_id\nWHERE superhero.id = (\n    SELECT publisher_id\n    FROM superhero\n    ORDER BY id\n    LIMIT 1\n);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.33354200422763824,
+        "result_signature": "56e3a3149ed1e28cb764cf86cbca201e1117b7e8c13c1e421bce6d66c0c39807",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9903.43600000051
+}

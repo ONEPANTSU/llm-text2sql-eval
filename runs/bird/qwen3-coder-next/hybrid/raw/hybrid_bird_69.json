@@ -1,0 +1,180 @@
+{
+  "task_id": "bird_69",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1414.8324580019107,
+  "execution_time_ms": 64.55950000236044,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT schools.NCESDist\nFROM schools\nWHERE schools.SOC IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.92275000200607,
+      "result_signature": "7a798255e8873d63f241802ffb3b18d67b8ce2a8376e76809baf5597be9fc075",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL\n  AND SOCType = 'State Special Schools';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.836542000703048,
+      "result_signature": "b8fc26602d35d8c49049ec3e8ea10a4d2160ef3f6b7282e838dcb811fab2a860",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT schools.NCESDist\nFROM schools\nWHERE schools.SOC IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.479708997881971,
+      "result_signature": "7a798255e8873d63f241802ffb3b18d67b8ce2a8376e76809baf5597be9fc075",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.359791997761931,
+      "result_signature": "7a798255e8873d63f241802ffb3b18d67b8ce2a8376e76809baf5597be9fc075",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.24891700479202,
+      "result_signature": "7a798255e8873d63f241802ffb3b18d67b8ce2a8376e76809baf5597be9fc075",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "7a798255e8873d63f241802ffb3b18d67b8ce2a8376e76809baf5597be9fc075": 4,
+        "b8fc26602d35d8c49049ec3e8ea10a4d2160ef3f6b7282e838dcb811fab2a860": 4
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 1400.0976249953965,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL\n  AND SOCType IN ('State Special Schools');",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 11.734249994333368,
+        "result_signature": "b8fc26602d35d8c49049ec3e8ea10a4d2160ef3f6b7282e838dcb811fab2a860",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT NCESDist  \nFROM schools  \nWHERE SOC IS NOT NULL AND SOCType = 'State Special Schools';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 7.947792000777554,
+        "result_signature": "b8fc26602d35d8c49049ec3e8ea10a4d2160ef3f6b7282e838dcb811fab2a860",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT NCESDist\nFROM schools\nWHERE SOC IS NOT NULL AND SOCType = 'State Special Schools';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 6.707125001412351,
+        "result_signature": "b8fc26602d35d8c49049ec3e8ea10a4d2160ef3f6b7282e838dcb811fab2a860",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2879.599125000823
+}

@@ -1,0 +1,184 @@
+{
+  "task_id": "bird_1318",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "SELECT e.event_name\nFROM attendance a\nJOIN event e ON a.link_to_event = e.event_id\nJOIN member m ON a.link_to_member = m.member_id\nWHERE m.position = 'Student'\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 0.8954326923076924,
+          "similarity_max": 0.8091346153846153,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "WITH student_club_attendance AS (\n    SELECT e.event_id, e.event_name, COUNT(*) AS attendance_count\n    FROM event e\n    JOIN attendance a ON e.event_id = a.link_to_event\n    JOIN member m ON a.link_to_member = m.member_id\n    WHERE m.position = 'Student_Club'\n    GROUP BY e.event_id, e.event_name\n)\nSELECT event_name\nFROM student_club_attendance\nORDER BY attendance_count DESC\nLIMIT 1;",
+          "score": 1.1008225616921268,
+          "similarity_max": 0.6983548766157461,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event",
+            "student_club_attendance"
+          ]
+        },
+        {
+          "sql": "SELECT e.event_name\nFROM attendance a\nJOIN event e ON a.link_to_event = e.event_id\nJOIN member m ON a.link_to_member = m.member_id\nWHERE m.position = 'Student'\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 0.8954326923076924,
+          "similarity_max": 0.8091346153846153,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event"
+          ]
+        },
+        {
+          "sql": "WITH student_club_attendance AS (\n    SELECT e.event_id, e.event_name, COUNT(*) AS attendance_count\n    FROM event e\n    JOIN attendance a ON e.event_id = a.link_to_event\n    JOIN member m ON a.link_to_member = m.member_id\n    WHERE m.position = 'Student_Club'\n    GROUP BY e.event_id, e.event_name\n)\nSELECT event_name\nFROM student_club_attendance\nORDER BY attendance_count DESC\nLIMIT 1;",
+          "score": 1.1008225616921268,
+          "similarity_max": 0.6983548766157461,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event",
+            "student_club_attendance"
+          ]
+        },
+        {
+          "sql": "WITH student_club_events AS (\n    SELECT e.event_id, e.event_name, COUNT(a.link_to_member) AS attendance_count\n    FROM event e\n    INNER JOIN attendance a ON e.event_id = a.link_to_event\n    INNER JOIN member m ON a.link_to_member = m.member_id\n    WHERE m.position = 'Student_Club'\n    GROUP BY e.event_id, e.event_name\n)\nSELECT event_name\nFROM student_club_events\nORDER BY attendance_count DESC\nLIMIT 1;",
+          "score": 1.0379169755374351,
+          "similarity_max": 0.8241660489251297,
+          "tables_used": [
+            "attendance",
+            "member",
+            "a",
+            "m",
+            "e",
+            "event",
+            "student_club_events"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT e.event_name\nFROM event e\nJOIN attendance a ON e.event_id = a.link_to_event\nJOIN member m ON a.link_to_member = m.member_id\nGROUP BY e.event_id, e.event_name\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "attendance",
+        "member",
+        "a",
+        "m",
+        "e",
+        "event"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.11
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "task_id": "spider2_78",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2844.6173749980517,
+  "execution_time_ms": 4.181541997240856,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT state\n    FROM alien_data\n    GROUP BY state\n    HAVING COUNT(*) > 0\n    ORDER BY COUNT(*) DESC\n    LIMIT 10\n) AS top_10_states\nJOIN (\n    SELECT state, \n           AVG(age) AS avg_age,\n           SUM(CASE WHEN aggressive = 0 THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS friendly_pct,\n           SUM(CASE WHEN aggressive = 1 THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS hostile_pct\n    FROM alien_data\n    GROUP BY state\n) AS state_stats ON top_10_states.state = state_stats.state\nWHERE state_stats.avg_age > 200 \n  AND state_stats.friendly_pct > state_stats.hostile_pct;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4432910102186725,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT alien_data.state, \n           COUNT(*) AS alien_count, \n           AVG(alien_data.age) AS avg_age, \n           SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count, \n           SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\n    FROM alien_data\n    GROUP BY alien_data.state\n    ORDER BY alien_count DESC\n    LIMIT 10\n) AS top_states\nWHERE friendly_count > hostile_count AND avg_age > 200;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7159999950090423,
+      "result_signature": "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(alien_data.state) AS alien_count\nFROM alien_data\nWHERE alien_data.state IN (\n    SELECT state\n    FROM alien_data\n    GROUP BY alien_data.state\n    ORDER BY COUNT(alien_data.state) DESC\n    LIMIT 10\n)\nGROUP BY alien_data.state\nHAVING AVG(alien_data.age) > 200\n   AND (SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) > \n       (SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) * 1.0 / COUNT(*));",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5034579953644425,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(alien_data.state) AS alien_count\nFROM alien_data\nGROUP BY alien_data.state\nHAVING AVG(alien_data.age) > 200\n   AND (SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) > 0.5\nORDER BY alien_count DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3946249926229939,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(alien_data.state) AS alien_count, \n       AVG(alien_data.age) AS avg_age, \n       SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count, \n       SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\nFROM alien_data\nGROUP BY alien_data.state\nORDER BY alien_count DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3727919975062832,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(alien_data.state) AS alien_count, \n       AVG(alien_data.age) AS avg_age, \n       SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count, \n       SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count\nFROM alien_data\nGROUP BY alien_data.state\nORDER BY alien_count DESC\nLIMIT 10;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "db407f11d7ede59abaab0e98e097ff2dae10a048207b801745d7199ef19c2387": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 5135.482291996595,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    alien_data.state,\n    COUNT(*) AS alien_count,\n    AVG(alien_data.age) AS avg_age,\n    SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) AS friendly_count,\n    SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) AS hostile_count,\n    CAST(SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS friendly_percentage,\n    CAST(SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS hostile_percentage\nFROM alien_data\nGROUP BY alien_data.state\nHAVING AVG(alien_data.age) > 200 \n   AND SUM(CASE WHEN alien_data.aggressive = 0 THEN 1 ELSE 0 END) > SUM(CASE WHEN alien_data.aggressive = 1 THEN 1 ELSE 0 END)\nORDER BY alien_count DESC\nLIMIT 10;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.952541999751702,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7984.596125010285
+}

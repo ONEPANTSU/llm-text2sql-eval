@@ -1,0 +1,167 @@
+{
+  "task_id": "tpcds_q32",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 11253.654958010884,
+  "execution_time_ms": 109.41045801155269,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH yearly_sales AS (\n    SELECT\n        store.s_state,\n        date_dim.d_year,\n        SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n    FROM\n        store_sales\n        JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n        JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE\n        date_dim.d_date >= '2000-01-27'\n        AND date_dim.d_date <= '2000-04-26'\n        AND store.s_state IS NOT NULL\n    GROUP BY\n        store.s_state,\n        date_dim.d_year\n)\nSELECT\n    current.s_state,\n    current.d_year AS year,\n    current.current_year_sales,\n    CASE\n        WHEN prev.current_year_sales IS NULL OR prev.current_year_sales = 0 THEN NULL\n        ELSE (current.current_year_sales - prev.current_year_sales) / prev.current_year_sales\n    END AS year_over_year_change\nFROM\n    yearly_sales current\n    LEFT JOIN yearly_sales prev\n        ON current.s_state = prev.s_state\n        AND prev.d_year = current.d_year - 1\nORDER BY\n    current.s_state ASC,\n    current.d_year ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 37.506708002183586,
+      "result_signature": "b8faa68c0cd1e986d62abaa9970e207ef9f1245f121828dad2379115aa9a761b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH current_year_sales AS (\n  SELECT\n    store.s_state,\n    date_dim.d_year,\n    SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n  FROM store_sales\n  JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_date >= '2000-01-27'\n    AND date_dim.d_date <= '2000-04-26'\n    AND store_sales.ss_store_sk IS NOT NULL\n  GROUP BY store.s_state, date_dim.d_year\n),\nyear_over_year AS (\n  SELECT\n    c1.s_state,\n    c1.d_year AS current_year,\n    c1.current_year_sales,\n    c2.current_year_sales AS prior_year_sales,\n    CASE WHEN c2.current_year_sales IS NULL OR c2.current_year_sales = 0 THEN NULL\n         ELSE (c1.current_year_sales - c2.current_year_sales) / c2.current_year_sales\n    END AS yoy_change\n  FROM current_year_sales c1\n  LEFT JOIN current_year_sales c2\n    ON c1.s_state = c2.s_state\n    AND c1.d_year = c2.d_year + 1\n)\nSELECT\n  s_state,\n  current_year,\n  current_year_sales,\n  prior_year_sales,\n  yoy_change\nFROM year_over_year\nORDER BY s_state ASC, current_year ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 18.334874999709427,
+      "result_signature": "189a6368c890250c19b23ac7c56cb73762591d69e68c433c2d2d6312a3d33657",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH current_year_sales AS (\n  SELECT\n    s_state,\n    d_year,\n    SUM(ss_ext_sales_price) AS current_year_sales\n  FROM store_sales\n  JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  WHERE date_dim.d_date >= '2000-01-27'\n    AND date_dim.d_date <= '2000-04-26'\n  GROUP BY s_state, d_year\n)\nSELECT\n  s_state,\n  d_year,\n  current_year_sales\nFROM current_year_sales\nORDER BY s_state ASC, d_year ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.94970900239423,
+      "result_signature": "dd8f56e4f79416e98e4f032daed482b677a4986bb0e7ea7852614743d0c94c9f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH sales_by_state_year AS (\n    SELECT\n        store.s_state,\n        date_dim.d_year,\n        SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_date >= '2000-01-27'\n      AND date_dim.d_date <= '2000-04-26'\n    GROUP BY store.s_state, date_dim.d_year\n),\nyear_over_year AS (\n    SELECT\n        s1.s_state,\n        s1.d_year AS year,\n        s1.current_year_sales AS current_sales,\n        s2.current_year_sales AS prior_year_sales,\n        CASE\n            WHEN s2.current_year_sales IS NULL OR s2.current_year_sales = 0 THEN NULL\n            ELSE (s1.current_year_sales - s2.current_year_sales) / s2.current_year_sales\n        END AS year_over_year_change\n    FROM sales_by_state_year s1\n    LEFT JOIN sales_by_state_year s2\n        ON s1.s_state = s2.s_state\n        AND s2.d_year = s1.d_year - 1\n)\nSELECT\n    s_state,\n    year,\n    current_sales,\n    prior_year_sales,\n    year_over_year_change\nFROM year_over_year\nORDER BY s_state ASC, year ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.9096659879433,
+      "result_signature": "189a6368c890250c19b23ac7c56cb73762591d69e68c433c2d2d6312a3d33657",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH current_year_sales AS (\n    SELECT\n        s_state,\n        d_year,\n        SUM(ss_ext_sales_price) AS current_year_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE d_date >= '2000-01-27'\n      AND d_date <= '2000-04-26'\n    GROUP BY s_state, d_year\n)\nSELECT\n    s_state,\n    d_year,\n    current_year_sales\nFROM current_year_sales\nORDER BY s_state ASC, d_year ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 13.24041599582415,
+      "result_signature": "dd8f56e4f79416e98e4f032daed482b677a4986bb0e7ea7852614743d0c94c9f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH sales_by_state_year AS (\n    SELECT\n        store.s_state,\n        date_dim.d_year,\n        SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_date >= '2000-01-27'\n      AND date_dim.d_date <= '2000-04-26'\n    GROUP BY store.s_state, date_dim.d_year\n),\nyear_over_year AS (\n    SELECT\n        s1.s_state,\n        s1.d_year AS year,\n        s1.current_year_sales AS current_sales,\n        s2.current_year_sales AS prior_year_sales,\n        CASE\n            WHEN s2.current_year_sales IS NULL OR s2.current_year_sales = 0 THEN NULL\n            ELSE (s1.current_year_sales - s2.current_year_sales) / s2.current_year_sales\n        END AS year_over_year_change\n    FROM sales_by_state_year s1\n    LEFT JOIN sales_by_state_year s2\n        ON s1.s_state = s2.s_state\n        AND s2.d_year = s1.d_year - 1\n)\nSELECT\n    s_state,\n    year,\n    current_sales,\n    prior_year_sales,\n    year_over_year_change\nFROM year_over_year\nORDER BY s_state ASC, year ASC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b8faa68c0cd1e986d62abaa9970e207ef9f1245f121828dad2379115aa9a761b": 1,
+        "189a6368c890250c19b23ac7c56cb73762591d69e68c433c2d2d6312a3d33657": 4,
+        "dd8f56e4f79416e98e4f032daed482b677a4986bb0e7ea7852614743d0c94c9f": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 2,
+    "expansion_time_ms": 11051.926915999502,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH sales_by_state_year AS (\n    SELECT\n        store.s_state,\n        date_dim.d_year,\n        SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_date >= '2000-01-27'\n      AND date_dim.d_date <= '2000-04-26'\n    GROUP BY store.s_state, date_dim.d_year\n),\nlagged_sales AS (\n    SELECT\n        s_state,\n        d_year,\n        current_year_sales,\n        LAG(current_year_sales) OVER (PARTITION BY s_state ORDER BY d_year) AS prior_year_sales\n    FROM sales_by_state_year\n)\nSELECT\n    s_state,\n    d_year AS year,\n    current_year_sales AS current_sales,\n    prior_year_sales,\n    CASE\n        WHEN prior_year_sales IS NULL OR prior_year_sales = 0 THEN NULL\n        ELSE (current_year_sales - prior_year_sales) / prior_year_sales\n    END AS year_over_year_change\nFROM lagged_sales\nORDER BY s_state ASC, d_year ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 42.656042001908645,
+        "result_signature": "189a6368c890250c19b23ac7c56cb73762591d69e68c433c2d2d6312a3d33657",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH sales_by_state_year AS (\n    SELECT\n        store.s_state,\n        date_dim.d_year,\n        SUM(store_sales.ss_ext_sales_price) AS current_year_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_date >= '2000-01-27'\n      AND date_dim.d_date <= '2000-04-26'\n    GROUP BY store.s_state, date_dim.d_year\n),\nlagged_sales AS (\n    SELECT\n        s_state,\n        d_year,\n        current_year_sales,\n        LAG(current_year_sales) OVER (PARTITION BY s_state ORDER BY d_year) AS prior_year_sales\n    FROM sales_by_state_year\n)\nSELECT\n    s_state,\n    d_year AS year,\n    current_year_sales AS current_sales,\n    prior_year_sales,\n    CASE\n        WHEN prior_year_sales IS NULL OR prior_year_sales = 0 THEN NULL\n        ELSE (current_year_sales - prior_year_sales) / prior_year_sales\n    END AS year_over_year_change\nFROM lagged_sales\nORDER BY s_state ASC, d_year ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 20.204833999741822,
+        "result_signature": "189a6368c890250c19b23ac7c56cb73762591d69e68c433c2d2d6312a3d33657",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 22415.38591698918
+}

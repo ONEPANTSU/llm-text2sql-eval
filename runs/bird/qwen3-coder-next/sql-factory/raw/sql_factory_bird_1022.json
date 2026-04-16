@@ -1,0 +1,128 @@
+{
+  "task_id": "bird_1022",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nORDER BY potential ASC\nLIMIT 1;",
+          "score": 0.8875000000000001,
+          "similarity_max": 0.32499999999999996,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes WHERE potential IS NOT NULL);",
+          "score": 0.7017857142857143,
+          "similarity_max": 0.6964285714285714,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nORDER BY potential ASC\nLIMIT 1;",
+          "score": 0.8875000000000001,
+          "similarity_max": 0.32499999999999996,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        },
+        {
+          "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes WHERE potential IS NOT NULL);",
+          "score": 0.7017857142857143,
+          "similarity_max": 0.6964285714285714,
+          "tables_used": [
+            "Player_Attributes"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT preferred_foot\nFROM Player_Attributes\nWHERE potential = (SELECT MIN(potential) FROM Player_Attributes);",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Player_Attributes"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 61.43
+  }
+}

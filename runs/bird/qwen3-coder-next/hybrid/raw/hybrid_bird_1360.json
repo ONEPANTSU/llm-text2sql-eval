@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1360",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2364.447250001831,
+  "execution_time_ms": 6.824666997999884,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (b.amount * 100.0) / total.total_amount AS percentage\nFROM \n    budget b\nJOIN \n    event e ON b.link_to_event = e.event_id\nCROSS JOIN \n    (SELECT SUM(amount) AS total_amount\n     FROM budget b2\n     JOIN event e2 ON b2.link_to_event = e2.event_id\n     WHERE e2.event_name = 'November Speaker') AS total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9361660053837113,
+      "result_signature": "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (b.amount * 100.0 / total.total_amount) AS percentage\nFROM \n    event e\n    JOIN budget b ON e.event_id = b.link_to_event\n    CROSS JOIN (\n        SELECT SUM(amount) AS total_amount\n        FROM budget\n        WHERE link_to_event = (SELECT event_id FROM event WHERE event_name = 'November Speaker')\n    ) total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6126250047818758,
+      "result_signature": "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    (b.amount * 100.0 / total.total_amount) AS percentage\nFROM \n    budget b\nJOIN \n    event e ON b.link_to_event = e.event_id\nCROSS JOIN \n    (SELECT SUM(amount) AS total_amount\n     FROM budget b2\n     JOIN event e2 ON b2.link_to_event = e2.event_id\n     WHERE e2.event_name = 'November Speaker') AS total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.537374995474238,
+      "result_signature": "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (b.amount * 100.0 / total.total_amount) AS percentage\nFROM \n    budget b\nJOIN \n    event e ON b.link_to_event = e.event_id\nCROSS JOIN \n    (SELECT SUM(amount) AS total_amount\n     FROM budget\n     JOIN event ON budget.link_to_event = event.event_id\n     WHERE event.event_name = 'November Speaker') AS total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7472079960280098,
+      "result_signature": "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    (b.amount * 100.0 / total.total_budget) AS percentage\nFROM \n    budget b\nJOIN \n    event e ON b.link_to_event = e.event_id\nCROSS JOIN \n    (SELECT SUM(amount) AS total_budget\n     FROM budget b2\n     JOIN event e2 ON b2.link_to_event = e2.event_id\n     WHERE e2.event_name = 'November Speaker') AS total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.46158399345586076,
+      "result_signature": "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    (b.amount * 100.0 / total.total_budget) AS percentage\nFROM \n    budget b\nJOIN \n    event e ON b.link_to_event = e.event_id\nCROSS JOIN \n    (SELECT SUM(amount) AS total_budget\n     FROM budget b2\n     JOIN event e2 ON b2.link_to_event = e2.event_id\n     WHERE e2.event_name = 'November Speaker') AS total\nWHERE \n    e.event_name = 'November Speaker'\n    AND b.category = 'Parking';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "5a171dcb5053ac159c39bf1716b04e59cc9bcc9633f6c4ccc87ca91bf9b145c0": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2371.372458001133
+}

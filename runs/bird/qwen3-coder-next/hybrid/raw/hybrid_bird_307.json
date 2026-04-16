@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_307",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1822.4353330006124,
+  "execution_time_ms": 23.393333998683374,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT atom.element\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON (connected.atom_id = atom.atom_id OR connected.atom_id2 = atom.atom_id)\nWHERE bond.bond_id = 'TR000_2_3';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.852332997776102,
+      "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT atom.element\nFROM bond\nJOIN connected ON bond.bond_id = connected.bond_id\nJOIN atom ON connected.atom_id = atom.atom_id\nWHERE bond.bond_id = 'TR000_2_3'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.040583000460174,
+      "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT a1.element, a2.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_id = 'TR000_2_3';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.293166995921638,
+      "result_signature": "7e65b13fa5a118682f4e8476ea54d3bd675e7d9f857a7a6c7712978e0dd632fe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT a1.element, a2.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_id = 'TR000_2_3';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.9130840048310347,
+      "result_signature": "7e65b13fa5a118682f4e8476ea54d3bd675e7d9f857a7a6c7712978e0dd632fe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT a1.element, a2.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_id = 'TR000_2_3';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.828707998560276,
+      "result_signature": "7e65b13fa5a118682f4e8476ea54d3bd675e7d9f857a7a6c7712978e0dd632fe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 8,
+    "selected_sql": "SELECT DISTINCT a1.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nWHERE b.bond_id = 'TR000_2_3'",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f": 6,
+        "7e65b13fa5a118682f4e8476ea54d3bd675e7d9f857a7a6c7712978e0dd632fe": 3
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1563.9438750004047,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT a.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON (c.atom_id = a.atom_id OR c.atom_id2 = a.atom_id)\nWHERE b.bond_id = 'TR000_2_3';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5.033583998738322,
+        "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT a.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a ON (a.atom_id = c.atom_id OR a.atom_id = c.atom_id2)\nWHERE b.bond_id = 'TR000_2_3';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.670417001761962,
+        "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT a.element\nFROM connected c\nJOIN bond b ON b.bond_id = c.bond_id\nJOIN atom a ON a.atom_id = c.atom_id2\nWHERE b.bond_id = 'TR000_2_3'",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.799707999860402,
+        "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT DISTINCT a1.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nWHERE b.bond_id = 'TR000_2_3'",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.8372080050758086,
+        "result_signature": "f3f6aabc3e93720b689468f89400f6d71a2faf1298ca393da9337851eb79574f",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3409.9005839962047
+}

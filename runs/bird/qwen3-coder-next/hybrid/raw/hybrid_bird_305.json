@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_305",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1831.6741250018822,
+  "execution_time_ms": 52.421790998778306,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.label, a1.element AS atom1, a2.element AS atom2\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 21.244040995952673,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.label, a1.element || '-' || a2.element AS connected_atoms\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.352000000944827,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT m.label, a1.element, a2.element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.829166002920829,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.label AS molecule_label, a1.element AS atom1_element, a2.element AS atom2_element\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.0756669956608675,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.label, a1.element || '-' || a2.element AS connected_atoms\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.4897920019575395,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT m.label, a1.element || '-' || a2.element AS connected_atoms\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nJOIN molecule m ON b.molecule_id = m.molecule_id\nWHERE b.bond_type = 'single';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1884.2022500029998
+}

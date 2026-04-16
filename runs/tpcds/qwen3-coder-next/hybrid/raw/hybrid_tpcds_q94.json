@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q94",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6856.68966700905,
+  "execution_time_ms": 18.924333999166265,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    c_customer_sk,\n    SUM(ws_ext_sales_price) AS total_web_purchase\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    web_site.web_company_name = 'pri'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n    AND customer_address.ca_state = 'IL'\nGROUP BY \n    c_customer_sk\nORDER BY \n    SUM(ws_ext_sales_price) DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.118083001230843,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT\n    c_customer_sk,\n    SUM(ws_ext_sales_price) AS total_web_purchase\nFROM\n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE\n    web_site.web_company_name = 'pri'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n    AND customer_address.ca_state = 'IL'\nGROUP BY\n    c_customer_sk\nORDER BY\n    total_web_purchase DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7297920061973855,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c_customer_sk, SUM(ws_ext_sales_price) AS total_web_purchase\nFROM web_sales\nJOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE web_site.web_company_name = 'pri'\n  AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n  AND customer_address.ca_state = 'IL'\nGROUP BY c_customer_sk\nORDER BY total_web_purchase DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.358332993229851,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    c_customer_sk,\n    SUM(ws_ext_sales_price) AS total_web_purchase\nFROM \n    web_sales\n    JOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE \n    web_site.web_company_name = 'pri'\n    AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n    AND customer_address.ca_state = 'IL'\nGROUP BY \n    c_customer_sk\nORDER BY \n    total_web_purchase DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7935830041533336,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c_customer_sk, SUM(ws_ext_sales_price) AS total_web_purchase\nFROM web_sales\nJOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE web_site.web_company_name = 'pri'\n  AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n  AND customer_address.ca_state = 'IL'\nGROUP BY c_customer_sk\nORDER BY total_web_purchase DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.559042001143098,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT c_customer_sk, SUM(ws_ext_sales_price) AS total_web_purchase\nFROM web_sales\nJOIN customer ON web_sales.ws_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN web_site ON web_sales.ws_web_site_sk = web_site.web_site_sk\nJOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\nWHERE web_site.web_company_name = 'pri'\n  AND date_dim.d_date BETWEEN '1999-02-01' AND '1999-04-02'\n  AND customer_address.ca_state = 'IL'\nGROUP BY c_customer_sk\nORDER BY total_web_purchase DESC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6875.643499995931
+}

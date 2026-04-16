@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_979",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4301.734082997427,
+  "execution_time_ms": 31.25995799928205,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId = 1\nGROUP BY r.raceId\nORDER BY COUNT(res.raceId) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.97666600375669,
+      "result_signature": "93f022e531cd2faad99a96161f039c25d0ccd6c120f2820f3523a8def7e435cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId = 1\nGROUP BY r.raceId\nORDER BY COUNT(res.raceId) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.0376249997061677,
+      "result_signature": "93f022e531cd2faad99a96161f039c25d0ccd6c120f2820f3523a8def7e435cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId IN (SELECT statusId FROM status WHERE status = 'Finished')\nGROUP BY r.raceId\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.936999997473322,
+      "result_signature": "93f022e531cd2faad99a96161f039c25d0ccd6c120f2820f3523a8def7e435cf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId != 1  -- Assuming statusId = 1 means \"Did not finish\" or similar; if not, adjust accordingly\nGROUP BY r.raceId\nORDER BY COUNT(res.raceId) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8449580024462193,
+      "result_signature": "c2699bd2aeb900e0c32e5ba698d450f47caa140dc5afcdd19f3dfbafab6218e5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId != (SELECT statusId FROM status WHERE status = 'DNF')\n  AND res.statusId != (SELECT statusId FROM status WHERE status = 'Disqualified')\n  AND res.statusId != (SELECT statusId FROM status WHERE status = 'Retired')\n  AND res.statusId != (SELECT statusId FROM status WHERE status = 'Did not qualify')\n  AND res.statusId != (SELECT statusId FROM status WHERE status = 'Did not start')\nGROUP BY r.raceId\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.069749993504956,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId IN (SELECT statusId FROM status WHERE status = 'Finished')\nGROUP BY r.raceId\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "93f022e531cd2faad99a96161f039c25d0ccd6c120f2820f3523a8def7e435cf": 3,
+        "c2699bd2aeb900e0c32e5ba698d450f47caa140dc5afcdd19f3dfbafab6218e5": 2,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1,
+        "530c1a4bf680054010e6117de456e6d961c659ecc9490ce115a098fce5023923": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2317.0714160005446,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT r.raceId\nFROM results res\nJOIN races r ON res.raceId = r.raceId\nWHERE res.statusId NOT IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  -- Excluding commonDNF statuses; adjust based on actual DNF codes if known\nGROUP BY r.raceId\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 12.453292001737282,
+        "result_signature": "530c1a4bf680054010e6117de456e6d961c659ecc9490ce115a098fce5023923",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT raceId\nFROM (\n    SELECT res.raceId, COUNT(*) AS finisher_count\n    FROM results res\n    JOIN races r ON res.raceId = r.raceId\n    WHERE res.statusId != 1\n    GROUP BY res.raceId\n    ORDER BY finisher_count DESC\n    LIMIT 1\n)",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 10.32383299752837,
+        "result_signature": "c2699bd2aeb900e0c32e5ba698d450f47caa140dc5afcdd19f3dfbafab6218e5",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 6650.193250003213
+}

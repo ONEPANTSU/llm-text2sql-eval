@@ -1,0 +1,171 @@
+{
+  "task_id": "bird_1027",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 2,
+  "generation_time_ms": 4893.578165996587,
+  "execution_time_ms": 2198010.0527500035,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT player_name\nFROM Player\nORDER BY (\n    SELECT COUNT(*)\n    FROM Match\n    WHERE player_api_id IN (\n        home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,\n        home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,\n        away_player_1, away_player_2, away_player_3, away_player_4, away_player_5,\n        away_player_6, away_player_7, away_player_8, away_player_9, away_player_10, away_player_11\n    )\n) DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 544607.254249997,
+      "result_signature": "4525bc24c93295e32de8c0565e70617946624bec1f619f7cf6354d4fb19a490b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT player_name\nFROM Player\nORDER BY player_api_id IN (\n    SELECT player_api_id\n    FROM Player_Attributes\n    GROUP BY player_api_id\n    ORDER BY COUNT(*) DESC\n    LIMIT 10\n) DESC, player_name\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 54.04941600136226,
+      "result_signature": "09b0c47b3b53a5543dbaa8467362d511de20475315b007cb4f10f382029d1458",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT player_name\nFROM Player\nORDER BY (\n    SELECT COUNT(*)\n    FROM Match\n    WHERE Match.home_player_X1 = Player.player_api_id\n       OR Match.home_player_X2 = Player.player_api_id\n       OR Match.home_player_X3 = Player.player_api_id\n       OR Match.home_player_X4 = Player.player_api_id\n       OR Match.home_player_X5 = Player.player_api_id\n       OR Match.home_player_X6 = Player.player_api_id\n       OR Match.home_player_X7 = Player.player_api_id\n       OR Match.home_player_X8 = Player.player_api_id\n       OR Match.home_player_X9 = Player.player_api_id\n       OR Match.home_player_X10 = Player.player_api_id\n       OR Match.home_player_X11 = Player.player_api_id\n       OR Match.away_player_X1 = Player.player_api_id\n       OR Match.away_player_X2 = Player.player_api_id\n       OR Match.away_player_X3 = Player.player_api_id\n       OR Match.away_player_X4 = Player.player_api_id\n       OR Match.away_player_X5 = Player.player_api_id\n       OR Match.away_player_X6 = Player.player_api_id\n       OR Match.away_player_X7 = Player.player_api_id\n       OR Match.away_player_X8 = Player.player_api_id\n       OR Match.away_player_X1 = Player.player_api_id\n       OR Match.away_player_X10 = Player.player_api_id\n       OR Match.away_player_X11 = Player.player_api_id\n) DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 495111.376957997,
+      "result_signature": "3a0edc5509694b5683c09d5dad7d05929f343e63398be7e5d7d103657ba9b67f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 22
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT player_name\nFROM Player\nORDER BY (\n    SELECT COUNT(*)\n    FROM Match m\n    WHERE m.home_player_1 = player_api_id OR m.home_player_2 = player_api_id OR m.home_player_3 = player_api_id OR m.home_player_4 = player_api_id OR m.home_player_5 = player_api_id OR m.home_player_6 = player_api_id OR m.home_player_7 = player_api_id OR m.home_player_8 = player_api_id OR m.home_player_9 = player_api_id OR m.home_player_10 = player_api_id OR m.home_player_11 = player_api_id\n       OR m.away_player_1 = player_api_id OR m.away_player_2 = player_api_id OR m.away_player_3 = player_api_id OR m.away_player_4 = player_api_id OR m.away_player_5 = player_api_id OR m.away_player_6 = player_api_id OR m.away_player_7 = player_api_id OR m.away_player_8 = player_api_id OR m.away_player_9 = player_api_id OR m.away_player_10 = player_api_id OR m.away_player_11 = player_api_id\n) DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 602746.4212920022,
+      "result_signature": "4525bc24c93295e32de8c0565e70617946624bec1f619f7cf6354d4fb19a490b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT player_name\nFROM Player\nORDER BY (\n    SELECT COUNT(*)\n    FROM Match\n    WHERE Match.home_player_X1 = Player.player_api_id\n       OR Match.home_player_X2 = Player.player_api_id\n       OR Match.home_player_X3 = Player.player_api_id\n       OR Match.home_player_X4 = Player.player_api_id\n       OR Match.home_player_X5 = Player.player_api_id\n       OR Match.home_player_X6 = Player.player_api_id\n       OR Match.home_player_X7 = Player.player_api_id\n       OR Match.home_player_X8 = Player.player_api_id\n       OR Match.home_player_X9 = Player.player_api_id\n       OR Match.home_player_X10 = Player.player_api_id\n       OR Match.home_player_X11 = Player.player_api_id\n       OR Match.away_player_X1 = Player.player_api_id\n       OR Match.away_player_X2 = Player.player_api_id\n       OR Match.away_player_X3 = Player.player_api_id\n       OR Match.away_player_X4 = Player.player_api_id\n       OR Match.away_player_X5 = Player.player_api_id\n       OR Match.away_player_X6 = Player.player_api_id\n       OR Match.away_player_X7 = Player.player_api_id\n       OR Match.away_player_X8 = Player.player_api_id\n       OR Match.away_player_X1 = Player.player_api_id\n       OR Match.away_player_X10 = Player.player_api_id\n       OR Match.away_player_X11 = Player.player_api_id\n) DESC\nLIMIT 10;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 555441.670500004,
+      "result_signature": "3a0edc5509694b5683c09d5dad7d05929f343e63398be7e5d7d103657ba9b67f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 22
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT player_name\nFROM Player\nORDER BY (\n    SELECT COUNT(*)\n    FROM Match\n    WHERE player_api_id IN (\n        home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,\n        home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,\n        away_player_1, away_player_2, away_player_3, away_player_4, away_player_5,\n        away_player_6, away_player_7, away_player_8, away_player_9, away_player_10, away_player_11\n    )\n) DESC\nLIMIT 10;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4525bc24c93295e32de8c0565e70617946624bec1f619f7cf6354d4fb19a490b": 2,
+        "09b0c47b3b53a5543dbaa8467362d511de20475315b007cb4f10f382029d1458": 1,
+        "3a0edc5509694b5683c09d5dad7d05929f343e63398be7e5d7d103657ba9b67f": 2,
+        "aaa8742057db6326fdb71a0e5c15537c2fc313d498389bcaea75ad3770232213": 1,
+        "2953b325674f91ca451580dfb1a8bb0b961f0ec93f0c6fad184766d08d119c35": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 8282.167874996958,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.player_api_id IN (\n    SELECT player_api_id\n    FROM Player_Attributes\n    GROUP BY player_api_id\n    HAVING COUNT(*) = (\n        SELECT MAX(cnt)\n        FROM (\n            SELECT COUNT(*) AS cnt\n            FROM Player_Attributes\n            GROUP BY player_api_id\n        )\n    )\n)\nGROUP BY p.player_name\nLIMIT 10;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 169.00162499950966,
+        "result_signature": "aaa8742057db6326fdb71a0e5c15537c2fc313d498389bcaea75ad3770232213",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT player_name\nFROM Player\nWHERE player_api_id IN (\n    SELECT player_api_id\n    FROM Player_Attributes\n    WHERE preferred_foot = 'left' OR preferred_foot = 'right'\n    GROUP BY player_api_id\n    ORDER BY COUNT(*) DESC\n    LIMIT 10\n)\nORDER BY player_name\nLIMIT 10;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 59.61274999572197,
+        "result_signature": "2953b325674f91ca451580dfb1a8bb0b961f0ec93f0c6fad184766d08d119c35",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2211185.9460420017
+}

@@ -1,0 +1,53 @@
+{
+  "task_id": "spider2_36",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH q4_sales AS (\n    SELECT \n        c.cust_city,\n        p.prod_id,\n        p.prod_name,\n        SUM(s.amount_sold) AS total_sales\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE s.promo_id IS NULL\n      AND t.calendar_quarter_desc IN ('2019-Q4', '2020-Q4')\n      AND c.country_id IN (\n          SELECT country_id \n          FROM countries \n          WHERE country_name = 'United State...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 0.0
+  }
+}

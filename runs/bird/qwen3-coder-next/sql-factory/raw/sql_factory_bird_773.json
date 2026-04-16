@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_773",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE s.eye_colour_id = s.hair_colour_id\n  AND s.hair_colour_id = s.skin_colour_id;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN colour e ON s.eye_colour_id = e.id\nJOIN colour h ON s.hair_colour_id = h.id\nJOIN colour sk ON s.skin_colour_id = sk.id\nWHERE e.colour = h.colour AND h.colour = sk.colour;",
+          "score": 0.8690526315789474,
+          "similarity_max": 0.6618947368421053,
+          "tables_used": [
+            "h",
+            "e",
+            "p",
+            "publisher",
+            "s",
+            "superhero",
+            "colour",
+            "sk"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE s.eye_colour_id = s.hair_colour_id\n  AND s.hair_colour_id = s.skin_colour_id;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN colour e ON s.eye_colour_id = e.id\nJOIN colour h ON s.hair_colour_id = h.id\nJOIN colour sk ON s.skin_colour_id = sk.id\nWHERE e.colour = h.colour AND h.colour = sk.colour;",
+          "score": 0.8690526315789474,
+          "similarity_max": 0.6618947368421053,
+          "tables_used": [
+            "h",
+            "e",
+            "p",
+            "publisher",
+            "s",
+            "superhero",
+            "colour",
+            "sk"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE s.eye_colour_id = s.hair_colour_id\n  AND s.hair_colour_id = s.skin_colour_id;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN colour e ON s.eye_colour_id = e.id\nJOIN colour h ON s.hair_colour_id = h.id\nJOIN colour sk ON s.skin_colour_id = sk.id\nWHERE e.colour = h.colour AND h.colour = sk.colour;",
+          "score": 0.8690526315789474,
+          "similarity_max": 0.6618947368421053,
+          "tables_used": [
+            "h",
+            "e",
+            "p",
+            "publisher",
+            "s",
+            "superhero",
+            "colour",
+            "sk"
+          ]
+        },
+        {
+          "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nJOIN colour c1 ON s.eye_colour_id = c1.id\nJOIN colour c2 ON s.hair_colour_id = c2.id\nJOIN colour c3 ON s.skin_colour_id = c3.id\nWHERE c1.colour = c2.colour AND c2.colour = c3.colour;",
+          "score": 0.8142857142857144,
+          "similarity_max": 0.7714285714285714,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s",
+            "c2",
+            "colour",
+            "c3",
+            "c1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT s.superhero_name, p.publisher_name\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE s.eye_colour_id = s.hair_colour_id\n  AND s.hair_colour_id = s.skin_colour_id;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "p",
+        "publisher",
+        "superhero",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.31
+  }
+}

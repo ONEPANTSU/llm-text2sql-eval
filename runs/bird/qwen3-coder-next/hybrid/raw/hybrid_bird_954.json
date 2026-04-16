@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_954",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7029.4624579983065,
+  "execution_time_ms": 32.85541600052966,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN r.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_percentage\nFROM results r\nJOIN drivers d ON r.driverId = d.driverId\nJOIN races ra ON r.raceId = ra.raceId\nWHERE d.nationality = 'Japanese'\n  AND ra.year >= 2007\n  AND ra.year <= 2009;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.56341700052144,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.statusId != 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_percentage\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.nationality = 'Japanese'\n  AND races.year >= 2007\n  AND races.year <= 2009;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.9023749995976686,
+      "result_signature": "31fa5d538a33f2cc125330f57f8810f5b5d3c69047d71576488de07049c7637e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.statusId = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_percentage\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.nationality = 'Japanese'\n  AND races.year >= 2007\n  AND races.year <= 2009;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2920000012381934,
+      "result_signature": "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.statusId != 1 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_percentage\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.nationality = 'Japanese'\n  AND races.year >= 2007\n  AND races.year <= 2009;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.7309579963912256,
+      "result_signature": "31fa5d538a33f2cc125330f57f8810f5b5d3c69047d71576488de07049c7637e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(SUM(CASE WHEN results.statusId != 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*) AS completion_percentage\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.nationality = 'Japanese'\n  AND races.year BETWEEN 2007 AND 2009;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.814749998738989,
+      "result_signature": "31fa5d538a33f2cc125330f57f8810f5b5d3c69047d71576488de07049c7637e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT \n    CAST(SUM(CASE WHEN results.statusId != 1 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) AS completion_percentage\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE drivers.nationality = 'Japanese'\n  AND races.year >= 2007\n  AND races.year <= 2009;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e1154da9c0bc6c160975f51afd54bec89120fb371bfd5d9826f7c171f2225351": 2,
+        "31fa5d538a33f2cc125330f57f8810f5b5d3c69047d71576488de07049c7637e": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1320.6666250043781,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8383.160334000422
+}

@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_1064",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2116.9584580056835,
+  "execution_time_ms": 406.62245899875415,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT player_api_id FROM Player_Attributes WHERE preferred_foot = 'left'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 83.4462920029182,
+      "result_signature": "c45fee1b1e99d03d0861b3a1655d162b90ddbd744ac66275ff985f36b8d7dd1e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.37058300006902,
+      "result_signature": "691b3ed7b89b40454dfbf106422443a0e3f96e5f91e77ca38914265f952f9a4f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT player_api_id FROM Player_Attributes WHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.20504199777497,
+      "result_signature": "c45fee1b1e99d03d0861b3a1655d162b90ddbd744ac66275ff985f36b8d7dd1e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 42.67049999907613,
+      "result_signature": "691b3ed7b89b40454dfbf106422443a0e3f96e5f91e77ca38914265f952f9a4f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT player_api_id FROM Player_Attributes WHERE preferred_foot = 'left';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.09416700480506,
+      "result_signature": "c45fee1b1e99d03d0861b3a1655d162b90ddbd744ac66275ff985f36b8d7dd1e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT player_api_id FROM Player_Attributes WHERE preferred_foot = 'left';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c45fee1b1e99d03d0861b3a1655d162b90ddbd744ac66275ff985f36b8d7dd1e": 3,
+        "691b3ed7b89b40454dfbf106422443a0e3f96e5f91e77ca38914265f952f9a4f": 2,
+        "f58a74ff65de39e3a5d6d6ebb7a4e6014cd1078d236f1ba8963177b43f322433": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1966.155207999691,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT player_api_id FROM Player_Attributes WHERE preferred_foot = 'left' GROUP BY player_api_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 34.55637500155717,
+        "result_signature": "f58a74ff65de39e3a5d6d6ebb7a4e6014cd1078d236f1ba8963177b43f322433",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4489.788833001512
+}

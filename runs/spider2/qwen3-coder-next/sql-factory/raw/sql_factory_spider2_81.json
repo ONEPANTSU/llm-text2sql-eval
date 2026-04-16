@@ -1,0 +1,181 @@
+{
+  "task_id": "spider2_81",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT d.driver_id, COUNT(del.delivery_id) * 1.0 / COUNT(DISTINCT DATE(o.order_moment_delivered)) AS avg_daily_deliveries\nFROM drivers d\nJOIN deliveries del ON d.driver_id = del.driver_id\nJOIN orders o ON del.delivery_order_id = o.delivery_order_id\nWHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        },
+        {
+          "sql": "SELECT d.driver_id, AVG(delivery_count) AS avg_daily_deliveries\nFROM drivers d\nJOIN (\n    SELECT driver_id, DATE(order_moment_delivered) AS delivery_date, COUNT(*) AS delivery_count\n    FROM deliveries del\n    JOIN orders ord ON del.delivery_order_id = ord.delivery_order_id\n    WHERE ord.order_moment_delivered IS NOT NULL\n    GROUP BY driver_id, DATE(order_moment_delivered)\n) daily ON d.driver_id = daily.driver_id\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.202077922077922,
+          "similarity_max": 0.5958441558441557,
+          "tables_used": [
+            "ord",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT d.driver_id, COUNT(del.delivery_id) * 1.0 / COUNT(DISTINCT DATE(o.order_moment_delivered)) AS avg_daily_deliveries\nFROM drivers d\nJOIN deliveries del ON d.driver_id = del.driver_id\nJOIN orders o ON del.delivery_order_id = o.delivery_order_id\nWHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        },
+        {
+          "sql": "SELECT d.driver_id, AVG(delivery_count) AS avg_daily_deliveries\nFROM drivers d\nJOIN (\n    SELECT driver_id, DATE(order_moment_delivered) AS delivery_date, COUNT(*) AS delivery_count\n    FROM deliveries del\n    JOIN orders ord ON del.delivery_order_id = ord.delivery_order_id\n    WHERE ord.order_moment_delivered IS NOT NULL\n    GROUP BY driver_id, DATE(order_moment_delivered)\n) daily ON d.driver_id = daily.driver_id\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.202077922077922,
+          "similarity_max": 0.5958441558441557,
+          "tables_used": [
+            "ord",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        },
+        {
+          "sql": "SELECT d.driver_id, AVG(del_count) AS avg_daily_deliveries\nFROM drivers d\nJOIN (\n    SELECT del.driver_id, DATE(o.order_moment_delivered) AS delivery_date, COUNT(del.delivery_id) AS del_count\n    FROM deliveries del\n    JOIN orders o ON del.delivery_order_id = o.delivery_order_id\n    WHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\n    GROUP BY del.driver_id, DATE(o.order_moment_delivered)\n) del_daily ON d.driver_id = del_daily.driver_id\nGROUP BY d.driver_id\nORDER...",
+          "score": 1.1502996254681648,
+          "similarity_max": 0.6994007490636704,
+          "tables_used": [
+            "o",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT d.driver_id, COUNT(del.delivery_id) * 1.0 / COUNT(DISTINCT DATE(o.order_moment_delivered)) AS avg_daily_deliveries\nFROM drivers d\nJOIN deliveries del ON d.driver_id = del.driver_id\nJOIN orders o ON del.delivery_order_id = o.delivery_order_id\nWHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        },
+        {
+          "sql": "SELECT d.driver_id, AVG(delivery_count) AS avg_daily_deliveries\nFROM drivers d\nJOIN (\n    SELECT driver_id, DATE(order_moment_delivered) AS delivery_date, COUNT(*) AS delivery_count\n    FROM deliveries del\n    JOIN orders ord ON del.delivery_order_id = ord.delivery_order_id\n    WHERE ord.order_moment_delivered IS NOT NULL\n    GROUP BY driver_id, DATE(order_moment_delivered)\n) daily ON d.driver_id = daily.driver_id\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+          "score": 1.202077922077922,
+          "similarity_max": 0.5958441558441557,
+          "tables_used": [
+            "ord",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        },
+        {
+          "sql": "SELECT d.driver_id, AVG(del_count) AS avg_daily_deliveries\nFROM drivers d\nJOIN (\n    SELECT del.driver_id, DATE(o.order_moment_delivered) AS delivery_date, COUNT(del.delivery_id) AS del_count\n    FROM deliveries del\n    JOIN orders o ON del.delivery_order_id = o.delivery_order_id\n    WHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\n    GROUP BY del.driver_id, DATE(o.order_moment_delivered)\n) del_daily ON d.driver_id = del_daily.driver_id\nGROUP BY d.driver_id\nORDER...",
+          "score": 1.1502996254681648,
+          "similarity_max": 0.6994007490636704,
+          "tables_used": [
+            "o",
+            "d",
+            "orders",
+            "drivers",
+            "del",
+            "deliveries"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT d.driver_id, COUNT(del.delivery_id) * 1.0 / COUNT(DISTINCT DATE(o.order_moment_delivered)) AS avg_daily_deliveries\nFROM drivers d\nJOIN deliveries del ON d.driver_id = del.driver_id\nJOIN orders o ON del.delivery_order_id = o.delivery_order_id\nWHERE del.delivery_status = 'delivered' AND o.order_moment_delivered IS NOT NULL\nGROUP BY d.driver_id\nORDER BY avg_daily_deliveries DESC\nLIMIT 5;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "d",
+        "orders",
+        "drivers",
+        "del",
+        "deliveries"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.99
+  }
+}

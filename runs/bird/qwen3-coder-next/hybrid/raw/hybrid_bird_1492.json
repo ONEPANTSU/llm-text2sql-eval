@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1492",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2443.956333998358,
+  "execution_time_ms": 21.82708300097147,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_euro\nFROM customers\nWHERE Segment = 'KAM';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.788084000523668,
+      "result_signature": "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM customers\nWHERE Segment = 'KAM';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.162332999636419,
+      "result_signature": "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_euro_kam\nFROM customers\nWHERE Segment = 'KAM';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.674417002708651,
+      "result_signature": "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) * 100.0 / COUNT(*)) AS percentage_euro\nFROM customers\nWHERE Segment = 'KAM';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3415830000885762,
+      "result_signature": "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM customers\nWHERE Segment = 'KAM';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.249124998343177,
+      "result_signature": "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM customers\nWHERE Segment = 'KAM';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e6f813ba262cf09ae8b68b5a3e88b7918ab4e0a3d0277697b4dc12aae8869ee0": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2465.9408750012517
+}

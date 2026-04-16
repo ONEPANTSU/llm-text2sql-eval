@@ -1,0 +1,255 @@
+{
+  "task_id": "spider2_92",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH stack_test_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        ms.test_score AS stack_test_score\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n),\nnon_stack_max_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        MAX(ms.test_score) AS non_stack_max_score\n    FROM model_score ms\n    WHERE ms.model != 'Stack'\n    GROUP BY ms.version, ms.step\n),\nproblem_counts AS (\n    SELECT \n        p.name,\n        COUNT(*) AS total_occurrences\n    FROM problem p\n    J...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sts",
+            "ms",
+            "problem",
+            "stack_test_scores",
+            "solution",
+            "pc",
+            "problem_counts",
+            "non_stack_max_scores",
+            "s",
+            "nms",
+            "model_score",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.step,\n        ms.version,\n        ms.test_score AS stack_test_score\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n),\nnon_stack_max_scores AS (\n    SELECT \n        ms.step,\n        ms.version,\n        MAX(ms.test_score) AS non_stack_max_test_score\n    FROM model_score ms\n    WHERE ms.model != 'Stack'\n    GROUP BY ms.step, ms.version\n),\nexceeding_versions AS (\n    SELECT \n        ss.step,\n        ss.version\n    FROM stack_scores ss\n    INNER JOI...",
+          "score": 0.6419728660260033,
+          "similarity_max": 0.5160542679479931,
+          "tables_used": [
+            "ms",
+            "ss",
+            "pc",
+            "problem_counts",
+            "s",
+            "stack_scores",
+            "m",
+            "solution_counts",
+            "p",
+            "ev",
+            "problem",
+            "sc",
+            "nsm",
+            "non_stack_max_scores",
+            "model",
+            "solution",
+            "exceeding_versions",
+            "model_score"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH stack_test_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        ms.test_score AS stack_test_score\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n),\nnon_stack_max_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        MAX(ms.test_score) AS non_stack_max_score\n    FROM model_score ms\n    WHERE ms.model != 'Stack'\n    GROUP BY ms.version, ms.step\n),\nproblem_counts AS (\n    SELECT \n        p.name,\n        COUNT(*) AS total_occurrences\n    FROM problem p\n    J...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sts",
+            "ms",
+            "problem",
+            "stack_test_scores",
+            "solution",
+            "pc",
+            "problem_counts",
+            "non_stack_max_scores",
+            "s",
+            "nms",
+            "model_score",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT version, step, test_score AS stack_score\n    FROM model_score\n    WHERE model = 'Stack'\n),\nnon_stack_scores AS (\n    SELECT version, step, MAX(test_score) AS max_non_stack_score\n    FROM model_score\n    WHERE model != 'Stack'\n    GROUP BY version, step\n),\nviolating_combos AS (\n    SELECT ns.version, ns.step\n    FROM non_stack_scores ns\n    JOIN stack_scores ss \n        ON ns.version = ss.version AND ns.step = ss.step\n    WHERE ns.max_non_stack_score < ss.stack_s...",
+          "score": 0.8581807780320365,
+          "similarity_max": 0.5836384439359268,
+          "tables_used": [
+            "problem",
+            "ss",
+            "ns",
+            "violating_combos",
+            "non_stack_scores",
+            "s",
+            "stack_scores",
+            "problem_appearances",
+            "pa",
+            "vc",
+            "solution",
+            "model_score",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH exceeding_versions AS (\n    SELECT DISTINCT\n        ms.step,\n        ms.version\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n      AND ms.test_score > (\n          SELECT MAX(ms2.test_score)\n          FROM model_score ms2\n          WHERE ms2.step = ms.step\n            AND ms2.version = ms.version\n            AND ms2.model != 'Stack'\n      )\n),\nproblem_counts AS (\n    SELECT \n        p.name,\n        COUNT(*) AS cnt\n    FROM problem p\n    INNER JOIN solution s ON p.name = s.name\n    IN...",
+          "score": 0.7218943533697633,
+          "similarity_max": 0.6562112932604736,
+          "tables_used": [
+            "ms",
+            "problem",
+            "ms2",
+            "sc",
+            "pc",
+            "problem_counts",
+            "model_score",
+            "s",
+            "model",
+            "m",
+            "solution_counts",
+            "solution",
+            "exceeding_versions",
+            "p",
+            "ev"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH stack_test_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        ms.test_score AS stack_test_score\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n),\nnon_stack_max_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        MAX(ms.test_score) AS non_stack_max_score\n    FROM model_score ms\n    WHERE ms.model != 'Stack'\n    GROUP BY ms.version, ms.step\n),\nproblem_counts AS (\n    SELECT \n        p.name,\n        COUNT(*) AS total_occurrences\n    FROM problem p\n    J...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "sts",
+            "ms",
+            "problem",
+            "stack_test_scores",
+            "solution",
+            "pc",
+            "problem_counts",
+            "non_stack_max_scores",
+            "s",
+            "nms",
+            "model_score",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT version, step, test_score AS stack_score\n    FROM model_score\n    WHERE model = 'Stack'\n),\nnon_stack_scores AS (\n    SELECT version, step, MAX(test_score) AS max_non_stack_score\n    FROM model_score\n    WHERE model != 'Stack'\n    GROUP BY version, step\n),\nviolating_combos AS (\n    SELECT ns.version, ns.step\n    FROM non_stack_scores ns\n    JOIN stack_scores ss \n        ON ns.version = ss.version AND ns.step = ss.step\n    WHERE ns.max_non_stack_score < ss.stack_s...",
+          "score": 0.8581807780320365,
+          "similarity_max": 0.5836384439359268,
+          "tables_used": [
+            "problem",
+            "ss",
+            "ns",
+            "violating_combos",
+            "non_stack_scores",
+            "s",
+            "stack_scores",
+            "problem_appearances",
+            "pa",
+            "vc",
+            "solution",
+            "model_score",
+            "p"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT version, step, test_score AS stack_score\n    FROM model_score\n    WHERE model = 'Stack'\n),\nnon_stack_scores AS (\n    SELECT version, step, MAX(test_score) AS max_non_stack_score\n    FROM model_score\n    WHERE model != 'Stack'\n    GROUP BY version, step\n),\nproblem_counts AS (\n    SELECT p.name, COUNT(*) AS cnt\n    FROM problem p\n    JOIN solution s ON p.name = s.name\n    GROUP BY p.name\n),\nviolating_versions AS (\n    SELECT ns.version, ns.step\n    FROM non_stack_...",
+          "score": 0.8017721518987342,
+          "similarity_max": 0.6964556962025317,
+          "tables_used": [
+            "violating_versions",
+            "problem",
+            "ss",
+            "ns",
+            "pc",
+            "problem_counts",
+            "non_stack_scores",
+            "s",
+            "vv",
+            "stack_scores",
+            "solution",
+            "model_score",
+            "p"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH stack_test_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        ms.test_score AS stack_test_score\n    FROM model_score ms\n    WHERE ms.model = 'Stack'\n),\nnon_stack_max_scores AS (\n    SELECT \n        ms.version,\n        ms.step,\n        MAX(ms.test_score) AS non_stack_max_score\n    FROM model_score ms\n    WHERE ms.model != 'Stack'\n    GROUP BY ms.version, ms.step\n),\nproblem_counts AS (\n    SELECT \n        p.name,\n        COUNT(*) AS total_occurrences\n    FROM problem p\n    J...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "sts",
+        "ms",
+        "problem",
+        "stack_test_scores",
+        "solution",
+        "pc",
+        "problem_counts",
+        "non_stack_max_scores",
+        "s",
+        "nms",
+        "model_score",
+        "p"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: s.step",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.21
+  }
+}

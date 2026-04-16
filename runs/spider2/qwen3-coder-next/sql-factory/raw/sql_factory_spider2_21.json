@@ -1,0 +1,191 @@
+{
+  "task_id": "spider2_21",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  JOIN olist_customers c ON o.customer_id = c.customer_id\n  JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM delivered_orde...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_order_payments",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH city_payments AS (\n    SELECT \n        c.customer_city,\n        SUM(op.payment_value) AS total_payment,\n        COUNT(DISTINCT o.order_id) AS delivered_order_count\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_city\n),\ntop_5_cities AS (\n    SELECT \n        customer_city,\n        total_payment,\n        delivered_order_count\n    FROM ...",
+          "score": 1.027906976744186,
+          "similarity_max": 0.8441860465116278,
+          "tables_used": [
+            "o",
+            "city_payments",
+            "olist_order_payments",
+            "op",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  JOIN olist_customers c ON o.customer_id = c.customer_id\n  JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM delivered_orde...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_order_payments",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  INNER JOIN olist_customers c ON o.customer_id = c.customer_id\n  INNER JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM de...",
+          "score": 1.0359184629803186,
+          "similarity_max": 0.8281630740393626,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_order_payments",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH city_payments AS (\n    SELECT \n        c.customer_city,\n        SUM(op.payment_value) AS total_payment,\n        COUNT(DISTINCT o.order_id) AS delivered_order_count\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_city\n),\ntop_5_cities AS (\n    SELECT \n        customer_city,\n        total_payment,\n        delivered_order_count\n    FROM ...",
+          "score": 1.027906976744186,
+          "similarity_max": 0.8441860465116278,
+          "tables_used": [
+            "o",
+            "city_payments",
+            "olist_order_payments",
+            "op",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  JOIN olist_customers c ON o.customer_id = c.customer_id\n  JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM delivered_orde...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_order_payments",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        c.customer_city,\n        op.payment_value\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n),\ncity_payments AS (\n    SELECT \n        customer_city,\n        SUM(payment_value) AS total_payment,\n        COUNT(*) AS order_count\n    FROM delivered_orders\n    GROUP BY customer_city\n),\nlowest_cities AS (\n    SELECT \n      ...",
+          "score": 1.044695652173913,
+          "similarity_max": 0.7106086956521739,
+          "tables_used": [
+            "city_payments",
+            "olist_customers",
+            "olist_orders",
+            "c",
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  INNER JOIN olist_customers c ON o.customer_id = c.customer_id\n  INNER JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM de...",
+          "score": 1.0359184629803186,
+          "similarity_max": 0.8281630740393626,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_order_payments",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH delivered_order_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(op.payment_value) AS total_payment,\n    COUNT(DISTINCT o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  JOIN olist_customers c ON o.customer_id = c.customer_id\n  JOIN olist_order_payments op ON o.order_id = op.order_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n),\ntop_5_lowest_payment_cities AS (\n  SELECT \n    customer_city,\n    total_payment,\n    delivered_order_count\n  FROM delivered_orde...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "olist_order_payments",
+        "op",
+        "delivered_order_payments",
+        "olist_customers",
+        "olist_orders",
+        "c"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.23
+  }
+}

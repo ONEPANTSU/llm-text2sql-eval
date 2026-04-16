@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_40",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6998.600833001547,
+  "execution_time_ms": 21.37349999975413,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH italian_customers_profit AS (\n    SELECT \n        c.cust_id,\n        SUM(s.quantity_sold * (c.unit_price - c.unit_cost)) AS total_profit\n    FROM customers c\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN sales s ON c.cust_id = s.cust_id\n    JOIN costs c2 ON s.prod_id = c2.prod_id AND s.time_id = c2.time_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n    GROUP BY c.cust_id\n),\nprofit_buckets AS (\n    SELECT \n        cust_id,\n        total_profit,\n        NTILE(10) OVER (ORDER BY total_profit) AS bucket_num\n    FROM italian_customers_profit\n)\nSELECT \n    bucket_num,\n    COUNT(*) AS num_customers,\n    MIN(total_profit) AS min_profit,\n    MAX(total_profit) AS max_profit\nFROM profit_buckets\nGROUP BY bucket_num\nORDER BY bucket_num;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.unit_price",
+      "exec_time_ms": 3.0556249985238537,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH italian_customer_profits AS (\n    SELECT \n        c.cust_id,\n        SUM(s.quantity_sold * (cost.unit_price - cost.unit_cost)) AS total_profit\n    FROM customers c\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN sales s ON c.cust_id = s.cust_id\n    JOIN costs cost ON s.prod_id = cost.prod_id AND s.time_id = cost.time_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n    GROUP BY c.cust_id\n),\nprofit_ranges AS (\n    SELECT \n        MIN(total_profit) AS min_profit,\n        MAX(total_profit) AS max_profit\n    FROM italian_customer_profits\n),\nbucket_size AS (\n    SELECT \n        (max_profit - min_profit) / 10.0 AS bucket_width\n    FROM profit_ranges\n),\nbucketed_customers AS (\n    SELECT \n        cust_id,\n        total_profit,\n        CASE \n            WHEN total_profit = (SELECT max_profit FROM profit_ranges) THEN 10\n            ELSE CAST(FLOOR((total_profit - (SELECT min_profit FROM profit_ranges)) / (SELECT bucket_width FROM bucket_size)) + 1 AS INTEGER)\n        END AS bucket_num\n    FROM italian_customer_profits\n)\nSELECT \n    bucket_num AS bucket_number,\n    COUNT(*) AS num_customers,\n    MIN(total_profit) AS min_profit_in_bucket,\n    MAX(total_profit) AS max_profit_in_bucket\nFROM bucketed_customers\nGROUP BY bucket_num\nORDER BY bucket_num;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5483750030398369,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH italian_customer_profits AS (\n    SELECT \n        c.cust_id,\n        SUM(s.quantity_sold * (c.unit_price - c.unit_cost)) AS total_profit\n    FROM customers c\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN sales s ON c.cust_id = s.cust_id\n    JOIN costs c2 ON s.prod_id = c2.prod_id AND s.time_id = c2.time_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n    GROUP BY c.cust_id\n),\nprofit_buckets AS (\n    SELECT \n        cust_id,\n        total_profit,\n        NTILE(10) OVER (ORDER BY total_profit) AS bucket_num\n    FROM italian_customer_profits\n)\nSELECT \n    bucket_num,\n    COUNT(*) AS num_customers,\n    MIN(total_profit) AS min_profit,\n    MAX(total_profit) AS max_profit\nFROM profit_buckets\nGROUP BY bucket_num\nORDER BY bucket_num;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.unit_price",
+      "exec_time_ms": 0.5260829930193722,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH italian_customers_profit AS (\n    SELECT \n        c.cust_id,\n        SUM(s.quantity_sold * (c.unit_price - c.unit_cost)) AS total_profit\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN costs c ON s.prod_id = c.prod_id AND s.time_id = c.time_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n    GROUP BY c.cust_id\n),\nprofit_buckets AS (\n    SELECT \n        cust_id,\n        total_profit,\n        NTILE(10) OVER (ORDER BY total_profit) AS bucket_num\n    FROM italian_customers_profit\n)\nSELECT \n    bucket_num,\n    COUNT(*) AS num_customers,\n    MIN(total_profit) AS min_profit,\n    MAX(total_profit) AS max_profit\nFROM profit_buckets\nGROUP BY bucket_num\nORDER BY bucket_num;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8890419994713739,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH italian_customers_profit AS (\n  SELECT \n    c.cust_id,\n    SUM(s.quantity_sold * (c.unit_price - c.unit_cost)) AS total_profit\n  FROM customers c\n  JOIN countries co ON c.country_id = co.country_id\n  JOIN sales s ON c.cust_id = s.cust_id\n  JOIN costs c2 ON s.prod_id = c2.prod_id AND s.time_id = c2.time_id\n  JOIN times t ON s.time_id = t.time_id\n  WHERE co.country_name = 'Italy'\n    AND t.calendar_month_number = 12\n    AND t.calendar_month_desc LIKE '%2021%'\n  GROUP BY c.cust_id\n),\nprofit_buckets AS (\n  SELECT \n    cust_id,\n    total_profit,\n    NTILE(10) OVER (ORDER BY total_profit) AS bucket_num\n  FROM italian_customers_profit\n)\nSELECT \n  bucket_num AS bucket,\n  COUNT(*) AS num_customers,\n  MIN(total_profit) AS min_profit,\n  MAX(total_profit) AS max_profit\nFROM profit_buckets\nGROUP BY bucket_num\nORDER BY bucket_num;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.unit_price",
+      "exec_time_ms": 0.6689589936286211,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH italian_customers_profit AS (\n    SELECT \n        c.cust_id,\n        SUM(s.quantity_sold * (c.unit_price - c.unit_cost)) AS total_profit\n    FROM sales s\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    JOIN costs c ON s.prod_id = c.prod_id AND s.time_id = c.time_id\n    JOIN times t ON s.time_id = t.time_id\n    WHERE co.country_name = 'Italy'\n      AND t.calendar_month_number = 12\n      AND t.calendar_month_desc LIKE '%2021%'\n    GROUP BY c.cust_id\n),\nprofit_buckets AS (\n    SELECT \n        cust_id,\n        total_profit,\n        NTILE(10) OVER (ORDER BY total_profit) AS bucket_num\n    FROM italian_customers_profit\n)\nSELECT \n    bucket_num,\n    COUNT(*) AS num_customers,\n    MIN(total_profit) AS min_profit,\n    MAX(total_profit) AS max_profit\nFROM profit_buckets\nGROUP BY bucket_num\nORDER BY bucket_num;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7020.170958989183
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_143",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1280.0499590011896,
+  "execution_time_ms": 11.681500000122469,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT a.account_id\nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nJOIN account a ON d.account_id = a.account_id\nWHERE c.type = 'gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.329457999323495,
+      "result_signature": "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT a.account_id\nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nJOIN account a ON d.account_id = a.account_id\nWHERE c.type = 'gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2981670044828206,
+      "result_signature": "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT a.account_id\nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nJOIN account a ON d.account_id = a.account_id\nWHERE c.type = 'gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1924999998882413,
+      "result_signature": "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT account.account_id\nFROM card\nJOIN disp ON card.disp_id = disp.disp_id\nJOIN account ON disp.account_id = account.account_id\nWHERE card.type = 'gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8969589980551973,
+      "result_signature": "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT a.account_id\nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nJOIN account a ON d.account_id = a.account_id\nWHERE c.type = 'gold';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8659590021125041,
+      "result_signature": "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT a.account_id\nFROM card c\nJOIN disp d ON c.disp_id = d.disp_id\nJOIN account a ON d.account_id = a.account_id\nWHERE c.type = 'gold';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2820f473e87be5018ef0121aca90bc6f79e19dae788efd2772eee9081b894ad7": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1291.901707998477
+}

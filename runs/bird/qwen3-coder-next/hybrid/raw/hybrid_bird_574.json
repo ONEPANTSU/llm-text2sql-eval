@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_574",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1793.8371249983902,
+  "execution_time_ms": 19.513500003085937,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT Id, DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.571499998448417,
+      "result_signature": "175a6797882943a51ed6dadaa1ff74e2b0686d88e73de50d355a1be3dc2d34fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Id, DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.988042004290037,
+      "result_signature": "175a6797882943a51ed6dadaa1ff74e2b0686d88e73de50d355a1be3dc2d34fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Id, DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.136250001261942,
+      "result_signature": "175a6797882943a51ed6dadaa1ff74e2b0686d88e73de50d355a1be3dc2d34fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.0387079968932085,
+      "result_signature": "eb0507b6b8f4fbf3e98785ec8bfb6b7c7676f3283dc391e85d5ae6518a9b9c9f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Id, DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.5342919980175793,
+      "result_signature": "175a6797882943a51ed6dadaa1ff74e2b0686d88e73de50d355a1be3dc2d34fb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT Id, DisplayName FROM users WHERE WebsiteUrl = 'http://stackoverflow.com';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "175a6797882943a51ed6dadaa1ff74e2b0686d88e73de50d355a1be3dc2d34fb": 4,
+        "eb0507b6b8f4fbf3e98785ec8bfb6b7c7676f3283dc391e85d5ae6518a9b9c9f": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1685.599500000535,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3499.0159589942778
+}

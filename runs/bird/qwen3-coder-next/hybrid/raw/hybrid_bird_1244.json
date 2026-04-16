@@ -1,0 +1,139 @@
+{
+  "task_id": "bird_1244",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5551.6795000003185,
+  "execution_time_ms": 18.47345900023356,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11.5 AND 13.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 10.979332997521851,
+      "result_signature": "fafc4ed04fff64d4dbc4f17180b22f5a7ce94ff12f976f4d462acf0284d93104",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11.5 AND 13.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.4398340028710663,
+      "result_signature": "5c84a11dea942a9b858d713016b54c41b5c036dbf1e0aaeb226ebf87ddb8dddb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11 AND 13;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1367909974069335,
+      "result_signature": "eb0112a515803d953c3c0004f731268d4194536bfb01475187674da62e4ffa0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11.0 AND 13.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.822833000915125,
+      "result_signature": "e869b447fd88647650f02a9df3be706982c134f17e2a3eab77b5f989c09f3778",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11 AND 13.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.5994170025805943,
+      "result_signature": "e869b447fd88647650f02a9df3be706982c134f17e2a3eab77b5f989c09f3778",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT p.ID\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.\"First Date\" > '1992-12-31'\n  AND l.PT BETWEEN 11 AND 13.5;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "fafc4ed04fff64d4dbc4f17180b22f5a7ce94ff12f976f4d462acf0284d93104": 1,
+        "5c84a11dea942a9b858d713016b54c41b5c036dbf1e0aaeb226ebf87ddb8dddb": 1,
+        "eb0112a515803d953c3c0004f731268d4194536bfb01475187674da62e4ffa0e": 1,
+        "e869b447fd88647650f02a9df3be706982c134f17e2a3eab77b5f989c09f3778": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 0,
+    "expansion_time_ms": 2859.855416994833,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 8430.097625001508
+}

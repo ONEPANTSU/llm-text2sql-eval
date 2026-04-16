@@ -1,0 +1,164 @@
+{
+  "task_id": "bird_571",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(p.Id) AS REAL) / COUNT(v.Id) AS post_to_vote_ratio\nFROM users u\nLEFT JOIN posts p ON u.Id = p.OwnerUserId\nLEFT JOIN votes v ON u.Id = v.UserId\nWHERE u.Id = 24;",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(posts.Id) AS REAL) / COUNT(votes.Id) AS post_to_vote_ratio\nFROM users\nLEFT JOIN posts ON users.Id = posts.OwnerUserId\nLEFT JOIN votes ON users.Id = votes.UserId\nWHERE users.Id = 24;",
+          "score": 0.8529827315541602,
+          "similarity_max": 0.7940345368916797,
+          "tables_used": [
+            "posts",
+            "users",
+            "votes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(p.Id) AS REAL) / COUNT(v.Id) AS post_to_vote_ratio\nFROM users u\nLEFT JOIN posts p ON u.Id = p.OwnerUserId\nLEFT JOIN votes v ON u.Id = v.UserId\nWHERE u.Id = 24;",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM posts WHERE OwnerUserId = 24) * 1.0 / \n    (SELECT COUNT(*) FROM votes WHERE UserId = 24) AS post_to_vote_ratio",
+          "score": 0.8936279069767443,
+          "similarity_max": 0.41274418604651164,
+          "tables_used": [
+            "posts",
+            "votes"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(posts.Id) AS REAL) / COUNT(votes.Id) AS post_to_vote_ratio\nFROM users\nLEFT JOIN posts ON users.Id = posts.OwnerUserId\nLEFT JOIN votes ON users.Id = votes.UserId\nWHERE users.Id = 24;",
+          "score": 0.8529827315541602,
+          "similarity_max": 0.7940345368916797,
+          "tables_used": [
+            "posts",
+            "users",
+            "votes"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(p.Id) AS REAL) / COUNT(v.Id) AS post_to_vote_ratio\nFROM users u\nLEFT JOIN posts p ON u.Id = p.OwnerUserId\nLEFT JOIN votes v ON u.Id = v.UserId\nWHERE u.Id = 24;",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "users",
+            "votes",
+            "v",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM posts WHERE OwnerUserId = 24) * 1.0 / \n    (SELECT COUNT(*) FROM votes WHERE UserId = 24) AS post_to_vote_ratio",
+          "score": 0.8936279069767443,
+          "similarity_max": 0.41274418604651164,
+          "tables_used": [
+            "posts",
+            "votes"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(posts.Id) AS REAL) / COUNT(votes.Id) AS post_to_vote_ratio\nFROM users\nLEFT JOIN posts ON users.Id = posts.OwnerUserId\nLEFT JOIN votes ON users.Id = votes.UserId\nWHERE users.Id = 24;",
+          "score": 0.8529827315541602,
+          "similarity_max": 0.7940345368916797,
+          "tables_used": [
+            "posts",
+            "users",
+            "votes"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(p.Id) AS REAL) / COUNT(v.Id) AS post_to_vote_ratio\nFROM users u\nLEFT JOIN posts p ON u.Id = p.OwnerUserId\nLEFT JOIN votes v ON u.Id = v.UserId\nWHERE u.Id = 24;",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "posts",
+        "users",
+        "votes",
+        "v",
+        "p"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 90.42
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "task_id": "bird_430",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 3,
+  "generation_time_ms": 1898.355208002613,
+  "execution_time_ms": 3.5103330010315403,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT s.code, c.id\nFROM cards c\nJOIN sets s ON c.setId = s.id\nJOIN foreign_data f ON c.uuid = f.uuid\nWHERE f.language = 'Italian'\n  AND s.block = 'Shadowmoor'\nORDER BY s.code ASC\nLIMIT 2;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.setId",
+      "exec_time_ms": 0.5387919954955578,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT sets.id, sets.code\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.setId = sets.id\nWHERE foreign_data.language = 'Italian'\n  AND sets.block = 'Shadowmoor'\nORDER BY sets.code ASC\nLIMIT 2;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: cards.setId",
+      "exec_time_ms": 0.18470900249667466,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT sets.code, cards.id\nFROM cards\nJOIN sets ON cards.setId = sets.id\nJOIN foreign_data ON cards.id = foreign_data.uuid\nWHERE foreign_data.language = 'Italian'\n  AND sets.block = 'Shadowmoor'\nORDER BY sets.code ASC\nLIMIT 2;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: cards.setId",
+      "exec_time_ms": 0.16408300143666565,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT sets.id, sets.code\nFROM cards\nJOIN foreign_data ON cards.id = foreign_data.uuid\nJOIN sets ON cards.setId = sets.id\nWHERE foreign_data.language = 'Italian'\n  AND sets.block = 'Shadowmoor'\nORDER BY sets.code ASC\nLIMIT 2;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: cards.setId",
+      "exec_time_ms": 0.15366599836852401,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT s.code, c.id\nFROM cards c\nJOIN sets s ON c.setId = s.id\nJOIN foreign_data f ON c.uuid = f.uuid\nWHERE f.language = 'Italian' AND s.block = 'Shadowmoor'\nORDER BY s.code ASC\nLIMIT 2;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: c.setId",
+      "exec_time_ms": 0.1482920051785186,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 1901.9038749975152
+}

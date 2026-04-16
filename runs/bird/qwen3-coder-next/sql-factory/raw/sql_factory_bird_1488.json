@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_1488",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID, SUM(t.Amount) AS TotalConsumption\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nGROUP BY c.CustomerID\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID, SUM(t.Amount) AS TotalConsumption\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nGROUP BY c.CustomerID\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH CustomerConsumption AS (\n    SELECT \n        c.CustomerID,\n        SUM(t.Amount) AS TotalConsumption\n    FROM customers c\n    JOIN transactions_1k t ON c.CustomerID = t.CustomerID\n    WHERE c.Segment = 'KAM'\n    GROUP BY c.CustomerID\n)\nSELECT CustomerID, TotalConsumption\nFROM CustomerConsumption\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.1181818181818182,
+          "similarity_max": 0.6636363636363636,
+          "tables_used": [
+            "customers",
+            "c",
+            "CustomerConsumption",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "SELECT c.CustomerID, y.Consumption AS TotalConsumption\nFROM customers c\nJOIN yearmonth y ON c.CustomerID = y.CustomerID\nWHERE c.Segment = 'KAM'\nORDER BY y.Consumption DESC\nLIMIT 1;",
+          "score": 0.9065756823821339,
+          "similarity_max": 0.586848635235732,
+          "tables_used": [
+            "customers",
+            "yearmonth",
+            "c",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT c.CustomerID, SUM(t.Amount) AS TotalConsumption\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nGROUP BY c.CustomerID\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH CustomerConsumption AS (\n    SELECT \n        c.CustomerID,\n        SUM(t.Amount) AS TotalConsumption\n    FROM customers c\n    JOIN transactions_1k t ON c.CustomerID = t.CustomerID\n    WHERE c.Segment = 'KAM'\n    GROUP BY c.CustomerID\n)\nSELECT CustomerID, TotalConsumption\nFROM CustomerConsumption\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.1181818181818182,
+          "similarity_max": 0.6636363636363636,
+          "tables_used": [
+            "customers",
+            "c",
+            "CustomerConsumption",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH KAMConsumption AS (\n    SELECT \n        c.CustomerID,\n        SUM(t.Amount) AS TotalConsumption\n    FROM customers c\n    INNER JOIN transactions_1k t ON c.CustomerID = t.CustomerID\n    WHERE c.Segment = 'KAM'\n    GROUP BY c.CustomerID\n)\nSELECT CustomerID, TotalConsumption\nFROM KAMConsumption\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+          "score": 1.028125,
+          "similarity_max": 0.84375,
+          "tables_used": [
+            "customers",
+            "c",
+            "t",
+            "transactions_1k",
+            "KAMConsumption"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.CustomerID, SUM(t.Amount) AS TotalConsumption\nFROM customers c\nJOIN transactions_1k t ON c.CustomerID = t.CustomerID\nGROUP BY c.CustomerID\nORDER BY TotalConsumption DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customers",
+        "c",
+        "t",
+        "transactions_1k"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 17.32
+  }
+}

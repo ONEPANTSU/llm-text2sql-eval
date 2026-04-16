@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_565",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'  -- PostHistoryTypeId 10 = \"Post Closed\" or similar final status\n        WHEN ph.PostHistoryTypeId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15) THEN 'No'  -- Incomplete history types\n        ELSE 'Unknown'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (10, 11, 12, 13, 14, 15)  -- Finalizing history types\nWHERE c.UserId = 23...",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT CASE WHEN ph.Text LIKE '%finished%' THEN 'Yes' ELSE 'No' END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (1, 2) -- 1=InitialTitle, 2=InitialBody\nWHERE c.UserId = 23853\n  AND c.CreationDate = '2013-07-12 09:08:18';",
+          "score": 1.108727364185111,
+          "similarity_max": 0.5825452716297785,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'  -- PostHistoryTypeId 10 = \"Post Closed\" or similar final status\n        WHEN ph.PostHistoryTypeId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15) THEN 'No'  -- Incomplete history types\n        ELSE 'Unknown'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (10, 11, 12, 13, 14, 15)  -- Finalizing history types\nWHERE c.UserId = 23...",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT CASE WHEN ph.Text LIKE '%finished%' THEN 'Yes' ELSE 'No' END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (1, 2) -- 1=InitialTitle, 2=InitialBody\nWHERE c.UserId = 23853\n  AND c.CreationDate = '2013-07-12 09:08:18';",
+          "score": 1.108727364185111,
+          "similarity_max": 0.5825452716297785,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN p.ClosedDate IS NOT NULL THEN 'Yes'\n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'\n        ELSE 'No'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId = 10\nWHERE c.UserId = 23853\n  AND c.CreationDate = '2013-07-12 09:08:18';",
+          "score": 1.065192903407491,
+          "similarity_max": 0.6696141931850182,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CASE \n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'  -- PostHistoryTypeId 10 = \"Post Closed\" or similar final status\n        WHEN ph.PostHistoryTypeId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15) THEN 'No'  -- Incomplete history types\n        ELSE 'Unknown'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (10, 11, 12, 13, 14, 15)  -- Finalizing history types\nWHERE c.UserId = 23...",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT CASE WHEN ph.Text LIKE '%finished%' THEN 'Yes' ELSE 'No' END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (1, 2) -- 1=InitialTitle, 2=InitialBody\nWHERE c.UserId = 23853\n  AND c.CreationDate = '2013-07-12 09:08:18';",
+          "score": 1.108727364185111,
+          "similarity_max": 0.5825452716297785,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CASE \n        WHEN p.ClosedDate IS NOT NULL THEN 'Yes'\n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'\n        ELSE 'No'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId = 10\nWHERE c.UserId = 23853\n  AND c.CreationDate = '2013-07-12 09:08:18';",
+          "score": 1.065192903407491,
+          "similarity_max": 0.6696141931850182,
+          "tables_used": [
+            "posts",
+            "c",
+            "ph",
+            "postHistory",
+            "p",
+            "comments"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CASE \n        WHEN ph.PostHistoryTypeId = 10 THEN 'Yes'  -- PostHistoryTypeId 10 = \"Post Closed\" or similar final status\n        WHEN ph.PostHistoryTypeId IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15) THEN 'No'  -- Incomplete history types\n        ELSE 'Unknown'\n    END AS IsWellFinished\nFROM comments c\nJOIN posts p ON c.PostId = p.Id\nLEFT JOIN postHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (10, 11, 12, 13, 14, 15)  -- Finalizing history types\nWHERE c.UserId = 23...",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "posts",
+        "c",
+        "ph",
+        "postHistory",
+        "p",
+        "comments"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 132.76
+  }
+}

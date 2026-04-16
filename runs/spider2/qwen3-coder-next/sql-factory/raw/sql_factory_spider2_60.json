@@ -1,0 +1,225 @@
+{
+  "task_id": "spider2_60",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region_id,\n        MAX(total_sales) AS max_sales\n    FROM region_sales\n    GROUP BY region_id\n),\ntop_reps AS (\n    SELECT \n        rs.region_id,\n        rs.re...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_reps",
+            "max_sales_per_region",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "rs",
+            "region_summary",
+            "wa",
+            "tr",
+            "region_sales",
+            "wr",
+            "msr"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region_id,\n        MAX(total_sales) AS max_sales\n    FROM region_sales\n    GROUP BY region_id\n),\ntop_reps AS (\n    SELECT \n        rs.region_id,\n        rs.re...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_reps",
+            "max_sales_per_region",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "rs",
+            "region_summary",
+            "wa",
+            "tr",
+            "region_sales",
+            "wr",
+            "msr"
+          ]
+        },
+        {
+          "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales,\n        COUNT(wo.id) AS order_count\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nregion_totals AS (\n    SELECT \n        region_id,\n        SUM(total_sales) AS total_region_sales,\n        SUM(order_count) AS total_orders\n    FROM region_sales\n    GR...",
+          "score": 0.976936531734133,
+          "similarity_max": 0.5461269365317342,
+          "tables_used": [
+            "web_orders",
+            "region_totals",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "ranked_reps",
+            "rr",
+            "wa",
+            "region_sales",
+            "rt",
+            "wr"
+          ]
+        },
+        {
+          "sql": "WITH rep_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name,\n        COUNT(DISTINCT wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nregion_stats AS (\n    SELECT \n        region_id,\n        SUM(order_count) AS total_orders,\n        SUM(total_sales) AS region_total_sales\n    FROM rep_sales\n    GROUP BY reg...",
+          "score": 0.825485370522286,
+          "similarity_max": 0.6490292589554278,
+          "tables_used": [
+            "ms",
+            "top_reps",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "rs",
+            "region_stats",
+            "wa",
+            "tr",
+            "max_sales",
+            "wr",
+            "rep_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region_id,\n        MAX(total_sales) AS max_sales\n    FROM region_sales\n    GROUP BY region_id\n),\ntop_reps AS (\n    SELECT \n        rs.region_id,\n        rs.re...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "top_reps",
+            "max_sales_per_region",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "rs",
+            "region_summary",
+            "wa",
+            "tr",
+            "region_sales",
+            "wr",
+            "msr"
+          ]
+        },
+        {
+          "sql": "WITH region_summary AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        COUNT(wo.id) AS order_count,\n        SUM(wo.total_amt_usd) AS rep_total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nregion_aggregates AS (\n    SELECT \n        region_id,\n        SUM(order_count) AS total_orders,\n        SUM(rep_total_sales) AS total_region_sales,\n        MAX(r...",
+          "score": 1.0064364876385337,
+          "similarity_max": 0.5871270247229325,
+          "tables_used": [
+            "region_aggregates",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "region_summary",
+            "rs",
+            "ra",
+            "wa",
+            "wr"
+          ]
+        },
+        {
+          "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales,\n        COUNT(wo.id) AS order_count\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nregion_totals AS (\n    SELECT \n        region_id,\n        SUM(total_sales) AS total_region_sales,\n        SUM(order_count) AS total_orders\n    FROM region_sales\n    GR...",
+          "score": 0.976936531734133,
+          "similarity_max": 0.5461269365317342,
+          "tables_used": [
+            "web_orders",
+            "region_totals",
+            "web_sales_reps",
+            "web_accounts",
+            "wo",
+            "ranked_reps",
+            "rr",
+            "wa",
+            "region_sales",
+            "rt",
+            "wr"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH region_sales AS (\n    SELECT \n        wr.region_id,\n        wr.name AS rep_name,\n        SUM(wo.total_amt_usd) AS total_sales\n    FROM web_sales_reps wr\n    JOIN web_accounts wa ON wr.id = wa.sales_rep_id\n    JOIN web_orders wo ON wa.id = wo.account_id\n    GROUP BY wr.region_id, wr.name\n),\nmax_sales_per_region AS (\n    SELECT \n        region_id,\n        MAX(total_sales) AS max_sales\n    FROM region_sales\n    GROUP BY region_id\n),\ntop_reps AS (\n    SELECT \n        rs.region_id,\n        rs.re...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "top_reps",
+        "max_sales_per_region",
+        "web_orders",
+        "web_sales_reps",
+        "web_accounts",
+        "wo",
+        "rs",
+        "region_summary",
+        "wa",
+        "tr",
+        "region_sales",
+        "wr",
+        "msr"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: r.region",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.69
+  }
+}

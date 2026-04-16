@@ -1,0 +1,185 @@
+{
+  "task_id": "bird_530",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2026.9160419993568,
+  "execution_time_ms": 382.28954099758994,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT frameVersion, asciiName, \n       CASE WHEN status = 'Banned' THEN 'Banned' ELSE 'Not Banned' END AS banStatus\nFROM cards c\nLEFT JOIN legalities l ON c.id = l.id\nWHERE c.artist = 'Allen Williams';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 313.8110840009176,
+      "result_signature": "6f8ca523db48deea4652c9fa62d0db93685150a8086bd7bc9167beb05842ec3c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT frameVersion, asciiName, legalities.status AS banned_status\nFROM cards\nLEFT JOIN legalities ON cards.id = legalities.id\nWHERE cards.artist = 'Allen Williams'\nAND legalities.format = 'Banned'",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.7579169976525,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT frameVersion, asciiName\nFROM cards\nWHERE artist = 'Allen Williams';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.128457999206148,
+      "result_signature": "a0b0c146dfeae858d7526374b034e094f47864c6d700ab78b96149f4d8a4125c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT frameVersion, asciiName, \n       CASE WHEN status = 'Banned' THEN 'Yes' ELSE 'No' END AS isBanned\nFROM cards c\nLEFT JOIN legalities l ON c.id = l.id\nWHERE c.artist = 'Allen Williams';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.633457998977974,
+      "result_signature": "fff28cfac88b15f1262ef768117760da7df985723e77cec5034069f9e7c8fda5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT frameVersion, asciiName FROM cards WHERE artist = 'Allen Williams';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.56029199511977,
+      "result_signature": "042025879ad59ab612d756bd76dd6f4425294ffc047241d36958a264470e9e53",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT DISTINCT frameVersion, asciiName, \n       CASE WHEN status = 'Banned' THEN 'Yes' ELSE 'No' END AS isBanned\nFROM cards c\nLEFT JOIN legalities l ON c.id = l.id\nWHERE c.artist = 'Allen Williams';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "6f8ca523db48deea4652c9fa62d0db93685150a8086bd7bc9167beb05842ec3c": 1,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1,
+        "a0b0c146dfeae858d7526374b034e094f47864c6d700ab78b96149f4d8a4125c": 1,
+        "fff28cfac88b15f1262ef768117760da7df985723e77cec5034069f9e7c8fda5": 2,
+        "042025879ad59ab612d756bd76dd6f4425294ffc047241d36958a264470e9e53": 1,
+        "8ed7477f0f65d111794fa96bfd05cd398912adafc640c6791533c4dc4e521a0b": 1,
+        "da3958250db97b81ea0eda6ee8d2b851032da0f0c35a400120c5d24031052007": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 5334.923709000577,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT frameVersion, asciiName, \n       (SELECT GROUP_CONCAT(DISTINCT format || ': ' || status) \n        FROM legalities \n        WHERE legalities.uuid = cards.uuid AND status = 'Banned') AS banned_status\nFROM cards \nWHERE artist = 'Allen Williams';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3231.211166996218,
+        "result_signature": "8ed7477f0f65d111794fa96bfd05cd398912adafc640c6791533c4dc4e521a0b",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT DISTINCT c.frameVersion, c.asciiName, l.status\nFROM cards c\nLEFT JOIN legalities l ON c.uuid = l.uuid\nWHERE c.artist = 'Allen Williams';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 629.6362909997697,
+        "result_signature": "da3958250db97b81ea0eda6ee8d2b851032da0f0c35a400120c5d24031052007",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT DISTINCT frameVersion, asciiName,\n       (SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END\n        FROM legalities l2\n        WHERE l2.id = c.id AND l2.status = 'Banned') AS isBanned\nFROM cards c\nWHERE c.artist = 'Allen Williams';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 49.31287500221515,
+        "result_signature": "fff28cfac88b15f1262ef768117760da7df985723e77cec5034069f9e7c8fda5",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7744.235584003036
+}

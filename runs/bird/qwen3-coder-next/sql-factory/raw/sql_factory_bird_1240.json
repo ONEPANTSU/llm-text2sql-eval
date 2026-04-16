@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_1240",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE strftime('%Y', Date) = '1991' \nAND HCT < (SELECT AVG(HCT) FROM Laboratory WHERE HCT IS NOT NULL);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE Date LIKE '1991%' \n  AND HCT < 38;",
+          "score": 0.8024147727272728,
+          "similarity_max": 0.49517045454545455,
+          "tables_used": [
+            "Laboratory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE strftime('%Y', Date) = '1991' \nAND HCT < (SELECT AVG(HCT) FROM Laboratory WHERE HCT IS NOT NULL);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE Date LIKE '1991%' \n  AND HCT < 38;",
+          "score": 0.8024147727272728,
+          "similarity_max": 0.49517045454545455,
+          "tables_used": [
+            "Laboratory"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE Date BETWEEN '1991-01-01' AND '1991-12-31' \n  AND HCT < 38;",
+          "score": 0.6956140350877194,
+          "similarity_max": 0.7087719298245614,
+          "tables_used": [
+            "Laboratory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE strftime('%Y', Date) = '1991' \nAND HCT < (SELECT AVG(HCT) FROM Laboratory WHERE HCT IS NOT NULL);",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE Date LIKE '1991%' \n  AND HCT < 38;",
+          "score": 0.8024147727272728,
+          "similarity_max": 0.49517045454545455,
+          "tables_used": [
+            "Laboratory"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE Date BETWEEN '1991-01-01' AND '1991-12-31' \n  AND HCT < 38;",
+          "score": 0.6956140350877194,
+          "similarity_max": 0.7087719298245614,
+          "tables_used": [
+            "Laboratory"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(HCT) \nFROM Laboratory \nWHERE strftime('%Y', Date) = '1991' \nAND HCT < (SELECT AVG(HCT) FROM Laboratory WHERE HCT IS NOT NULL);",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 9.8
+  }
+}

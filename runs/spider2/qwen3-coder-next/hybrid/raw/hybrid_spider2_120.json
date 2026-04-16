@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_120",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5909.913249997771,
+  "execution_time_ms": 12.621874993783422,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r_first ON dr.year = r_first.year AND dr.first_round = r_first.round\nJOIN races r_last ON dr.year = r_last.year AND dr.last_round = r_last.round\nJOIN results res_first ON r_first.race_id = res_first.race_id AND d.driver_id = res_first.driver_id\nJOIN results res_last ON r_last.race_id = res_last.race_id AND d.driver_id = res_last.driver_id\nWHERE dr.year >= 1950 AND dr.year <= 1959\n  AND dr.first_round < dr.last_round\n  AND res_first.constructor_id = res_last.constructor_id\n  AND res_first.constructor_id = dr.constructor_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.710624991683289,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r1 ON dr.year = r1.year AND dr.first_round = r1.round\nJOIN races r2 ON dr.year = r2.year AND dr.last_round = r2.round\nJOIN results res1 ON res1.race_id = r1.race_id AND res1.driver_id = d.driver_id\nJOIN results res2 ON res2.race_id = r2.race_id AND res2.driver_id = d.driver_id\nWHERE dr.year BETWEEN 1950 AND 1959\n  AND dr.first_round < dr.last_round\n  AND res1.constructor_id = res2.constructor_id\nGROUP BY d.driver_id, d.forename, d.surname, dr.year, dr.constructor_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.1812919983640313,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r1 ON dr.year = r1.year AND dr.first_round = r1.round\nJOIN races r2 ON dr.year = r2.year AND dr.last_round = r2.round\nJOIN results res1 ON res1.race_id = r1.race_id AND res1.driver_id = d.driver_id\nJOIN results res2 ON res2.race_id = r2.race_id AND res2.driver_id = d.driver_id\nWHERE dr.year >= 1950 AND dr.year <= 1959\n  AND dr.first_round < dr.last_round\n  AND res1.constructor_id = res2.constructor_id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.240166999399662,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r1 ON dr.driver_id = r1.driver_id AND dr.year = r1.year AND dr.first_round = r1.round\nJOIN races r2 ON dr.driver_id = r2.driver_id AND dr.year = r2.year AND dr.last_round = r2.round\nJOIN results res1 ON r1.race_id = res1.race_id AND d.driver_id = res1.driver_id\nJOIN results res2 ON r2.race_id = res2.race_id AND d.driver_id = res2.driver_id\nWHERE dr.year BETWEEN 1950 AND 1959\n  AND dr.first_round < dr.last_round\n  AND res1.constructor_id = res2.constructor_id;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: r1.driver_id",
+      "exec_time_ms": 1.0133329924428836,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r1 ON dr.driver_id = dr.driver_id AND dr.year = r1.year AND dr.first_round = r1.round\nJOIN races r2 ON dr.driver_id = dr.driver_id AND dr.year = r2.year AND dr.last_round = r2.round\nJOIN results res1 ON r1.race_id = res1.race_id AND d.driver_id = res1.driver_id\nJOIN results res2 ON r2.race_id = res2.race_id AND d.driver_id = res2.driver_id\nWHERE r1.year >= 1950 \n  AND r1.year <= 1959\n  AND dr.first_round < dr.last_round\n  AND res1.constructor_id = res2.constructor_id",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6528329977300018,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT d.forename, d.surname\nFROM drivers d\nJOIN drives dr ON d.driver_id = dr.driver_id\nJOIN races r1 ON dr.driver_id = dr.driver_id AND dr.year = r1.year AND dr.first_round = r1.round\nJOIN races r2 ON dr.driver_id = dr.driver_id AND dr.year = r2.year AND dr.last_round = r2.round\nJOIN results res1 ON r1.race_id = res1.race_id AND d.driver_id = res1.driver_id\nJOIN results res2 ON r2.race_id = res2.race_id AND d.driver_id = res2.driver_id\nWHERE r1.year >= 1950 \n  AND r1.year <= 1959\n  AND dr.first_round < dr.last_round\n  AND res1.constructor_id = res2.constructor_id",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5922.628792002797
+}

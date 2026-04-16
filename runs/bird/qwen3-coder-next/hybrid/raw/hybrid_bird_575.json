@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_575",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1782.5703749986133,
+  "execution_time_ms": 132.60212499881163,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT b.Name\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE u.DisplayName = 'SilentGhost';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 29.346584000450093,
+      "result_signature": "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT badges.Name\nFROM badges\nJOIN users ON badges.UserId = users.Id\nWHERE users.DisplayName = 'SilentGhost';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 27.67866700014565,
+      "result_signature": "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT badges.Name\nFROM badges\nJOIN users ON badges.UserId = users.Id\nWHERE users.DisplayName = 'SilentGhost';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.555332998919766,
+      "result_signature": "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT b.Name\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE u.DisplayName = 'SilentGhost';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.743875001149718,
+      "result_signature": "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT badges.Name\nFROM badges\nJOIN users ON badges.UserId = users.Id\nWHERE users.DisplayName = 'SilentGhost';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.00908300135052,
+      "result_signature": "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT b.Name\nFROM badges b\nJOIN users u ON b.UserId = u.Id\nWHERE u.DisplayName = 'SilentGhost';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "5fb7dd4960e5e479ceb8d5d7af8c95ac3eb1ad404f763705524700c311a60efd": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1915.2056250022724
+}

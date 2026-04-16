@@ -1,0 +1,222 @@
+{
+  "task_id": "spider2_93",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "ss",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "ranked_counts",
+            "model_status",
+            "model",
+            "m",
+            "model_score",
+            "rc"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "ss",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "ranked_counts",
+            "model_status",
+            "model",
+            "m",
+            "model_score",
+            "rc"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 0.8320364741641337,
+          "similarity_max": 0.7359270516717324,
+          "tables_used": [
+            "ms",
+            "ss",
+            "max_counts",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "model_status",
+            "model",
+            "mc",
+            "m",
+            "model_score"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 0.7977203647416413,
+          "similarity_max": 0.8045592705167173,
+          "tables_used": [
+            "ms",
+            "ss",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "ranked_counts",
+            "model_status",
+            "model",
+            "m",
+            "model_score",
+            "rc"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "ms",
+            "ss",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "ranked_counts",
+            "model_status",
+            "model",
+            "m",
+            "model_score",
+            "rc"
+          ]
+        },
+        {
+          "sql": "WITH strong_soft_status AS (\n    SELECT \n        ms.name,\n        ms.version,\n        CASE \n            WHEN MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) < MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) THEN 'strong'\n            WHEN MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) = MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) THEN 'soft'\n        END AS status\n    FROM model_score ms\n    GROUP BY ms.name, ms.version\n),\nmodel_l1_counts AS (\n    SELECT ...",
+          "score": 1.002340425531915,
+          "similarity_max": 0.5953191489361702,
+          "tables_used": [
+            "ms",
+            "ss",
+            "max_counts",
+            "model_l1_counts",
+            "model",
+            "m",
+            "l1_model_counts",
+            "model_score",
+            "strong_soft_status",
+            "l"
+          ]
+        },
+        {
+          "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+          "score": 0.8320364741641337,
+          "similarity_max": 0.7359270516717324,
+          "tables_used": [
+            "ms",
+            "ss",
+            "max_counts",
+            "sc",
+            "status_counts",
+            "status_calc",
+            "stack_scores",
+            "model_status",
+            "model",
+            "mc",
+            "m",
+            "model_score"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH stack_scores AS (\n    SELECT \n        ms.name,\n        ms.version,\n        ms.step,\n        MAX(CASE WHEN ms.model = 'Stack' THEN ms.test_score END) AS stack_score,\n        MAX(CASE WHEN ms.model != 'Stack' THEN ms.test_score END) AS max_non_stack_score\n    FROM model_score ms\n    GROUP BY ms.name, ms.version, ms.step\n),\nstatus_calc AS (\n    SELECT \n        ss.name,\n        ss.version,\n        ss.step,\n        CASE \n            WHEN ss.stack_score > ss.max_non_stack_score THEN 'strong'\n    ...",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "ms",
+        "ss",
+        "sc",
+        "status_counts",
+        "status_calc",
+        "stack_scores",
+        "ranked_counts",
+        "model_status",
+        "model",
+        "m",
+        "model_score",
+        "rc"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: m.model",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.31
+  }
+}

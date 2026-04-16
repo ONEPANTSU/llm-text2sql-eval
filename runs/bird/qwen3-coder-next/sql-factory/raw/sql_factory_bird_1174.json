@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_1174",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y-%m', l.Date) = '1991-10';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(1999 - CAST(substr(Patient.Birthday, 1, 4) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE strftime('%Y', Laboratory.Date) = '1991'\n  AND strftime('%m', Laboratory.Date) = '10';",
+          "score": 0.7173361522198732,
+          "similarity_max": 0.6653276955602536,
+          "tables_used": [
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y-%m', l.Date) = '1991-10';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y', l.Date) = '1991' AND strftime('%m', l.Date) = '10';",
+          "score": 0.915007012622721,
+          "similarity_max": 0.7699859747545582,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(1999 - CAST(substr(Patient.Birthday, 1, 4) AS INTEGER)) AS average_age\nFROM Patient\nJOIN Laboratory ON Patient.ID = Laboratory.ID\nWHERE strftime('%Y', Laboratory.Date) = '1991'\n  AND strftime('%m', Laboratory.Date) = '10';",
+          "score": 0.7173361522198732,
+          "similarity_max": 0.6653276955602536,
+          "tables_used": [
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y-%m', l.Date) = '1991-10';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y', l.Date) = '1991' AND strftime('%m', l.Date) = '10';",
+          "score": 0.915007012622721,
+          "similarity_max": 0.7699859747545582,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date >= '1991-10-01' AND l.Date <= '1991-10-31';",
+          "score": 0.8279411764705882,
+          "similarity_max": 0.7441176470588236,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT AVG(1999 - CAST(strftime('%Y', p.Birthday) AS INTEGER)) AS average_age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE strftime('%Y-%m', l.Date) = '1991-10';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 13.77
+  }
+}

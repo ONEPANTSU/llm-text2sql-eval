@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_1486",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1706.622249999782,
+  "execution_time_ms": 34.659666001971345,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.896292002347764,
+      "result_signature": "3ee86a2a71199c4fc27032f2bbc9d52bedd5fd3bd470c7683359e9be8677265c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) AS count_CZK,\n  COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS count_EUR,\n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.542750001244713,
+      "result_signature": "31231c810abc909688da06419f421f25c3309565294dc8538930bca37c88ada4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) AS count_CZK,\n  COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS count_EUR,\n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.2831670002196915,
+      "result_signature": "31231c810abc909688da06419f421f25c3309565294dc8538930bca37c88ada4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) AS count_CZK,\n  COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS count_EUR,\n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.899667001154739,
+      "result_signature": "31231c810abc909688da06419f421f25c3309565294dc8538930bca37c88ada4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.579166001349222,
+      "result_signature": "3ee86a2a71199c4fc27032f2bbc9d52bedd5fd3bd470c7683359e9be8677265c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n  COUNT(CASE WHEN Currency = 'CZK' THEN 1 END) - COUNT(CASE WHEN Currency = 'EUR' THEN 1 END) AS difference\nFROM customers\nWHERE Segment = 'SME';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3ee86a2a71199c4fc27032f2bbc9d52bedd5fd3bd470c7683359e9be8677265c": 4,
+        "31231c810abc909688da06419f421f25c3309565294dc8538930bca37c88ada4": 3
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1167.644500004826,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n  (SELECT COUNT(*) FROM customers WHERE Segment = 'SME' AND Currency = 'CZK') \n  - \n  (SELECT COUNT(*) FROM customers WHERE Segment = 'SME' AND Currency = 'EUR') AS difference",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 20.264416001737118,
+        "result_signature": "3ee86a2a71199c4fc27032f2bbc9d52bedd5fd3bd470c7683359e9be8677265c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n  (SELECT COUNT(*) FROM customers WHERE Segment = 'SME' AND Currency = 'CZK') \n  - \n  (SELECT COUNT(*) FROM customers WHERE Segment = 'SME' AND Currency = 'EUR') AS difference",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 8.978332996775862,
+        "result_signature": "3ee86a2a71199c4fc27032f2bbc9d52bedd5fd3bd470c7683359e9be8677265c",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2909.0454999968642
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_11",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7672.035958996275,
+  "execution_time_ms": 19.11933299561497,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH over_runs AS (\n    SELECT\n        bb.match_id,\n        bb.over_id,\n        bb.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball bb\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id\n    JOIN extra_runs er ON bb.match_id = er.match_id AND bb.over_id = er.over_id\n    GROUP BY bb.match_id, bb.over_id, bb.bowler\n),\nmax_runs_per_match AS (\n    SELECT\n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\novers_with_max_runs AS (\n    SELECT\n        ors.match_id,\n        ors.over_id,\n        ors.bowler,\n        ors.total_runs\n    FROM over_runs ors\n    JOIN max_runs_per_match mrm ON ors.match_id = mrm.match_id AND ors.total_runs = mrm.max_match_runs\n),\nranked_bowlers AS (\n    SELECT\n        owm.bowler,\n        p.player_name,\n        owm.match_id,\n        owm.total_runs,\n        ROW_NUMBER() OVER (PARTITION BY owm.bowler ORDER BY owm.total_runs DESC, owm.match_id ASC) AS rn\n    FROM overs_with_max_runs owm\n    JOIN player p ON owm.bowler = p.player_id\n)\nSELECT\n    rb.player_name,\n    rb.match_id,\n    rb.total_runs\nFROM ranked_bowlers rb\nWHERE rb.rn = 1\nORDER BY rb.total_runs DESC, rb.player_name ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.785415999824181,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH over_runs AS (\n    SELECT\n        bb.match_id,\n        bb.over_id,\n        bb.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball bb\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id\n    JOIN extra_runs er ON bb.match_id = er.match_id AND bb.over_id = er.over_id\n    GROUP BY bb.match_id, bb.over_id, bb.bowler\n),\nmax_runs_per_match AS (\n    SELECT\n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\ntop_overs AS (\n    SELECT\n        or1.match_id,\n        or1.over_id,\n        or1.bowler,\n        or1.total_runs\n    FROM over_runs or1\n    JOIN max_runs_per_match mrp ON or1.match_id = mrp.match_id AND or1.total_runs = mrp.max_match_runs\n),\nranked_bowlers AS (\n    SELECT\n        t.bowler,\n        t.match_id,\n        t.total_runs,\n        p.player_name,\n        ROW_NUMBER() OVER (ORDER BY t.total_runs DESC, p.player_name ASC) AS rn\n    FROM top_overs t\n    JOIN player p ON t.bowler = p.player_id\n)\nSELECT\n    player_name,\n    match_id\nFROM ranked_bowlers\nWHERE rn <= 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5751249991590157,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH over_runs AS (\n    SELECT\n        b.match_id,\n        b.over_id,\n        b.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball b\n    JOIN batsman_scored bs ON b.match_id = bs.match_id AND b.over_id = bs.over_id\n    JOIN extra_runs er ON b.match_id = er.match_id AND b.over_id = er.over_id\n    GROUP BY b.match_id, b.over_id, b.bowler\n),\nmax_runs_per_match AS (\n    SELECT\n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\novers_with_max_runs AS (\n    SELECT\n        o.match_id,\n        o.over_id,\n        o.bowler,\n        o.total_runs\n    FROM over_runs o\n    JOIN max_runs_per_match m ON o.match_id = m.match_id AND o.total_runs = m.max_match_runs\n),\nbowler_max_runs AS (\n    SELECT\n        bowler,\n        total_runs,\n        match_id,\n        ROW_NUMBER() OVER (PARTITION BY bowler ORDER BY total_runs DESC) AS rn\n    FROM overs_with_max_runs\n),\ntop_bowlers AS (\n    SELECT\n        b.bowler,\n        b.total_runs,\n        b.match_id\n    FROM bowler_max_runs b\n    WHERE b.rn = 1\n)\nSELECT\n    p.player_name,\n    t.match_id\nFROM top_bowlers t\nJOIN player p ON t.bowler = p.player_id\nORDER BY t.total_runs DESC, p.player_name ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.527750002220273,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH over_runs AS (\n    SELECT \n        bb.match_id,\n        bb.over_id,\n        bb.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball bb\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id\n    JOIN extra_runs er ON bb.match_id = er.match_id AND bb.over_id = er.over_id\n    GROUP BY bb.match_id, bb.over_id, bb.bowler\n),\nmax_runs_per_match AS (\n    SELECT \n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\novers_with_max_runs AS (\n    SELECT \n        ors.*\n    FROM over_runs ors\n    JOIN max_runs_per_match mrp ON ors.match_id = mrp.match_id AND ors.total_runs = mrp.max_match_runs\n),\nbowler_max_runs AS (\n    SELECT \n        bowler,\n        total_runs,\n        match_id,\n        player_name\n    FROM overs_with_max_runs owm\n    JOIN player p ON owm.bowler = p.player_id\n)\nSELECT \n    player_name,\n    match_id\nFROM bowler_max_runs\nWHERE total_runs = (SELECT MAX(total_runs) FROM bowler_max_runs)\nORDER BY player_name ASC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6057919963495806,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH over_runs AS (\n    SELECT \n        bb.match_id,\n        bb.over_id,\n        bb.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball bb\n    JOIN batsman_scored bs ON bb.match_id = bs.match_id AND bb.over_id = bs.over_id\n    JOIN extra_runs er ON bb.match_id = er.match_id AND bb.over_id = er.over_id\n    GROUP BY bb.match_id, bb.over_id, bb.bowler\n),\nmax_runs_per_match AS (\n    SELECT \n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\ntop_overs AS (\n    SELECT \n        ors.*\n    FROM over_runs ors\n    JOIN max_runs_per_match mrm ON ors.match_id = mrm.match_id AND ors.total_runs = mrm.max_match_runs\n),\nbowler_top_overs AS (\n    SELECT \n        bo.bowler,\n        bo.match_id,\n        bo.total_runs,\n        p.player_name\n    FROM top_overs bo\n    JOIN player p ON bo.bowler = p.player_id\n),\nranked_bowlers AS (\n    SELECT \n        bowler,\n        player_name,\n        match_id,\n        total_runs,\n        ROW_NUMBER() OVER (ORDER BY total_runs DESC, player_name ASC) AS rn\n    FROM bowler_top_overs\n)\nSELECT \n    player_name,\n    match_id\nFROM ranked_bowlers\nWHERE rn <= 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7230000046547502,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "WITH over_runs AS (\n    SELECT\n        b.match_id,\n        b.over_id,\n        b.bowler,\n        SUM(bs.runs_scored) + SUM(er.extra_runs) AS total_runs\n    FROM ball_by_ball b\n    JOIN batsman_scored bs ON b.match_id = bs.match_id AND b.over_id = bs.over_id\n    JOIN extra_runs er ON b.match_id = er.match_id AND b.over_id = er.over_id\n    GROUP BY b.match_id, b.over_id, b.bowler\n),\nmax_runs_per_match AS (\n    SELECT\n        match_id,\n        MAX(total_runs) AS max_match_runs\n    FROM over_runs\n    GROUP BY match_id\n),\novers_with_max_runs AS (\n    SELECT\n        o.match_id,\n        o.over_id,\n        o.bowler,\n        o.total_runs\n    FROM over_runs o\n    JOIN max_runs_per_match m ON o.match_id = m.match_id AND o.total_runs = m.max_match_runs\n),\nbowler_max_runs AS (\n    SELECT\n        bowler,\n        total_runs,\n        match_id,\n        ROW_NUMBER() OVER (PARTITION BY bowler ORDER BY total_runs DESC) AS rn\n    FROM overs_with_max_runs\n),\ntop_bowlers AS (\n    SELECT\n        b.bowler,\n        b.total_runs,\n        b.match_id\n    FROM bowler_max_runs b\n    WHERE b.rn = 1\n)\nSELECT\n    p.player_name,\n    t.match_id\nFROM top_bowlers t\nJOIN player p ON t.bowler = p.player_id\nORDER BY t.total_runs DESC, p.player_name ASC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7691.296292003244
+}

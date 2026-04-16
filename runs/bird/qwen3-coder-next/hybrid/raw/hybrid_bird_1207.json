@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_1207",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4318.680166004924,
+  "execution_time_ms": 23.263249997398816,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\n  AND l.GOT BETWEEN 5 AND 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.919458003831096,
+      "result_signature": "75728737fc1a936dbb705187194150501e720184801943271b43d2a9fb53a914",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\n  AND l.GOT BETWEEN 5 AND 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9932909999624826,
+      "result_signature": "75728737fc1a936dbb705187194150501e720184801943271b43d2a9fb53a914",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\n  AND l.GOT BETWEEN 10 AND 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8729590010480024,
+      "result_signature": "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\nAND l.GOT BETWEEN 10 AND 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6717500038794242,
+      "result_signature": "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\n  AND l.GOT BETWEEN 10 AND 40;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7555829981574789,
+      "result_signature": "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date LIKE '1994%'\nAND l.GOT BETWEEN 10 AND 40;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "75728737fc1a936dbb705187194150501e720184801943271b43d2a9fb53a914": 2,
+        "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9": 5
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1353.782707999926,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.SEX, p.Birthday  \nFROM Patient p  \nJOIN Laboratory l ON p.ID = l.ID  \nWHERE strftime('%Y', l.Date) = '1994'  \nAND l.GOT >= 10  \nAND l.GOT <= 40;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.430665998370387,
+        "result_signature": "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.Date >= '1994-01-01' AND l.Date < '1995-01-01'\nAND l.GOT BETWEEN 10 AND 40;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.223666997451801,
+        "result_signature": "e47d6991c55144a4bcf13b963171756ba84c9d05a3190385aa421ce31c75c4e9",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5695.824582995556
+}

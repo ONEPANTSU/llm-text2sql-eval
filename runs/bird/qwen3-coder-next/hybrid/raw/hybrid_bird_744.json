@@ -1,0 +1,195 @@
+{
+  "task_id": "bird_744",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2245.224291997147,
+  "execution_time_ms": 2.7102079984615557,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n  CASE \n    WHEN dc_count > marvel_count THEN 'DC Comics'\n    WHEN marvel_count > dc_count THEN 'Marvel Comics'\n    ELSE 'Tie'\n  END AS publisher_with_more_superheroes,\n  ABS(dc_count - marvel_count) AS difference\nFROM (\n  SELECT \n    SUM(CASE WHEN p.publisher_name = 'DC Comics' THEN 1 ELSE 0 END) AS dc_count,\n    SUM(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\n  FROM superhero s\n  JOIN publisher p ON s.publisher_id = p.id\n  WHERE p.publisher_name IN ('DC Comics', 'Marvel Comics')\n) subquery;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0446660016896203,
+      "result_signature": "a38cb684b2c5753d882b0a07c43fb4082ca577362572206946dcb893274f2903",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n  publisher.publisher_name,\n  COUNT(superhero.id) AS superhero_count\nFROM publisher\nJOIN superhero ON publisher.id = superhero.publisher_id\nWHERE publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\nGROUP BY publisher.publisher_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.34874999983003363,
+      "result_signature": "8aa9f25fc86c3a4124a24d43cb47eac72f1f5b20b5c03e07a84952ede560bde0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  publisher.publisher_name,\n  COUNT(superhero.id) AS superhero_count\nFROM publisher\nJOIN superhero ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\nGROUP BY publisher.publisher_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.37954100116621703,
+      "result_signature": "8aa9f25fc86c3a4124a24d43cb47eac72f1f5b20b5c03e07a84952ede560bde0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    publisher.publisher_name,\n    COUNT(superhero.id) AS superhero_count\nFROM \n    publisher\nJOIN \n    superhero ON publisher.id = superhero.publisher_id\nWHERE \n    publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\nGROUP BY \n    publisher.publisher_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3031250016647391,
+      "result_signature": "8aa9f25fc86c3a4124a24d43cb47eac72f1f5b20b5c03e07a84952ede560bde0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n  publisher.publisher_name,\n  COUNT(superhero.id) AS superhero_count\nFROM \n  publisher\n  INNER JOIN superhero ON publisher.id = superhero.publisher_id\nWHERE \n  publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\nGROUP BY \n  publisher.publisher_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.29158299730625004,
+      "result_signature": "8aa9f25fc86c3a4124a24d43cb47eac72f1f5b20b5c03e07a84952ede560bde0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n  publisher.publisher_name,\n  COUNT(superhero.id) AS superhero_count\nFROM \n  publisher\n  INNER JOIN superhero ON publisher.id = superhero.publisher_id\nWHERE \n  publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\nGROUP BY \n  publisher.publisher_name;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a38cb684b2c5753d882b0a07c43fb4082ca577362572206946dcb893274f2903": 3,
+        "8aa9f25fc86c3a4124a24d43cb47eac72f1f5b20b5c03e07a84952ede560bde0": 4,
+        "16820aa8d0fb3eb248d92c8a46f91b8ed9c01969087d93e135c2f8bdfb66d136": 2
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 3221.168750002107,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH dc_marvel_counts AS (\n  SELECT \n    publisher.publisher_name,\n    COUNT(superhero.id) AS superhero_count\n  FROM \n    publisher\n    INNER JOIN superhero ON publisher.id = superhero.publisher_id\n  WHERE \n    publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\n  GROUP BY \n    publisher.publisher_name\n)\nSELECT \n  MAX(CASE WHEN publisher_name = 'DC Comics' THEN superhero_count ELSE 0 END) - \n  MAX(CASE WHEN publisher_name = 'Marvel Comics' THEN superhero_count ELSE 0 END) AS difference\nFROM dc_marvel_counts;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.6393340008798987,
+        "result_signature": "16820aa8d0fb3eb248d92c8a46f91b8ed9c01969087d93e135c2f8bdfb66d136",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH dc_marvel_counts AS (\n  SELECT \n    publisher.publisher_name,\n    COUNT(superhero.id) AS superhero_count\n  FROM \n    publisher\n    INNER JOIN superhero ON publisher.id = superhero.publisher_id\n  WHERE \n    publisher.publisher_name IN ('DC Comics', 'Marvel Comics')\n  GROUP BY \n    publisher.publisher_name\n)\nSELECT \n  MAX(CASE WHEN publisher_name = 'DC Comics' THEN superhero_count ELSE 0 END) - \n  MAX(CASE WHEN publisher_name = 'Marvel Comics' THEN superhero_count ELSE 0 END) AS difference\nFROM dc_marvel_counts;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.30029100162209943,
+        "result_signature": "16820aa8d0fb3eb248d92c8a46f91b8ed9c01969087d93e135c2f8bdfb66d136",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH dc_marvel_counts AS (\n  SELECT \n    p.publisher_name,\n    COUNT(s.id) AS superhero_count\n  FROM superhero s\n  JOIN publisher p ON s.publisher_id = p.id\n  WHERE p.publisher_name IN ('DC Comics', 'Marvel Comics')\n  GROUP BY p.publisher_name\n),\npivoted AS (\n  SELECT \n    MAX(CASE WHEN publisher_name = 'DC Comics' THEN superhero_count END) AS dc_count,\n    MAX(CASE WHEN publisher_name = 'Marvel Comics' THEN superhero_count END) AS marvel_count\n  FROM dc_marvel_counts\n)\nSELECT \n  CASE \n    WHEN dc_count > marvel_count THEN 'DC Comics'\n    WHEN marvel_count > dc_count THEN 'Marvel Comics'\n    ELSE 'Tie'\n  END AS publisher_with_more_superheroes,\n  ABS(dc_count - marvel_count) AS difference\nFROM pivoted;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.29299999732756987,
+        "result_signature": "a38cb684b2c5753d882b0a07c43fb4082ca577362572206946dcb893274f2903",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH publisher_counts AS (\n  SELECT \n    p.publisher_name,\n    COUNT(s.id) AS superhero_count\n  FROM superhero s\n  JOIN publisher p ON s.publisher_id = p.id\n  WHERE p.publisher_name IN ('DC Comics', 'Marvel Comics')\n  GROUP BY p.publisher_name\n),\ndc_marvel AS (\n  SELECT \n    MAX(CASE WHEN publisher_name = 'DC Comics' THEN superhero_count END) AS dc_count,\n    MAX(CASE WHEN publisher_name = 'Marvel Comics' THEN superhero_count END) AS marvel_count\n  FROM publisher_counts\n)\nSELECT \n  CASE \n    WHEN dc_count > marvel_count THEN 'DC Comics'\n    WHEN marvel_count > dc_count THEN 'Marvel Comics'\n    ELSE 'Tie'\n  END AS publisher_with_more_superheroes,\n  ABS(dc_count - marvel_count) AS difference\nFROM dc_marvel;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.27925000176765025,
+        "result_signature": "a38cb684b2c5753d882b0a07c43fb4082ca577362572206946dcb893274f2903",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5469.210832998215
+}

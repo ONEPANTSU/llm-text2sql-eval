@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_1234",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND l.WBC != 'normal'  -- Assuming 'normal' indicates normal WBC, adjust as needed\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    Patient.ID, \n    Patient.SEX, \n    Patient.Birthday\nFROM \n    Patient\nJOIN \n    Laboratory ON Patient.ID = Laboratory.ID\nWHERE \n    Laboratory.WBC IS NOT NULL \n    AND Laboratory.WBC NOT BETWEEN 4.0 AND 11.0  -- Assuming normal WBC range is 4.0-11.0 (x10^9/L)\nORDER BY \n    Patient.SEX, \n    Patient.Birthday DESC;",
+          "score": 0.7864049318624271,
+          "similarity_max": 0.527190136275146,
+          "tables_used": [
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND l.WBC != 'normal'  -- Assuming 'normal' indicates normal WBC, adjust as needed\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND CAST(l.WBC AS REAL) NOT BETWEEN 4.0 AND 11.0\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 0.8461267605633802,
+          "similarity_max": 0.7077464788732394,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT \n    Patient.ID, \n    Patient.SEX, \n    Patient.Birthday\nFROM \n    Patient\nJOIN \n    Laboratory ON Patient.ID = Laboratory.ID\nWHERE \n    Laboratory.WBC IS NOT NULL \n    AND Laboratory.WBC NOT BETWEEN 4.0 AND 11.0  -- Assuming normal WBC range is 4.0-11.0 (x10^9/L)\nORDER BY \n    Patient.SEX, \n    Patient.Birthday DESC;",
+          "score": 0.7864049318624271,
+          "similarity_max": 0.527190136275146,
+          "tables_used": [
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND l.WBC != 'normal'  -- Assuming 'normal' indicates normal WBC, adjust as needed\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND CAST(l.WBC AS REAL) NOT BETWEEN 4.0 AND 11.0\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 0.8461267605633802,
+          "similarity_max": 0.7077464788732394,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND CAST(l.WBC AS REAL) < 4.0  -- Assuming WBC < 4.0 (x10^9/L) indicates abnormal (low)\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+          "score": 0.8256722151088348,
+          "similarity_max": 0.7486555697823303,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC IS NOT NULL AND l.WBC != 'normal'  -- Assuming 'normal' indicates normal WBC, adjust as needed\nORDER BY p.SEX, (strftime('%Y', 'now') - strftime('%Y', p.Birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) ASC;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 20.15
+  }
+}

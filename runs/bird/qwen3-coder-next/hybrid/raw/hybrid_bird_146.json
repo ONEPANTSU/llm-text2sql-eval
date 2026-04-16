@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_146",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1564.2079999961425,
+  "execution_time_ms": 15.216624997265171,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.809250000107568,
+      "result_signature": "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.896292000717949,
+      "result_signature": "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6382500034524128,
+      "result_signature": "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1649170012096874,
+      "result_signature": "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6050830017775297,
+      "result_signature": "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN card ca ON d.disp_id = ca.disp_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c9c53224949a87a66422ec11ce2ce1416fb0a133fbce0f45aa8a9067de08a2c3": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1579.498874998535
+}

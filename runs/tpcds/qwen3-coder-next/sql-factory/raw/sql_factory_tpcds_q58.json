@@ -1,0 +1,207 @@
+{
+  "task_id": "tpcds_q58",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(ss.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "customer_demographics",
+            "dd"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    d_year,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    d_year\nORDER BY \n    cd.cd_education_status,\n    d_year\nLIMIT 100",
+          "score": 0.8754761904761906,
+          "similarity_max": 0.849047619047619,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "d",
+            "customer_demographics"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(ss.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "customer_demographics",
+            "dd"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(cs.cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales cs\n    JOIN customer c ON cs.cs_bill_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON cs.cs_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+          "score": 0.9269230769230771,
+          "similarity_max": 0.7461538461538462,
+          "tables_used": [
+            "c",
+            "date_dim",
+            "customer",
+            "cd",
+            "customer_demographics",
+            "dd",
+            "catalog_sales",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    d_year,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    d_year\nORDER BY \n    cd.cd_education_status,\n    d_year\nLIMIT 100",
+          "score": 0.8754761904761906,
+          "similarity_max": 0.849047619047619,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "d",
+            "customer_demographics"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(ss.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "customer_demographics",
+            "dd"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(cs.cs_ext_sales_price) AS total_sales\nFROM \n    catalog_sales cs\n    JOIN customer c ON cs.cs_bill_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON cs.cs_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+          "score": 0.9269230769230771,
+          "similarity_max": 0.7461538461538462,
+          "tables_used": [
+            "c",
+            "date_dim",
+            "customer",
+            "cd",
+            "customer_demographics",
+            "dd",
+            "catalog_sales",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT \n    cd.cd_education_status,\n    d_year,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    d_year\nORDER BY \n    cd.cd_education_status,\n    d_year\nLIMIT 100",
+          "score": 0.8754761904761906,
+          "similarity_max": 0.849047619047619,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "cd",
+            "d",
+            "customer_demographics"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    cd.cd_education_status,\n    dd.d_year,\n    SUM(ss.ss_ext_sales_price) AS total_sales\nFROM \n    store_sales ss\n    JOIN customer c ON ss.ss_customer_sk = c.c_customer_sk\n    JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\n    JOIN date_dim dd ON ss.ss_sold_date_sk = dd.d_date_sk\nGROUP BY \n    cd.cd_education_status,\n    dd.d_year\nORDER BY \n    cd.cd_education_status,\n    dd.d_year\nLIMIT 100",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "store_sales",
+        "ss",
+        "date_dim",
+        "customer",
+        "cd",
+        "customer_demographics",
+        "dd"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Table \"cd\" does not have a column named \"education_status\"\n\nCandid",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 33.62
+  }
+}

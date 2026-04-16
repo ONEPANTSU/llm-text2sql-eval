@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_181",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1679.438458995719,
+  "execution_time_ms": 16.773916002421174,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F'\nORDER BY l.amount DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.492750002304092,
+      "result_signature": "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F'\nORDER BY l.amount DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.227541998261586,
+      "result_signature": "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.client_id\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN loan l ON d.account_id = l.account_id\nWHERE c.gender = 'F'\nORDER BY l.amount DESC\nLIMIT 3",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.015540998603683,
+      "result_signature": "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT client.client_id\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN loan ON disp.account_id = loan.account_id\nWHERE client.gender = 'F'\nORDER BY loan.amount DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.942791997862514,
+      "result_signature": "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT client.client_id\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN loan ON disp.account_id = loan.account_id\nWHERE client.gender = 'F'\nORDER BY loan.amount DESC\nLIMIT 3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.588416998856701,
+      "result_signature": "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT client.client_id\nFROM client\nJOIN disp ON client.client_id = disp.client_id\nJOIN loan ON disp.account_id = loan.account_id\nWHERE client.gender = 'F'\nORDER BY loan.amount DESC\nLIMIT 3;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "230ca291dd49b2cc79555d3e2b4db552aa4c0759e39787e60c9517716e177e4b": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1696.280249998381
+}

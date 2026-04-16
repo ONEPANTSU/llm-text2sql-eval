@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_649",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(ph.Id) AS post_history_count,\n    MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(ph.Id) AS post_history_count, MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?'\n  AND ph.PostHistoryTypeId IN (2, 5); -- 2 = Initial title, 5 = Title edit",
+          "score": 0.8387298747763864,
+          "similarity_max": 0.7225402504472271,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(ph.Id) AS post_history_count,\n    MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(ph.Id) AS post_history_count, MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?'\n  AND ph.PostHistoryTypeId IN (2, 5); -- 2 = Initial title, 5 = Title edit",
+          "score": 0.8387298747763864,
+          "similarity_max": 0.7225402504472271,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(ph.Id) AS post_history_count, MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?'\n  AND ph.PostHistoryTypeId = 5; -- Title edit only",
+          "score": 0.7869767441860465,
+          "similarity_max": 0.826046511627907,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    COUNT(ph.Id) AS post_history_count,\n    MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(ph.Id) AS post_history_count, MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?'\n  AND ph.PostHistoryTypeId IN (2, 5); -- 2 = Initial title, 5 = Title edit",
+          "score": 0.8387298747763864,
+          "similarity_max": 0.7225402504472271,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(ph.Id) AS post_history_count, MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?'\n  AND ph.PostHistoryTypeId = 5; -- Title edit only",
+          "score": 0.7869767441860465,
+          "similarity_max": 0.826046511627907,
+          "tables_used": [
+            "posts",
+            "p",
+            "ph",
+            "postHistory"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    COUNT(ph.Id) AS post_history_count,\n    MAX(ph.CreationDate) AS last_edit_date\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nWHERE p.Title = 'What is the best introductory Bayesian statistics textbook?';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "posts",
+        "p",
+        "ph",
+        "postHistory"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 480.29
+  }
+}

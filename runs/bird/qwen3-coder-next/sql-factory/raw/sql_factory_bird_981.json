@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_981",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (\n    SELECT MAX(dob) \n    FROM drivers \n    WHERE driverId IN (SELECT DISTINCT driverId FROM qualifying)\n)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 0.9913060582218727,
+          "similarity_max": 0.8173878835562549,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\n  AND q.position IS NOT NULL\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 0.917494270435447,
+          "similarity_max": 0.7650114591291062,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (\n    SELECT MAX(dob) \n    FROM drivers \n    WHERE driverId IN (SELECT DISTINCT driverId FROM qualifying)\n)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 0.9913060582218727,
+          "similarity_max": 0.8173878835562549,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        },
+        {
+          "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\n  AND q.position IS NOT NULL\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+          "score": 0.917494270435447,
+          "similarity_max": 0.7650114591291062,
+          "tables_used": [
+            "r",
+            "drivers",
+            "d",
+            "q",
+            "races",
+            "qualifying"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    r.year,\n    r.name,\n    r.date,\n    r.time\nFROM races r\nJOIN qualifying q ON r.raceId = q.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE d.dob = (SELECT MAX(dob) FROM drivers)\nORDER BY r.year, r.date, r.time\nLIMIT 1;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "drivers",
+        "d",
+        "q",
+        "races",
+        "qualifying"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.21
+  }
+}

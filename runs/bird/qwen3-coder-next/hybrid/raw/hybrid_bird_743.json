@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_743",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2050.2259580025566,
+  "execution_time_ms": 2.36462499742629,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0857920060516335,
+      "result_signature": "ab9fbdb47a4ff0d15648bfab29fa96666fe2a2096ad1b15af5e5d5eb3cb1edab",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest,\n    COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4032500000903383,
+      "result_signature": "ab9fbdb47a4ff0d15648bfab29fa96666fe2a2096ad1b15af5e5d5eb3cb1edab",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.33570799860171974,
+      "result_signature": "ab9fbdb47a4ff0d15648bfab29fa96666fe2a2096ad1b15af5e5d5eb3cb1edab",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('bad', 'neutral') THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN alignment.alignment IN ('bad', 'neutral') AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.26420799986226484,
+      "result_signature": "48af009a0ef68212d16828a14d5c8ae4a96bc76e02f118932facd7910e016dd2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('Bad', 'Neutral', 'Good'] THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage,\n    COUNT(CASE WHEN alignment.alignment IN ('Bad', 'Neutral', 'Good'] AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "unrecognized token: \"]\"",
+      "exec_time_ms": 0.09824999870033935,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    COUNT(CASE WHEN alignment.alignment IN ('Good', 'Bad', 'Neutral') AND publisher.publisher_name = 'Marvel Comics' THEN 1 END) AS marvel_count\nFROM superhero\nJOIN alignment ON superhero.alignment_id = alignment.id\nJOIN publisher ON superhero.publisher_id = publisher.id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ab9fbdb47a4ff0d15648bfab29fa96666fe2a2096ad1b15af5e5d5eb3cb1edab": 3,
+        "48af009a0ef68212d16828a14d5c8ae4a96bc76e02f118932facd7910e016dd2": 3
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      3
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 5896.594167003059,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN a.alignment IN ('bad', 'neutral') THEN 1 ELSE 0 END) AS FLOAT) * 100.0 / COUNT(*) AS percentage_self_interest_or_moral_code,\n    SUM(CASE WHEN a.alignment IN ('bad', 'neutral') AND p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.9662910015322268,
+        "result_signature": "48af009a0ef68212d16828a14d5c8ae4a96bc76e02f118932facd7910e016dd2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN a.alignment IN ('bad', 'neutral') THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 2) AS percentage_self_interest_or_moral_code,\n    SUM(CASE WHEN a.alignment IN ('bad', 'neutral') AND p.publisher_name = 'Marvel Comics' THEN 1 ELSE 0 END) AS marvel_count\nFROM superhero s\nJOIN alignment a ON s.alignment_id = a.id\nJOIN publisher p ON s.publisher_id = p.id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.35220899735577404,
+        "result_signature": "48af009a0ef68212d16828a14d5c8ae4a96bc76e02f118932facd7910e016dd2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 7949.375958000019
+}

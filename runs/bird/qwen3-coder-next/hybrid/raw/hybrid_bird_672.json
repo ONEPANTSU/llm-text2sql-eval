@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_672",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1399.2474999977276,
+  "execution_time_ms": 641.1507910015644,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT u.Id, SUM(p.FavoriteCount) AS total_favorites\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Location = 'United Kingdom'\n    GROUP BY u.Id\n    HAVING total_favorites >= 4\n) AS users_with_high_favorites;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 116.17816699435934,
+      "result_signature": "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT u.Id\n    FROM users u\n    JOIN posts p ON u.Id = p.OwnerUserId\n    WHERE u.Location = 'United Kingdom'\n    GROUP BY u.Id\n    HAVING SUM(p.FavoriteCount) >= 4\n) AS users_with_high_favorites;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 182.2739580020425,
+      "result_signature": "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT users.Id\n    FROM users\n    JOIN posts ON users.Id = posts.OwnerUserId\n    WHERE users.Location = 'United Kingdom'\n    GROUP BY users.Id\n    HAVING SUM(posts.FavoriteCount) >= 4\n) AS qualified_users;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 112.27408299600938,
+      "result_signature": "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT users.Id\n    FROM users\n    JOIN posts ON users.Id = posts.OwnerUserId\n    WHERE users.Location = 'United Kingdom'\n    GROUP BY users.Id\n    HAVING SUM(posts.FavoriteCount) >= 4\n) AS users_with_enough_favorites",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 118.02674999489682,
+      "result_signature": "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT users.Id\n    FROM users\n    JOIN posts ON users.Id = posts.OwnerUserId\n    WHERE users.Location = 'United Kingdom'\n    GROUP BY users.Id\n    HAVING SUM(posts.FavoriteCount) >= 4\n) AS filtered_users;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 111.91737499757437,
+      "result_signature": "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT COUNT(*) \nFROM (\n    SELECT users.Id\n    FROM users\n    JOIN posts ON users.Id = posts.OwnerUserId\n    WHERE users.Location = 'United Kingdom'\n    GROUP BY users.Id\n    HAVING SUM(posts.FavoriteCount) >= 4\n) AS filtered_users;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3c764ccbffcd9db6243c38a1e30088cbb5d3dc5ee03bb178708577664d39a874": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2040.4864999945858
+}

@@ -1,0 +1,129 @@
+{
+  "task_id": "spider2_13",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2195.3878329950385,
+  "execution_time_ms": 4.877125000348315,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(total_runs_per_striker) AS avg_total_runs\nFROM (\n    SELECT pm.player_id, SUM(bs.runs_scored) AS total_runs_per_striker\n    FROM player_match pm\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\n    WHERE bs.runs_scored > 50\n    GROUP BY pm.player_id\n) AS striker_totals;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 1.298749994020909,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH striker_runs AS (\n    SELECT \n        p.player_id,\n        p.player_name,\n        pb.match_id,\n        SUM(pb.runs_scored) AS total_runs_per_striker\n    FROM player p\n    JOIN player_match pm ON p.player_id = pm.player_id\n    JOIN batsman_scored pb ON pb.match_id = pm.match_id AND pb.striker = pm.player_id\n    WHERE pm.role = 'striker'\n      AND pb.runs_scored > 50\n    GROUP BY p.player_id, p.player_name, pb.match_id\n)\nSELECT AVG(total_runs_per_striker) AS avg_total_runs\nFROM striker_runs;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: pb.striker",
+      "exec_time_ms": 0.5325410020304844,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(total_runs_per_striker) AS avg_total_runs\nFROM (\n    SELECT pm.player_id, SUM(bs.runs_scored) AS total_runs_per_striker\n    FROM player_match pm\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\n    WHERE bs.runs_scored > 50\n    GROUP BY pm.player_id\n) AS striker_totals;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 0.3926250064978376,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(total_runs_per_striker) AS avg_total_runs\nFROM (\n    SELECT pm.player_id, SUM(bs.runs_scored) AS total_runs_per_striker\n    FROM player_match pm\n    JOIN player p ON pm.player_id = p.player_id\n    JOIN batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\n    WHERE bs.runs_scored > 50\n    GROUP BY pm.player_id\n) AS striker_totals;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 0.36033301148563623,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH striker_runs AS (\n    SELECT \n        pm.player_id,\n        SUM(bs.runs_scored) AS total_runs_per_striker\n    FROM \n        player_match pm\n    INNER JOIN \n        player p ON pm.player_id = p.player_id\n    INNER JOIN \n        batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\n    WHERE \n        bs.runs_scored > 50\n    GROUP BY \n        pm.player_id\n)\nSELECT \n    AVG(total_runs_per_striker) AS avg_total_runs\nFROM \n    striker_runs;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 0.3758750099223107,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 2200.341750009102
+}

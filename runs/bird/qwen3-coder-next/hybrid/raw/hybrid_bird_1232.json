@@ -1,0 +1,129 @@
+{
+  "task_id": "bird_1232",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3483.545499999309,
+  "execution_time_ms": 1.8921249939012341,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GLU NOT BETWEEN 70 AND 100\n  AND l.T-CHO BETWEEN 130 AND 200;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 1.1271660041529685,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.ID, p.SEX, strftime('%Y', 'now') - strftime('%Y', p.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) AS age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GLU NOT BETWEEN 70 AND 100\n  AND l.T-CHO BETWEEN 130 AND 200;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 0.19583299581427127,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT P.ID, P.SEX, strftime('%Y', 'now') - strftime('%Y', P.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.Birthday)) AS age\nFROM Patient P\nJOIN Laboratory L ON P.ID = L.ID\nWHERE L.GLU NOT BETWEEN 70 AND 100\n  AND L.T-CHO BETWEEN 130 AND 200;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: L.T",
+      "exec_time_ms": 0.17550000484334305,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.ID, p.SEX, strftime('%Y', 'now') - strftime('%Y', p.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) AS age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GLU NOT BETWEEN 70 AND 100\n  AND l.T-CHO BETWEEN 130 AND 200;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 0.14666700008092448,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.ID, p.SEX, strftime('%Y', 'now') - strftime('%Y', p.Birthday) - (strftime('%m-%d', 'now') < strftime('%m-%d', p.Birthday)) AS age\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.GLU NOT BETWEEN 70 AND 100\n  AND l.T-CHO BETWEEN 130 AND 200;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: l.T",
+      "exec_time_ms": 0.13091700384393334,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 3485.4980829986744
+}

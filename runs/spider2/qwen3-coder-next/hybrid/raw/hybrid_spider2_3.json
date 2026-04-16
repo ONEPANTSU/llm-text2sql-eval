@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_3",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1780.4757080011768,
+  "execution_time_ms": 5.391082988353446,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT ROUND(AVG(career_span), 2) AS avg_career_span\nFROM (\n    SELECT \n        CAST(\n            ABS(JULIANDAY(final_game) - JULIANDAY(debut)) / 365.0\n            AS REAL\n        ) AS career_span\n    FROM player\n    WHERE debut IS NOT NULL \n      AND final_game IS NOT NULL\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6873339957091957,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT ROUND(AVG(\n    CAST(ABS(julianday(final_game) - julianday(debut)) / 365 AS REAL)\n), 2) AS avg_career_span\nFROM player\nWHERE debut IS NOT NULL AND final_game IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6367089954437688,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT ROUND(AVG(career_span), 2) AS avg_career_span\nFROM (\n    SELECT \n        CAST(\n            ABS(julianday(final_game) - julianday(debut)) / 365.0 \n            AS REAL\n        ) AS career_span\n    FROM player\n    WHERE debut IS NOT NULL AND final_game IS NOT NULL\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5566670006373897,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT ROUND(AVG(career_span), 2) AS avg_career_span\nFROM (\n    SELECT \n        CAST(\n            ABS(julianday(final_game) - julianday(debut)) / 365.0 AS REAL\n        ) AS career_span\n    FROM player\n    WHERE debut IS NOT NULL AND final_game IS NOT NULL\n) subquery;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5169579962966964,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT ROUND(AVG(\n    CAST(\n        ABS(JULIANDAY(final_game) - JULIANDAY(debut)) / 365.0\n    AS FLOAT)\n), 2) AS avg_career_span\nFROM player\nWHERE debut IS NOT NULL AND final_game IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.49862499872688204,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT ROUND(AVG(\n    CAST(\n        ABS(JULIANDAY(final_game) - JULIANDAY(debut)) / 365.0\n    AS FLOAT)\n), 2) AS avg_career_span\nFROM player\nWHERE debut IS NOT NULL AND final_game IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1786.0256249987287
+}

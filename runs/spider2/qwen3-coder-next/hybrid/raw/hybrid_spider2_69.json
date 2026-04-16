@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_69",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7965.581458993256,
+  "execution_time_ms": 35.77566600870341,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH yearly_purchase_stats AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) AS total_spent,\n        SUM(bt.quantity) AS total_quantity,\n        SUM(bt.txn_amount) * 1.0 / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_stats AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_rank\n    FROM yearly_purchase_stats\n),\nexcluded_first_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_stats\n    WHERE year_rank > 1\n),\nranked_by_year AS (\n    SELECT \n        year,\n        region_name,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM excluded_first_year\n),\nwith_prev_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_avg_purchase_price\n    FROM excluded_first_year\n),\nfinal_result AS (\n    SELECT \n        ry.year,\n        ry.region_name,\n        ry.avg_purchase_price,\n        ry.price_rank,\n        wpy.prev_avg_purchase_price,\n        CASE \n            WHEN wpy.prev_avg_purchase_price IS NOT NULL THEN \n                ((ry.avg_purchase_price - wpy.prev_avg_purchase_price) / wpy.prev_avg_purchase_price) * 100\n            ELSE NULL \n        END AS pct_change_from_prev_year\n    FROM ranked_by_year ry\n    JOIN with_prev_year wpy ON ry.region_name = wpy.region_name AND ry.year = wpy.year\n)\nSELECT \n    year,\n    region_name,\n    avg_purchase_price,\n    price_rank,\n    prev_avg_purchase_price,\n    pct_change_from_prev_year\nFROM final_result\nORDER BY year ASC, price_rank ASC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bt.txn_amount",
+      "exec_time_ms": 2.2705000010319054,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH annual_avg_price AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_annual_avg AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_seq\n    FROM annual_avg_price\n),\nfiltered_no_first_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_annual_avg\n    WHERE year_seq > 1\n),\nranked_by_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price) AS price_rank\n    FROM filtered_no_first_year\n),\nwith_year_over_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        price_rank,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_year_price,\n        CASE \n            WHEN LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) IS NOT NULL \n            THEN ((avg_purchase_price - LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year)) \n                  / LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year)) * 100\n            ELSE NULL\n        END AS yoy_change_pct\n    FROM ranked_by_year\n)\nSELECT \n    region_name,\n    year,\n    avg_purchase_price,\n    price_rank,\n    prev_year_price,\n    ROUND(yoy_change_pct, 2) AS yoy_change_pct\nFROM with_year_over_year\nORDER BY year ASC, price_rank ASC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bt.txn_amount",
+      "exec_time_ms": 0.5999169952701777,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH yearly_region_purchases AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) AS total_spent,\n        SUM(bt.quantity) AS total_quantity,\n        SUM(bt.txn_amount) * 1.0 / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_yearly_purchases AS (\n    SELECT \n        region_name,\n        year,\n        total_spent,\n        total_quantity,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_rank\n    FROM yearly_region_purchases\n),\nexcluded_first_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_yearly_purchases\n    WHERE year_rank > 1\n),\nranked_by_year AS (\n    SELECT \n        year,\n        region_name,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM excluded_first_year\n),\nwith_year_over_year_change AS (\n    SELECT \n        year,\n        region_name,\n        avg_purchase_price,\n        price_rank,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_year_price\n    FROM ranked_by_year\n)\nSELECT \n    year,\n    region_name,\n    avg_purchase_price,\n    price_rank,\n    CASE \n        WHEN prev_year_price IS NULL THEN NULL\n        ELSE (avg_purchase_price - prev_year_price) * 100.0 / prev_year_price\n    END AS yoy_percentage_change\nFROM with_year_over_year_change\nORDER BY year ASC, price_rank ASC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bt.txn_amount",
+      "exec_time_ms": 0.47687499318271875,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH yearly_region_stats AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) AS total_spent,\n        SUM(bt.quantity) AS total_quantity,\n        SUM(bt.txn_amount) * 1.0 / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_stats AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_order\n    FROM yearly_region_stats\n),\nranked_stats AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM filtered_stats\n    WHERE year_order > 1\n),\nwith_changes AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        price_rank,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_year_price,\n        CASE \n            WHEN LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) IS NOT NULL \n            THEN (avg_purchase_price - LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year)) * 100.0 / LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year)\n            ELSE NULL \n        END AS pct_change\n    FROM ranked_stats\n)\nSELECT \n    year,\n    region_name,\n    avg_purchase_price,\n    price_rank,\n    pct_change\nFROM with_changes\nORDER BY year ASC, price_rank ASC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bt.txn_amount",
+      "exec_time_ms": 0.3108749951934442,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH annual_purchase_prices AS (\n    SELECT\n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_annual_prices AS (\n    SELECT\n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_rank\n    FROM annual_purchase_prices\n),\nexcluded_first_year AS (\n    SELECT\n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_annual_prices\n    WHERE year_rank > 1\n),\nranked_annual AS (\n    SELECT\n        region_name,\n        year,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM excluded_first_year\n),\nwith_growth AS (\n    SELECT\n        region_name,\n        year,\n        avg_purchase_price,\n        price_rank,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_year_price\n    FROM ranked_annual\n)\nSELECT\n    region_name,\n    year,\n    avg_purchase_price,\n    price_rank,\n    ROUND((avg_purchase_price - prev_year_price) / prev_year_price * 100, 2) AS annual_pct_change\nFROM with_growth\nORDER BY year ASC, price_rank ASC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bt.txn_amount",
+      "exec_time_ms": 0.28058300085831434,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such column: bt.txn_amount",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH yearly_purchase_stats AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.quantity * bt.txn_amount) AS total_spent,\n        SUM(bt.quantity) AS total_quantity,\n        SUM(bt.quantity * bt.txn_amount) * 1.0 / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_stats AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_rank\n    FROM yearly_purchase_stats\n),\nexcluded_first_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_stats\n    WHERE year_rank > 1\n),\nranked_by_year AS (\n    SELECT \n        year,\n        region_name,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM excluded_first_year\n),\nwith_prev_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_avg_purchase_price\n    FROM excluded_first_year\n),\nfinal_result AS (\n    SELECT \n        ry.year,\n        ry.region_name,\n        ry.avg_purchase_price,\n        ry.price_rank,\n        wpy.prev_avg_purchase_price,\n        CASE \n            WHEN wpy.prev_avg_purchase_price IS NOT NULL THEN \n                ((ry.avg_purchase_price - wpy.prev_avg_purchase_price) / wpy.prev_avg_purchase_price) * 100\n            ELSE NULL \n        END AS pct_change_from_prev_year\n    FROM ranked_by_year ry\n    JOIN with_prev_year wpy ON ry.region_name = wpy.region_name AND ry.year = wpy.year\n)\nSELECT \n    year,\n    region_name,\n    avg_purchase_price,\n    price_rank,\n    prev_avg_purchase_price,\n    pct_change_from_prev_year\nFROM final_result\nORDER BY year ASC, price_rank ASC;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such column: bt.txn_amount",
+        "exec_time_ms": 1.5462500014109537,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH yearly_purchase_stats AS (\n    SELECT \n        customer_regions.region_name,\n        strftime('%Y', bt.txn_date) AS year,\n        SUM(bt.txn_amount) AS total_spent,\n        SUM(bt.quantity) AS total_quantity,\n        SUM(bt.txn_amount) * 1.0 / SUM(bt.quantity) AS avg_purchase_price\n    FROM bitcoin_transactions bt\n    JOIN bitcoin_members ON bt.member_id = bitcoin_members.member_id\n    JOIN customer_regions ON bitcoin_members.region = customer_regions.region_name\n    WHERE bt.txn_type = 'purchase'\n    GROUP BY customer_regions.region_name, strftime('%Y', bt.txn_date)\n),\nfiltered_stats AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        ROW_NUMBER() OVER (PARTITION BY region_name ORDER BY year) AS year_rank\n    FROM yearly_purchase_stats\n),\nexcluded_first_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price\n    FROM filtered_stats\n    WHERE year_rank > 1\n),\nranked_by_year AS (\n    SELECT \n        year,\n        region_name,\n        avg_purchase_price,\n        RANK() OVER (PARTITION BY year ORDER BY avg_purchase_price ASC) AS price_rank\n    FROM excluded_first_year\n),\nwith_prev_year AS (\n    SELECT \n        region_name,\n        year,\n        avg_purchase_price,\n        LAG(avg_purchase_price) OVER (PARTITION BY region_name ORDER BY year) AS prev_avg_purchase_price\n    FROM excluded_first_year\n),\nfinal_result AS (\n    SELECT \n        ry.year,\n        ry.region_name,\n        ry.avg_purchase_price,\n        ry.price_rank,\n        wpy.prev_avg_purchase_price,\n        CASE \n            WHEN wpy.prev_avg_purchase_price IS NOT NULL THEN \n                ((ry.avg_purchase_price - wpy.prev_avg_purchase_price) / wpy.prev_avg_purchase_price) * 100\n            ELSE NULL \n        END AS pct_change_from_prev_year\n    FROM ranked_by_year ry\n    JOIN with_prev_year wpy ON ry.region_name = wpy.region_name AND ry.year = wpy.year\n)\nSELECT \n    year,\n    region_name,\n    avg_purchase_price,\n    price_rank,\n    prev_avg_purchase_price,\n    pct_change_from_prev_year\nFROM final_result\nORDER BY year ASC, price_rank ASC;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such column: bt.txn_amount",
+        "exec_time_ms": 5.451834003906697,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 34391.842958997586
+}

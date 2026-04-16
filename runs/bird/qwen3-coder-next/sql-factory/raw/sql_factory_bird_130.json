@@ -1,0 +1,203 @@
+{
+  "task_id": "bird_130",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND c.client_id NOT IN (\n    SELECT DISTINCT cl.client_id\n    FROM client cl\n    JOIN disp dp ON cl.client_id = dp.client_id\n    JOIN card cd ON dp.disp_id = cd.disp_id\n  );",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "c",
+            "cl",
+            "dp",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nLEFT JOIN disp dp ON c.client_id = dp.client_id\nLEFT JOIN card ca ON dp.disp_id = ca.disp_id\nWHERE d.A2 = 'South Bohemia' \n  AND ca.card_id IS NULL;",
+          "score": 1.0206467661691543,
+          "similarity_max": 0.5587064676616915,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "c",
+            "dp",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND c.client_id NOT IN (\n    SELECT DISTINCT cl.client_id\n    FROM client cl\n    JOIN disp dp ON cl.client_id = dp.client_id\n    JOIN card cd ON dp.disp_id = cd.disp_id\n  );",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "c",
+            "cl",
+            "dp",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND NOT EXISTS (\n    SELECT 1\n    FROM disp dp\n    JOIN card cd ON dp.disp_id = cd.disp_id\n    WHERE dp.client_id = c.client_id\n  );",
+          "score": 1.026797829036635,
+          "similarity_max": 0.7464043419267299,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "c",
+            "dp",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nLEFT JOIN disp dp ON c.client_id = dp.client_id\nLEFT JOIN card ca ON dp.disp_id = ca.disp_id\nWHERE d.A2 = 'South Bohemia' \n  AND ca.card_id IS NULL;",
+          "score": 1.0206467661691543,
+          "similarity_max": 0.5587064676616915,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "c",
+            "dp",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND c.client_id NOT IN (\n    SELECT DISTINCT cl.client_id\n    FROM client cl\n    JOIN disp dp ON cl.client_id = dp.client_id\n    JOIN card cd ON dp.disp_id = cd.disp_id\n  );",
+          "score": 1.35,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "c",
+            "cl",
+            "dp",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND NOT EXISTS (\n    SELECT 1\n    FROM disp dp\n    JOIN card cd ON dp.disp_id = cd.disp_id\n    WHERE dp.client_id = c.client_id\n  );",
+          "score": 1.026797829036635,
+          "similarity_max": 0.7464043419267299,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "cd",
+            "c",
+            "dp",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nLEFT JOIN disp dp ON c.client_id = dp.client_id\nLEFT JOIN card ca ON dp.disp_id = ca.disp_id\nWHERE d.A2 = 'South Bohemia' \n  AND ca.card_id IS NULL;",
+          "score": 1.0206467661691543,
+          "similarity_max": 0.5587064676616915,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "card",
+            "ca",
+            "c",
+            "dp",
+            "district"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM client c\nJOIN district d ON c.district_id = d.district_id\nWHERE d.A2 = 'South Bohemia' \n  AND c.client_id NOT IN (\n    SELECT DISTINCT cl.client_id\n    FROM client cl\n    JOIN disp dp ON cl.client_id = dp.client_id\n    JOIN card cd ON dp.disp_id = cd.disp_id\n  );",
+    "meta": {
+      "score": 1.35,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "card",
+        "cd",
+        "c",
+        "cl",
+        "dp",
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.4,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 249.52
+  }
+}

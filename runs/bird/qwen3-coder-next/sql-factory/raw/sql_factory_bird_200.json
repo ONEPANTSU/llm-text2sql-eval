@@ -1,0 +1,157 @@
+{
+  "task_id": "bird_200",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label \n    FROM molecule \n    WHERE label LIKE '%carcinogen%' OR label LIKE '%Carcinogen%' OR label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label \n    FROM molecule \n    WHERE label LIKE '%carcinogen%' OR label LIKE '%Carcinogen%' OR label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND EXISTS (\n    SELECT 1 \n    FROM molecule m2 \n    WHERE m2.molecule_id = m.molecule_id \n    AND (m2.label LIKE '%carcinogen%' OR m2.label LIKE '%Carcinogen%' OR m2.label LIKE '%carcinogenic%' OR m2.label LIKE '%Carcinogenic%')\n);",
+          "score": 0.9824752007557866,
+          "similarity_max": 0.7350495984884269,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND (\n    m.label LIKE '%carcinogen%' \n    OR m.label LIKE '%Carcinogen%' \n    OR m.label LIKE '%carcinogenic%' \n    OR m.label LIKE '%Carcinogenic%'\n);",
+          "score": 0.802014652014652,
+          "similarity_max": 0.7959706959706959,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label \n    FROM molecule \n    WHERE label LIKE '%carcinogen%' OR label LIKE '%Carcinogen%' OR label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n);",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND EXISTS (\n    SELECT 1\n    FROM molecule m2\n    JOIN atom a ON m2.molecule_id = a.molecule_id\n    WHERE m2.molecule_id = m.molecule_id\n    AND a.element = 'C'\n);",
+          "score": 1.114041095890411,
+          "similarity_max": 0.671917808219178,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "bond",
+            "a",
+            "m",
+            "b",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND EXISTS (\n    SELECT 1 \n    FROM molecule m2 \n    WHERE m2.molecule_id = m.molecule_id \n    AND (m2.label LIKE '%carcinogen%' OR m2.label LIKE '%Carcinogen%' OR m2.label LIKE '%carcinogenic%' OR m2.label LIKE '%Carcinogenic%')\n);",
+          "score": 0.9824752007557866,
+          "similarity_max": 0.7350495984884269,
+          "tables_used": [
+            "molecule",
+            "m2",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT m.molecule_id, m.label\nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label IN (\n    SELECT label \n    FROM molecule \n    WHERE label LIKE '%carcinogen%' OR label LIKE '%Carcinogen%' OR label LIKE '%carcinogenic%' OR label LIKE '%Carcinogenic%'\n);",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "bond",
+        "m",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 6.66
+  }
+}

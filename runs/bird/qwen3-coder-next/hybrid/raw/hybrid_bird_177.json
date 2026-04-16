@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_177",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1616.1985840008128,
+  "execution_time_ms": 3.5317919973749667,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7438329994329251,
+      "result_signature": "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON d.account_id = a.account_id\nJOIN client c ON c.client_id = d.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2470420042518526,
+      "result_signature": "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON d.account_id = a.account_id\nJOIN client c ON c.client_id = d.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4395420037326403,
+      "result_signature": "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.42004200076917186,
+      "result_signature": "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON d.account_id = a.account_id\nJOIN client c ON c.client_id = d.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4620420004357584,
+      "result_signature": "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT t.balance, c.gender\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nJOIN client c ON d.client_id = c.client_id\nWHERE t.trans_id = 851 AND d.client_id = 4;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "09ba363e75573e3c8b48e43006f2900533fbaf9051da514933a14eb9b6021af6": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1619.812875003845
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_726",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1395.4882909965818,
+  "execution_time_ms": 4.29404200258432,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT superhero.superhero_name\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name = 'Marvel Comics'\nORDER BY superhero.height_cm DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0536670015426353,
+      "result_signature": "4d48688768cc7ef5496acc35f21d390e0729138b92d2ede9d33c878d3e9b3990",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.superhero_name, s.height_cm\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE p.publisher_name = 'Marvel Comics'\nORDER BY s.height_cm DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4971659946022555,
+      "result_signature": "fbf2985b5af08fe0d51823c4f9e5132f237caa6805d483f24a003f46432aecb4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT superhero.superhero_name, superhero.height_cm\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name = 'Marvel Comics'\nORDER BY superhero.height_cm DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.41820800106506795,
+      "result_signature": "fbf2985b5af08fe0d51823c4f9e5132f237caa6805d483f24a003f46432aecb4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT superhero.superhero_name, superhero.height_cm\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name = 'Marvel Comics'\nORDER BY superhero.height_cm DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3877500057569705,
+      "result_signature": "fbf2985b5af08fe0d51823c4f9e5132f237caa6805d483f24a003f46432aecb4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT superhero.superhero_name, superhero.height_cm\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name = 'Marvel Comics'\nORDER BY superhero.height_cm DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.37900000461377203,
+      "result_signature": "fbf2985b5af08fe0d51823c4f9e5132f237caa6805d483f24a003f46432aecb4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT superhero.superhero_name, superhero.height_cm\nFROM superhero\nJOIN publisher ON superhero.publisher_id = publisher.id\nWHERE publisher.publisher_name = 'Marvel Comics'\nORDER BY superhero.height_cm DESC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4d48688768cc7ef5496acc35f21d390e0729138b92d2ede9d33c878d3e9b3990": 1,
+        "fbf2985b5af08fe0d51823c4f9e5132f237caa6805d483f24a003f46432aecb4": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 1,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1258.2367080030963,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2658.050334001018
+}

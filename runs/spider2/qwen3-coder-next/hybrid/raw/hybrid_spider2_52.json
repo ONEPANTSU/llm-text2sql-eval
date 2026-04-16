@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_52",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6449.9507089931285,
+  "execution_time_ms": 22.56383400526829,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', date(txn_date, 'start of month')) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', date(txn_date, 'start of month'))\n),\nadjusted_balances AS (\n    SELECT \n        month,\n        LAG(total_balance, 1) OVER (ORDER BY month) AS prev_month_balance\n    FROM monthly_balances\n)\nSELECT \n    month,\n    MAX(0, prev_month_balance) AS prev_month_balance\nFROM adjusted_balances\nWHERE month != (SELECT MIN(month) FROM monthly_balances)\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8598329954547808,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', date(txn_date, 'start of month')) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', date(txn_date, 'start of month'))\n),\nprevious_month_balances AS (\n    SELECT \n        month,\n        LAG(total_balance, 1) OVER (ORDER BY month) AS prev_month_total_balance\n    FROM monthly_balances\n)\nSELECT \n    month,\n    COALESCE(MAX(0, prev_month_total_balance), 0) AS prev_month_total_balance\nFROM previous_month_balances\nWHERE prev_month_total_balance IS NOT NULL\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8974160009529442,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', txn_date) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', txn_date)\n),\nprevious_month_balances AS (\n    SELECT \n        m1.month,\n        COALESCE(m2.total_balance, 0) AS prev_month_balance\n    FROM monthly_balances m1\n    LEFT JOIN monthly_balances m2 \n        ON m2.month = (\n            SELECT strftime('%Y-%m', date(m1.month || '-01', '-1 month'))\n        )\n)\nSELECT \n    month,\n    MAX(0, prev_month_balance) AS prev_month_balance\nFROM previous_month_balances\nWHERE month != (SELECT MIN(month) FROM monthly_balances)\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.42970800132025033,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', txn_date) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', txn_date)\n),\nprevious_month_balances AS (\n    SELECT \n        m1.month AS current_month,\n        COALESCE(m2.total_balance, 0) AS prev_month_balance\n    FROM monthly_balances m1\n    LEFT JOIN monthly_balances m2 \n        ON m2.month = strftime('%Y-%m', date(m1.month || '-01', '-1 month'))\n)\nSELECT \n    current_month AS month,\n    MAX(0, prev_month_balance) AS total_balance\nFROM previous_month_balances\nWHERE current_month != (SELECT MIN(month) FROM monthly_balances)\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.36229100078344345,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', date(txn_date, 'start of month')) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', date(txn_date, 'start of month'))\n),\nadjusted_balances AS (\n    SELECT \n        month,\n        LAG(total_balance, 1) OVER (ORDER BY month) AS prev_month_balance\n    FROM monthly_balances\n)\nSELECT \n    month,\n    MAX(0, prev_month_balance) AS adjusted_prev_month_balance\nFROM adjusted_balances\nWHERE prev_month_balance IS NOT NULL\nORDER BY month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.2802909875754267,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH monthly_balances AS (\n    SELECT \n        strftime('%Y-%m', date(txn_date, 'start of month')) AS month,\n        SUM(txn_amount) AS total_balance\n    FROM customer_transactions\n    GROUP BY strftime('%Y-%m', date(txn_date, 'start of month'))\n),\nadjusted_balances AS (\n    SELECT \n        month,\n        LAG(total_balance, 1) OVER (ORDER BY month) AS prev_month_balance\n    FROM monthly_balances\n)\nSELECT \n    month,\n    MAX(0, prev_month_balance) AS adjusted_prev_month_balance\nFROM adjusted_balances\nWHERE prev_month_balance IS NOT NULL\nORDER BY month ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 6472.6587909972295
+}

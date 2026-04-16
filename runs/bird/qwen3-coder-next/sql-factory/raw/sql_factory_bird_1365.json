@@ -1,0 +1,140 @@
+{
+  "task_id": "bird_1365",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget = (\n    SELECT budget_id\n    FROM budget\n    ORDER BY remaining ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget = (\n    SELECT budget_id\n    FROM budget\n    ORDER BY remaining ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT e.expense_description, e.expense_date, e.cost, e.approved\nFROM expense e\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE b.remaining = (\n    SELECT MIN(remaining)\n    FROM budget\n);",
+          "score": 1.0480897009966779,
+          "similarity_max": 0.5038205980066445,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget IN (\n    SELECT budget_id\n    FROM budget\n    WHERE remaining = (\n        SELECT MIN(remaining)\n        FROM budget\n    )\n);",
+          "score": 0.8912790697674421,
+          "similarity_max": 0.6174418604651162,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget = (\n    SELECT budget_id\n    FROM budget\n    ORDER BY remaining ASC\n    LIMIT 1\n);",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT e.expense_description, e.expense_date, e.cost, e.approved\nFROM expense e\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE b.remaining = (\n    SELECT MIN(remaining)\n    FROM budget\n);",
+          "score": 1.0480897009966779,
+          "similarity_max": 0.5038205980066445,
+          "tables_used": [
+            "b",
+            "budget",
+            "e",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget IN (\n    SELECT budget_id\n    FROM budget\n    WHERE remaining = (\n        SELECT MIN(remaining)\n        FROM budget\n    )\n);",
+          "score": 0.8912790697674421,
+          "similarity_max": 0.6174418604651162,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT expense_description, expense_date, cost, approved\nFROM expense\nWHERE link_to_budget = (\n    SELECT budget_id\n    FROM budget\n    ORDER BY remaining ASC\n    LIMIT 1\n);",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "budget",
+        "expense"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.42
+  }
+}

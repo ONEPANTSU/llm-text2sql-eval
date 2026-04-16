@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_2",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.County = 'Fresno'\n  AND f.`Charter School (Y/N)` = 'Y';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.County = 'Fresno'\n  AND f.`Charter School (Y/N)` = 'Y';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nWHERE s.County = 'Fresno'\n  AND s.Charter = 'Y';",
+          "score": 0.9125000000000001,
+          "similarity_max": 0.375,
+          "tables_used": [
+            "schools",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.County = 'Fresno'\n  AND f.`Charter School (Y/N)` = 'Y';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nWHERE s.County = 'Fresno'\n  AND s.Charter = 'Y';",
+          "score": 0.9125000000000001,
+          "similarity_max": 0.375,
+          "tables_used": [
+            "schools",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.Charter = 'Y';",
+          "score": 0.8779411764705882,
+          "similarity_max": 0.6441176470588235,
+          "tables_used": [
+            "frpm",
+            "f",
+            "s",
+            "schools"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.County = 'Fresno'\n  AND f.`Charter School (Y/N)` = 'Y';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "frpm",
+        "f",
+        "s",
+        "schools"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 13.96
+  }
+}

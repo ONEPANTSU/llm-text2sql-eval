@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_699",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 915.2240000039455,
+  "execution_time_ms": 24.35949999926379,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.235832999460399,
+      "result_signature": "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.720957993413322,
+      "result_signature": "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.539333000138868,
+      "result_signature": "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.909417002636474,
+      "result_signature": "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.80158299615141,
+      "result_signature": "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT CreationDate FROM users WHERE DisplayName = 'IrishStat';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "22b5b87805cfe740d5ca3ecb668877c4ae9c7317b9537c3ec84266fda7c5dfdc": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 939.618791002431
+}

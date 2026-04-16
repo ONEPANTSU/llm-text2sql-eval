@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1096",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 7365.928792001796,
+  "execution_time_ms": 314.07620800018776,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(Player_Attributes.overall_rating) AS avg_overall_rating\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Pietro Marino';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 107.9833330004476,
+      "result_signature": "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(Player_Attributes.overall_rating) AS avg_overall_rating\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Pietro Marino';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 52.52404199563898,
+      "result_signature": "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(Player_Attributes.overall_rating) AS avg_overall_rating\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Pietro Marino';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 51.41866699705133,
+      "result_signature": "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name = 'Pietro Marino';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 51.77720900246641,
+      "result_signature": "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name = 'Pietro Marino';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 49.89258300338406,
+      "result_signature": "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT AVG(pa.overall_rating) AS avg_overall_rating\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE p.player_name = 'Pietro Marino';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "e7a5c21d76e2369f71bc8f2eb539d1023e01652554bbdb2795a8766b23622ad8": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 7680.0845000034315
+}

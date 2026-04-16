@@ -1,0 +1,138 @@
+{
+  "task_id": "bird_283",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1704.4625829948927,
+  "execution_time_ms": 5.9993749964633025,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT 'No carcinogenicity data available for compounds containing Calcium based on the given schema.' AS result;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.924082996789366,
+      "result_signature": "58e1d4d0690d0f9aa1441853a7500d3065f42081bba0a4f2399c4e1d20b55bc5",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT 'Unknown' AS carcinogenicity;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.28700000257231295,
+      "result_signature": "b42457f368d9cfeb9ea794fa188d883e165a62471ba7ef421aa63d0af40cc7a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS is_carcinogenic\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1026659960625693,
+      "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT 'Unknown' AS carcinogenicity;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.23387500550597906,
+      "result_signature": "b42457f368d9cfeb9ea794fa188d883e165a62471ba7ef421aa63d0af40cc7a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS is_carcinogenic\nFROM atom a\nJOIN molecule m ON a.molecule_id = m.molecule_id\nWHERE a.element = 'Ca';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0287500010454096,
+      "result_signature": "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT 'Unknown' AS carcinogenicity;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "58e1d4d0690d0f9aa1441853a7500d3065f42081bba0a4f2399c4e1d20b55bc5": 1,
+        "b42457f368d9cfeb9ea794fa188d883e165a62471ba7ef421aa63d0af40cc7a1": 2,
+        "ab6d6b20dd268ba4c0a7ff40402ae6652d31ff1156138bb0a4dbf40d24ca9acf": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      0
+    ],
+    "variations_requested": 4,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1344.3185829964932,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3054.95437499485
+}

@@ -1,0 +1,145 @@
+{
+  "task_id": "bird_1465",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT category\nFROM budget\nJOIN expense ON budget.budget_id = expense.link_to_budget\nWHERE expense.expense_description = 'Posters';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget"
+          ]
+        },
+        {
+          "sql": "SELECT category \nFROM budget \nWHERE budget_id IN (\n    SELECT link_to_budget \n    FROM expense \n    WHERE expense_description = 'Posters'\n);",
+          "score": 0.945308924485126,
+          "similarity_max": 0.5093821510297483,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT category\nFROM budget\nJOIN expense ON budget.budget_id = expense.link_to_budget\nWHERE expense.expense_description = 'Posters';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget"
+          ]
+        },
+        {
+          "sql": "SELECT category \nFROM budget \nWHERE budget_id IN (\n    SELECT link_to_budget \n    FROM expense \n    WHERE expense_description = 'Posters'\n);",
+          "score": 0.945308924485126,
+          "similarity_max": 0.5093821510297483,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT b.category\nFROM budget b\nINNER JOIN expense e ON b.budget_id = e.link_to_budget\nWHERE e.expense_description = 'Posters';",
+          "score": 0.924154135338346,
+          "similarity_max": 0.7516917293233082,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT category\nFROM budget\nJOIN expense ON budget.budget_id = expense.link_to_budget\nWHERE expense.expense_description = 'Posters';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "budget"
+          ]
+        },
+        {
+          "sql": "SELECT category \nFROM budget \nWHERE budget_id IN (\n    SELECT link_to_budget \n    FROM expense \n    WHERE expense_description = 'Posters'\n);",
+          "score": 0.945308924485126,
+          "similarity_max": 0.5093821510297483,
+          "tables_used": [
+            "budget",
+            "expense"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT b.category\nFROM budget b\nINNER JOIN expense e ON b.budget_id = e.link_to_budget\nWHERE e.expense_description = 'Posters';",
+          "score": 0.924154135338346,
+          "similarity_max": 0.7516917293233082,
+          "tables_used": [
+            "budget",
+            "expense",
+            "e",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT category\nFROM budget\nJOIN expense ON budget.budget_id = expense.link_to_budget\nWHERE expense.expense_description = 'Posters';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "budget"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.43
+  }
+}

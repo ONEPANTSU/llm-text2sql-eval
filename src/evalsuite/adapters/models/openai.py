@@ -24,7 +24,16 @@ class OpenAIChatAdapter:
         self.base_url = cleaned
         self.api_key = api_key
         self.extra = extra or {}
+        self._usage_accumulator = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "calls": 0}
         log.info("OpenAI adapter: base_url=%s model=%s", self.base_url, self.model)
+
+    def reset_usage(self):
+        """Reset accumulated token usage counters."""
+        self._usage_accumulator = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "calls": 0}
+
+    def get_usage(self) -> dict:
+        """Return accumulated token usage since last reset."""
+        return dict(self._usage_accumulator)
 
     def generate_sql(
         self,
@@ -81,6 +90,13 @@ class OpenAIChatAdapter:
                 detail = "<no body>"
             raise RuntimeError(f"openai api error {resp.status_code}: {detail}") from exc
         data = resp.json()
+        usage = data.get("usage")
+        if usage:
+            self._last_usage = usage
+            self._usage_accumulator["prompt_tokens"] += usage.get("prompt_tokens", 0)
+            self._usage_accumulator["completion_tokens"] += usage.get("completion_tokens", 0)
+            self._usage_accumulator["total_tokens"] += usage.get("total_tokens", 0)
+            self._usage_accumulator["calls"] += 1
         raw = data["choices"][0]["message"]["content"].strip()
         return self._strip_code_fences(raw)
 
@@ -147,6 +163,13 @@ class OpenAIChatAdapter:
                     raise
                 continue
             data = resp.json()
+            usage = data.get("usage")
+            if usage:
+                self._last_usage = usage
+                self._usage_accumulator["prompt_tokens"] += usage.get("prompt_tokens", 0)
+                self._usage_accumulator["completion_tokens"] += usage.get("completion_tokens", 0)
+                self._usage_accumulator["total_tokens"] += usage.get("total_tokens", 0)
+                self._usage_accumulator["calls"] += 1
             raw = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
             if not raw:
                 last_error = "empty response"

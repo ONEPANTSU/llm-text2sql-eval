@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_145",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.disp_id\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nWHERE t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n)\nAND strftime('%Y', t.date) = '1998';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.client_id\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN card c ON d.disp_id = c.disp_id\nWHERE strftime('%Y', t.date) = '1998'\n  AND t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n  )\n  AND c.type = 'credit';",
+          "score": 0.9830113636363639,
+          "similarity_max": 0.6339772727272727,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "card",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.disp_id\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nWHERE t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n)\nAND strftime('%Y', t.date) = '1998';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.client_id\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN card c ON d.disp_id = c.disp_id\nWHERE strftime('%Y', t.date) = '1998'\n  AND t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n      AND account_id IN (\n        SELECT account_id\n        FROM disp\n        JOIN card ON disp.disp_id = card.disp_id\n        WHERE card.type = 'credit'\n      )\n  )\n  AND c.type = 'credit';",
+          "score": 0.9980758658603629,
+          "similarity_max": 0.8038482682792742,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "card",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.client_id\nFROM trans t\nJOIN account a ON t.account_id = a.account_id\nJOIN disp d ON a.account_id = d.account_id\nJOIN card c ON d.disp_id = c.disp_id\nWHERE strftime('%Y', t.date) = '1998'\n  AND t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n  )\n  AND c.type = 'credit';",
+          "score": 0.9830113636363639,
+          "similarity_max": 0.6339772727272727,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "card",
+            "a",
+            "c",
+            "account",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT d.disp_id\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nWHERE t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n)\nAND strftime('%Y', t.date) = '1998';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "d",
+            "t",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.disp_id\nFROM disp d\nJOIN card c ON d.disp_id = c.disp_id\nJOIN trans t ON d.account_id = t.account_id\nWHERE c.type = 'credit'\n  AND strftime('%Y', t.date) = '1998'\n  AND t.amount < (\n    SELECT AVG(amount)\n    FROM trans t2\n    JOIN card c2 ON t2.account_id = (\n      SELECT account_id FROM disp WHERE disp_id = c2.disp_id\n    )\n    WHERE c2.type = 'credit'\n      AND strftime('%Y', t2.date) = '1998'\n  );",
+          "score": 1.0686915887850468,
+          "similarity_max": 0.6626168224299065,
+          "tables_used": [
+            "disp",
+            "d",
+            "t2",
+            "t",
+            "card",
+            "c",
+            "c2",
+            "trans"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT d.client_id\nFROM disp d\nJOIN card c ON d.disp_id = c.disp_id\nJOIN trans t ON d.account_id = t.account_id\nWHERE strftime('%Y', t.date) = '1998'\n  AND t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n  );",
+          "score": 1.0219886363636366,
+          "similarity_max": 0.7560227272727272,
+          "tables_used": [
+            "disp",
+            "d",
+            "c",
+            "t",
+            "card",
+            "trans"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT d.disp_id\nFROM trans t\nJOIN disp d ON t.account_id = d.account_id\nWHERE t.amount < (\n    SELECT AVG(amount)\n    FROM trans\n    WHERE strftime('%Y', date) = '1998'\n)\nAND strftime('%Y', t.date) = '1998';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "d",
+        "t",
+        "trans"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 427.42
+  }
+}

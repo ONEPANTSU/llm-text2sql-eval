@@ -1,0 +1,242 @@
+{
+  "task_id": "tpcds_q10",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n  AND...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "cs"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n  AND...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "cs"
+          ]
+        },
+        {
+          "sql": "WITH eligible_customers AS (\n  SELECT DISTINCT c.c_customer_sk\n  FROM customer c\n  JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n  WHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n    AND EXISTS (\n        SELECT 1 FROM store_sales ss\n        JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n        WHERE ss.ss_customer_sk = c.c_customer_sk\n          AND d.d_year = 2002 AND d.d_moy BETWEEN 1 AND 4\n    )\n    AND (\n  ...",
+          "score": 0.585335305264131,
+          "similarity_max": 0.8293293894717382,
+          "tables_used": [
+            "c",
+            "ss",
+            "ec",
+            "customer",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "store_sales",
+            "eligible_customers",
+            "date_dim",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "cs"
+          ]
+        },
+        {
+          "sql": "WITH customers_in_counties AS (\n    SELECT c_customer_sk\n    FROM customer c\n    JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n    WHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n),\nfiltered_customers AS (\n    SELECT DISTINCT c.c_customer_sk\n    FROM customers_in_counties c\n    WHERE EXISTS (\n        SELECT 1\n        FROM store_sales ss\n        JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n        WHERE ss.ss_...",
+          "score": 0.563922550052687,
+          "similarity_max": 0.7721548998946259,
+          "tables_used": [
+            "c",
+            "ss",
+            "customer",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "filtered_customers",
+            "store_sales",
+            "date_dim",
+            "customers_in_counties",
+            "fc",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "cs"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n  AND...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "cs"
+          ]
+        },
+        {
+          "sql": "WITH eligible_customers AS (\n  SELECT DISTINCT c.c_customer_sk\n  FROM customer c\n  JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n  WHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n    AND EXISTS (\n        SELECT 1 FROM store_sales ss\n        JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n        WHERE ss.ss_customer_sk = c.c_customer_sk\n          AND d.d_year = 2002 AND d.d_moy BETWEEN 1 AND 4\n    )\n    AND (\n  ...",
+          "score": 0.585335305264131,
+          "similarity_max": 0.8293293894717382,
+          "tables_used": [
+            "c",
+            "ss",
+            "ec",
+            "customer",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "store_sales",
+            "eligible_customers",
+            "date_dim",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "cs"
+          ]
+        },
+        {
+          "sql": "WITH customers_in_counties AS (\n    SELECT c_customer_sk\n    FROM customer c\n    JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\n    WHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n),\nfiltered_customers AS (\n    SELECT DISTINCT c.c_customer_sk\n    FROM customers_in_counties c\n    WHERE EXISTS (\n        SELECT 1\n        FROM store_sales ss\n        JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk\n        WHERE ss.ss_...",
+          "score": 0.563922550052687,
+          "similarity_max": 0.7721548998946259,
+          "tables_used": [
+            "c",
+            "ss",
+            "customer",
+            "ws",
+            "customer_address",
+            "catalog_sales",
+            "ca",
+            "filtered_customers",
+            "store_sales",
+            "date_dim",
+            "customers_in_counties",
+            "fc",
+            "web_sales",
+            "cd",
+            "d",
+            "customer_demographics",
+            "cs"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    cd.cd_gender,\n    cd.cd_marital_status,\n    cd.cd_education_status,\n    cd.cd_purchase_estimate,\n    cd.cd_credit_rating,\n    cd.cd_dep_count,\n    cd.cd_dep_employed_count,\n    cd.cd_dep_college_count,\n    COUNT(*) AS cnt\nFROM customer c\nJOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk\nJOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk\nWHERE ca.ca_county IN ('Rush County','Toole County','Jefferson County','Dona Ana County','La Porte County')\n  AND...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "store_sales",
+        "ss",
+        "date_dim",
+        "customer",
+        "web_sales",
+        "cd",
+        "d",
+        "customer_demographics",
+        "ws",
+        "customer_address",
+        "catalog_sales",
+        "ca",
+        "cs"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 41.63
+  }
+}

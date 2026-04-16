@@ -1,0 +1,202 @@
+{
+  "task_id": "spider2_102",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, ending_inventory, min_required) AS (\n    -- Base case: December 2018 inventory levels\n    SELECT \n        i.product_id,\n        '2018-12-01' AS mth,\n        SUM(i.qty) AS ending_inventory,\n        COALESCE(pm.qty_minimum, 0) AS min_required\n    FROM inventory i\n    JOIN product_minimums pm ON i.product_id = pm.product_id\n    WHERE i.id IS NOT NULL  -- Ensure we have actual inventory records\n    GROUP BY i.product_id, pm.qty_minimum\n    UNION ALL\n...",
+          "score": 1.069344333478072,
+          "similarity_max": 0.5613113330438558,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "ranked_inventory",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+          "score": 1.0783901665344964,
+          "similarity_max": 0.6432196669310071,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, ending_inventory, min_required) AS (\n    -- Base case: December 2018 inventory levels\n    SELECT \n        i.product_id,\n        '2018-12-01' AS mth,\n        SUM(i.qty) AS ending_inventory,\n        COALESCE(pm.qty_minimum, 0) AS min_required\n    FROM inventory i\n    JOIN product_minimums pm ON i.product_id = pm.product_id\n    WHERE i.id IS NOT NULL  -- Ensure we have actual inventory records\n    GROUP BY i.product_id, pm.qty_minimum\n    UNION ALL\n...",
+          "score": 1.069344333478072,
+          "similarity_max": 0.5613113330438558,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "ranked_inventory",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+          "score": 1.0783901665344964,
+          "similarity_max": 0.6432196669310071,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, ending_inventory, min_required) AS (\n    -- Base case: December 2018 inventory levels\n    SELECT \n        i.product_id,\n        '2018-12-01' AS mth,\n        SUM(i.qty) AS ending_inventory,\n        COALESCE(pm.qty_minimum, 0) AS min_required\n    FROM inventory i\n    JOIN product_minimums pm ON i.product_id = pm.product_id\n    WHERE i.id IS NOT NULL  -- Ensure we have actual inventory records\n    GROUP BY i.product_id, pm.qty_minimum\n    UNION ALL\n...",
+          "score": 1.069344333478072,
+          "similarity_max": 0.5613113330438558,
+          "tables_used": [
+            "mi",
+            "ms",
+            "i",
+            "product_minimums",
+            "ranked_inventory",
+            "pm",
+            "inventory",
+            "monthly_sales",
+            "monthly_inventory"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH RECURSIVE monthly_inventory(product_id, mth, beginning_qty, sales_qty, ending_qty, min_qty) AS (\n  -- Base case: December 2018 inventory levels\n  SELECT \n    i.product_id,\n    '2018-12' AS mth,\n    SUM(i.qty) AS beginning_qty,\n    0 AS sales_qty,\n    SUM(i.qty) AS ending_qty,\n    COALESCE(pm.qty_minimum, 0) AS min_qty\n  FROM inventory i\n  JOIN product_minimums pm ON i.product_id = pm.product_id\n  GROUP BY i.product_id, pm.qty_minimum\n  \n  UNION ALL\n  \n  -- Recursive case: monthly inventory ...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "mi",
+        "ms",
+        "i",
+        "product_minimums",
+        "pm",
+        "inventory",
+        "monthly_sales",
+        "monthly_inventory"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.22
+  }
+}

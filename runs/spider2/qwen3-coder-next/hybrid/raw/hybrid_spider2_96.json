@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_96",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8977.617374999681,
+  "execution_time_ms": 58.433416998013854,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    SELECT \n        pr.packaging_id AS root_id,\n        pr.contains_id AS current_id,\n        pr.qty AS accumulated_qty\n    FROM packaging_relations pr\n    UNION ALL\n    SELECT \n        ph.root_id,\n        pr.contains_id,\n        ph.accumulated_qty * pr.qty\n    FROM packaging_hierarchy ph\n    JOIN packaging_relations pr ON ph.current_id = pr.packaging_id\n),\ntotal_quantities AS (\n    SELECT \n        root_id,\n        current_id,\n        SUM(accumulated_qty) AS total_qty\n    FROM packaging_hierarchy\n    GROUP BY root_id, current_id\n),\ntop_level_containers AS (\n    SELECT p.id, p.name\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n)\nSELECT \n    tlc.name AS container_name,\n    p.name AS item_name\nFROM top_level_containers tlc\nJOIN total_quantities tq ON tlc.id = tq.root_id\nJOIN packaging p ON tq.current_id = p.id\nWHERE tq.total_qty > 500;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.026167003554292,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH RECURSIVE packaging_hierarchy AS (\n  -- Base case: start with all packaging items\n  SELECT \n    pr.packaging_id AS root_id,\n    pr.contains_id AS current_id,\n    pr.qty AS accumulated_qty\n  FROM packaging_relations pr\n  \n  UNION ALL\n  \n  -- Recursive case: traverse down the hierarchy\n  SELECT \n    ph.root_id,\n    pr.contains_id,\n    ph.accumulated_qty * pr.qty\n  FROM packaging_hierarchy ph\n  JOIN packaging_relations pr ON ph.current_id = pr.packaging_id\n),\ntotal_quantities AS (\n  -- Aggregate total quantity for each root packaging and item combination\n  SELECT \n    ph.root_id,\n    ph.current_id AS item_id,\n    SUM(ph.accumulated_qty) AS total_qty\n  FROM packaging_hierarchy ph\n  GROUP BY ph.root_id, ph.current_id\n)\nSELECT DISTINCT\n  p.name AS container_name,\n  i.name AS item_name\nFROM total_quantities tq\nJOIN packaging p ON tq.root_id = p.id\nJOIN packaging i ON tq.item_id = i.id\nWHERE tq.total_qty > 500\nAND NOT EXISTS (\n  -- Ensure the container is a top-level one (not contained in any other)\n  SELECT 1 \n  FROM packaging_relations pr2 \n  WHERE pr2.contains_id = tq.root_id\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2236250040587038,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    SELECT \n        pr.packaging_id AS root_id,\n        pr.contains_id AS current_id,\n        pr.qty AS total_qty\n    FROM packaging_relations pr\n    UNION ALL\n    SELECT \n        ph.root_id,\n        pr.contains_id,\n        ph.total_qty * pr.qty\n    FROM packaging_hierarchy ph\n    JOIN packaging_relations pr ON ph.current_id = pr.packaging_id\n),\npackaging_totals AS (\n    SELECT \n        ph.root_id,\n        ph.current_id,\n        SUM(ph.total_qty) AS accumulated_qty\n    FROM packaging_hierarchy ph\n    GROUP BY ph.root_id, ph.current_id\n),\ntop_level_containers AS (\n    SELECT DISTINCT pr.packaging_id AS container_id\n    FROM packaging_relations pr\n    WHERE pr.packaging_id NOT IN (SELECT contains_id FROM packaging_relations)\n),\nqualified_containers AS (\n    SELECT DISTINCT pt.root_id AS container_id\n    FROM packaging_totals pt\n    JOIN top_level_containers tlc ON pt.root_id = tlc.container_id\n    WHERE pt.accumulated_qty > 500\n)\nSELECT DISTINCT \n    p.name AS container_name,\n    (SELECT p2.name FROM packaging p2 WHERE p2.id = pt.current_id) AS item_name\nFROM qualified_containers qc\nJOIN packaging p ON qc.container_id = p.id\nJOIN packaging_totals pt ON qc.container_id = pt.root_id\nWHERE pt.accumulated_qty > 500;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.47245799214579165,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    SELECT packaging_id, contains_id, qty, qty AS total_qty\n    FROM packaging_relations\n    UNION ALL\n    SELECT ph.packaging_id, pr.contains_id, pr.qty, ph.total_qty * pr.qty\n    FROM packaging_hierarchy ph\n    JOIN packaging_relations pr ON ph.contains_id = pr.packaging_id\n),\ntop_level_containers AS (\n    SELECT DISTINCT packaging_id\n    FROM packaging_relations\n    WHERE packaging_id NOT IN (SELECT contains_id FROM packaging_relations)\n),\nitem_totals AS (\n    SELECT packaging_id, contains_id, SUM(total_qty) AS total_item_qty\n    FROM packaging_hierarchy\n    GROUP BY packaging_id, contains_id\n    HAVING SUM(total_qty) > 500\n)\nSELECT DISTINCT p1.name AS container_name, p2.name AS item_name\nFROM top_level_containers tlc\nJOIN item_totals it ON tlc.packaging_id = it.packaging_id\nJOIN packaging p1 ON tlc.packaging_id = p1.id\nJOIN packaging p2 ON it.contains_id = p2.id;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.29295899730641395,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    SELECT packaging_id, contains_id, qty, qty AS total_qty\n    FROM packaging_relations\n    UNION ALL\n    SELECT ph.packaging_id, pr.contains_id, pr.qty, ph.total_qty * pr.qty AS total_qty\n    FROM packaging_hierarchy ph\n    JOIN packaging_relations pr ON ph.contains_id = pr.packaging_id\n),\ntop_level_containers AS (\n    SELECT DISTINCT packaging_id\n    FROM packaging_relations\n    WHERE packaging_id NOT IN (SELECT contains_id FROM packaging_relations)\n),\nitem_totals AS (\n    SELECT packaging_id, contains_id, SUM(total_qty) AS total_item_qty\n    FROM packaging_hierarchy\n    GROUP BY packaging_id, contains_id\n)\nSELECT p.name AS container_name, p2.name AS item_name\nFROM top_level_containers tlc\nJOIN item_totals it ON tlc.packaging_id = it.packaging_id\nJOIN packaging p ON tlc.packaging_id = p.id\nJOIN packaging p2 ON it.contains_id = p2.id\nWHERE it.total_item_qty > 500;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5230829992797226,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH RECURSIVE packaging_hierarchy AS (\n    SELECT packaging_id, contains_id, qty, qty AS total_qty\n    FROM packaging_relations\n    UNION ALL\n    SELECT ph.packaging_id, pr.contains_id, pr.qty, ph.total_qty * pr.qty\n    FROM packaging_hierarchy ph\n    JOIN packaging_relations pr ON ph.contains_id = pr.packaging_id\n),\ntop_level_containers AS (\n    SELECT DISTINCT packaging_id\n    FROM packaging_relations\n    WHERE packaging_id NOT IN (SELECT contains_id FROM packaging_relations)\n),\nitem_totals AS (\n    SELECT packaging_id, contains_id, SUM(total_qty) AS total_item_qty\n    FROM packaging_hierarchy\n    GROUP BY packaging_id, contains_id\n    HAVING SUM(total_qty) > 500\n)\nSELECT DISTINCT p1.name AS container_name, p2.name AS item_name\nFROM top_level_containers tlc\nJOIN item_totals it ON tlc.packaging_id = it.packaging_id\nJOIN packaging p1 ON tlc.packaging_id = p1.id\nJOIN packaging p2 ON it.contains_id = p2.id;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 9036.26062499825
+}

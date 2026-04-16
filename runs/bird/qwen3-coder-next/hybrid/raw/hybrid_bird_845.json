@@ -1,0 +1,196 @@
+{
+  "task_id": "bird_845",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1440.9069169996656,
+  "execution_time_ms": 3.6045829983777367,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT superhero_name, height_cm\nFROM superhero\nWHERE height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9037499985424802,
+      "result_signature": "34c45ffa416fbfb11456c19cd352f29d00fbcae628f0833cd4a788b1b9140fa7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.power_name\nFROM superpower s\nJOIN hero_power hp ON s.id = hp.power_id\nJOIN superhero su ON hp.hero_id = su.id\nWHERE su.height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.0372500037192367,
+      "result_signature": "5c2bbe8390c83308a55c5c3507775277d5f389939a6ebe0d8214b794a2570fa0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6887920026201755,
+      "result_signature": "9fda3dc5e0bee34ecedc04bbbd7132e6689599a566724a68ba0283d40a0262a8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT height_cm FROM superhero WHERE height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.21104099869262427,
+      "result_signature": "9f2bdf7b82d162964c001fd7b67a44cec5f63aecc684b94a566db64bd6f3d668",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT superhero_name, height_cm\nFROM superhero\nWHERE height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.20654199761338532,
+      "result_signature": "34c45ffa416fbfb11456c19cd352f29d00fbcae628f0833cd4a788b1b9140fa7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "34c45ffa416fbfb11456c19cd352f29d00fbcae628f0833cd4a788b1b9140fa7": 2,
+        "5c2bbe8390c83308a55c5c3507775277d5f389939a6ebe0d8214b794a2570fa0": 3,
+        "9fda3dc5e0bee34ecedc04bbbd7132e6689599a566724a68ba0283d40a0262a8": 3,
+        "9f2bdf7b82d162964c001fd7b67a44cec5f63aecc684b94a566db64bd6f3d668": 1
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 1631.104250001954,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.1805840040324256,
+        "result_signature": "5c2bbe8390c83308a55c5c3507775277d5f389939a6ebe0d8214b794a2570fa0",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nWHERE s.height_cm > 0.8 * (SELECT AVG(height_cm) FROM superhero);",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.7407500015688129,
+        "result_signature": "5c2bbe8390c83308a55c5c3507775277d5f389939a6ebe0d8214b794a2570fa0",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH avg_height AS (\n    SELECT AVG(height_cm) AS avg_h\n    FROM superhero\n)\nSELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nCROSS JOIN avg_height ah\nWHERE s.height_cm > 0.8 * ah.avg_h",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.2181249985587783,
+        "result_signature": "9fda3dc5e0bee34ecedc04bbbd7132e6689599a566724a68ba0283d40a0262a8",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "WITH avg_height AS (\n  SELECT AVG(height_cm) * 0.8 AS threshold_height\n  FROM superhero\n)\nSELECT DISTINCT sp.power_name\nFROM superhero s\nJOIN hero_power hp ON s.id = hp.hero_id\nJOIN superpower sp ON hp.power_id = sp.id\nCROSS JOIN avg_height ah\nWHERE s.height_cm > ah.threshold_height",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.1185420007677749,
+        "result_signature": "9fda3dc5e0bee34ecedc04bbbd7132e6689599a566724a68ba0283d40a0262a8",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3075.659750000341
+}

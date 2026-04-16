@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_870",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1777.7696660050424,
+  "execution_time_ms": 5.65199999982724,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2223329981206916,
+      "result_signature": "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7575420022476465,
+      "result_signature": "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.501292000990361,
+      "result_signature": "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5399159999797121,
+      "result_signature": "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.43083299533464015,
+      "result_signature": "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT q.q1\nFROM qualifying q\nJOIN drivers d ON q.driverId = d.driverId\nJOIN races r ON q.raceId = r.raceId\nWHERE d.forename = 'Lucas'\n  AND d.surname = 'di Grassi'\n  AND r.raceId = 345;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b262f5ce263681b74b8198a8f1eb59609cf3aa5f39b6cc24869698786b241b0f": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1783.452750001743
+}

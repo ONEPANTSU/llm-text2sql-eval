@@ -1,0 +1,183 @@
+{
+  "task_id": "tpcds_q56",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 16478.86054200353,
+  "execution_time_ms": 1390.046667002025,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    i_category,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales,\n    SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) / \n    NULLIF(SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END), 0) AS store_to_web_ratio\nFROM item\nLEFT JOIN store_sales ON item.i_item_sk = store_sales.ss_item_sk\nLEFT JOIN web_sales ON item.i_item_sk = web_sales.ws_item_sk\nLEFT JOIN date_dim ON (store_sales.ss_sold_date_sk = date_dim.d_date_sk OR web_sales.ws_sold_date_sk = date_dim.d_date_sk)\nWHERE date_dim.d_year = 2001 \n  AND date_dim.d_moy = 2\nGROUP BY i_category\nORDER BY i_category ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 512.2147500078427,
+      "result_signature": "c311de5750200a27c70f16da1c3a8b8eb1a7a191e74a43076801f6c5e42be00b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    i_category,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales,\n    SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales,\n    CAST(SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS DOUBLE) / \n        NULLIF(CAST(SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS DOUBLE), 0) AS store_to_web_ratio\nFROM item\nLEFT JOIN store_sales ON store_sales.ss_item_sk = item.i_item_sk\nLEFT JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nLEFT JOIN web_sales ON web_sales.ws_item_sk = item.i_item_sk\nLEFT JOIN date_dim AS web_date ON web_sales.ws_sold_date_sk = web_date.d_date_sk\nWHERE \n    (date_dim.d_year = 2001 AND date_dim.d_moy = 2)\n    OR (web_date.d_year = 2001 AND web_date.d_moy = 2)\nGROUP BY i_category\nORDER BY i_category ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 158.29254199343268,
+      "result_signature": "41b603f4489e1b86119c1b4122516121a659bc6c48b842d46da4d0df97a814a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    i_category,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales,\n    SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales,\n    CAST(SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS DECIMAL(18,2)) / \n    NULLIF(CAST(SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS DECIMAL(18,2)), 0) AS store_to_web_ratio\nFROM \n    store_sales\n    FULL OUTER JOIN web_sales ON store_sales.ss_item_sk = web_sales.ws_item_sk\n    JOIN item ON COALESCE(store_sales.ss_item_sk, web_sales.ws_item_sk) = item.i_item_sk\n    JOIN date_dim ON (store_sales.ss_sold_date_sk = date_dim.d_date_sk OR web_sales.ws_sold_date_sk = date_dim.d_date_sk)\nWHERE \n    date_dim.d_year = 2001\n    AND date_dim.d_moy = 2\nGROUP BY \n    i_category\nORDER BY \n    i_category ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 495.24995899992064,
+      "result_signature": "c311de5750200a27c70f16da1c3a8b8eb1a7a191e74a43076801f6c5e42be00b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    item.i_category,\n    SUM(store_sales.ss_ext_sales_price) AS store_sales,\n    SUM(web_sales.ws_ext_sales_price) AS web_sales,\n    SUM(store_sales.ss_ext_sales_price) / NULLIF(SUM(web_sales.ws_ext_sales_price), 0) AS store_to_web_ratio\nFROM \n    store_sales\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN web_sales ON item.i_item_sk = web_sales.ws_item_sk\n    JOIN date_dim AS web_date ON web_sales.ws_sold_date_sk = web_date.d_date_sk\nWHERE \n    date_dim.d_year = 2001\n    AND date_dim.d_moy = 2\n    AND web_date.d_year = 2001\n    AND web_date.d_moy = 2\nGROUP BY \n    item.i_category\nORDER BY \n    item.i_category ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.956125000026077,
+      "result_signature": "1748f93a49106cdbb3039116fbf912bc7a0f8b38a5769071c4f40bd10ef9ba90",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    i_category,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales,\n    SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) / \n        NULLIF(SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END), 0) AS store_to_web_ratio\nFROM item\nLEFT JOIN store_sales ON store_sales.ss_item_sk = item.i_item_sk\nLEFT JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nLEFT JOIN web_sales ON web_sales.ws_item_sk = item.i_item_sk\nLEFT JOIN date_dim web_date ON web_sales.ws_sold_date_sk = web_date.d_date_sk\nWHERE \n    (date_dim.d_year = 2001 AND date_dim.d_moy = 2) OR \n    (web_date.d_year = 2001 AND web_date.d_moy = 2)\nGROUP BY i_category\nORDER BY i_category ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 208.51054199738428,
+      "result_signature": "41b603f4489e1b86119c1b4122516121a659bc6c48b842d46da4d0df97a814a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    i_category,\n    SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS store_sales,\n    SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS web_sales,\n    CAST(SUM(CASE WHEN ss_item_sk IS NOT NULL THEN ss_ext_sales_price ELSE 0 END) AS DECIMAL(18,2)) / \n    NULLIF(CAST(SUM(CASE WHEN ws_item_sk IS NOT NULL THEN ws_ext_sales_price ELSE 0 END) AS DECIMAL(18,2)), 0) AS store_to_web_ratio\nFROM \n    store_sales\n    FULL OUTER JOIN web_sales ON store_sales.ss_item_sk = web_sales.ws_item_sk\n    JOIN item ON COALESCE(store_sales.ss_item_sk, web_sales.ws_item_sk) = item.i_item_sk\n    JOIN date_dim ON (store_sales.ss_sold_date_sk = date_dim.d_date_sk OR web_sales.ws_sold_date_sk = date_dim.d_date_sk)\nWHERE \n    date_dim.d_year = 2001\n    AND date_dim.d_moy = 2\nGROUP BY \n    i_category\nORDER BY \n    i_category ASC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c311de5750200a27c70f16da1c3a8b8eb1a7a191e74a43076801f6c5e42be00b": 2,
+        "41b603f4489e1b86119c1b4122516121a659bc6c48b842d46da4d0df97a814a1": 2,
+        "1748f93a49106cdbb3039116fbf912bc7a0f8b38a5769071c4f40bd10ef9ba90": 1,
+        "8d72ce0d15b22d5df177539da6a3bb42c98950e929abf06f365add06bff1a153": 2,
+        "d248eaffbdd681e14fd3995d748ecc15acf10607f8004b2e82cf1be032b6d0f2": 1
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 5251.450666997698,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH sales_by_category AS (\n    SELECT \n        item.i_category,\n        SUM(CASE WHEN store_sales.ss_item_sk IS NOT NULL THEN store_sales.ss_ext_sales_price ELSE 0 END) AS store_sales,\n        SUM(CASE WHEN web_sales.ws_item_sk IS NOT NULL THEN web_sales.ws_ext_sales_price ELSE 0 END) AS web_sales\n    FROM \n        item\n        LEFT JOIN store_sales ON item.i_item_sk = store_sales.ss_item_sk\n        LEFT JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk AND date_dim.d_year = 2001 AND date_dim.d_moy = 2\n        LEFT JOIN web_sales ON item.i_item_sk = web_sales.ws_item_sk\n        LEFT JOIN date_dim AS web_date ON web_sales.ws_sold_date_sk = web_date.d_date_sk AND web_date.d_year = 2001 AND web_date.d_moy = 2\n    WHERE \n        (store_sales.ss_item_sk IS NOT NULL OR web_sales.ws_item_sk IS NOT NULL)\n    GROUP BY \n        item.i_category\n)\nSELECT \n    i_category,\n    store_sales,\n    web_sales,\n    store_sales / NULLIF(web_sales, 0) AS store_to_web_ratio\nFROM \n    sales_by_category\nORDER BY \n    i_category ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 238.7910830002511,
+        "result_signature": "8d72ce0d15b22d5df177539da6a3bb42c98950e929abf06f365add06bff1a153",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH monthly_sales AS (\n    SELECT \n        item.i_category,\n        SUM(CASE WHEN store_sales.ss_item_sk IS NOT NULL THEN store_sales.ss_ext_sales_price ELSE 0 END) AS store_sales,\n        SUM(CASE WHEN web_sales.ws_item_sk IS NOT NULL THEN web_sales.ws_ext_sales_price ELSE 0 END) AS web_sales\n    FROM \n        item\n    LEFT JOIN store_sales ON item.i_item_sk = store_sales.ss_item_sk\n    LEFT JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk AND date_dim.d_year = 2001 AND date_dim.d_moy = 2\n    LEFT JOIN web_sales ON item.i_item_sk = web_sales.ws_item_sk\n    LEFT JOIN date_dim AS web_date ON web_sales.ws_sold_date_sk = web_date.d_date_sk AND web_date.d_year = 2001 AND web_date.d_moy = 2\n    GROUP BY item.i_category\n)\nSELECT \n    i_category,\n    store_sales,\n    web_sales,\n    store_sales / NULLIF(web_sales, 0) AS store_to_web_ratio\nFROM \n    monthly_sales\nORDER BY \n    i_category ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 197.32529199973214,
+        "result_signature": "8d72ce0d15b22d5df177539da6a3bb42c98950e929abf06f365add06bff1a153",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH store_sales_2001_feb AS (\n    SELECT ss_item_sk, ss_ext_sales_price\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = 2001 AND date_dim.d_moy = 2\n),\nweb_sales_2001_feb AS (\n    SELECT ws_item_sk, ws_ext_sales_price\n    FROM web_sales\n    JOIN date_dim ON web_sales.ws_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = 2001 AND date_dim.d_moy = 2\n)\nSELECT \n    i.i_category,\n    COALESCE(SUM(s.ss_ext_sales_price), 0) AS store_sales,\n    COALESCE(SUM(w.ws_ext_sales_price), 0) AS web_sales,\n    COALESCE(SUM(s.ss_ext_sales_price), 0) / NULLIF(COALESCE(SUM(w.ws_ext_sales_price), 0), 0) AS store_to_web_ratio\nFROM item i\nLEFT JOIN store_sales_2001_feb s ON i.i_item_sk = s.ss_item_sk\nLEFT JOIN web_sales_2001_feb w ON i.i_item_sk = w.ws_item_sk\nGROUP BY i.i_category\nORDER BY i.i_category ASC\nLIMIT 100",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 15.354709001258016,
+        "result_signature": "d248eaffbdd681e14fd3995d748ecc15acf10607f8004b2e82cf1be032b6d0f2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 23120.457666998846
+}

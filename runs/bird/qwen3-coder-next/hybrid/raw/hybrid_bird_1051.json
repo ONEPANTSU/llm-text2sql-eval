@@ -1,0 +1,194 @@
+{
+  "task_id": "bird_1051",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1477.3138750024373,
+  "execution_time_ms": 262.4519590026466,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 67.0157919958001,
+      "result_signature": "55d2d640617d6ad3d01b12f72c5a6d792fc169169e287381e8ddd2466c93fffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 39.60154100059299,
+      "result_signature": "55d2d640617d6ad3d01b12f72c5a6d792fc169169e287381e8ddd2466c93fffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY pa.potential DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 50.8386250003241,
+      "result_signature": "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 51.47262499667704,
+      "result_signature": "55d2d640617d6ad3d01b12f72c5a6d792fc169169e287381e8ddd2466c93fffe",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n)\nGROUP BY p.player_name;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 53.20891700102948,
+      "result_signature": "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 8,
+    "selected_sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n)\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "55d2d640617d6ad3d01b12f72c5a6d792fc169169e287381e8ddd2466c93fffe": 4,
+        "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4": 5
+      }
+    },
+    "total_pool_size": 9
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 4,
+    "expansion_time_ms": 2431.620125003974,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY pa.potential DESC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 54.95058299857192,
+        "result_signature": "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nORDER BY pa.potential DESC\nLIMIT 1",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 54.64162499993108,
+        "result_signature": "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (SELECT MAX(potential) FROM Player_Attributes)",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 61.329416996159125,
+        "result_signature": "55d2d640617d6ad3d01b12f72c5a6d792fc169169e287381e8ddd2466c93fffe",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      },
+      {
+        "attempt_id": 8,
+        "sql": "SELECT p.player_name\nFROM Player p\nJOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id\nWHERE pa.potential = (\n    SELECT MAX(potential)\n    FROM Player_Attributes\n)\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 40.68345799896633,
+        "result_signature": "05efd6b88df449be96fd83771afb0fd8923de37d55825defbaa874e3f78f27a4",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 8
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4171.503000005032
+}

@@ -1,0 +1,180 @@
+{
+  "task_id": "bird_337",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1338.6023749990272,
+  "execution_time_ms": 25.83954099827679,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT atom.element, bond.bond_type\nFROM atom\nJOIN bond ON atom.molecule_id = bond.molecule_id\nWHERE atom.molecule_id = 'TR002';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.332416998513509,
+      "result_signature": "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT atom.element, bond.bond_type\nFROM atom\nJOIN bond ON atom.molecule_id = bond.molecule_id\nWHERE atom.molecule_id = 'TR002';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.0596659998991527,
+      "result_signature": "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT atom.element, bond.bond_type\nFROM atom\nJOIN bond ON atom.molecule_id = bond.molecule_id\nWHERE atom.molecule_id = 'TR002';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.512375001970213,
+      "result_signature": "b2524390a95e9cc8637e608ca81909164e3a4c4b27d7a1c27741040895157a43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT atom.element, bond.bond_type\nFROM atom\nJOIN bond ON atom.molecule_id = bond.molecule_id\nWHERE atom.molecule_id = 'TR002';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.2897089986363426,
+      "result_signature": "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT a.element, b.bond_type\nFROM atom a\nJOIN bond b ON a.molecule_id = b.molecule_id\nWHERE a.molecule_id = 'TR002';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.982291003514547,
+      "result_signature": "b2524390a95e9cc8637e608ca81909164e3a4c4b27d7a1c27741040895157a43",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT atom.element, bond.bond_type\nFROM atom\nJOIN bond ON atom.molecule_id = bond.molecule_id\nWHERE atom.molecule_id = 'TR002';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2": 5,
+        "b2524390a95e9cc8637e608ca81909164e3a4c4b27d7a1c27741040895157a43": 3
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 1478.4162910000305,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT DISTINCT a.element, b.bond_type\nFROM atom a, bond b\nWHERE a.molecule_id = b.molecule_id\n  AND a.molecule_id = 'TR002';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.241875001753215,
+        "result_signature": "b2524390a95e9cc8637e608ca81909164e3a4c4b27d7a1c27741040895157a43",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH atom_bond AS (\n  SELECT atom.element, bond.bond_type\n  FROM atom\n  JOIN bond ON atom.molecule_id = bond.molecule_id\n  WHERE atom.molecule_id = 'TR002'\n)\nSELECT element, bond_type\nFROM atom_bond;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.747207996842917,
+        "result_signature": "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "WITH atoms AS (\n    SELECT element, molecule_id\n    FROM atom\n    WHERE molecule_id = 'TR002'\n),\nbonds AS (\n    SELECT bond_type, molecule_id\n    FROM bond\n    WHERE molecule_id = 'TR002'\n)\nSELECT a.element, b.bond_type\nFROM atoms a\nJOIN bonds b ON a.molecule_id = b.molecule_id;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.250417001254391,
+        "result_signature": "24e4910e89041b9b32444b8d307099b592b83df5e9a32aaede33f2510b4054e2",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2843.0304580033408
+}

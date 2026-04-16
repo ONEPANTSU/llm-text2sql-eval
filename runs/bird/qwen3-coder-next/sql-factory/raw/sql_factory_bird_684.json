@@ -1,0 +1,120 @@
+{
+  "task_id": "bird_684",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS TeenageUserPercentage\nFROM users;",
+          "score": 0.598,
+          "similarity_max": 0.804,
+          "tables_used": []
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) * 100.0 / COUNT(*), 2) AS TeenageUserPercentage\nFROM users;",
+          "score": 0.728448275862069,
+          "similarity_max": 0.543103448275862,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    ROUND(CAST(SUM(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*), 2) AS teenage_percentage\nFROM users;",
+          "score": 0.672,
+          "similarity_max": 0.6559999999999999,
+          "tables_used": []
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": []
+        },
+        {
+          "sql": "SELECT \n    (COUNT(*) * 1.0 * (SELECT COUNT(*) FROM users WHERE Age BETWEEN 13 AND 19) / COUNT(*)) AS teenage_percentage\nFROM users;",
+          "score": 0.7896428571428572,
+          "similarity_max": 0.5207142857142857,
+          "tables_used": [
+            "users"
+          ]
+        },
+        {
+          "sql": "SELECT \n    ROUND(COUNT(CASE WHEN Age >= 13 AND Age <= 19 THEN 1 END) * 100.0 / COUNT(*), 2) AS TeenageUserPercentage\nFROM users;",
+          "score": 0.728448275862069,
+          "similarity_max": 0.543103448275862,
+          "tables_used": []
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(COUNT(CASE WHEN Age BETWEEN 13 AND 19 THEN 1 END) AS REAL) * 100 / COUNT(*) AS teenage_percentage\nFROM users;",
+    "meta": {
+      "score": 1.0,
+      "similarity_max": 0.0,
+      "tables_used": [],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 12.14
+  }
+}

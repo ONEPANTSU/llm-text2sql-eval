@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_113",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8127.208165999036,
+  "execution_time_ms": 42.881667002802715,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH pre_detail_complete_events AS (\n    SELECT \n        session,\n        path,\n        search_type,\n        stamp,\n        action,\n        COUNT(*) OVER (PARTITION BY session) AS total_pre_events\n    FROM activity_log\n    WHERE \n        action NOT IN ('/detail', '/complete')\n        AND search_type IS NOT NULL\n        AND search_type != ''\n),\nfirst_detail_complete AS (\n    SELECT \n        session,\n        MIN(stamp) AS first_detail_complete_stamp\n    FROM activity_log\n    WHERE \n        action IN ('/detail', '/complete')\n    GROUP BY session\n),\nfiltered_events AS (\n    SELECT \n        a.session,\n        a.path,\n        a.search_type,\n        a.stamp,\n        CASE \n            WHEN f.first_detail_complete_stamp IS NULL THEN 1\n            WHEN a.stamp < f.first_detail_complete_stamp THEN 1\n            ELSE 0\n        END AS is_pre_event\n    FROM activity_log a\n    LEFT JOIN first_detail_complete f ON a.session = f.session\n    WHERE \n        a.search_type IS NOT NULL\n        AND a.search_type != ''\n),\npre_event_counts AS (\n    SELECT \n        session,\n        COUNT(*) AS pre_event_count\n    FROM filtered_events\n    WHERE is_pre_event = 1\n    GROUP BY session\n),\nmin_pre_event_count AS (\n    SELECT MIN(pre_event_count) AS min_count\n    FROM pre_event_counts\n)\nSELECT \n    f.session,\n    f.path,\n    f.search_type\nFROM filtered_events f\nJOIN pre_event_counts p ON f.session = p.session\nJOIN min_pre_event_count m ON p.pre_event_count = m.min_count\nWHERE f.is_pre_event = 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.085125001030974,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH pre_event_counts AS (\n    SELECT \n        a1.session,\n        a1.path,\n        a1.search_type,\n        COUNT(*) AS pre_event_count\n    FROM activity_log a1\n    WHERE EXISTS (\n        SELECT 1 \n        FROM activity_log a2 \n        WHERE a2.session = a1.session \n          AND (a2.action = '/detail' OR a2.action = '/complete')\n          AND a2.stamp > a1.stamp\n    )\n    AND a1.search_type != ''\n    AND a1.stamp < (\n        SELECT MIN(a3.stamp) \n        FROM activity_log a3 \n        WHERE a3.session = a1.session \n          AND (a3.action = '/detail' OR a3.action = '/complete')\n    )\n    GROUP BY a1.session, a1.path, a1.search_type\n),\nmin_count AS (\n    SELECT MIN(pre_event_count) AS min_pre_event_count\n    FROM pre_event_counts\n)\nSELECT \n    session,\n    path,\n    search_type\nFROM pre_event_counts\nWHERE pre_event_count = (SELECT min_pre_event_count FROM min_count);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.8276250048074871,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH pre_click_events AS (\n  SELECT \n    session,\n    path,\n    search_type,\n    stamp,\n    action,\n    CASE \n      WHEN action IN ('/detail', '/complete') THEN 1 \n      ELSE 0 \n    END AS is_target_action\n  FROM activity_log\n  WHERE search_type IS NOT NULL AND search_type != ''\n),\nfirst_target_per_session AS (\n  SELECT \n    session,\n    MIN(stamp) AS first_target_stamp\n  FROM pre_click_events\n  WHERE is_target_action = 1\n  GROUP BY session\n),\nfiltered_events AS (\n  SELECT \n    p.session,\n    p.path,\n    p.search_type,\n    p.stamp,\n    p.action\n  FROM pre_click_events p\n  LEFT JOIN first_target_per_session f ON p.session = f.session\n  WHERE (f.first_target_stamp IS NULL OR p.stamp < f.first_target_stamp)\n),\ncounted_sessions AS (\n  SELECT \n    session,\n    path,\n    search_type,\n    COUNT(*) AS event_count\n  FROM filtered_events\n  GROUP BY session, path, search_type\n),\nmin_count AS (\n  SELECT MIN(event_count) AS min_event_count\n  FROM counted_sessions\n)\nSELECT \n  c.session,\n  c.path,\n  c.search_type\nFROM counted_sessions c\nJOIN min_count m ON c.event_count = m.min_event_count\nORDER BY c.session;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.800458001322113,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH pre_click_events AS (\n    SELECT \n        session,\n        path,\n        search_type,\n        stamp,\n        action,\n        COUNT(*) OVER (PARTITION BY session) AS total_events,\n        ROW_NUMBER() OVER (PARTITION BY session ORDER BY stamp) AS event_order,\n        MIN(CASE WHEN action IN ('/detail', '/complete') THEN stamp END) OVER (PARTITION BY session) AS first_conversion_stamp\n    FROM activity_log\n    WHERE search_type IS NOT NULL AND search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type,\n        stamp,\n        first_conversion_stamp\n    FROM pre_click_events\n    WHERE stamp < first_conversion_stamp\n),\nevent_counts AS (\n    SELECT \n        session,\n        COUNT(*) AS pre_conversion_count\n    FROM filtered_events\n    GROUP BY session\n),\nmin_count AS (\n    SELECT MIN(pre_conversion_count) AS min_pre_conv_count\n    FROM event_counts\n)\nSELECT \n    f.session,\n    f.path,\n    f.search_type\nFROM filtered_events f\nJOIN event_counts ec ON f.session = ec.session\nJOIN min_count mc ON ec.pre_conversion_count = mc.min_pre_conv_count\nORDER BY f.session, f.path, f.search_type;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9887919877655804,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH pre_detail_complete_events AS (\n    SELECT \n        al.session,\n        al.path,\n        al.search_type,\n        al.stamp,\n        MIN(CASE \n            WHEN al.action IN ('/detail', '/complete') THEN al.stamp \n            ELSE NULL \n        END) OVER (PARTITION BY al.session) AS first_detail_complete_stamp\n    FROM activity_log al\n    WHERE al.search_type IS NOT NULL AND al.search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type,\n        COUNT(*) AS event_count\n    FROM pre_detail_complete_events\n    WHERE stamp < first_detail_complete_stamp\n    GROUP BY session, path, search_type\n),\nmin_event_count AS (\n    SELECT MIN(event_count) AS min_count\n    FROM filtered_events\n)\nSELECT \n    fe.session,\n    fe.path,\n    fe.search_type\nFROM filtered_events fe\nJOIN min_event_count mec ON fe.event_count = mec.min_count;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.530624995008111,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH pre_detail_complete_events AS (\n    SELECT \n        al.session,\n        al.path,\n        al.search_type,\n        al.stamp,\n        MIN(CASE \n            WHEN al.action IN ('/detail', '/complete') THEN al.stamp \n            ELSE NULL \n        END) OVER (PARTITION BY al.session) AS first_detail_complete_stamp\n    FROM activity_log al\n    WHERE al.search_type IS NOT NULL AND al.search_type != ''\n),\nfiltered_events AS (\n    SELECT \n        session,\n        path,\n        search_type,\n        COUNT(*) AS event_count\n    FROM pre_detail_complete_events\n    WHERE stamp < first_detail_complete_stamp\n    GROUP BY session, path, search_type\n),\nmin_event_count AS (\n    SELECT MIN(event_count) AS min_count\n    FROM filtered_events\n)\nSELECT \n    fe.session,\n    fe.path,\n    fe.search_type\nFROM filtered_events fe\nJOIN min_event_count mec ON fe.event_count = mec.min_count;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8170.165832998464
+}

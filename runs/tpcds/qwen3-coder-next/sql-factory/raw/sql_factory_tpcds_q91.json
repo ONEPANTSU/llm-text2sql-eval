@@ -1,0 +1,145 @@
+{
+  "task_id": "tpcds_q91",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nLEFT JOIN catalog_sales ON cs_item_sk = i_item_sk\nLEFT JOIN web_sales ON ws_item_sk = i_item_sk\nLEFT JOIN date_dim ON (cs_sold_date_sk = d_date_sk OR ws_sold_date_sk = d_date_sk)\nWHERE d_moy = 11 AND d_year = 1998\nGROUP BY i_item_id\nHAVING SUM(CASE WHEN cs_item_sk =...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "date_dim",
+            "catalog_sales",
+            "web_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nLEFT JOIN catalog_sales ON cs_item_sk = i_item_sk\nLEFT JOIN web_sales ON ws_item_sk = i_item_sk\nLEFT JOIN date_dim ON (cs_sold_date_sk = d_date_sk OR ws_sold_date_sk = d_date_sk)\nWHERE d_moy = 11 AND d_year = 1998\nGROUP BY i_item_id\nHAVING SUM(CASE WHEN cs_item_sk =...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "date_dim",
+            "catalog_sales",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nJOIN catalog_sales ON cs_item_sk = i_item_sk\nJOIN web_sales ON ws_item_sk = i_item_sk\nJOIN date_dim d1 ON cs_sold_date_sk = d1.d_date_sk\nJOIN date_dim d2 ON ws_sold_date_sk = d2.d_date_sk\nWHERE d1.d_moy = 11 AND d1.d_year = 1998\n  AND d2.d_moy = 11 AND d2.d_year = 1...",
+          "score": 0.9105000000000001,
+          "similarity_max": 0.6789999999999999,
+          "tables_used": [
+            "item",
+            "d2",
+            "date_dim",
+            "web_sales",
+            "d1"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nLEFT JOIN catalog_sales ON cs_item_sk = i_item_sk\nLEFT JOIN web_sales ON ws_item_sk = i_item_sk\nLEFT JOIN date_dim ON (cs_sold_date_sk = d_date_sk OR ws_sold_date_sk = d_date_sk)\nWHERE d_moy = 11 AND d_year = 1998\nGROUP BY i_item_id\nHAVING SUM(CASE WHEN cs_item_sk =...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "item",
+            "date_dim",
+            "catalog_sales",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nJOIN catalog_sales ON cs_item_sk = i_item_sk\nJOIN web_sales ON ws_item_sk = i_item_sk\nJOIN date_dim d1 ON cs_sold_date_sk = d1.d_date_sk\nJOIN date_dim d2 ON ws_sold_date_sk = d2.d_date_sk\nWHERE d1.d_moy = 11 AND d1.d_year = 1998\n  AND d2.d_moy = 11 AND d2.d_year = 1...",
+          "score": 0.9105000000000001,
+          "similarity_max": 0.6789999999999999,
+          "tables_used": [
+            "item",
+            "d2",
+            "date_dim",
+            "web_sales",
+            "d1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_item_id,\n    SUM(CASE WHEN cs_item_sk = i_item_sk THEN cs_ext_sales_price ELSE 0 END) AS catalog_sales_revenue,\n    SUM(CASE WHEN ws_item_sk = i_item_sk THEN ws_ext_sales_price ELSE 0 END) AS web_sales_revenue\nFROM item\nLEFT JOIN catalog_sales ON cs_item_sk = i_item_sk\nLEFT JOIN web_sales ON ws_item_sk = i_item_sk\nLEFT JOIN date_dim ON (cs_sold_date_sk = d_date_sk OR ws_sold_date_sk = d_date_sk)\nWHERE d_moy = 11 AND d_year = 1998\nGROUP BY i_item_id\nHAVING SUM(CASE WHEN cs_item_sk =...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "item",
+        "date_dim",
+        "catalog_sales",
+        "web_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.5,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_bind_fail": 3
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"d_date_sk\" not found in FROM clause!\nCandidate ",
+        "count": 2
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"cs_sold_date_sk\" not found in FROM clause!\nCand",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 113.16
+  }
+}

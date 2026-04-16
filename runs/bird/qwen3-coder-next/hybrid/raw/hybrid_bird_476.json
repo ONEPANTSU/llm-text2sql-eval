@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_476",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 2,
+  "generation_time_ms": 2760.6753330037463,
+  "execution_time_ms": 265.121291995456,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT cards.asciiName\nFROM cards\nJOIN sets ON cards.id = sets.id\nWHERE sets.name = 'Coldsnap'\nORDER BY cards.convertedManaCost DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2664169989875518,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 2
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.asciiName\nFROM cards c\nJOIN sets s ON c.uuid = s.uuid\nWHERE s.name = 'Coldsnap'\nORDER BY c.convertedManaCost DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: s.uuid",
+      "exec_time_ms": 0.23458399664377794,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.asciiName\nFROM cards c\nJOIN sets s ON c.uuid = s.uuid\nWHERE s.name = 'Coldsnap'\nORDER BY c.convertedManaCost DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: s.uuid",
+      "exec_time_ms": 0.16937500186031684,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.asciiName\nFROM cards c\nJOIN sets s ON c.uuid = s.uuid\nWHERE s.name = 'Coldsnap'\n  AND c.convertedManaCost = (\n    SELECT MAX(convertedManaCost)\n    FROM cards c2\n    JOIN sets s2 ON c2.uuid = s2.uuid\n    WHERE s2.name = 'Coldsnap'\n  )\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: s2.uuid",
+      "exec_time_ms": 0.16275000234600157,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT cards.asciiName\nFROM cards\nJOIN sets ON cards.id = sets.id\nWHERE sets.name = 'Coldsnap'\n  AND cards.convertedManaCost = (\n    SELECT MAX(cards.convertedManaCost)\n    FROM cards\n    JOIN sets ON cards.id = sets.id\n    WHERE sets.name = 'Coldsnap'\n  );",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 262.06679199822247,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4,
+        "schema_fixes": 2
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "SELECT cards.asciiName\nFROM cards\nJOIN sets ON cards.id = sets.id\nWHERE sets.name = 'Coldsnap'\nORDER BY cards.convertedManaCost DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3025.831750004727
+}

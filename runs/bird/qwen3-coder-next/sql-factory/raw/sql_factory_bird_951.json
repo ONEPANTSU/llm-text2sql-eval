@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_951",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nJOIN races r ON cs.raceId = r.raceId\nWHERE c.nationality = 'Japanese' \n  AND cs.points = 0\n  AND r.year = 2023\nGROUP BY c.constructorId\nHAVING COUNT(*) = 2;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nJOIN races r ON cs.raceId = r.raceId\nWHERE c.nationality = 'Japanese' \n  AND cs.points = 0\nGROUP BY c.constructorId\nHAVING COUNT(DISTINCT cs.raceId) = 2;",
+          "score": 0.8959216101694916,
+          "similarity_max": 0.808156779661017,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nJOIN races r ON cs.raceId = r.raceId\nWHERE c.nationality = 'Japanese' \n  AND cs.points = 0\n  AND r.year = 2023\nGROUP BY c.constructorId\nHAVING COUNT(*) = 2;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.constructorId\n    FROM constructors c\n    JOIN constructorStandings cs ON c.constructorId = cs.constructorId\n    JOIN races r ON cs.raceId = r.raceId\n    WHERE c.nationality = 'Japanese' \n      AND cs.points = 0\n    GROUP BY c.constructorId, r.year\n    HAVING COUNT(DISTINCT r.raceId) = 2\n) AS subquery;",
+          "score": 1.11215978928885,
+          "similarity_max": 0.7756804214223003,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.constructorId\n    FROM constructors c\n    JOIN constructorStandings cs ON c.constructorId = cs.constructorId\n    JOIN races r ON cs.raceId = r.raceId\n    WHERE c.nationality = 'Japanese' \n      AND cs.points = 0\n    GROUP BY c.constructorId\n    HAVING COUNT(DISTINCT cs.raceId) = 2\n) AS japanese_constructors_with_zero_points_in_two_races;",
+          "score": 1.08984375,
+          "similarity_max": 0.8203125,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nJOIN races r ON cs.raceId = r.raceId\nWHERE c.nationality = 'Japanese' \n  AND cs.points = 0\n  AND r.year = 2023\nGROUP BY c.constructorId\nHAVING COUNT(*) = 2;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.constructorId\n    FROM constructors c\n    JOIN constructorStandings cs ON c.constructorId = cs.constructorId\n    JOIN races r ON cs.raceId = r.raceId\n    WHERE c.nationality = 'Japanese' \n      AND cs.points = 0\n    GROUP BY c.constructorId, r.year\n    HAVING COUNT(DISTINCT r.raceId) = 2\n) AS subquery;",
+          "score": 1.11215978928885,
+          "similarity_max": 0.7756804214223003,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.constructorId\n    FROM constructors c\n    JOIN constructorStandings cs ON c.constructorId = cs.constructorId\n    JOIN races r ON cs.raceId = r.raceId\n    WHERE c.nationality = 'Japanese' \n      AND cs.points = 0\n    GROUP BY c.constructorId\n    HAVING COUNT(DISTINCT cs.raceId) = 2\n) AS japanese_constructors_with_zero_points_in_two_races;",
+          "score": 1.08984375,
+          "similarity_max": 0.8203125,
+          "tables_used": [
+            "r",
+            "constructorStandings",
+            "c",
+            "races",
+            "constructors",
+            "cs"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM constructors c\nJOIN constructorStandings cs ON c.constructorId = cs.constructorId\nJOIN races r ON cs.raceId = r.raceId\nWHERE c.nationality = 'Japanese' \n  AND cs.points = 0\n  AND r.year = 2023\nGROUP BY c.constructorId\nHAVING COUNT(*) = 2;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "constructorStandings",
+        "c",
+        "races",
+        "constructors",
+        "cs"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.79
+  }
+}

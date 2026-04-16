@@ -1,0 +1,160 @@
+{
+  "task_id": "bird_349",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.artist, c.isPromo\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nGROUP BY c.id, c.asciiName, c.artist, c.isPromo\nORDER BY COUNT(r.id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.faceName AS card_name, \n    c.artist, \n    MAX(ruling_count) AS ruling_count, \n    CASE WHEN c.isPromo = 1 THEN 'Yes' ELSE 'No' END AS is_promotional\nFROM \n    cards c\nJOIN \n    (SELECT uuid, COUNT(*) AS ruling_count \n     FROM rulings \n     GROUP BY uuid) r \nON \n    c.uuid = r.uuid\nORDER BY \n    r.ruling_count DESC\nLIMIT 1;",
+          "score": 0.8888524590163933,
+          "similarity_max": 0.5222950819672131,
+          "tables_used": [
+            "c",
+            "rulings",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.artist, c.isPromo\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nGROUP BY c.id, c.asciiName, c.artist, c.isPromo\nORDER BY COUNT(r.id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.faceName AS card_name, \n    c.artist, \n    MAX(ruling_count) AS ruling_count, \n    CASE WHEN c.isPromo = 1 THEN 'Yes' ELSE 'No' END AS is_promotional\nFROM \n    cards c\nJOIN \n    (SELECT uuid, COUNT(*) AS ruling_count \n     FROM rulings \n     GROUP BY uuid) r \nON \n    c.uuid = r.uuid\nORDER BY \n    r.ruling_count DESC\nLIMIT 1;",
+          "score": 0.8888524590163933,
+          "similarity_max": 0.5222950819672131,
+          "tables_used": [
+            "c",
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.faceName AS card_name, \n    c.artist, \n    COUNT(r.uuid) AS ruling_count, \n    CASE WHEN c.isPromo = 1 THEN 'Yes' ELSE 'No' END AS is_promotional\nFROM \n    cards c\nJOIN \n    rulings r \nON \n    c.uuid = r.uuid\nGROUP BY \n    c.uuid\nORDER BY \n    ruling_count DESC\nLIMIT 1;",
+          "score": 0.8149698015530629,
+          "similarity_max": 0.7700603968938741,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.asciiName, c.artist, c.isPromo\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nGROUP BY c.id, c.asciiName, c.artist, c.isPromo\nORDER BY COUNT(r.id) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.faceName AS card_name, \n    c.artist, \n    MAX(ruling_count) AS ruling_count, \n    CASE WHEN c.isPromo = 1 THEN 'Yes' ELSE 'No' END AS is_promotional\nFROM \n    cards c\nJOIN \n    (SELECT uuid, COUNT(*) AS ruling_count \n     FROM rulings \n     GROUP BY uuid) r \nON \n    c.uuid = r.uuid\nORDER BY \n    r.ruling_count DESC\nLIMIT 1;",
+          "score": 0.8888524590163933,
+          "similarity_max": 0.5222950819672131,
+          "tables_used": [
+            "c",
+            "rulings",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.faceName AS card_name, \n    c.artist, \n    COUNT(r.uuid) AS ruling_count, \n    CASE WHEN c.isPromo = 1 THEN 'Yes' ELSE 'No' END AS is_promotional\nFROM \n    cards c\nINNER JOIN \n    rulings r \nON \n    c.uuid = r.uuid\nGROUP BY \n    c.uuid, c.faceName, c.artist, c.isPromo\nORDER BY \n    ruling_count DESC\nLIMIT 1;",
+          "score": 0.8798823016564952,
+          "similarity_max": 0.8402353966870096,
+          "tables_used": [
+            "r",
+            "c",
+            "rulings",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.asciiName, c.artist, c.isPromo\nFROM cards c\nJOIN rulings r ON c.uuid = r.uuid\nGROUP BY c.id, c.asciiName, c.artist, c.isPromo\nORDER BY COUNT(r.id) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "c",
+        "rulings",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 173.55
+  }
+}

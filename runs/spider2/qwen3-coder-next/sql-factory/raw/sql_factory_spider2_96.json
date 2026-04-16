@@ -1,0 +1,218 @@
+{
+  "task_id": "spider2_96",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    -- Base case: top-level containers (not contained in any other packaging)\n    SELECT \n        p.id AS root_id,\n        p.id AS current_id,\n        p.name AS root_name,\n        p.name AS current_name,\n        0 AS level\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Recursive case: traverse down the hierarchy\n    SELECT \n        ph.root_id,\n       ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pl",
+            "ph",
+            "packaging_hierarchy",
+            "p",
+            "picking_line",
+            "item_quantities",
+            "pr",
+            "packaging_relations",
+            "pq",
+            "products",
+            "packaging"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    -- Base case: top-level containers (not contained in any other packaging)\n    SELECT \n        p.id AS root_id,\n        p.id AS current_id,\n        p.name AS root_name,\n        p.name AS current_name,\n        0 AS level\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Recursive case: traverse down the hierarchy\n    SELECT \n        ph.root_id,\n       ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pl",
+            "ph",
+            "packaging_hierarchy",
+            "p",
+            "picking_line",
+            "item_quantities",
+            "pr",
+            "packaging_relations",
+            "pq",
+            "products",
+            "packaging"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE packaging_tree AS (\n    -- Start with top-level packaging (those not contained in any other)\n    SELECT \n        p.id AS root_id,\n        p.id AS node_id,\n        p.name AS root_name,\n        p.name AS node_name,\n        1 AS depth\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Traverse to nested packaging\n    SELECT \n        pt.root_id,\n        pr.contains_id AS node_id,\n   ...",
+          "score": 0.9111363636363636,
+          "similarity_max": 0.6777272727272727,
+          "tables_used": [
+            "pl",
+            "packaging_tree",
+            "pt",
+            "item_qty_calc",
+            "picking_line",
+            "pr",
+            "p",
+            "packaging_relations",
+            "pq",
+            "products",
+            "packaging"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE packaging_tree AS (\n    -- Start with top-level packaging (those not contained in any other)\n    SELECT \n        p.id AS root_id,\n        p.id AS container_id,\n        p.name AS root_name,\n        p.name AS container_name,\n        0 AS depth\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Traverse nested packaging\n    SELECT \n        pt.root_id,\n        pr.contains_id AS conta...",
+          "score": 0.8898755186721992,
+          "similarity_max": 0.6202489626556016,
+          "tables_used": [
+            "pl",
+            "packaging_tree",
+            "it",
+            "pt",
+            "pr2",
+            "picking_line",
+            "pr",
+            "item_totals",
+            "p",
+            "packaging_relations",
+            "products",
+            "packaging"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    -- Base case: top-level containers (not contained in any other packaging)\n    SELECT \n        p.id AS root_id,\n        p.id AS current_id,\n        p.name AS root_name,\n        p.name AS current_name,\n        0 AS level\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Recursive case: traverse down the hierarchy\n    SELECT \n        ph.root_id,\n       ...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "pl",
+            "ph",
+            "packaging_hierarchy",
+            "p",
+            "picking_line",
+            "item_quantities",
+            "pr",
+            "packaging_relations",
+            "pq",
+            "products",
+            "packaging"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE packaging_tree AS (\n    -- Start with top-level packaging (those not contained in any other)\n    SELECT \n        p.id AS root_id,\n        p.id AS node_id,\n        p.name AS root_name,\n        p.name AS node_name,\n        1 AS depth\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Traverse to nested packaging\n    SELECT \n        pt.root_id,\n        pr.contains_id AS node_id,\n   ...",
+          "score": 0.9111363636363636,
+          "similarity_max": 0.6777272727272727,
+          "tables_used": [
+            "pl",
+            "packaging_tree",
+            "pt",
+            "item_qty_calc",
+            "picking_line",
+            "pr",
+            "p",
+            "packaging_relations",
+            "pq",
+            "products",
+            "packaging"
+          ]
+        },
+        {
+          "sql": "WITH RECURSIVE packaging_tree AS (\n    -- Start with top-level packaging (those not contained in any other)\n    SELECT \n        p.id AS root_id,\n        p.id AS container_id,\n        p.name AS root_name,\n        p.name AS container_name,\n        0 AS depth\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Traverse nested packaging\n    SELECT \n        pt.root_id,\n        pr.contains_id AS conta...",
+          "score": 0.8898755186721992,
+          "similarity_max": 0.6202489626556016,
+          "tables_used": [
+            "pl",
+            "packaging_tree",
+            "it",
+            "pt",
+            "pr2",
+            "picking_line",
+            "pr",
+            "item_totals",
+            "p",
+            "packaging_relations",
+            "products",
+            "packaging"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH RECURSIVE packaging_hierarchy AS (\n    -- Base case: top-level containers (not contained in any other packaging)\n    SELECT \n        p.id AS root_id,\n        p.id AS current_id,\n        p.name AS root_name,\n        p.name AS current_name,\n        0 AS level\n    FROM packaging p\n    WHERE NOT EXISTS (\n        SELECT 1 FROM packaging_relations pr WHERE pr.contains_id = p.id\n    )\n    \n    UNION ALL\n    \n    -- Recursive case: traverse down the hierarchy\n    SELECT \n        ph.root_id,\n       ...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "pl",
+        "ph",
+        "packaging_hierarchy",
+        "p",
+        "picking_line",
+        "item_quantities",
+        "pr",
+        "packaging_relations",
+        "pq",
+        "products",
+        "packaging"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: pr.product_id",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 3.38
+  }
+}

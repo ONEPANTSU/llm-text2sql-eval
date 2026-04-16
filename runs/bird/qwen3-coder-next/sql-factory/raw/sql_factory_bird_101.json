@@ -1,0 +1,128 @@
+{
+  "task_id": "bird_101",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE strftime('%Y', date) = '1995'\n)",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "account"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE strftime('%Y', date) = '1995'\n)",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "account"
+          ]
+        },
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE date >= '1995-01-01' AND date <= '1995-12-31'\n);",
+          "score": 0.8750000000000001,
+          "similarity_max": 0.55,
+          "tables_used": [
+            "account"
+          ]
+        },
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE strftime('%Y', date) = '1995'\nORDER BY date ASC\nLIMIT 1;",
+          "score": 0.795,
+          "similarity_max": 0.51,
+          "tables_used": [
+            "account"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE strftime('%Y', date) = '1995'\n)",
+          "score": 1.1500000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "account"
+          ]
+        },
+        {
+          "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE date >= '1995-01-01' AND date <= '1995-12-31'\n);",
+          "score": 0.8750000000000001,
+          "similarity_max": 0.55,
+          "tables_used": [
+            "account"
+          ]
+        },
+        {
+          "sql": "SELECT account_id\nFROM trans\nWHERE date >= '1995-01-01' AND date <= '1995-12-31'\nGROUP BY account_id\nHAVING MIN(date) = (\n    SELECT MIN(date)\n    FROM trans\n    WHERE date >= '1995-01-01' AND date <= '1995-12-31'\n);",
+          "score": 0.8253246753246755,
+          "similarity_max": 0.6493506493506493,
+          "tables_used": [
+            "trans"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT account_id\nFROM account\nWHERE date = (\n    SELECT MIN(date)\n    FROM account\n    WHERE strftime('%Y', date) = '1995'\n)",
+    "meta": {
+      "score": 1.1500000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "account"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 59.62
+  }
+}

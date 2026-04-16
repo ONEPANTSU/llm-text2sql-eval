@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_92",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4747.008874997846,
+  "execution_time_ms": 10.860875001526438,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.district_id\n    FROM client c\n    WHERE c.gender = 'F'\n    GROUP BY c.district_id\n    HAVING AVG(1) > 0  -- placeholder; actual salary logic missing in schema\n) subquery;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.657249999581836,
+      "result_signature": "fc5f132994c09bdae91216745edbeee44c07f1f1687170c4aa3b4a26f03cfd12",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.district_id\n    FROM client c\n    WHERE c.gender = 'F'\n    GROUP BY c.district_id\n    HAVING AVG(1) > 0 -- placeholder, actual salary logic needs trans or other table, but per schema constraints only client/district allowed\n) subquery;\n\n-- Note: The schema provided does not include salary information in the allowed tables (client, district). \n-- Without salary data in the permitted tables/columns, the query cannot be completed as requested. \n-- The above is a template that would need salary data to be meaningful.",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.1849590048077516,
+      "result_signature": "fc5f132994c09bdae91216745edbeee44c07f1f1687170c4aa3b4a26f03cfd12",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.district_id\n    FROM client c\n    WHERE c.gender = 'F'\n    GROUP BY c.district_id\n    HAVING AVG(6000) < 10000 -- Placeholder: actual salary data not available in schema\n) subquery;\n\n-- Note: The schema provided does not include salary information, so this query cannot be completed as requested. \n-- Without salary data in the schema, it's impossible to calculate average female salaries per district.",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7061250036931597,
+      "result_signature": "fc5f132994c09bdae91216745edbeee44c07f1f1687170c4aa3b4a26f03cfd12",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.district_id\n    FROM client c\n    WHERE c.gender = 'F'\n    GROUP BY c.district_id\n    HAVING AVG(1) > 0  -- Placeholder: actual salary data not available in provided schema\n) subquery;\n\n-- Note: The schema provided does not include salary information. \n-- Without a salary column in any table, the query cannot be completed as requested. \n-- If salary data exists elsewhere, the schema must be updated to include it.",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4529999971273355,
+      "result_signature": "fc5f132994c09bdae91216745edbeee44c07f1f1687170c4aa3b4a26f03cfd12",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT COUNT(DISTINCT c.district_id)\nFROM client c\nWHERE c.gender = 'F'\nGROUP BY c.district_id\nHAVING AVG(...) > 6000 AND AVG(...) < 10000;\n\nWait \u2014 there's no salary column in the schema. The schema doesn't include any salary information.\n\nGiven the schema provided, there is no column representing salary or income for individuals or districts. Therefore, it's impossible to compute average female salary per district.\n\nHowever, the question explicitly asks for \"female average salary\", implying such data exists. Since no salary field is present in any table, and the allowed tables/columns don't include it, the query cannot be written as specified.\n\nBut per instructions: \"If a needed column is missing, use best effort with available schema.\"\n\nGiven that, and that no salary column exists, the correct response is to return a query that would work *if* a salary column existed \u2014 but since none does, and we must return SQL only, the only possible answer is:\n\n0\n\nBut we must output SQL. Since no valid computation is possible, and the question expects a count, and no salary data exists, the only logically consistent SQL is:\n\nSELECT 0;\n\nHowever, that's not answering the question's intent \u2014 but constrained by schema.\n\nWait \u2014 re-examining: Perhaps \"salary\" is implied via `trans` table? But `trans` has `amount`, which could be interpreted as transaction amounts \u2014 not necessarily salary.\n\nBut the schema says:\n- trans: trans_id, account_id, date, type, operation, amount, balance, k_symbol, bank, account\n\nThere's no explicit salary field.\n\nGiven the rules \u2014 \"Use only provided tables/columns\" \u2014 and no salary column, the query is not possible.\n\nBut the instruction says: \"If a needed column is missing, use best effort with available schema.\"\n\nBest effort would be to assume that `amount` in `trans` for specific `operation` types (e.g., 'salary') could represent salary. However, the schema does not define what `operation` values are.\n\nSince we cannot assume operation values, and no column explicitly represents salary, we cannot proceed.\n\nTherefore, strictly speaking, with the given schema, no districts can be verified \u2014 so answer is 0.\n\nBut to write SQL that returns the count *if* salary were present \u2014 but it's not.\n\nGiven all constraints, and that we must output SQL, the only safe answer is:\n\nSELECT 0;\n\nHowever, the problem says \"List out the no. of districts...\", implying a numeric result.\n\nBut per rules: Return SQL only.\n\nSo final answer:\n\nSELECT 0;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \".\": syntax error",
+      "exec_time_ms": 0.22483400243800133,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT COUNT(*) \nFROM (\n    SELECT c.district_id\n    FROM client c\n    WHERE c.gender = 'F'\n    GROUP BY c.district_id\n    HAVING AVG(1) > 0  -- Placeholder: actual salary data not available in provided schema\n) subquery;\n\n-- Note: The schema provided does not include salary information. \n-- Without a salary column in any table, the query cannot be completed as requested. \n-- If salary data exists elsewhere, the schema must be updated to include it.",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "fc5f132994c09bdae91216745edbeee44c07f1f1687170c4aa3b4a26f03cfd12": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4757.949833001476
+}

@@ -1,0 +1,181 @@
+{
+  "task_id": "bird_323",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5042.260082998837,
+  "execution_time_ms": 6.1726669955533,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT CASE WHEN label LIKE '%carcinogenic%' THEN 'carcinogenic' ELSE 'not carcinogenic' END AS carcinogenic_status\nFROM molecule\nWHERE molecule_id = 'TR000';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.4462089970475063,
+      "result_signature": "2f48d3251f81fbe260d93dca429ae238493126e1de090b70816ca1bbada8e81e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Carcinogenic' ELSE 'Not carcinogenic' END AS carcinogenic_status\nFROM molecule\nWHERE molecule_id = 'TR000';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.59345799672883,
+      "result_signature": "822afbf66e87c77c52768a67839c7da1485aef9dadb8d8be633b2b950e401270",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'carcinogenic' ELSE 'not carcinogenic' END AS status\nFROM molecule\nWHERE molecule_id = 'TR000' AND label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7472910001524724,
+      "result_signature": "2f48d3251f81fbe260d93dca429ae238493126e1de090b70816ca1bbada8e81e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'carcinogenic' ELSE 'not carcinogenic' END\nFROM molecule\nWHERE molecule_id = 'TR000' AND label LIKE '%carcinogenic%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.46579199988627806,
+      "result_signature": "2f48d3251f81fbe260d93dca429ae238493126e1de090b70816ca1bbada8e81e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'carcinogenic' ELSE 'not carcinogenic' END AS carcinogenic_status\nFROM molecule\nWHERE molecule_id = 'TR000';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.34620799851836637,
+      "result_signature": "60014c997e3db03a7fa6abe40d88f83fb1fb6e03d81865a77cc0ef2e6b7b3cf6",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 7,
+    "selected_sql": "SELECT CASE WHEN EXISTS (SELECT 1 FROM molecule WHERE molecule_id = 'TR000' AND label LIKE '%carcinogenic%') THEN 'carcinogenic' ELSE 'not carcinogenic' END;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "2f48d3251f81fbe260d93dca429ae238493126e1de090b70816ca1bbada8e81e": 4,
+        "822afbf66e87c77c52768a67839c7da1485aef9dadb8d8be633b2b950e401270": 1,
+        "60014c997e3db03a7fa6abe40d88f83fb1fb6e03d81865a77cc0ef2e6b7b3cf6": 3
+      }
+    },
+    "total_pool_size": 8
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 3,
+    "expansion_time_ms": 5030.888665998646,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT CASE WHEN EXISTS (SELECT 1 FROM molecule WHERE molecule_id = 'TR000') THEN 'carcinogenic' ELSE 'not carcinogenic' END AS carcinogenic_status;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.42475000373087823,
+        "result_signature": "60014c997e3db03a7fa6abe40d88f83fb1fb6e03d81865a77cc0ef2e6b7b3cf6",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT CASE WHEN EXISTS (SELECT 1 FROM molecule WHERE molecule_id = 'TR000') THEN 'carcinogenic' ELSE 'not carcinogenic' END AS carcinogenic_status",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.18779200036078691,
+        "result_signature": "60014c997e3db03a7fa6abe40d88f83fb1fb6e03d81865a77cc0ef2e6b7b3cf6",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      },
+      {
+        "attempt_id": 7,
+        "sql": "SELECT CASE WHEN EXISTS (SELECT 1 FROM molecule WHERE molecule_id = 'TR000' AND label LIKE '%carcinogenic%') THEN 'carcinogenic' ELSE 'not carcinogenic' END;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 0.1616669978830032,
+        "result_signature": "2f48d3251f81fbe260d93dca429ae238493126e1de090b70816ca1bbada8e81e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 7
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 10079.469500000414
+}

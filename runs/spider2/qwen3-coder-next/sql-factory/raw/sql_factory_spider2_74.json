@@ -1,0 +1,166 @@
+{
+  "task_id": "spider2_74",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(julianday('12-31') AS INTEGER) AS placeholder_for_year_end,  -- Placeholder, will be replaced\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'M' \n  AND lt.state = 'LA'\n  AND lt.term_end >= '1974-12-31'  -- At least 30 years ago from 2004 (current year assumption)\n  AND lt.term_start <= '2024-12-31'  -- Still active or ended recently\nGROUP BY \n    CAST((julianday('2024-12-31...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(strftime('%Y', 'now') AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', 'now') < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END) - \n    (CAST(strftime('%Y', lt.term_start) AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', lt.term_start) < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END)) AS years_since_first_term,\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJ...",
+          "score": 1.0111607142857142,
+          "similarity_max": 0.3776785714285714,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH year_calc AS (\n    SELECT \n        l.id_bioguide,\n        lt.term_start,\n        lt.term_end,\n        l.birthday,\n        CAST((julianday('2000-12-31') - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_in_2000,\n        CAST((julianday(lt.term_start) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_start,\n        CAST((julianday(lt.term_end) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_end\n    FROM legislators l\n    JOIN legislators_terms lt ON l.id_bioguide = ...",
+          "score": 1.2029761904761904,
+          "similarity_max": 0.494047619047619,
+          "tables_used": [
+            "lt",
+            "year_calc",
+            "legislators",
+            "legislators_terms",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(julianday('12-31') AS INTEGER) AS placeholder_for_year_end,  -- Placeholder, will be replaced\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'M' \n  AND lt.state = 'LA'\n  AND lt.term_end >= '1974-12-31'  -- At least 30 years ago from 2004 (current year assumption)\n  AND lt.term_start <= '2024-12-31'  -- Still active or ended recently\nGROUP BY \n    CAST((julianday('2024-12-31...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(strftime('%Y', 'now') AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', 'now') < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END) - \n    (CAST(strftime('%Y', lt.term_start) AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', lt.term_start) < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END)) AS years_since_first_term,\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJ...",
+          "score": 1.0111607142857142,
+          "similarity_max": 0.3776785714285714,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH year_calc AS (\n    SELECT \n        l.id_bioguide,\n        lt.term_start,\n        lt.term_end,\n        l.birthday,\n        CAST((julianday('2000-12-31') - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_in_2000,\n        CAST((julianday(lt.term_start) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_start,\n        CAST((julianday(lt.term_end) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_end\n    FROM legislators l\n    JOIN legislators_terms lt ON l.id_bioguide = ...",
+          "score": 1.2029761904761904,
+          "similarity_max": 0.494047619047619,
+          "tables_used": [
+            "lt",
+            "year_calc",
+            "legislators",
+            "legislators_terms",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(julianday('12-31') AS INTEGER) AS placeholder_for_year_end,  -- Placeholder, will be replaced\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJOIN legislators_terms lt ON l.id_bioguide = lt.id_bioguide\nWHERE l.gender = 'M' \n  AND lt.state = 'LA'\n  AND lt.term_end >= '1974-12-31'  -- At least 30 years ago from 2004 (current year assumption)\n  AND lt.term_start <= '2024-12-31'  -- Still active or ended recently\nGROUP BY \n    CAST((julianday('2024-12-31...",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(strftime('%Y', 'now') AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', 'now') < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END) - \n    (CAST(strftime('%Y', lt.term_start) AS INTEGER) - CAST(strftime('%Y', l.birthday) AS INTEGER) - \n    (CASE WHEN strftime('%m-%d', lt.term_start) < strftime('%m-%d', l.birthday) THEN 1 ELSE 0 END)) AS years_since_first_term,\n    COUNT(DISTINCT l.id_bioguide) AS distinct_legislators\nFROM legislators l\nJ...",
+          "score": 1.0111607142857142,
+          "similarity_max": 0.3776785714285714,
+          "tables_used": [
+            "legislators",
+            "legislators_terms",
+            "lt",
+            "l"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH year_calc AS (\n    SELECT \n        l.id_bioguide,\n        lt.term_start,\n        lt.term_end,\n        l.birthday,\n        CAST((julianday('2000-12-31') - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_in_2000,\n        CAST((julianday(lt.term_start) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_start,\n        CAST((julianday(lt.term_end) - julianday(l.birthday)) / 365.25 AS INTEGER) AS age_at_term_end\n    FROM legislators l\n    JOIN legislators_terms lt ON l.id_bioguide = ...",
+    "meta": {
+      "score": 1.2029761904761904,
+      "similarity_max": 0.494047619047619,
+      "tables_used": [
+        "lt",
+        "year_calc",
+        "legislators",
+        "legislators_terms",
+        "l"
+      ],
+      "phase": "exp",
+      "round_idx": 1,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.71
+  }
+}

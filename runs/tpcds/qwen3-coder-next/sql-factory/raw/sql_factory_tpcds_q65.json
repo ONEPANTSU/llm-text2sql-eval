@@ -1,0 +1,197 @@
+{
+  "task_id": "tpcds_q65",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH web_sales_agg AS (\n    SELECT \n        ws_bill_customer_sk AS customer_sk,\n        SUM(ws_ext_sales_price) AS web_sales\n    FROM web_sales\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND 1176\n    GROUP BY ws_bill_customer_sk\n),\nstore_sales_agg AS (\n    SELECT \n        ss_customer_sk AS customer_sk,\n        SUM(ss_ext_sales_price) AS store_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "w",
+            "web_sales_agg",
+            "s",
+            "store_sales",
+            "store_sales_agg",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(CASE WHEN ws.ws_web_page_sk IS NOT NULL THEN ws.ws_ext_sales_price ELSE 0 END) / \n    NULLIF(SUM(CASE WHEN ss.ss_store_sk IS NOT NULL THEN ss.ss_ext_sales_price ELSE 0 END), 0) AS web_to_store_ratio\nFROM customer c\nLEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk\nLEFT JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\nLEFT JOIN date_dim d ON (ws.ws_sold_date_sk = d.d_date_sk OR ss.s...",
+          "score": 1.0617831325301206,
+          "similarity_max": 0.476433734939759,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "d",
+            "ws"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH web_sales_agg AS (\n    SELECT \n        ws_bill_customer_sk AS customer_sk,\n        SUM(ws_ext_sales_price) AS web_sales\n    FROM web_sales\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND 1176\n    GROUP BY ws_bill_customer_sk\n),\nstore_sales_agg AS (\n    SELECT \n        ss_customer_sk AS customer_sk,\n        SUM(ss_ext_sales_price) AS store_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "w",
+            "web_sales_agg",
+            "s",
+            "store_sales",
+            "store_sales_agg",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(CASE WHEN ws.ws_web_page_sk IS NOT NULL THEN ws.ws_ext_sales_price ELSE 0 END) / \n    NULLIF(SUM(CASE WHEN ss.ss_store_sk IS NOT NULL THEN ss.ss_ext_sales_price ELSE 0 END), 0) AS web_to_store_ratio\nFROM customer c\nLEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk\nLEFT JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\nLEFT JOIN date_dim d ON (ws.ws_sold_date_sk = d.d_date_sk OR ss.s...",
+          "score": 1.0617831325301206,
+          "similarity_max": 0.476433734939759,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "d",
+            "ws"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.c_customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name,\n    COALESCE(SUM(ws.ws_ext_sales_price), 0) / NULLIF(COALESCE(SUM(ss.ss_ext_sales_price), 0), 0) AS web_to_store_ratio\nFROM customer c\nLEFT JOIN web_sales ws \n    ON c.c_customer_sk = ws.ws_bill_customer_sk \n    AND ws.ws_sold_date_sk IS NOT NULL\nLEFT JOIN store_sales ss \n    ON c.c_customer_sk = ss.ss_customer_sk \n    AND ss.ss_sold_date_sk IS NOT NULL\nLEFT JOIN date_dim d_web \n    ON ws.ws_sold_date_sk = d...",
+          "score": 0.9246051167964405,
+          "similarity_max": 0.6507897664071189,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "d_store",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "d_web",
+            "ws"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH web_sales_agg AS (\n    SELECT \n        ws_bill_customer_sk AS customer_sk,\n        SUM(ws_ext_sales_price) AS web_sales\n    FROM web_sales\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND 1176\n    GROUP BY ws_bill_customer_sk\n),\nstore_sales_agg AS (\n    SELECT \n        ss_customer_sk AS customer_sk,\n        SUM(ss_ext_sales_price) AS store_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "combined",
+            "w",
+            "web_sales_agg",
+            "s",
+            "store_sales",
+            "store_sales_agg",
+            "web_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    SUM(CASE WHEN ws.ws_web_page_sk IS NOT NULL THEN ws.ws_ext_sales_price ELSE 0 END) / \n    NULLIF(SUM(CASE WHEN ss.ss_store_sk IS NOT NULL THEN ss.ss_ext_sales_price ELSE 0 END), 0) AS web_to_store_ratio\nFROM customer c\nLEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk\nLEFT JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk\nLEFT JOIN date_dim d ON (ws.ws_sold_date_sk = d.d_date_sk OR ss.s...",
+          "score": 1.0617831325301206,
+          "similarity_max": 0.476433734939759,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "d",
+            "ws"
+          ]
+        },
+        {
+          "sql": "SELECT \n    c.c_customer_sk,\n    c.c_customer_id,\n    c.c_first_name,\n    c.c_last_name,\n    COALESCE(SUM(ws.ws_ext_sales_price), 0) / NULLIF(COALESCE(SUM(ss.ss_ext_sales_price), 0), 0) AS web_to_store_ratio\nFROM customer c\nLEFT JOIN web_sales ws \n    ON c.c_customer_sk = ws.ws_bill_customer_sk \n    AND ws.ws_sold_date_sk IS NOT NULL\nLEFT JOIN store_sales ss \n    ON c.c_customer_sk = ss.ss_customer_sk \n    AND ss.ss_sold_date_sk IS NOT NULL\nLEFT JOIN date_dim d_web \n    ON ws.ws_sold_date_sk = d...",
+          "score": 0.9246051167964405,
+          "similarity_max": 0.6507897664071189,
+          "tables_used": [
+            "c",
+            "store_sales",
+            "d_store",
+            "ss",
+            "date_dim",
+            "customer",
+            "web_sales",
+            "d_web",
+            "ws"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH web_sales_agg AS (\n    SELECT \n        ws_bill_customer_sk AS customer_sk,\n        SUM(ws_ext_sales_price) AS web_sales\n    FROM web_sales\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND 1176\n    GROUP BY ws_bill_customer_sk\n),\nstore_sales_agg AS (\n    SELECT \n        ss_customer_sk AS customer_sk,\n        SUM(ss_ext_sales_price) AS store_sales\n    FROM store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_month_seq BETWEEN 1176 AND...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "combined",
+        "w",
+        "web_sales_agg",
+        "s",
+        "store_sales",
+        "store_sales_agg",
+        "web_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 92.47
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "task_id": "bird_1458",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'NJ') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'NJ') \n    - \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'VT') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'VT') AS percentage_difference",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "z",
+            "m2",
+            "member",
+            "z2",
+            "m",
+            "zip_code"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN z.short_state = 'NJ' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) -\n    (CAST(SUM(CASE WHEN z.short_state = 'VT' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) AS difference_percentage\nFROM member m\nJOIN zip_code z ON m.zip = z.zip_code\nWHERE z.short_state IN ('NJ', 'VT');",
+          "score": 1.0003911342894394,
+          "similarity_max": 0.3992177314211212,
+          "tables_used": [
+            "member",
+            "z",
+            "m",
+            "zip_code"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'NJ') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'NJ') \n    - \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'VT') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'VT') AS percentage_difference",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "z",
+            "m2",
+            "member",
+            "z2",
+            "m",
+            "zip_code"
+          ]
+        },
+        {
+          "sql": "WITH nj_count AS (\n    SELECT COUNT(*) * 100.0 AS percentage_nj\n    FROM member m\n    JOIN zip_code z ON m.zip = z.zip_code\n    WHERE z.short_state = 'NJ'\n),\nvt_count AS (\n    SELECT COUNT(*) * 100.0 AS percentage_vt\n    FROM member m\n    JOIN zip_code z ON m.zip = z.zip_code\n    WHERE z.short_state = 'VT'\n),\ntotal_members AS (\n    SELECT COUNT(*) AS total FROM member\n),\nnj_percentage AS (\n    SELECT (SELECT percentage_nj FROM nj_count) / (SELECT total FROM total_members) AS pct_nj\n),\nvt_percent...",
+          "score": 1.2129353233830846,
+          "similarity_max": 0.4741293532338309,
+          "tables_used": [
+            "z",
+            "member",
+            "m",
+            "nj_percentage",
+            "zip_code"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN z.short_state = 'NJ' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) -\n    (CAST(SUM(CASE WHEN z.short_state = 'VT' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) AS difference_percentage\nFROM member m\nJOIN zip_code z ON m.zip = z.zip_code\nWHERE z.short_state IN ('NJ', 'VT');",
+          "score": 1.0003911342894394,
+          "similarity_max": 0.3992177314211212,
+          "tables_used": [
+            "member",
+            "z",
+            "m",
+            "zip_code"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'NJ') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'NJ') \n    - \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'VT') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'VT') AS percentage_difference",
+          "score": 1.4000000000000001,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "z",
+            "m2",
+            "member",
+            "z2",
+            "m",
+            "zip_code"
+          ]
+        },
+        {
+          "sql": "WITH nj_count AS (\n    SELECT COUNT(*) * 100.0 AS percentage_nj\n    FROM member m\n    JOIN zip_code z ON m.zip = z.zip_code\n    WHERE z.short_state = 'NJ'\n),\nvt_count AS (\n    SELECT COUNT(*) * 100.0 AS percentage_vt\n    FROM member m\n    JOIN zip_code z ON m.zip = z.zip_code\n    WHERE z.short_state = 'VT'\n),\ntotal_members AS (\n    SELECT COUNT(*) AS total FROM member\n),\nnj_percentage AS (\n    SELECT (SELECT percentage_nj FROM nj_count) / (SELECT total FROM total_members) AS pct_nj\n),\nvt_percent...",
+          "score": 1.2129353233830846,
+          "similarity_max": 0.4741293532338309,
+          "tables_used": [
+            "z",
+            "member",
+            "m",
+            "nj_percentage",
+            "zip_code"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (CAST(SUM(CASE WHEN z.short_state = 'NJ' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) -\n    (CAST(SUM(CASE WHEN z.short_state = 'VT' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*)) AS difference_percentage\nFROM member m\nJOIN zip_code z ON m.zip = z.zip_code\nWHERE z.short_state IN ('NJ', 'VT');",
+          "score": 1.0003911342894394,
+          "similarity_max": 0.3992177314211212,
+          "tables_used": [
+            "member",
+            "z",
+            "m",
+            "zip_code"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'NJ') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'NJ') \n    - \n    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM member m2 JOIN zip_code z2 ON m2.zip = z2.zip_code WHERE z2.short_state = 'VT') \n     FROM member m JOIN zip_code z ON m.zip = z.zip_code \n     WHERE z.short_state = 'VT') AS percentage_difference",
+    "meta": {
+      "score": 1.4000000000000001,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "z",
+        "m2",
+        "member",
+        "z2",
+        "m",
+        "zip_code"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.1
+  }
+}

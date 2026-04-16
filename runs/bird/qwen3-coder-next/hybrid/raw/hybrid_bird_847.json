@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_847",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1434.9355420054053,
+  "execution_time_ms": 5.146041999978479,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.663957995537203,
+      "result_signature": "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7001670019235462,
+      "result_signature": "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5664159980369732,
+      "result_signature": "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5396249980549328,
+      "result_signature": "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.530999997863546,
+      "result_signature": "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT d.surname\nFROM qualifying q\nJOIN races r ON q.raceId = r.raceId\nJOIN drivers d ON q.driverId = d.driverId\nWHERE r.round = 19\nORDER BY q.q2 ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0dfbd108118ce5bcc8887eb5ba895170ac6679ed53d01875f8713e4a2f739eed": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1440.1212919983664
+}

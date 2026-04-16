@@ -1,0 +1,195 @@
+{
+  "task_id": "spider2_20",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        o.customer_id,\n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY o.customer_id, c.customer_unique_id, c.customer_city, c.customer_state\n),\nto...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "delivered_orders",
+            "op",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        op.payment_value\n    FROM olist_customers c\n    JOIN olist_orders o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n),\ncustomer_stats AS (\n    SELECT \n        customer_unique_id,\n        customer_city,\n        customer_state,\n        COUNT(*) AS order_count,\n        AVG(payment_value) A...",
+          "score": 0.968462469733656,
+          "similarity_max": 0.7630750605326877,
+          "tables_used": [
+            "top_customers",
+            "olist_customers",
+            "olist_orders",
+            "c",
+            "o",
+            "olist_order_payments",
+            "op",
+            "customer_stats",
+            "delivered_orders"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        o.customer_id,\n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY o.customer_id, c.customer_unique_id, c.customer_city, c.customer_state\n),\nto...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "delivered_orders",
+            "op",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_customers c\n    JOIN olist_orders o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_unique_id, c.customer_city, c.customer_state\n),\nranked_customers AS (\n    SELECT \n      ...",
+          "score": 1.0209909909909909,
+          "similarity_max": 0.7580180180180179,
+          "tables_used": [
+            "ranked_customers",
+            "olist_customers",
+            "olist_orders",
+            "c",
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        op.payment_value\n    FROM olist_customers c\n    JOIN olist_orders o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n),\ncustomer_ranked AS (\n    SELECT \n        customer_unique_id,\n        customer_city,\n        customer_state,\n        COUNT(*) AS order_count,\n        AVG(payment_value) ...",
+          "score": 1.00012285012285,
+          "similarity_max": 0.7997542997542998,
+          "tables_used": [
+            "olist_customers",
+            "olist_orders",
+            "c",
+            "o",
+            "olist_order_payments",
+            "delivered_orders",
+            "op",
+            "customer_ranked"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        o.customer_id,\n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY o.customer_id, c.customer_unique_id, c.customer_city, c.customer_state\n),\nto...",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "olist_order_payments",
+            "delivered_orders",
+            "op",
+            "olist_customers",
+            "olist_orders",
+            "c"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        oc.customer_unique_id,\n        COUNT(*) AS order_count,\n        AVG(oop.payment_value) AS avg_payment_value,\n        oc.customer_city,\n        oc.customer_state\n    FROM olist_customers oc\n    JOIN olist_orders oo ON oc.customer_id = oo.customer_id\n    JOIN olist_order_payments oop ON oo.order_id = oop.order_id\n    WHERE oo.order_status = 'delivered'\n    GROUP BY oc.customer_unique_id, oc.customer_city, oc.customer_state\n),\ntop_customers AS (\n    SE...",
+          "score": 1.0695454545454546,
+          "similarity_max": 0.760909090909091,
+          "tables_used": [
+            "olist_order_payments",
+            "oo",
+            "oc",
+            "oop",
+            "olist_customers",
+            "olist_orders",
+            "delivered_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders AS (\n    SELECT \n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_customers c\n    JOIN olist_orders o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_unique_id, c.customer_city, c.customer_state\n),\nranked_customers AS (\n    SELECT \n      ...",
+          "score": 1.0209909909909909,
+          "similarity_max": 0.7580180180180179,
+          "tables_used": [
+            "ranked_customers",
+            "olist_customers",
+            "olist_orders",
+            "c",
+            "o",
+            "olist_order_payments",
+            "op",
+            "delivered_orders"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH delivered_orders AS (\n    SELECT \n        o.customer_id,\n        c.customer_unique_id,\n        c.customer_city,\n        c.customer_state,\n        COUNT(*) AS order_count,\n        AVG(op.payment_value) AS avg_payment_value\n    FROM olist_orders o\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    JOIN olist_order_payments op ON o.order_id = op.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY o.customer_id, c.customer_unique_id, c.customer_city, c.customer_state\n),\nto...",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "olist_order_payments",
+        "delivered_orders",
+        "op",
+        "olist_customers",
+        "olist_orders",
+        "c"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.27
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "task_id": "spider2_26",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT a.first_name || ' ' || a.last_name AS actor_name\nFROM actor a\nJOIN film_actor fa ON a.actor_id = fa.actor_id\nJOIN film f ON fa.film_id = f.film_id\nJOIN language l ON f.language_id = l.language_id\nJOIN film_category fc ON f.film_id = fc.film_id\nJOIN category c ON fc.category_id = c.category_id\nWHERE l.name = 'English'\n  AND c.name = 'Children'\n  AND f.rating IN ('G', 'PG')\n  AND f.length <= 120\n  AND f.release_year BETWEEN 2000 AND 2010\nGROUP BY a.actor_id, a.first_name, a.last_name\nORDER ...",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "language",
+            "f",
+            "film_actor",
+            "l",
+            "film",
+            "actor",
+            "fc",
+            "a",
+            "film_category",
+            "c",
+            "fa",
+            "category"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT a.first_name || ' ' || a.last_name AS actor_name\nFROM actor a\nJOIN film_actor fa ON a.actor_id = fa.actor_id\nJOIN film f ON fa.film_id = f.film_id\nJOIN language l ON f.language_id = l.language_id\nJOIN film_category fc ON f.film_id = fc.film_id\nJOIN category c ON fc.category_id = c.category_id\nWHERE l.name = 'English'\n  AND c.name = 'Children'\n  AND f.rating IN ('G', 'PG')\n  AND f.length <= 120\n  AND f.release_year BETWEEN 2000 AND 2010\nGROUP BY a.actor_id, a.first_name, a.last_name\nORDER ...",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "language",
+            "f",
+            "film_actor",
+            "l",
+            "film",
+            "actor",
+            "fc",
+            "a",
+            "film_category",
+            "c",
+            "fa",
+            "category"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT a.first_name || ' ' || a.last_name AS actor_name\nFROM actor a\nJOIN film_actor fa ON a.actor_id = fa.actor_id\nJOIN film f ON fa.film_id = f.film_id\nJOIN language l ON f.language_id = l.language_id\nJOIN film_category fc ON f.film_id = fc.film_id\nJOIN category c ON fc.category_id = c.category_id\nWHERE l.name = 'English'\n  AND c.name = 'Children'\n  AND f.rating IN ('G', 'PG')\n  AND f.length <= 120\n  AND f.release_year BETWEEN 2000 AND 2010\nGROUP BY a.actor_id, a.first_name, a.last_name\nORDER ...",
+          "score": 1.0,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "language",
+            "f",
+            "film_actor",
+            "l",
+            "film",
+            "actor",
+            "fc",
+            "a",
+            "film_category",
+            "c",
+            "fa",
+            "category"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT a.first_name || ' ' || a.last_name AS actor_name\nFROM actor a\nJOIN film_actor fa ON a.actor_id = fa.actor_id\nJOIN film f ON fa.film_id = f.film_id\nJOIN language l ON f.language_id = l.language_id\nJOIN film_category fc ON f.film_id = fc.film_id\nJOIN category c ON fc.category_id = c.category_id\nWHERE l.name = 'English'\n  AND c.name = 'Children'\n  AND f.rating IN ('G', 'PG')\n  AND f.length <= 120\n  AND f.release_year BETWEEN 2000 AND 2010\nGROUP BY a.actor_id, a.first_name, a.last_name\nORDER ...",
+    "meta": {
+      "score": 1.0,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "language",
+        "f",
+        "film_actor",
+        "l",
+        "film",
+        "actor",
+        "fc",
+        "a",
+        "film_category",
+        "c",
+        "fa",
+        "category"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.8,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.43
+  }
+}

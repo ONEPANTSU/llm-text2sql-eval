@@ -1,0 +1,171 @@
+{
+  "task_id": "spider2_33",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8071.956999992835,
+  "execution_time_ms": 5.8230410068063065,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(total_sales) AS median_total_sales\nFROM (\n    SELECT total_sales\n    FROM (\n        SELECT \n            c.Country,\n            SUM(i.Total) AS total_sales,\n            COUNT(DISTINCT c.CustomerId) AS num_customers\n        FROM customers c\n        JOIN invoices i ON c.CustomerId = i.CustomerId\n        GROUP BY c.Country\n        HAVING COUNT(DISTINCT c.CustomerId) > 4\n    ) country_sales\n    ORDER BY total_sales\n    LIMIT 2 - (SELECT COUNT(*) FROM (\n        SELECT \n            c.Country,\n            SUM(i.Total) AS total_sales\n        FROM customers c\n        JOIN invoices i ON c.CustomerId = i.CustomerId\n        GROUP BY c.Country\n        HAVING COUNT(DISTINCT c.CustomerId) > 4\n    ) AS cnt) % 2\n    OFFSET (SELECT (COUNT(*) - 1) / 2\n            FROM (\n                SELECT \n                    c.Country,\n                    SUM(i.Total) AS total_sales\n                FROM customers c\n                JOIN invoices i ON c.CustomerId = i.CustomerId\n                GROUP BY c.Country\n                HAVING COUNT(DISTINCT c.CustomerId) > 4\n            ) AS sub)\n) AS median_vals;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 3.3242920035263523,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH country_sales AS (\n    SELECT \n        Country,\n        COUNT(CustomerId) AS num_customers,\n        SUM(Total) AS total_sales\n    FROM (\n        SELECT \n            c.Country,\n            c.CustomerId,\n            i.Total\n        FROM customers c\n        JOIN invoices i ON c.CustomerId = i.CustomerId\n    )\n    GROUP BY Country\n)\nSELECT \n    total_sales\nFROM country_sales\nWHERE num_customers > 4\nORDER BY total_sales\nLIMIT 1 OFFSET (\n    SELECT COUNT(*) / 2 \n    FROM country_sales \n    WHERE num_customers > 4\n);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 0.40333298966288567,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH customer_sales AS (\n    SELECT \n        c.Country,\n        COUNT(c.CustomerId) AS num_customers,\n        SUM(i.Total) AS total_sales\n    FROM customers c\n    JOIN invoices i ON c.CustomerId = i.CustomerId\n    GROUP BY c.Country\n    HAVING COUNT(c.CustomerId) > 4\n),\nordered_sales AS (\n    SELECT \n        total_sales,\n        ROW_NUMBER() OVER (ORDER BY total_sales) AS rn,\n        COUNT(*) OVER () AS cnt\n    FROM customer_sales\n)\nSELECT \n    CASE \n        WHEN cnt % 2 = 1 THEN \n            (SELECT total_sales FROM ordered_sales WHERE rn = (cnt + 1) / 2)\n        ELSE \n            (SELECT AVG(total_sales) FROM ordered_sales WHERE rn IN (cnt / 2, cnt / 2 + 1))\n    END AS median_total_sales\nFROM ordered_sales\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 0.28125000244472176,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH country_sales AS (\n    SELECT \n        c.Country,\n        SUM(i.Total) AS total_sales,\n        COUNT(DISTINCT c.CustomerId) AS num_customers\n    FROM customers c\n    JOIN invoices i ON c.CustomerId = i.CustomerId\n    GROUP BY c.Country\n    HAVING COUNT(DISTINCT c.CustomerId) > 4\n),\nranked_sales AS (\n    SELECT \n        total_sales,\n        ROW_NUMBER() OVER (ORDER BY total_sales) AS rn,\n        COUNT(*) OVER () AS cnt\n    FROM country_sales\n)\nSELECT \n    AVG(total_sales) AS median\nFROM ranked_sales\nWHERE rn IN ((cnt + 1) / 2, (cnt + 2) / 2);",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 0.2477919915691018,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(total_sales) AS median_total_sales\nFROM (\n    SELECT total_sales\n    FROM (\n        SELECT \n            c.Country,\n            SUM(i.Total) AS total_sales,\n            COUNT(DISTINCT c.CustomerId) AS num_customers\n        FROM customers c\n        JOIN invoices i ON c.CustomerId = i.CustomerId\n        GROUP BY c.Country\n        HAVING num_customers > 4\n    ) AS country_sales\n    ORDER BY total_sales\n    LIMIT 2 - (SELECT COUNT(*) FROM (\n        SELECT \n            c.Country,\n            SUM(i.Total) AS total_sales\n        FROM customers c\n        JOIN invoices i ON c.CustomerId = i.CustomerId\n        GROUP BY c.Country\n        HAVING COUNT(DISTINCT c.CustomerId) > 4\n    ) AS sub) % 2\n    OFFSET (SELECT (COUNT(*) - 1) / 2 \n            FROM (\n                SELECT \n                    c.Country,\n                    SUM(i.Total) AS total_sales\n                FROM customers c\n                JOIN invoices i ON c.CustomerId = i.CustomerId\n                GROUP BY c.Country\n                HAVING COUNT(DISTINCT c.CustomerId) > 4\n            ) AS sub)\n) AS median_values;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: customers",
+      "exec_time_ms": 0.23245900229085237,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 5,
+    "selected_sql": "SELECT AVG(total_sales) AS median_total_sales\nFROM (\n    SELECT total_sales\n    FROM (\n        SELECT \n            'Unknown' AS Country,\n            SUM(0) AS total_sales,\n            COUNT(*) AS num_customers\n        FROM albums\n        GROUP BY 'Unknown'\n        HAVING COUNT(*) > 4\n    ) country_sales\n    ORDER BY total_sales\n    LIMIT 2 - (SELECT COUNT(*) FROM (\n        SELECT \n            'Unknown' AS Country,\n            SUM(0) AS total_sales\n        FROM albums\n        GROUP BY 'Unknown'\n        HAVING COUNT(*) > 4\n    ) AS cnt) % 2\n    OFFSET (SELECT (COUNT(*) - 1) / 2\n            FROM (\n                SELECT \n                    'Unknown' AS Country,\n                    SUM(0) AS total_sales\n                FROM albums\n                GROUP BY 'Unknown'\n                HAVING COUNT(*) > 4\n            ) AS sub)\n) AS median_vals;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 2
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: customers",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 2,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT AVG(total_sales) AS median_total_sales\nFROM (\n    SELECT total_sales\n    FROM (\n        SELECT \n            'Unknown' AS Country,\n            SUM(0) AS total_sales,\n            COUNT(*) AS num_customers\n        FROM albums\n        GROUP BY 'Unknown'\n        HAVING COUNT(*) > 4\n    ) country_sales\n    ORDER BY total_sales\n    LIMIT 2 - (SELECT COUNT(*) FROM (\n        SELECT \n            'Unknown' AS Country,\n            SUM(0) AS total_sales\n        FROM albums\n        GROUP BY 'Unknown'\n        HAVING COUNT(*) > 4\n    ) AS cnt) % 2\n    OFFSET (SELECT (COUNT(*) - 1) / 2\n            FROM (\n                SELECT \n                    'Unknown' AS Country,\n                    SUM(0) AS total_sales\n                FROM albums\n                GROUP BY 'Unknown'\n                HAVING COUNT(*) > 4\n            ) AS sub)\n) AS median_vals;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.048457997967489,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT AVG(total_sales) AS median_total_sales\nFROM (\n    SELECT total_sales\n    FROM (\n        SELECT \n            a.Title AS Country,\n            SUM(1) AS total_sales,\n            COUNT(DISTINCT a.ArtistId) AS num_customers\n        FROM albums a\n        GROUP BY a.Title\n        HAVING COUNT(DISTINCT a.ArtistId) > 4\n    ) country_sales\n    ORDER BY total_sales\n    LIMIT 2 - (SELECT COUNT(*) FROM (\n        SELECT \n            a.Title AS Country,\n            SUM(1) AS total_sales\n        FROM albums a\n        GROUP BY a.Title\n        HAVING COUNT(DISTINCT a.ArtistId) > 4\n    ) AS cnt) % 2\n    OFFSET (SELECT (COUNT(*) - 1) / 2\n            FROM (\n                SELECT \n                    a.Title AS Country,\n                    SUM(1) AS total_sales\n                FROM albums a\n                GROUP BY a.Title\n                HAVING COUNT(DISTINCT a.ArtistId) > 4\n            ) AS sub)\n) AS median_vals;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.824374994612299,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 14589.950916008092
+}

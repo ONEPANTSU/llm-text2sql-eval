@@ -1,0 +1,137 @@
+{
+  "task_id": "bird_37",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1463.7706669964246,
+  "execution_time_ms": 52.471584000159055,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT s.Street, s.City, s.Zip, s.State\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.\"Percent (%) Eligible FRPM (K-12)\" ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 19.649000001663808,
+      "result_signature": "b09810af9c403b92eb9930a262bd3b2830b10d5c82388482311d30301a59c47a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT s.Street, s.City, s.Zip, s.State\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.\"Percent (%) Eligible FRPM (K-12)\" ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.308041997835971,
+      "result_signature": "b09810af9c403b92eb9930a262bd3b2830b10d5c82388482311d30301a59c47a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT schools.Street, schools.City, schools.Zip, schools.State\nFROM schools\nJOIN frpm ON schools.CDSCode = frpm.CDSCode\nWHERE frpm.`Percent (%) Eligible FRPM (K-12)` IS NOT NULL\nORDER BY frpm.`Percent (%) Eligible FRPM (K-12)` ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.709291996026877,
+      "result_signature": "66f4d2abe9426c7e3bafba1598ad5e2a37f5184da2a076c8a9f9b2b0dd23256b",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT schools.Street, schools.City, schools.Zip, schools.State\nFROM schools\nJOIN frpm ON schools.CDSCode = frpm.CDSCode\nORDER BY frpm.\"Percent (%) Eligible FRPM (K-12)\" ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.044583002629224,
+      "result_signature": "b09810af9c403b92eb9930a262bd3b2830b10d5c82388482311d30301a59c47a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.Street, schools.City, schools.Zip, schools.State\nFROM schools\nJOIN frpm ON schools.CDSCode = frpm.CDSCode\nORDER BY frpm.\"Percent (%) Eligible FRPM (K-12)\" ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 7.183749999967404,
+      "result_signature": "b09810af9c403b92eb9930a262bd3b2830b10d5c82388482311d30301a59c47a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT schools.Street, schools.City, schools.Zip, schools.State\nFROM schools\nJOIN frpm ON schools.CDSCode = frpm.CDSCode\nORDER BY frpm.\"Percent (%) Eligible FRPM (K-12)\" ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b09810af9c403b92eb9930a262bd3b2830b10d5c82388482311d30301a59c47a": 4,
+        "66f4d2abe9426c7e3bafba1598ad5e2a37f5184da2a076c8a9f9b2b0dd23256b": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 2,
+    "variations_accepted": 0,
+    "expansion_time_ms": 1718.6247080026078,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 3235.039708997647
+}

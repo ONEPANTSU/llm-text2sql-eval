@@ -1,0 +1,221 @@
+{
+  "task_id": "spider2_80",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED' \n      AND o.order_created_month = 2\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN ord...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "mar_orders",
+            "feb_orders",
+            "f",
+            "s",
+            "h",
+            "o",
+            "stores",
+            "m",
+            "hubs"
+          ]
+        },
+        {
+          "sql": "WITH feb_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(*) AS finished_orders_feb\n    FROM orders o\n    JOIN stores s ON o.store_id = s.hub_id\n    WHERE o.order_status = 'finished'\n      AND o.order_created_month = 2\n      AND o.order_created_year = 2024\n    GROUP BY s.hub_id\n),\nmar_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(*) AS finished_orders_mar\n    FROM orders o\n    JOIN stores s ON o.store_id = s.hub_id\n    WHERE o.order_status = 'finished'\n      AND o.order_created_...",
+          "score": 0.8615873015873017,
+          "similarity_max": 0.6768253968253968,
+          "tables_used": [
+            "hub_comparison",
+            "orders",
+            "mar_orders",
+            "feb_orders",
+            "f",
+            "s",
+            "o",
+            "h",
+            "stores",
+            "m",
+            "hubs",
+            "hc"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED' \n      AND o.order_created_month = 2\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN ord...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "mar_orders",
+            "feb_orders",
+            "f",
+            "s",
+            "h",
+            "o",
+            "stores",
+            "m",
+            "hubs"
+          ]
+        },
+        {
+          "sql": "WITH monthly_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        o.order_created_month,\n        COUNT(*) AS finished_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month IN (2, 3)\n    GROUP BY h.hub_id, h.hub_name, o.order_created_month\n),\nfeb_data AS (\n    SELECT hub_id, hub_name, finished_orders AS feb_count\n    FROM monthly_orders\n    WHERE order_crea...",
+          "score": 0.9075867052023121,
+          "similarity_max": 0.6848265895953757,
+          "tables_used": [
+            "orders",
+            "f",
+            "feb_data",
+            "h",
+            "s",
+            "o",
+            "stores",
+            "monthly_orders",
+            "mar_data",
+            "m",
+            "hubs"
+          ]
+        },
+        {
+          "sql": "WITH feb_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(*) AS finished_orders_feb\n    FROM orders o\n    JOIN stores s ON o.store_id = s.hub_id\n    WHERE o.order_status = 'finished'\n      AND o.order_created_month = 2\n      AND o.order_created_year = 2024\n    GROUP BY s.hub_id\n),\nmar_orders AS (\n    SELECT \n        s.hub_id,\n        COUNT(*) AS finished_orders_mar\n    FROM orders o\n    JOIN stores s ON o.store_id = s.hub_id\n    WHERE o.order_status = 'finished'\n      AND o.order_created_...",
+          "score": 0.8615873015873017,
+          "similarity_max": 0.6768253968253968,
+          "tables_used": [
+            "hub_comparison",
+            "orders",
+            "mar_orders",
+            "feb_orders",
+            "f",
+            "s",
+            "o",
+            "h",
+            "stores",
+            "m",
+            "hubs",
+            "hc"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED' \n      AND o.order_created_month = 2\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN ord...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "orders",
+            "mar_orders",
+            "feb_orders",
+            "f",
+            "s",
+            "h",
+            "o",
+            "stores",
+            "m",
+            "hubs"
+          ]
+        },
+        {
+          "sql": "WITH monthly_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        o.order_created_month,\n        COUNT(o.order_id) AS order_count\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED' \n      AND o.order_created_month IN (2, 3)\n    GROUP BY h.hub_id, h.hub_name, o.order_created_month\n),\npivot_orders AS (\n    SELECT \n        hub_id,\n        hub_name,\n        MAX(CASE WHEN order_created_month = 2 ...",
+          "score": 1.0752082822837539,
+          "similarity_max": 0.6495834354324921,
+          "tables_used": [
+            "orders",
+            "pivot_orders",
+            "h",
+            "o",
+            "s",
+            "stores",
+            "monthly_orders",
+            "hubs"
+          ]
+        },
+        {
+          "sql": "WITH monthly_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        o.order_created_month,\n        COUNT(*) AS finished_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED'\n      AND o.order_created_month IN (2, 3)\n    GROUP BY h.hub_id, h.hub_name, o.order_created_month\n),\nfeb_data AS (\n    SELECT hub_id, hub_name, finished_orders AS feb_count\n    FROM monthly_orders\n    WHERE order_crea...",
+          "score": 0.9075867052023121,
+          "similarity_max": 0.6848265895953757,
+          "tables_used": [
+            "orders",
+            "f",
+            "feb_data",
+            "h",
+            "s",
+            "o",
+            "stores",
+            "monthly_orders",
+            "mar_data",
+            "m",
+            "hubs"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH feb_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS feb_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN orders o ON s.store_id = o.store_id\n    WHERE o.order_status = 'FINISHED' \n      AND o.order_created_month = 2\n    GROUP BY h.hub_id, h.hub_name\n),\nmar_orders AS (\n    SELECT \n        h.hub_id,\n        h.hub_name,\n        COUNT(o.order_id) AS mar_orders\n    FROM hubs h\n    JOIN stores s ON h.hub_id = s.hub_id\n    JOIN ord...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "orders",
+        "mar_orders",
+        "feb_orders",
+        "f",
+        "s",
+        "h",
+        "o",
+        "stores",
+        "m",
+        "hubs"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 3.36
+  }
+}

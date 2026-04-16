@@ -1,0 +1,136 @@
+{
+  "task_id": "tpcds_q28",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5174.838916995213,
+  "execution_time_ms": 84.96554198791273,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH store_sales_by_state AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = ?\n    GROUP BY s_state, s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM store_sales_by_state\n)\nSELECT\n    s_state,\n    s_store_sk\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 22.368542006006464,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH state_store_sales AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE d_year = ?\n    GROUP BY s_state, s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM state_store_sales\n)\nSELECT\n    s_store_sk,\n    s_state\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 14.175709002302028,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH store_sales_by_state AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = {{year_param}}\n    GROUP BY s_state, s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM store_sales_by_state\n)\nSELECT\n    s_state,\n    s_store_sk\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state ASC\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_parse_fail",
+      "exec_ok": false,
+      "exec_error": "Parser Error: syntax error at or near \"{\"\n\nLINE 9:     WHERE date_dim.d_year = {{year_param}}\n                                     ^",
+      "exec_time_ms": 11.81391699356027,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH store_sales_by_state AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    WHERE date_dim.d_year = ?\n    GROUP BY s_state, s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_state,\n        s_store_sk,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM store_sales_by_state\n)\nSELECT\n    s_store_sk,\n    s_state\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 10.333916987292469,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH store_sales_by_state AS (\n    SELECT\n        s.s_store_sk,\n        s.s_state,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    WHERE date_dim.d_year = ?\n    GROUP BY s.s_state, s.s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_store_sk,\n        s_state,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM store_sales_by_state\n)\nSELECT\n    s_store_sk,\n    s_state\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": "pred_runtime_fail",
+      "exec_ok": false,
+      "exec_error": "Invalid Input Error: Values were not provided for the following prepared statement parameters: 1",
+      "exec_time_ms": 9.991833998356014,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH store_sales_by_state AS (\n    SELECT\n        s.s_store_sk,\n        s.s_state,\n        SUM(ss_net_profit) AS total_sales\n    FROM store_sales\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    WHERE date_dim.d_year = ?\n    GROUP BY s.s_state, s.s_store_sk\n),\nranked_stores AS (\n    SELECT\n        s_store_sk,\n        s_state,\n        total_sales,\n        ROW_NUMBER() OVER (PARTITION BY s_state ORDER BY total_sales DESC) AS rn\n    FROM store_sales_by_state\n)\nSELECT\n    s_store_sk,\n    s_state\nFROM ranked_stores\nWHERE rn = 1\nORDER BY s_state ASC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority_by_normalized_sql (preflight_ok)",
+    "votes": {
+      "by_sql": {
+        "with store_sales_by_state as ( select s_state, s_store_sk, sum(ss_net_profit) as total_sales from store_sales join store on store_sales.ss_store_sk = store.s_store_sk join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk where date_dim.d_year = ? group by s_state, s_store_sk ), ranked_stores as ( select s_state, s_store_sk, total_sales, row_number() over (partition by s_state order by total_sales desc) as rn from store_sales_by_state ) select s_state, s_store_sk from ranked_stores where rn = 1 order by s_state asc limit 100": 1,
+        "with state_store_sales as ( select s_state, s_store_sk, sum(ss_net_profit) as total_sales from store_sales join store on store_sales.ss_store_sk = store.s_store_sk join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk where d_year = ? group by s_state, s_store_sk ), ranked_stores as ( select s_state, s_store_sk, total_sales, row_number() over (partition by s_state order by total_sales desc) as rn from state_store_sales ) select s_store_sk, s_state from ranked_stores where rn = 1 order by s_state asc limit 100": 1,
+        "with store_sales_by_state as ( select s_state, s_store_sk, sum(ss_net_profit) as total_sales from store_sales join store on store_sales.ss_store_sk = store.s_store_sk join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk where date_dim.d_year = ? group by s_state, s_store_sk ), ranked_stores as ( select s_state, s_store_sk, total_sales, row_number() over (partition by s_state order by total_sales desc) as rn from store_sales_by_state ) select s_store_sk, s_state from ranked_stores where rn = 1 order by s_state limit 100": 1,
+        "with store_sales_by_state as ( select s.s_store_sk, s.s_state, sum(ss_net_profit) as total_sales from store_sales join date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk join store on store_sales.ss_store_sk = store.s_store_sk where date_dim.d_year = ? group by s.s_state, s.s_store_sk ), ranked_stores as ( select s_store_sk, s_state, total_sales, row_number() over (partition by s_state order by total_sales desc) as rn from store_sales_by_state ) select s_store_sk, s_state from ranked_stores where rn = 1 order by s_state asc limit 100": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 5259.947207989171
+}

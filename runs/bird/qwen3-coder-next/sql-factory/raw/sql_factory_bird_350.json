@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_350",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT language\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.id = 29 AND c.asciiName = 'Annul';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT language\nFROM foreign_data\nWHERE uuid IN (\n    SELECT uuid\n    FROM cards\n    WHERE asciiName = 'Annul' AND number = 29\n);",
+          "score": 0.9477272727272729,
+          "similarity_max": 0.5045454545454546,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 0,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT language\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.id = 29 AND c.asciiName = 'Annul';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT language\nFROM foreign_data\nWHERE uuid IN (\n    SELECT uuid\n    FROM cards\n    WHERE asciiName = 'Annul' AND number = 29\n);",
+          "score": 0.9477272727272729,
+          "similarity_max": 0.5045454545454546,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT language\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.id = 29 AND c.asciiName = 'Annul';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "foreign_data",
+            "fd",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT language\nFROM foreign_data\nWHERE uuid IN (\n    SELECT uuid\n    FROM cards\n    WHERE asciiName = 'Annul' AND number = 29\n);",
+          "score": 0.9477272727272729,
+          "similarity_max": 0.5045454545454546,
+          "tables_used": [
+            "foreign_data",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT language\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.id = 29 AND c.asciiName = 'Annul';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "foreign_data",
+        "fd",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.6,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 183.05
+  }
+}

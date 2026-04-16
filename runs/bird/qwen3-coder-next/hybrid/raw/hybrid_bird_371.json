@@ -1,0 +1,167 @@
+{
+  "task_id": "bird_371",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 1,
+  "generation_time_ms": 8893.56512499944,
+  "execution_time_ms": 694.4592500003637,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN fd.language = 'French' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE fd.language IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 266.25016600155504,
+      "result_signature": "f11bcc7ce31d9a7843de31d60788c06ff0a28a282b6fc6938f818de2aa4eca36",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN foreign_data.language = 'French' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM \n    cards\nJOIN \n    foreign_data ON cards.id = foreign_data.uuid\nWHERE \n    cards.faceName = 'Story Spotlight';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 43.47158299788134,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN fd.language = 'French' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.faceName = 'Story Spotlight';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 184.04729200119618,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN fd.language = 'French' THEN 1 END) AS FLOAT) * 100 / COUNT(*) AS percentage\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.faceName = 'Story Spotlight';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 98.46187500079395,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    CAST(COUNT(CASE WHEN fd.language = 'French' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage_french\nFROM cards c\nJOIN foreign_data fd ON c.uuid = fd.uuid\nWHERE c.faceName LIKE '%Story Spotlight%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 101.57087499828776,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT \n    CAST(COUNT(CASE WHEN foreign_data.language = 'French' THEN 1 END) AS REAL) * 100 / COUNT(*) AS percentage\nFROM \n    cards\nJOIN \n    foreign_data ON cards.id = foreign_data.uuid\nWHERE \n    cards.faceName = 'Story Spotlight';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "f11bcc7ce31d9a7843de31d60788c06ff0a28a282b6fc6938f818de2aa4eca36": 1,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 6
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      1,
+      4
+    ],
+    "variations_requested": 4,
+    "variations_generated": 4,
+    "variations_accepted": 2,
+    "expansion_time_ms": 4050.6765419995645,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.language = 'French' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*) AS percentage\nFROM \n    cards\nJOIN \n    foreign_data ON cards.uuid = foreign_data.uuid\nWHERE \n    cards.faceName = 'Story Spotlight';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 128.91337500332156,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT \n    CAST(SUM(CASE WHEN foreign_data.language = 'French' THEN 1 ELSE 0 END) AS REAL) * 100.0 / COUNT(*) AS percentage\nFROM \n    cards\nJOIN \n    foreign_data ON cards.uuid = foreign_data.uuid\nWHERE \n    cards.faceName = 'Story Spotlight';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 98.39691699744435,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 13638.747375000094
+}

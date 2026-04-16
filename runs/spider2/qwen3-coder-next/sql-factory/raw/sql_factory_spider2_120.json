@@ -1,0 +1,66 @@
+{
+  "task_id": "spider2_120",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH driver_seasons AS (\n    SELECT \n        d.driver_id,\n        d.forename,\n        d.surname,\n        r.year,\n        dr.constructor_id,\n        dr.first_round,\n        dr.last_round\n    FROM drivers d\n    JOIN drives dr ON d.driver_id = dr.driver_id\n    JOIN races r ON dr.year = r.year\n    WHERE r.year BETWEEN 1950 AND 1959\n),\nfirst_last_races AS (\n    SELECT \n        ds.driver_id,\n        ds.forename,\n        ds.surname,\n        ds.year,\n        ds.constructor_id,\n        ds.first_round,\n  ...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: res.year",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: r.driver_id",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.56
+  }
+}

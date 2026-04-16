@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_42",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 21053.368542008684,
+  "execution_time_ms": 41.82095799478702,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH city_dates AS (\n    SELECT \n        city_name,\n        insert_date,\n        ROW_NUMBER() OVER (ORDER BY insert_date) AS rn\n    FROM cities\n    WHERE country_code_2 = 'cn'\n      AND insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ndate_groups AS (\n    SELECT \n        city_name,\n        insert_date,\n        rn,\n        julianday(insert_date) - rn AS grp\n    FROM city_dates\n),\nstreaks AS (\n    SELECT \n        grp,\n        MIN(insert_date) AS start_date,\n        MAX(insert_date) AS end_date,\n        COUNT(*) AS streak_length,\n        MIN(city_name) AS city_name  -- arbitrary pick since we need one city per streak\n    FROM date_groups\n    GROUP BY grp\n),\nmin_max_streaks AS (\n    SELECT \n        streak_length,\n        start_date,\n        end_date,\n        city_name,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC) AS rn_asc,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC) AS rn_desc\n    FROM streaks\n)\nSELECT DISTINCT\n    UPPER(LEFT(city_name, 1)) || LOWER(SUBSTR(city_name, 2)) AS city_name,\n    insert_date\nFROM (\n    SELECT \n        ds.city_name,\n        ds.insert_date\n    FROM min_max_streaks mms\n    JOIN date_groups ds ON mms.grp = ds.grp\n    WHERE mms.rn_asc = 1 OR mms.rn_desc = 1\n    ORDER BY ds.insert_date\n) \nORDER BY insert_date;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: mms.grp",
+      "exec_time_ms": 1.7017909995047376,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH cn_cities AS (\n    SELECT \n        city_name,\n        insert_date\n    FROM cities\n    WHERE country_code_2 = 'cn'\n      AND insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ndated_list AS (\n    SELECT \n        city_name,\n        insert_date,\n        ROW_NUMBER() OVER (ORDER BY insert_date) AS rn,\n        DATE(insert_date, '-' || ROW_NUMBER() OVER (ORDER BY insert_date) || ' days') AS grp\n    FROM cn_cities\n),\nstreaks AS (\n    SELECT \n        grp,\n        MIN(insert_date) AS start_date,\n        MAX(insert_date) AS end_date,\n        COUNT(*) AS streak_length,\n        GROUP_CONCAT(city_name || ':' || insert_date ORDER BY insert_date) AS city_dates\n    FROM dated_list\n    GROUP BY grp\n),\nmin_max_streaks AS (\n    SELECT \n        streak_length,\n        city_dates,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC) AS min_rank,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC) AS max_rank\n    FROM streaks\n),\nfinal_result AS (\n    SELECT \n        city_dates,\n        streak_length\n    FROM min_max_streaks\n    WHERE min_rank = 1 OR max_rank = 1\n),\nsplit_dates AS (\n    SELECT \n        SUBSTR(city_dates, 1, INSTR(city_dates, ':') - 1) AS city_name,\n        SUBSTR(city_dates, INSTR(city_dates, ':') + 1, INSTR(SUBSTR(city_dates, INSTR(city_dates, ':') + 1), ',') - 1) AS date_part,\n        1 AS streak_type\n    FROM final_result\n    UNION ALL\n    SELECT \n        SUBSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), 1, INSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), ':') - 1) AS city_name,\n        SUBSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), INSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), ':') + 1, INSTR(SUBSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), INSTR(SUBSTR(city_dates, INSTR(city_dates, ',') + 1), ':') + 1), ',') - 1) AS date_part,\n        1 AS streak_type\n    FROM final_result\n    WHERE streak_length > 1\n)\nSELECT \n    date_part AS insert_date,\n    UPPER(SUBSTR(city_name, 1, 1)) || LOWER(SUBSTR(city_name, 2)) AS city_name\nFROM split_dates\nWHERE date_part IS NOT NULL\nORDER BY insert_date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.285333011765033,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH cn_cities AS (\n    SELECT \n        LOWER(LEFT(city_name, 1)) || SUBSTR(city_name, 2) AS city_name_lower,\n        city_name,\n        insert_date\n    FROM cities\n    WHERE country_code_2 = 'cn'\n      AND insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ncapitalized_cities AS (\n    SELECT \n        city_name,\n        insert_date,\n        UPPER(LEFT(city_name, 1)) || SUBSTR(city_name, 2) AS city_name_cap\n    FROM cn_cities\n),\ndate_groups AS (\n    SELECT \n        city_name_cap,\n        insert_date,\n        julianday(insert_date) - ROW_NUMBER() OVER (ORDER BY insert_date) AS grp\n    FROM capitalized_cities\n),\nstreaks AS (\n    SELECT \n        grp,\n        MIN(insert_date) AS streak_start,\n        MAX(insert_date) AS streak_end,\n        COUNT(*) AS streak_length,\n        MIN(insert_date) AS min_date_in_streak,\n        MAX(insert_date) AS max_date_in_streak\n    FROM date_groups\n    GROUP BY grp\n),\nranked_streaks AS (\n    SELECT \n        streak_start,\n        streak_end,\n        streak_length,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC) AS rank_short,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC) AS rank_long\n    FROM streaks\n),\nshortest_streak AS (\n    SELECT streak_start, streak_end\n    FROM ranked_streaks\n    WHERE rank_short = 1\n),\nlongest_streak AS (\n    SELECT streak_start, streak_end\n    FROM ranked_streaks\n    WHERE rank_long = 1\n),\nfinal_shortest AS (\n    SELECT \n        s.insert_date,\n        s.city_name_cap\n    FROM capitalized_cities s\n    JOIN shortest_streak sh ON s.insert_date BETWEEN sh.streak_start AND sh.streak_end\n),\nfinal_longest AS (\n    SELECT \n        s.insert_date,\n        s.city_name_cap\n    FROM capitalized_cities s\n    JOIN longest_streak lo ON s.insert_date BETWEEN lo.streak_start AND lo.streak_end\n)\nSELECT insert_date, city_name_cap AS city_name\nFROM final_shortest\nUNION ALL\nSELECT insert_date, city_name_cap AS city_name\nFROM final_longest\nORDER BY insert_date;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such function: LEFT",
+      "exec_time_ms": 0.43933400593232363,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH cn_cities AS (\n    SELECT \n        LOWER(LEFT(city_name, 1)) || SUBSTR(city_name, 2) AS city_name,\n        insert_date\n    FROM cities\n    WHERE country_code_2 = 'cn'\n      AND insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ndate_series AS (\n    SELECT \n        city_name,\n        insert_date,\n        DATE(insert_date) AS dt,\n        ROW_NUMBER() OVER (ORDER BY insert_date) AS rn,\n        DATE(insert_date, '-' || ROW_NUMBER() OVER (ORDER BY insert_date) || ' days') AS grp\n    FROM cn_cities\n),\nstreaks AS (\n    SELECT \n        city_name,\n        grp,\n        MIN(insert_date) AS streak_start,\n        MAX(insert_date) AS streak_end,\n        COUNT(*) AS streak_length\n    FROM date_series\n    GROUP BY city_name, grp\n),\nall_streaks AS (\n    SELECT \n        streak_start,\n        streak_end,\n        streak_length,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC, streak_start ASC) AS rn_shortest,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC, streak_start ASC) AS rn_longest\n    FROM streaks\n),\nshortest_streak_dates AS (\n    SELECT \n        s.streak_start,\n        s.streak_end,\n        s.streak_length\n    FROM all_streaks s\n    WHERE s.rn_shortest = 1\n),\nlongest_streak_dates AS (\n    SELECT \n        s.streak_start,\n        s.streak_end,\n        s.streak_length\n    FROM all_streaks s\n    WHERE s.rn_longest = 1\n),\nshortest_dates AS (\n    SELECT \n        DATE(ds.insert_date) AS date,\n        ds.city_name\n    FROM date_series ds\n    JOIN shortest_streak_dates ssd \n        ON ds.grp = ssd.streak_start\n),\nlongest_dates AS (\n    SELECT \n        DATE(ds.insert_date) AS date,\n        ds.city_name\n    FROM date_series ds\n    JOIN longest_streak_dates lsd \n        ON ds.grp = lsd.streak_start\n)\nSELECT \n    date,\n    city_name\nFROM shortest_dates\nUNION ALL\nSELECT \n    date,\n    city_name\nFROM longest_dates\nORDER BY date;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such function: LEFT",
+      "exec_time_ms": 0.5361250077839941,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH cn_cities AS (\n    SELECT \n        c.city_name,\n        c.insert_date,\n        LOWER(SUBSTR(c.city_name, 1, 1)) || SUBSTR(c.city_name, 2) AS city_name_normalized\n    FROM cities c\n    JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n    WHERE c.country_code_2 = 'cn'\n      AND c.insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ncapitalized_cities AS (\n    SELECT \n        city_name,\n        insert_date,\n        UPPER(SUBSTR(city_name, 1, 1)) || SUBSTR(city_name, 2) AS city_name_capitalized\n    FROM cn_cities\n),\ndate_groups AS (\n    SELECT \n        city_name_capitalized AS city_name,\n        insert_date,\n        julianday(insert_date) - ROW_NUMBER() OVER (ORDER BY insert_date) AS grp\n    FROM capitalized_cities\n),\nstreaks AS (\n    SELECT \n        city_name,\n        MIN(insert_date) AS streak_start,\n        MAX(insert_date) AS streak_end,\n        COUNT(*) AS streak_length\n    FROM date_groups\n    GROUP BY grp, city_name\n),\nall_streaks AS (\n    SELECT \n        city_name,\n        streak_start,\n        streak_end,\n        streak_length,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC, streak_start ASC) AS rn_shortest,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC, streak_start ASC) AS rn_longest\n    FROM streaks\n),\nshortest_streak AS (\n    SELECT streak_start, streak_end\n    FROM all_streaks\n    WHERE rn_shortest = 1\n),\nlongest_streak AS (\n    SELECT streak_start, streak_end\n    FROM all_streaks\n    WHERE rn_longest = 1\n),\nshortest_dates AS (\n    SELECT cs.city_name, cs.insert_date\n    FROM capitalized_cities cs\n    JOIN shortest_streak ss ON cs.insert_date BETWEEN ss.streak_start AND ss.streak_end\n),\nlongest_dates AS (\n    SELECT cs.city_name, cs.insert_date\n    FROM capitalized_cities cs\n    JOIN longest_streak ls ON cs.insert_date BETWEEN ls.streak_start AND ls.streak_end\n)\nSELECT insert_date AS date, city_name\nFROM shortest_dates\nUNION ALL\nSELECT insert_date AS date, city_name\nFROM longest_dates\nORDER BY date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7737499981885776,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH cn_cities AS (\n    SELECT \n        c.city_name,\n        c.insert_date,\n        LOWER(SUBSTR(c.city_name, 1, 1)) || SUBSTR(c.city_name, 2) AS city_name_normalized\n    FROM cities c\n    JOIN cities_countries cc ON c.country_code_2 = cc.country_code_2\n    WHERE c.country_code_2 = 'cn'\n      AND c.insert_date BETWEEN '2021-07-01' AND '2021-07-31'\n),\ncapitalized_cities AS (\n    SELECT \n        city_name,\n        insert_date,\n        UPPER(SUBSTR(city_name, 1, 1)) || SUBSTR(city_name, 2) AS city_name_capitalized\n    FROM cn_cities\n),\ndate_groups AS (\n    SELECT \n        city_name_capitalized AS city_name,\n        insert_date,\n        julianday(insert_date) - ROW_NUMBER() OVER (ORDER BY insert_date) AS grp\n    FROM capitalized_cities\n),\nstreaks AS (\n    SELECT \n        city_name,\n        MIN(insert_date) AS streak_start,\n        MAX(insert_date) AS streak_end,\n        COUNT(*) AS streak_length\n    FROM date_groups\n    GROUP BY grp, city_name\n),\nall_streaks AS (\n    SELECT \n        city_name,\n        streak_start,\n        streak_end,\n        streak_length,\n        ROW_NUMBER() OVER (ORDER BY streak_length ASC, streak_start ASC) AS rn_shortest,\n        ROW_NUMBER() OVER (ORDER BY streak_length DESC, streak_start ASC) AS rn_longest\n    FROM streaks\n),\nshortest_streak AS (\n    SELECT streak_start, streak_end\n    FROM all_streaks\n    WHERE rn_shortest = 1\n),\nlongest_streak AS (\n    SELECT streak_start, streak_end\n    FROM all_streaks\n    WHERE rn_longest = 1\n),\nshortest_dates AS (\n    SELECT cs.city_name, cs.insert_date\n    FROM capitalized_cities cs\n    JOIN shortest_streak ss ON cs.insert_date BETWEEN ss.streak_start AND ss.streak_end\n),\nlongest_dates AS (\n    SELECT cs.city_name, cs.insert_date\n    FROM capitalized_cities cs\n    JOIN longest_streak ls ON cs.insert_date BETWEEN ls.streak_start AND ls.streak_end\n)\nSELECT insert_date AS date, city_name\nFROM shortest_dates\nUNION ALL\nSELECT insert_date AS date, city_name\nFROM longest_dates\nORDER BY date;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 21095.33654199913
+}

@@ -1,0 +1,163 @@
+{
+  "task_id": "spider2_50",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_balance_c...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_balances",
+            "extreme_months",
+            "customer_monthly_counts",
+            "customer_transactions"
+          ]
+        },
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_summary AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer...",
+          "score": 1.0035714285714286,
+          "similarity_max": 0.7928571428571428,
+          "tables_used": [
+            "monthly_balances",
+            "customer_monthly_summary",
+            "extreme_months",
+            "customer_transactions"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_balance_c...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_balances",
+            "extreme_months",
+            "customer_monthly_counts",
+            "customer_transactions"
+          ]
+        },
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\npositive_balances AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n  ...",
+          "score": 1.0375699888017915,
+          "similarity_max": 0.7248600223964166,
+          "tables_used": [
+            "monthly_balances",
+            "positive_balances",
+            "ranked_months",
+            "customer_transactions"
+          ]
+        },
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n      AND txn_type IN ('deposit', 'withdrawal')\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_summary AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AV...",
+          "score": 1.0334826427771555,
+          "similarity_max": 0.7330347144456887,
+          "tables_used": [
+            "monthly_balances",
+            "customer_monthly_summary",
+            "ranked_months",
+            "customer_transactions"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_balance_c...",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "monthly_balances",
+            "extreme_months",
+            "customer_monthly_counts",
+            "customer_transactions"
+          ]
+        },
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\npositive_balances AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_count,\n        AVG(month_end_balance) AS avg_balance\n    FROM monthly_balances\n  ...",
+          "score": 1.0375699888017915,
+          "similarity_max": 0.7248600223964166,
+          "tables_used": [
+            "monthly_balances",
+            "positive_balances",
+            "ranked_months",
+            "customer_transactions"
+          ]
+        },
+        {
+          "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n      AND txn_type IN ('deposit', 'withdrawal')\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_summary AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_customer_count,\n        AV...",
+          "score": 1.0334826427771555,
+          "similarity_max": 0.7330347144456887,
+          "tables_used": [
+            "monthly_balances",
+            "customer_monthly_summary",
+            "ranked_months",
+            "customer_transactions"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH monthly_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', txn_date) AS month,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE 0 END) -\n        SUM(CASE WHEN txn_type = 'withdrawal' THEN txn_amount ELSE 0 END) AS month_end_balance\n    FROM customer_transactions\n    WHERE strftime('%Y', txn_date) = '2020'\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n),\ncustomer_monthly_counts AS (\n    SELECT \n        month,\n        COUNT(*) AS positive_balance_c...",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "monthly_balances",
+        "extreme_months",
+        "customer_monthly_counts",
+        "customer_transactions"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.05
+  }
+}

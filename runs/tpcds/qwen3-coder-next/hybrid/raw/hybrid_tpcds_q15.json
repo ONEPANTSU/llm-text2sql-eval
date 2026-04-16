@@ -1,0 +1,139 @@
+{
+  "task_id": "tpcds_q15",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 20582.721625003614,
+  "execution_time_ms": 124.40179199620616,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (ca_zip LIKE '48%' OR ca_zip LIKE '49%' OR ca_zip LIKE '50%') \n    AND ca_state IN ('CA', 'WA', 'GA')\n    OR cs_sales_price > 500\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 42.82266700465698,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (ca_zip LIKE '852%' OR ca_zip LIKE '853%' OR ca_zip LIKE '850%')\n    OR ca_state IN ('CA','WA','GA')\n    OR cs_sales_price > 500\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 22.032708002370782,
+      "result_signature": "6a9e44a6a9a92d08306db202b4b62a20b28c85841cd29438432c3524dee7cbe4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (ca_zip IN ('85383','30868','65060','22959','46831','57541','59453','23422','42666','68855','52659','62027','19577','67898','22746','19712','23624','53023','56354','48227','43592','57657','65566','39325','19525','45653','53488','55745','59459','48277','23416','22817','55939','30448','36227','48692','23422','62652','57541','42666','46831','65060','30868','85383','22959','19577','67898','52659','62027','43592','57657','65566','39325','19525','45653','53488','55745','59459','48277','23416','22817','55939','30448','36227','48692','62652')\n     OR ca_state IN ('CA','WA','GA')\n     OR cs_sales_price > 500)\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 17.08783401409164,
+      "result_signature": "1ca2c92b27eddd076755c1624c81a214eb57d63499f28a8ea69680d62908bd37",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (SUBSTRING(ca_zip, 1, 3) IN ('006', '009', '010', '011', '012', '013', '014', '015', '016', '017', '018', '019', '020', '021', '022', '023', '024', '025', '026', '027', '028', '029', '030', '031', '032', '033', '034', '035', '036', '037', '038', '039', '040', '041', '042', '043', '044', '045', '046', '047', '048', '049', '050', '051', '052', '053', '054', '055', '056', '057', '058', '059', '060', '061', '062', '063', '064', '065', '066', '067', '068', '069', '070', '071', '072', '073', '074', '075', '076', '077', '078', '079', '080', '081', '082', '083', '084', '085', '086', '087', '088', '089', '090', '091', '092', '093', '094', '095', '096', '097', '098', '099')\n    OR ca_state IN ('CA','WA','GA')\n    OR cs_sales_price > 500)\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 15.561790991341695,
+      "result_signature": "c636ffedc4cf64b25d6401c0cb24f17d0bde82adef684f9c283c7830c3b58f38",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\nJOIN \n    customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN \n    customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN \n    date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (ca_zip LIKE '857%' OR ca_zip LIKE '856%' OR ca_zip LIKE '855%' OR ca_zip LIKE '854%' OR ca_zip LIKE '853%' OR ca_zip LIKE '852%' OR ca_zip LIKE '851%' OR ca_zip LIKE '850%' OR ca_zip LIKE '849%' OR ca_zip LIKE '848%' OR ca_zip LIKE '847%' OR ca_zip LIKE '846%' OR ca_zip LIKE '845%' OR ca_zip LIKE '844%' OR ca_zip LIKE '843%' OR ca_zip LIKE '842%' OR ca_zip LIKE '841%' OR ca_zip LIKE '840%')\n    OR ca_state IN ('CA','WA','GA')\n    OR cs_sales_price > 500\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 25.899125001160428,
+      "result_signature": "6a9e44a6a9a92d08306db202b4b62a20b28c85841cd29438432c3524dee7cbe4",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "SELECT \n    ca_zip,\n    SUM(cs_sales_price) AS sum_cs_sales_price\nFROM \n    catalog_sales\n    JOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\n    JOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\n    JOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE \n    (ca_zip LIKE '852%' OR ca_zip LIKE '853%' OR ca_zip LIKE '850%')\n    OR ca_state IN ('CA','WA','GA')\n    OR cs_sales_price > 500\n    AND d_qoy = 2\n    AND d_year = 2001\nGROUP BY \n    ca_zip\nORDER BY \n    ca_zip ASC\nLIMIT 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1,
+        "6a9e44a6a9a92d08306db202b4b62a20b28c85841cd29438432c3524dee7cbe4": 2,
+        "1ca2c92b27eddd076755c1624c81a214eb57d63499f28a8ea69680d62908bd37": 1,
+        "c636ffedc4cf64b25d6401c0cb24f17d0bde82adef684f9c283c7830c3b58f38": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      2
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 0,
+    "expansion_time_ms": 7305.483625008492,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 28013.001333994907
+}

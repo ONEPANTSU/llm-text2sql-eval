@@ -1,0 +1,228 @@
+{
+  "task_id": "spider2_27",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "rental",
+            "i",
+            "rh",
+            "fc",
+            "c",
+            "film_category",
+            "a",
+            "inventory",
+            "city",
+            "address",
+            "ci",
+            "rental_hours",
+            "customer",
+            "category"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "rental",
+            "i",
+            "rh",
+            "fc",
+            "c",
+            "film_category",
+            "a",
+            "inventory",
+            "city",
+            "address",
+            "ci",
+            "rental_hours",
+            "customer",
+            "category"
+          ]
+        },
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+          "score": 0.6404538341158059,
+          "similarity_max": 0.819092331768388,
+          "tables_used": [
+            "r",
+            "rental",
+            "i",
+            "rh",
+            "fc",
+            "c",
+            "film_category",
+            "a",
+            "inventory",
+            "city",
+            "address",
+            "ci",
+            "rental_hours",
+            "customer",
+            "category"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "rental",
+            "i",
+            "rh",
+            "fc",
+            "c",
+            "film_category",
+            "a",
+            "inventory",
+            "city",
+            "address",
+            "ci",
+            "rental_hours",
+            "customer",
+            "category"
+          ]
+        },
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+          "score": 0.6404538341158059,
+          "similarity_max": 0.819092331768388,
+          "tables_used": [
+            "r",
+            "rental",
+            "i",
+            "rh",
+            "fc",
+            "c",
+            "film_category",
+            "a",
+            "inventory",
+            "city",
+            "address",
+            "ci",
+            "rental_hours",
+            "customer",
+            "category"
+          ]
+        },
+        {
+          "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(COALESCE(r.return_date, datetime('now'))) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE...",
+          "score": 0.5513736263736264,
+          "similarity_max": 0.7972527472527473,
+          "tables_used": [
+            "rental",
+            "c",
+            "category",
+            "city",
+            "inventory",
+            "ci",
+            "rental_hours",
+            "r",
+            "i",
+            "rh",
+            "fc",
+            "a",
+            "film_category",
+            "mr",
+            "max_rental",
+            "customer",
+            "address"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH rental_hours AS (\n    SELECT \n        fc.category_id,\n        SUM(\n            CAST((julianday(r.return_date) - julianday(r.rental_date)) * 24 AS INTEGER)\n        ) AS total_rental_hours\n    FROM rental r\n    JOIN inventory i ON r.inventory_id = i.inventory_id\n    JOIN film_category fc ON i.film_id = fc.film_id\n    JOIN customer c ON r.customer_id = c.customer_id\n    JOIN address a ON c.address_id = a.address_id\n    JOIN city ci ON a.city_id = ci.city_id\n    WHERE ci.city LIKE 'A%' OR ci.ci...",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "rental",
+        "i",
+        "rh",
+        "fc",
+        "c",
+        "film_category",
+        "a",
+        "inventory",
+        "city",
+        "address",
+        "ci",
+        "rental_hours",
+        "customer",
+        "category"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: fc.category",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 1.91
+  }
+}

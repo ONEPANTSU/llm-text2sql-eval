@@ -1,0 +1,246 @@
+{
+  "task_id": "bird_94",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH female_clients AS (\n    SELECT \n        a.account_id,\n        c.gender,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F' \n      AND t.type = 'INCOME'  -- assuming salary is recorded as income transactions\n    GROUP BY a.account_id, c.gender, c.birth_date\n),\nranked_female_clients AS (\n    SELECT \n   ...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "m",
+            "female_clients",
+            "r",
+            "c",
+            "account",
+            "ranked_female_clients",
+            "trans",
+            "min_max_salary"
+          ]
+        },
+        {
+          "sql": "WITH female_clients AS (\n    SELECT c.client_id, c.gender, c.birth_date, a.account_id\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    WHERE c.gender = 'F'\n),\noldest_female AS (\n    SELECT account_id\n    FROM female_clients\n    ORDER BY birth_date ASC\n    LIMIT 1\n),\naccount_avg_salary AS (\n    SELECT a.account_id, AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d...",
+          "score": 0.8632018488365986,
+          "similarity_max": 0.47359630232680283,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "female_clients",
+            "aas",
+            "account_avg_salary",
+            "c",
+            "account",
+            "oldest_female",
+            "trans",
+            "female_avg_salary",
+            "of"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH female_clients AS (\n    SELECT \n        a.account_id,\n        c.gender,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F' \n      AND t.type = 'INCOME'  -- assuming salary is recorded as income transactions\n    GROUP BY a.account_id, c.gender, c.birth_date\n),\nranked_female_clients AS (\n    SELECT \n   ...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "m",
+            "female_clients",
+            "r",
+            "c",
+            "account",
+            "ranked_female_clients",
+            "trans",
+            "min_max_salary"
+          ]
+        },
+        {
+          "sql": "WITH female_clients AS (\n    SELECT c.client_id, c.gender, c.birth_date, a.account_id\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    WHERE c.gender = 'F'\n),\noldest_female AS (\n    SELECT account_id\n    FROM female_clients\n    ORDER BY birth_date ASC\n    LIMIT 1\n),\naccount_avg_salary AS (\n    SELECT a.account_id, AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d...",
+          "score": 0.8632018488365986,
+          "similarity_max": 0.47359630232680283,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "female_clients",
+            "aas",
+            "account_avg_salary",
+            "c",
+            "account",
+            "oldest_female",
+            "trans",
+            "female_avg_salary",
+            "of"
+          ]
+        },
+        {
+          "sql": "WITH female_income AS (\n    SELECT \n        c.client_id,\n        c.gender,\n        c.birth_date,\n        a.account_id,\n        AVG(t.amount) AS avg_income\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F' \n      AND t.type = 'INCOME'\n    GROUP BY c.client_id, c.gender, c.birth_date, a.account_id\n),\noldest_female_accounts AS (\n    SELECT \n        account_id,\n    ...",
+          "score": 0.7870508744038155,
+          "similarity_max": 0.6258982511923689,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "salary_extremes",
+            "se",
+            "c",
+            "account",
+            "oldest_female_accounts",
+            "lowest_salary_accounts",
+            "lsa",
+            "female_income",
+            "trans"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH female_clients AS (\n    SELECT \n        a.account_id,\n        c.gender,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F' \n      AND t.type = 'INCOME'  -- assuming salary is recorded as income transactions\n    GROUP BY a.account_id, c.gender, c.birth_date\n),\nranked_female_clients AS (\n    SELECT \n   ...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "m",
+            "female_clients",
+            "r",
+            "c",
+            "account",
+            "ranked_female_clients",
+            "trans",
+            "min_max_salary"
+          ]
+        },
+        {
+          "sql": "WITH female_clients AS (\n    SELECT c.client_id, c.gender, c.birth_date, a.account_id\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    WHERE c.gender = 'F'\n),\noldest_female AS (\n    SELECT account_id\n    FROM female_clients\n    WHERE birth_date = (SELECT MIN(birth_date) FROM female_clients)\n),\nsalary_accounts AS (\n    SELECT a.account_id, AVG(t.amount) AS avg_income\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_...",
+          "score": 0.8882723833543507,
+          "similarity_max": 0.7234552332912988,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "female_clients",
+            "sa",
+            "c",
+            "account",
+            "salary_accounts",
+            "trans"
+          ]
+        },
+        {
+          "sql": "WITH female_clients AS (\n    SELECT c.client_id, c.gender, c.birth_date, a.account_id\n    FROM client c\n    JOIN disp d ON c.client_id = d.client_id\n    JOIN account a ON d.account_id = a.account_id\n    WHERE c.gender = 'F'\n),\noldest_female AS (\n    SELECT account_id\n    FROM female_clients\n    ORDER BY birth_date ASC\n    LIMIT 1\n),\naccount_avg_salary AS (\n    SELECT a.account_id, AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d...",
+          "score": 0.8632018488365986,
+          "similarity_max": 0.47359630232680283,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "t",
+            "a",
+            "female_clients",
+            "aas",
+            "account_avg_salary",
+            "c",
+            "account",
+            "oldest_female",
+            "trans",
+            "female_avg_salary",
+            "of"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH female_clients AS (\n    SELECT \n        a.account_id,\n        c.gender,\n        c.birth_date,\n        AVG(t.amount) AS avg_salary\n    FROM account a\n    JOIN disp d ON a.account_id = d.account_id\n    JOIN client c ON d.client_id = c.client_id\n    JOIN trans t ON a.account_id = t.account_id\n    WHERE c.gender = 'F' \n      AND t.type = 'INCOME'  -- assuming salary is recorded as income transactions\n    GROUP BY a.account_id, c.gender, c.birth_date\n),\nranked_female_clients AS (\n    SELECT \n   ...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "disp",
+        "client",
+        "d",
+        "t",
+        "a",
+        "m",
+        "female_clients",
+        "r",
+        "c",
+        "account",
+        "ranked_female_clients",
+        "trans",
+        "min_max_salary"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 122.84
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_282",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    'H_ratio' AS label\nFROM atom\nWHERE atom.molecule_id = 'TR006';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, 'Hydrogen ratio' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H';",
+          "score": 0.8071969696969697,
+          "similarity_max": 0.48560606060606054,
+          "tables_used": [
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    'H_ratio' AS label\nFROM atom\nWHERE atom.molecule_id = 'TR006';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, 'Hydrogen ratio' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H';",
+          "score": 0.8071969696969697,
+          "similarity_max": 0.48560606060606054,
+          "tables_used": [
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(*) AS REAL) / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio,\n    'Hydrogen ratio' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H';",
+          "score": 0.6474637681159421,
+          "similarity_max": 0.8050724637681159,
+          "tables_used": [
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    'H_ratio' AS label\nFROM atom\nWHERE atom.molecule_id = 'TR006';",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) * 1.0 / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio, 'Hydrogen ratio' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H';",
+          "score": 0.8071969696969697,
+          "similarity_max": 0.48560606060606054,
+          "tables_used": [
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT \n    CAST(COUNT(*) AS REAL) / (SELECT COUNT(*) FROM atom WHERE molecule_id = 'TR006') AS ratio,\n    'Hydrogen ratio' AS label\nFROM atom\nWHERE molecule_id = 'TR006' AND element = 'H';",
+          "score": 0.6474637681159421,
+          "similarity_max": 0.8050724637681159,
+          "tables_used": [
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    CAST(SUM(CASE WHEN atom.element = 'H' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS ratio,\n    'H_ratio' AS label\nFROM atom\nWHERE atom.molecule_id = 'TR006';",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.12
+  }
+}

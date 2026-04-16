@@ -1,0 +1,172 @@
+{
+  "task_id": "bird_520",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT artist, format\nFROM (\n    SELECT artist, format, COUNT(*) AS card_count\n    FROM cards c\n    JOIN legalities l ON c.id = l.id\n    GROUP BY artist, format\n) sub\nWHERE artist = (\n    SELECT artist\n    FROM (\n        SELECT artist, COUNT(*) AS total_cards\n        FROM cards\n        GROUP BY artist\n        ORDER BY total_cards ASC\n        LIMIT 1\n    )\n)",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "c",
+            "legalities",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH illustrator_counts AS (\n  SELECT artist, COUNT(*) AS card_count\n  FROM cards\n  WHERE artist IS NOT NULL\n  GROUP BY artist\n),\nmin_illustrator AS (\n  SELECT artist\n  FROM illustrator_counts\n  WHERE card_count = (SELECT MIN(card_count) FROM illustrator_counts)\n)\nSELECT DISTINCT l.format\nFROM min_illustrator mi\nJOIN cards c ON mi.artist = c.artist\nJOIN legalities l ON c.id = l.id;",
+          "score": 1.2269230769230768,
+          "similarity_max": 0.4461538461538462,
+          "tables_used": [
+            "illustrator_counts",
+            "c",
+            "legalities",
+            "l",
+            "min_illustrator",
+            "mi",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT artist, format\nFROM (\n    SELECT artist, format, COUNT(*) AS card_count\n    FROM cards c\n    JOIN legalities l ON c.id = l.id\n    GROUP BY artist, format\n) sub\nWHERE artist = (\n    SELECT artist\n    FROM (\n        SELECT artist, COUNT(*) AS total_cards\n        FROM cards\n        GROUP BY artist\n        ORDER BY total_cards ASC\n        LIMIT 1\n    )\n)",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "c",
+            "legalities",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH illustrator_counts AS (\n  SELECT artist, COUNT(*) AS card_count\n  FROM cards\n  WHERE artist IS NOT NULL\n  GROUP BY artist\n),\nmin_illustrator AS (\n  SELECT artist\n  FROM illustrator_counts\n  WHERE card_count = (SELECT MIN(card_count) FROM illustrator_counts)\n)\nSELECT DISTINCT l.format\nFROM min_illustrator mi\nJOIN cards c ON mi.artist = c.artist\nJOIN legalities l ON c.id = l.id;",
+          "score": 1.2269230769230768,
+          "similarity_max": 0.4461538461538462,
+          "tables_used": [
+            "illustrator_counts",
+            "c",
+            "legalities",
+            "l",
+            "min_illustrator",
+            "mi",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.artist, l.format\nFROM cards c\nJOIN legalities l ON c.id = l.id\nWHERE c.artist = (\n    SELECT artist\n    FROM cards\n    GROUP BY artist\n    ORDER BY COUNT(*) ASC\n    LIMIT 1\n);",
+          "score": 0.9673913043478262,
+          "similarity_max": 0.6652173913043478,
+          "tables_used": [
+            "l",
+            "c",
+            "legalities",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 3,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT artist, format\nFROM (\n    SELECT artist, format, COUNT(*) AS card_count\n    FROM cards c\n    JOIN legalities l ON c.id = l.id\n    GROUP BY artist, format\n) sub\nWHERE artist = (\n    SELECT artist\n    FROM (\n        SELECT artist, COUNT(*) AS total_cards\n        FROM cards\n        GROUP BY artist\n        ORDER BY total_cards ASC\n        LIMIT 1\n    )\n)",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "c",
+            "legalities",
+            "cards"
+          ]
+        },
+        {
+          "sql": "WITH illustrator_counts AS (\n  SELECT artist, COUNT(*) AS card_count\n  FROM cards\n  WHERE artist IS NOT NULL\n  GROUP BY artist\n),\nmin_illustrator AS (\n  SELECT artist\n  FROM illustrator_counts\n  WHERE card_count = (SELECT MIN(card_count) FROM illustrator_counts)\n)\nSELECT DISTINCT l.format\nFROM min_illustrator mi\nJOIN cards c ON mi.artist = c.artist\nJOIN legalities l ON c.id = l.id;",
+          "score": 1.2269230769230768,
+          "similarity_max": 0.4461538461538462,
+          "tables_used": [
+            "illustrator_counts",
+            "c",
+            "legalities",
+            "l",
+            "min_illustrator",
+            "mi",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.artist, l.format\nFROM cards c\nJOIN legalities l ON c.id = l.id\nWHERE c.artist = (\n    SELECT artist\n    FROM cards\n    GROUP BY artist\n    ORDER BY COUNT(*) ASC\n    LIMIT 1\n);",
+          "score": 0.9673913043478262,
+          "similarity_max": 0.6652173913043478,
+          "tables_used": [
+            "l",
+            "c",
+            "legalities",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT artist, format\nFROM (\n    SELECT artist, format, COUNT(*) AS card_count\n    FROM cards c\n    JOIN legalities l ON c.id = l.id\n    GROUP BY artist, format\n) sub\nWHERE artist = (\n    SELECT artist\n    FROM (\n        SELECT artist, COUNT(*) AS total_cards\n        FROM cards\n        GROUP BY artist\n        ORDER BY total_cards ASC\n        LIMIT 1\n    )\n)",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "l",
+        "c",
+        "legalities",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 234.07
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "task_id": "bird_1294",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 2,
+  "generation_time_ms": 2551.0785000005853,
+  "execution_time_ms": 5.751749995397404,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.ANA IgG DESC, Examination.ANA IgM DESC, Examination.ANA IgA DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"IgG\": syntax error",
+      "exec_time_ms": 1.1902499973075464,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.ANA IgG DESC, Examination.ANA IgM DESC, Examination.ANA IgA DESC\nLIMIT 1;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"IgG\": syntax error",
+      "exec_time_ms": 0.2624589978950098,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "schema_fixes": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.\"aCL IgG\" DESC, Examination.\"aCL IgM\" DESC, Examination.\"aCL IgA\" DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.562749999924563,
+      "result_signature": "ebba3ae4c48edb601fe0e1b2d98d9b61d3fdc7e1f643730de030ded0e8769c20",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.\"aCL IgG\" DESC, Examination.\"aCL IgM\" DESC, Examination.\"aCL IgA\" DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8942499989643693,
+      "result_signature": "ebba3ae4c48edb601fe0e1b2d98d9b61d3fdc7e1f643730de030ded0e8769c20",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.\"aCL IgG\" DESC, Examination.\"aCL IgM\" DESC, Examination.\"aCL IgA\" DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4398340024636127,
+      "result_signature": "ebba3ae4c48edb601fe0e1b2d98d9b61d3fdc7e1f643730de030ded0e8769c20",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT Laboratory.ID\nFROM Laboratory\nJOIN Examination ON Laboratory.ID = Examination.ID\nWHERE Laboratory.CRE BETWEEN 0.6 AND 1.2\nORDER BY Examination.\"aCL IgG\" DESC, Examination.\"aCL IgM\" DESC, Examination.\"aCL IgA\" DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "ebba3ae4c48edb601fe0e1b2d98d9b61d3fdc7e1f643730de030ded0e8769c20": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2556.9435409997823
+}

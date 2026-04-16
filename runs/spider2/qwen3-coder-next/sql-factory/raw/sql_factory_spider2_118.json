@@ -1,0 +1,199 @@
+{
+  "task_id": "spider2_118",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH yearly_max_points AS (\n  SELECT \n    r.year,\n    MAX(driver_points) AS max_driver_points,\n    MAX(constructor_points) AS max_constructor_points\n  FROM races r\n  JOIN results res ON r.race_id = res.race_id\n  JOIN (\n    SELECT race_id, driver_id, SUM(points) AS driver_points\n    FROM results\n    WHERE points IS NOT NULL\n    GROUP BY race_id, driver_id\n  ) driver_totals ON res.race_id = driver_totals.race_id AND res.driver_id = driver_totals.driver_id\n  JOIN (\n    SELECT race_id, constructor_i...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_sum",
+            "r",
+            "res",
+            "results",
+            "yearly_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_yearly_points AS (\n    SELECT \n        r.year,\n        res.driver_id,\n        SUM(res.points) AS total_driver_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.driver_id\n),\nconstructor_yearly_points AS (\n    SELECT \n        r.year,\n        res.constructor_id,\n        SUM(res.points) AS total_constructor_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.constructor_id\n),\nmax_driver_points_per...",
+          "score": 0.9967553827751197,
+          "similarity_max": 0.5064892344497607,
+          "tables_used": [
+            "max_constructor_points_per_year",
+            "r",
+            "mdp",
+            "res",
+            "driver_yearly_points",
+            "max_driver_points_per_year",
+            "combined_yearly_totals",
+            "results",
+            "constructor_yearly_points",
+            "races",
+            "mcp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH yearly_max_points AS (\n  SELECT \n    r.year,\n    MAX(driver_points) AS max_driver_points,\n    MAX(constructor_points) AS max_constructor_points\n  FROM races r\n  JOIN results res ON r.race_id = res.race_id\n  JOIN (\n    SELECT race_id, driver_id, SUM(points) AS driver_points\n    FROM results\n    WHERE points IS NOT NULL\n    GROUP BY race_id, driver_id\n  ) driver_totals ON res.race_id = driver_totals.race_id AND res.driver_id = driver_totals.driver_id\n  JOIN (\n    SELECT race_id, constructor_i...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_sum",
+            "r",
+            "res",
+            "results",
+            "yearly_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_yearly_points AS (\n  SELECT \n    r.year,\n    res.driver_id,\n    SUM(res.points) AS total_points\n  FROM results res\n  JOIN races r ON res.race_id = r.race_id\n  WHERE res.points IS NOT NULL\n  GROUP BY r.year, res.driver_id\n),\nconstructor_yearly_points AS (\n  SELECT \n    r.year,\n    res.constructor_id,\n    SUM(res.points) AS total_points\n  FROM results res\n  JOIN races r ON res.race_id = r.race_id\n  WHERE res.points IS NOT NULL\n  GROUP BY r.year, res.constructor_id\n),\nyearly_maxes AS (\n...",
+          "score": 1.0309283876500857,
+          "similarity_max": 0.6381432246998284,
+          "tables_used": [
+            "yearly_maxes",
+            "r",
+            "res",
+            "driver_yearly_points",
+            "c",
+            "d",
+            "results",
+            "constructor_yearly_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_yearly_points AS (\n    SELECT \n        r.year,\n        res.driver_id,\n        SUM(res.points) AS total_driver_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.driver_id\n),\nconstructor_yearly_points AS (\n    SELECT \n        r.year,\n        res.constructor_id,\n        SUM(res.points) AS total_constructor_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.constructor_id\n),\nmax_driver_points_per...",
+          "score": 0.9967553827751197,
+          "similarity_max": 0.5064892344497607,
+          "tables_used": [
+            "max_constructor_points_per_year",
+            "r",
+            "mdp",
+            "res",
+            "driver_yearly_points",
+            "max_driver_points_per_year",
+            "combined_yearly_totals",
+            "results",
+            "constructor_yearly_points",
+            "races",
+            "mcp"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH yearly_max_points AS (\n  SELECT \n    r.year,\n    MAX(driver_points) AS max_driver_points,\n    MAX(constructor_points) AS max_constructor_points\n  FROM races r\n  JOIN results res ON r.race_id = res.race_id\n  JOIN (\n    SELECT race_id, driver_id, SUM(points) AS driver_points\n    FROM results\n    WHERE points IS NOT NULL\n    GROUP BY race_id, driver_id\n  ) driver_totals ON res.race_id = driver_totals.race_id AND res.driver_id = driver_totals.driver_id\n  JOIN (\n    SELECT race_id, constructor_i...",
+          "score": 1.5,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_sum",
+            "r",
+            "res",
+            "results",
+            "yearly_max_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_yearly_points AS (\n    SELECT \n        r.year,\n        res.driver_id,\n        SUM(res.points) AS total_driver_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.driver_id\n),\nconstructor_yearly_points AS (\n    SELECT \n        r.year,\n        res.constructor_id,\n        SUM(res.points) AS total_constructor_points\n    FROM results res\n    JOIN races r ON res.race_id = r.race_id\n    GROUP BY r.year, res.constructor_id\n),\nyearly_maxes AS (\n   ...",
+          "score": 1.0521323339364175,
+          "similarity_max": 0.6957353321271647,
+          "tables_used": [
+            "yearly_maxes",
+            "r",
+            "res",
+            "yearly_totals",
+            "driver_yearly_points",
+            "results",
+            "constructor_yearly_points",
+            "races"
+          ]
+        },
+        {
+          "sql": "WITH driver_yearly_points AS (\n  SELECT \n    r.year,\n    res.driver_id,\n    SUM(res.points) AS total_points\n  FROM results res\n  JOIN races r ON res.race_id = r.race_id\n  WHERE res.points IS NOT NULL\n  GROUP BY r.year, res.driver_id\n),\nconstructor_yearly_points AS (\n  SELECT \n    r.year,\n    res.constructor_id,\n    SUM(res.points) AS total_points\n  FROM results res\n  JOIN races r ON res.race_id = r.race_id\n  WHERE res.points IS NOT NULL\n  GROUP BY r.year, res.constructor_id\n),\nyearly_maxes AS (\n...",
+          "score": 1.0309283876500857,
+          "similarity_max": 0.6381432246998284,
+          "tables_used": [
+            "yearly_maxes",
+            "r",
+            "res",
+            "driver_yearly_points",
+            "c",
+            "d",
+            "results",
+            "constructor_yearly_points",
+            "races"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH yearly_max_points AS (\n  SELECT \n    r.year,\n    MAX(driver_points) AS max_driver_points,\n    MAX(constructor_points) AS max_constructor_points\n  FROM races r\n  JOIN results res ON r.race_id = res.race_id\n  JOIN (\n    SELECT race_id, driver_id, SUM(points) AS driver_points\n    FROM results\n    WHERE points IS NOT NULL\n    GROUP BY race_id, driver_id\n  ) driver_totals ON res.race_id = driver_totals.race_id AND res.driver_id = driver_totals.driver_id\n  JOIN (\n    SELECT race_id, constructor_i...",
+    "meta": {
+      "score": 1.5,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "yearly_sum",
+        "r",
+        "res",
+        "results",
+        "yearly_max_points",
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.74
+  }
+}

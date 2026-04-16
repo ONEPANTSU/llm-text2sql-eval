@@ -1,0 +1,215 @@
+{
+  "task_id": "bird_254",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS element1,\n        a2.element AS element2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        b.bond_id,\n        b.molecule_id,\n        b.bond_type,\n        CASE \n            WHEN ap.element1 <= ap.element2 THEN ap.element1 || '-' || ap.element2\n            ELSE ap.element2 || '-' || ap.element1\n        END AS element_pair...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "ap",
+            "a1",
+            "a2",
+            "bond_element_pairs",
+            "pair_counts",
+            "atom",
+            "atom_pairs",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS element1,\n        a2.element AS element2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        b.bond_id,\n        b.molecule_id,\n        CASE \n            WHEN ap.element1 < ap.element2 THEN ap.element1 || '-' || ap.element2\n            ELSE ap.element2 || '-' || ap.element1\n        END AS element_pair\n    FROM bond b\n    J...",
+          "score": 0.8294919786096255,
+          "similarity_max": 0.7410160427807486,
+          "tables_used": [
+            "connected",
+            "ap",
+            "a1",
+            "a2",
+            "bond_element_pairs",
+            "pair_counts",
+            "atom",
+            "atom_pairs",
+            "c",
+            "bond",
+            "common_bonds",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS element1,\n        a2.element AS element2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        b.bond_id,\n        b.molecule_id,\n        b.bond_type,\n        CASE \n            WHEN ap.element1 <= ap.element2 THEN ap.element1 || '-' || ap.element2\n            ELSE ap.element2 || '-' || ap.element1\n        END AS element_pair...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "ap",
+            "a1",
+            "a2",
+            "bond_element_pairs",
+            "pair_counts",
+            "atom",
+            "atom_pairs",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        MIN(a1.element, a2.element) || '-' || MAX(a1.element, a2.element) AS element_pair\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\npair_stats AS (\n    SELECT \n        element_pair,\n        COUNT(*) AS cnt\n    FROM atom_pairs\n    GROUP BY element_pair\n),\ntop_pair AS (\n    SELECT element_pair\n    FROM pair_stats\n    ORDER BY cnt DESC\n    LIMIT 1\n)\nSELECT \n    ROUND(100.0 * (\n  ...",
+          "score": 1.1861764705882354,
+          "similarity_max": 0.5276470588235294,
+          "tables_used": [
+            "connected",
+            "c",
+            "a1",
+            "a2",
+            "atom",
+            "pair_stats",
+            "atom_pairs"
+          ]
+        },
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS e1,\n        a2.element AS e2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nelement_pairs AS (\n    SELECT \n        b.bond_id,\n        CASE \n            WHEN ap.e1 <= ap.e2 THEN ap.e1 || '-' || ap.e2\n            ELSE ap.e2 || '-' || ap.e1\n        END AS epair\n    FROM bond b\n    JOIN atom_pairs ap ON b.bond_id = ap.bond_id\n),\nfreq AS (\n    SELECT epair, COUNT(*...",
+          "score": 0.9223908918406072,
+          "similarity_max": 0.6552182163187856,
+          "tables_used": [
+            "connected",
+            "ap",
+            "a1",
+            "a2",
+            "atom",
+            "atom_pairs",
+            "freq",
+            "c",
+            "bond",
+            "element_pairs",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS element1,\n        a2.element AS element2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        b.bond_id,\n        b.molecule_id,\n        b.bond_type,\n        CASE \n            WHEN ap.element1 <= ap.element2 THEN ap.element1 || '-' || ap.element2\n            ELSE ap.element2 || '-' || ap.element1\n        END AS element_pair...",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "ap",
+            "a1",
+            "a2",
+            "bond_element_pairs",
+            "pair_counts",
+            "atom",
+            "atom_pairs",
+            "c",
+            "bond",
+            "b"
+          ]
+        },
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        MIN(a1.element, a2.element) || '-' || MAX(a1.element, a2.element) AS element_pair\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\npair_stats AS (\n    SELECT \n        element_pair,\n        COUNT(*) AS cnt\n    FROM atom_pairs\n    GROUP BY element_pair\n),\ntop_pair AS (\n    SELECT element_pair\n    FROM pair_stats\n    ORDER BY cnt DESC\n    LIMIT 1\n)\nSELECT \n    ROUND(100.0 * (\n  ...",
+          "score": 1.1861764705882354,
+          "similarity_max": 0.5276470588235294,
+          "tables_used": [
+            "connected",
+            "c",
+            "a1",
+            "a2",
+            "atom",
+            "pair_stats",
+            "atom_pairs"
+          ]
+        },
+        {
+          "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        CASE \n            WHEN a1.element <= a2.element THEN a1.element || '-' || a2.element\n            ELSE a2.element || '-' || a1.element\n        END AS element_pair\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\npair_counts AS (\n    SELECT element_pair, COUNT(*) AS cnt\n    FROM atom_pairs\n    GROUP BY element_pair\n),\nmax_pair AS (\n    SELECT element_pair\n    FROM pair_counts\n ...",
+          "score": 1.1295820895522388,
+          "similarity_max": 0.6408358208955224,
+          "tables_used": [
+            "connected",
+            "c",
+            "atom_pairs",
+            "pair_counts",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH atom_pairs AS (\n    SELECT \n        c.bond_id,\n        a1.element AS element1,\n        a2.element AS element2\n    FROM connected c\n    JOIN atom a1 ON c.atom_id = a1.atom_id\n    JOIN atom a2 ON c.atom_id2 = a2.atom_id\n),\nbond_element_pairs AS (\n    SELECT \n        b.bond_id,\n        b.molecule_id,\n        b.bond_type,\n        CASE \n            WHEN ap.element1 <= ap.element2 THEN ap.element1 || '-' || ap.element2\n            ELSE ap.element2 || '-' || ap.element1\n        END AS element_pair...",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "connected",
+        "ap",
+        "a1",
+        "a2",
+        "bond_element_pairs",
+        "pair_counts",
+        "atom",
+        "atom_pairs",
+        "c",
+        "bond",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 68.17
+  }
+}

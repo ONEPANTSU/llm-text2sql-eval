@@ -1,0 +1,159 @@
+{
+  "task_id": "bird_28",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND ABS(f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(ABS(`Enrollment (K-12)` - `Enrollment (Ages 5-17)`))\n    FROM frpm\n    JOIN schools ON frpm.CDSCode = schools.CDSCode\n    WHERE schools.FundingType = 'Local'\n  );",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "schools",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND ABS(f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(ABS(`Enrollment (K-12)` - `Enrollment (Ages 5-17)`))\n    FROM frpm\n    JOIN schools ON frpm.CDSCode = schools.CDSCode\n    WHERE schools.FundingType = 'Local'\n  );",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "schools",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND (f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(f2.`Enrollment (K-12)` - f2.`Enrollment (Ages 5-17)`)\n    FROM frpm f2\n    JOIN schools s2 ON f2.CDSCode = s2.CDSCode\n    WHERE s2.FundingType = 'Local'\n  );",
+          "score": 1.078125,
+          "similarity_max": 0.84375,
+          "tables_used": [
+            "f2",
+            "f",
+            "s2",
+            "frpm",
+            "schools",
+            "s"
+          ]
+        },
+        {
+          "sql": "WITH locally_funded_diff AS (\n  SELECT \n    s.School, \n    s.DOCType,\n    ABS(CAST(f.`Enrollment (K-12)` AS REAL) - CAST(f.`Enrollment (Ages 5-17)` AS REAL)) AS diff\n  FROM schools s\n  JOIN frpm f ON s.CDSCode = f.CDSCode\n  WHERE s.FundingType = 'Local'\n),\navg_diff AS (\n  SELECT AVG(diff) AS avg_diff_val\n  FROM locally_funded_diff\n)\nSELECT School, DOCType\nFROM locally_funded_diff, avg_diff\nWHERE locally_funded_diff.diff > avg_diff.avg_diff_val;",
+          "score": 1.0710526315789473,
+          "similarity_max": 0.7578947368421052,
+          "tables_used": [
+            "f",
+            "locally_funded_diff",
+            "frpm",
+            "schools",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND ABS(f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(ABS(`Enrollment (K-12)` - `Enrollment (Ages 5-17)`))\n    FROM frpm\n    JOIN schools ON frpm.CDSCode = schools.CDSCode\n    WHERE schools.FundingType = 'Local'\n  );",
+          "score": 1.4,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "frpm",
+            "f",
+            "schools",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Locally Funded'\n  AND ABS(f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(ABS(f2.`Enrollment (K-12)` - f2.`Enrollment (Ages 5-17)`))\n    FROM frpm f2\n    JOIN schools s2 ON f2.CDSCode = s2.CDSCode\n    WHERE s2.FundingType = 'Locally Funded'\n  );",
+          "score": 1.085294117647059,
+          "similarity_max": 0.8294117647058823,
+          "tables_used": [
+            "f2",
+            "f",
+            "s2",
+            "frpm",
+            "schools",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND (f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(f2.`Enrollment (K-12)` - f2.`Enrollment (Ages 5-17)`)\n    FROM frpm f2\n    JOIN schools s2 ON f2.CDSCode = s2.CDSCode\n    WHERE s2.FundingType = 'Local'\n  );",
+          "score": 1.078125,
+          "similarity_max": 0.84375,
+          "tables_used": [
+            "f2",
+            "f",
+            "s2",
+            "frpm",
+            "schools",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT s.School, s.DOCType\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE s.FundingType = 'Local'\n  AND ABS(f.`Enrollment (K-12)` - f.`Enrollment (Ages 5-17)`) > (\n    SELECT AVG(ABS(`Enrollment (K-12)` - `Enrollment (Ages 5-17)`))\n    FROM frpm\n    JOIN schools ON frpm.CDSCode = schools.CDSCode\n    WHERE schools.FundingType = 'Local'\n  );",
+    "meta": {
+      "score": 1.4,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "frpm",
+        "f",
+        "schools",
+        "s"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 11.29
+  }
+}

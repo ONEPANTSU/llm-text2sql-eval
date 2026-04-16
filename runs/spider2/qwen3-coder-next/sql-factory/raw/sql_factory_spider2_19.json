@@ -1,0 +1,151 @@
+{
+  "task_id": "spider2_19",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH yearly_delivered_orders AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        COUNT(*) AS annual_delivered_orders\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY strftime('%Y', order_delivered_customer_date)\n),\nlowest_year AS (\n    SELECT year\n    FROM yearly_delivered_orders\n    ORDER BY annual_deli...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_delivered_orders",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders_by_year_month AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        strftime('%m', order_delivered_customer_date) AS month,\n        COUNT(*) AS monthly_delivered_orders\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY year, month\n),\nyearly_totals AS (\n    SELECT \n        year,\n       ...",
+          "score": 1.0205773955773956,
+          "similarity_max": 0.6588452088452088,
+          "tables_used": [
+            "delivered_orders_by_year_month",
+            "yearly_totals",
+            "olist_orders"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "WITH yearly_delivered_orders AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        COUNT(*) AS annual_delivered_orders\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY strftime('%Y', order_delivered_customer_date)\n),\nlowest_year AS (\n    SELECT year\n    FROM yearly_delivered_orders\n    ORDER BY annual_deli...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_delivered_orders",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders_by_year_month AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        strftime('%m', order_delivered_customer_date) AS month,\n        COUNT(*) AS monthly_delivered_orders\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY year, month\n),\nyearly_totals AS (\n    SELECT \n        year,\n       ...",
+          "score": 1.0205773955773956,
+          "similarity_max": 0.6588452088452088,
+          "tables_used": [
+            "delivered_orders_by_year_month",
+            "yearly_totals",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH yearly_delivered_orders AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        COUNT(*) AS annual_delivered_orders\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY strftime('%Y', order_delivered_customer_date)\n),\nlowest_year AS (\n    SELECT year\n    FROM yearly_delivered_orders\n    WHERE annual_deliver...",
+          "score": 0.9032520325203253,
+          "similarity_max": 0.7934959349593496,
+          "tables_used": [
+            "yearly_delivered_orders",
+            "olist_orders"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH yearly_delivered_orders AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        COUNT(*) AS annual_delivered_orders\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY strftime('%Y', order_delivered_customer_date)\n),\nlowest_year AS (\n    SELECT year\n    FROM yearly_delivered_orders\n    ORDER BY annual_deli...",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "yearly_delivered_orders",
+            "olist_orders"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders_by_year_month AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        strftime('%m', order_delivered_customer_date) AS month,\n        COUNT(*) AS monthly_delivered_orders\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY year, month\n),\nlowest_year AS (\n    SELECT \n        year,\n        S...",
+          "score": 1.0790841584158415,
+          "similarity_max": 0.7418316831683168,
+          "tables_used": [
+            "lowest_year",
+            "delivered_orders_by_year_month",
+            "dobym",
+            "olist_orders",
+            "ly"
+          ]
+        },
+        {
+          "sql": "WITH delivered_orders_by_year_month AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        strftime('%m', order_delivered_customer_date) AS month,\n        COUNT(*) AS monthly_delivered_orders\n    FROM olist_orders\n    WHERE order_delivered_customer_date IS NOT NULL\n      AND order_status = 'delivered'\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY year, month\n),\nyearly_totals AS (\n    SELECT \n        year,\n       ...",
+          "score": 1.0205773955773956,
+          "similarity_max": 0.6588452088452088,
+          "tables_used": [
+            "delivered_orders_by_year_month",
+            "yearly_totals",
+            "olist_orders"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH yearly_delivered_orders AS (\n    SELECT \n        strftime('%Y', order_delivered_customer_date) AS year,\n        COUNT(*) AS annual_delivered_orders\n    FROM olist_orders\n    WHERE order_status = 'delivered'\n      AND order_delivered_customer_date IS NOT NULL\n      AND strftime('%Y', order_delivered_customer_date) IN ('2016', '2017', '2018')\n    GROUP BY strftime('%Y', order_delivered_customer_date)\n),\nlowest_year AS (\n    SELECT year\n    FROM yearly_delivered_orders\n    ORDER BY annual_deli...",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "yearly_delivered_orders",
+        "olist_orders"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.62
+  }
+}

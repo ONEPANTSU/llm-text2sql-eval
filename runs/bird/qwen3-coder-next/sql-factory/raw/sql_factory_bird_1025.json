@@ -1,0 +1,132 @@
+{
+  "task_id": "bird_1025",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT l.name\nFROM League l\nJOIN Match m ON l.id = m.league_id\nWHERE m.season = '2016'\nGROUP BY l.id, l.name\nORDER BY SUM(m.home_team_goal + m.away_team_goal) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT l.name\nFROM League l\nJOIN Match m ON l.id = m.league_id\nWHERE m.season = '2016'\nGROUP BY l.id, l.name\nORDER BY SUM(m.home_team_goal + m.away_team_goal) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "WITH LeagueGoals AS (\n  SELECT \n    l.name,\n    SUM(m.home_team_goal + m.away_team_goal) AS total_goals\n  FROM League l\n  JOIN Match m ON l.id = m.league_id\n  WHERE m.season = '2016'\n  GROUP BY l.id, l.name\n)\nSELECT name\nFROM LeagueGoals\nORDER BY total_goals DESC\nLIMIT 1;",
+          "score": 1.0963636363636362,
+          "similarity_max": 0.7072727272727273,
+          "tables_used": [
+            "m",
+            "l",
+            "League",
+            "LeagueGoals",
+            "Match"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 2,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT l.name\nFROM League l\nJOIN Match m ON l.id = m.league_id\nWHERE m.season = '2016'\nGROUP BY l.id, l.name\nORDER BY SUM(m.home_team_goal + m.away_team_goal) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "l",
+            "League",
+            "m",
+            "Match"
+          ]
+        },
+        {
+          "sql": "WITH LeagueGoals AS (\n  SELECT \n    l.name,\n    SUM(m.home_team_goal + m.away_team_goal) AS total_goals\n  FROM League l\n  JOIN Match m ON l.id = m.league_id\n  WHERE m.season = '2016'\n  GROUP BY l.id, l.name\n)\nSELECT name\nFROM LeagueGoals\nORDER BY total_goals DESC\nLIMIT 1;",
+          "score": 1.0963636363636362,
+          "similarity_max": 0.7072727272727273,
+          "tables_used": [
+            "m",
+            "l",
+            "League",
+            "LeagueGoals",
+            "Match"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT l.name\nFROM League l\nJOIN Match m ON l.id = m.league_id\nWHERE m.season = '2016'\nGROUP BY l.id, l.name\nORDER BY SUM(m.home_team_goal + m.away_team_goal) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "l",
+        "League",
+        "m",
+        "Match"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 2,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.6666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 180.25
+  }
+}

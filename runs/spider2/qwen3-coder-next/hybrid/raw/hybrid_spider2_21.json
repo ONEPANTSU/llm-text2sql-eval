@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_21",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4070.41191701137,
+  "execution_time_ms": 12.78341599390842,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH city_payments AS (\n  SELECT \n    c.customer_city,\n    SUM(p.payment_value) AS total_payment,\n    COUNT(o.order_id) AS delivered_order_count\n  FROM olist_orders o\n  JOIN olist_order_payments p ON o.order_id = p.order_id\n  JOIN olist_customers c ON o.customer_id = c.customer_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_city\n  ORDER BY total_payment ASC\n  LIMIT 5\n)\nSELECT \n  AVG(total_payment) AS avg_total_payment,\n  AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9765830074902624,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH city_payments AS (\n    SELECT \n        c.customer_city,\n        SUM(p.payment_value) AS total_payment,\n        COUNT(o.order_id) AS delivered_order_count\n    FROM olist_orders o\n    JOIN olist_order_payments p ON o.order_id = p.order_id\n    JOIN olist_customers c ON o.customer_id = c.customer_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_city\n    ORDER BY total_payment ASC\n    LIMIT 5\n)\nSELECT \n    AVG(total_payment) AS avg_total_payment,\n    AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.9473340032855049,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH city_payments AS (\n    SELECT \n        olist_customers.customer_city,\n        SUM(olist_order_payments.payment_value) AS total_payment,\n        COUNT(olist_orders.order_id) AS delivered_order_count\n    FROM olist_orders\n    JOIN olist_order_payments ON olist_orders.order_id = olist_order_payments.order_id\n    JOIN olist_customers ON olist_orders.customer_id = olist_customers.customer_id\n    WHERE olist_orders.order_status = 'delivered'\n    GROUP BY olist_customers.customer_city\n    ORDER BY total_payment ASC\n    LIMIT 5\n)\nSELECT \n    AVG(total_payment) AS avg_total_payment,\n    AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8737090101931244,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH city_payments AS (\n    SELECT \n        olist_customers.customer_city,\n        SUM(olist_order_payments.payment_value) AS total_payment,\n        COUNT(olist_orders.order_id) AS delivered_order_count\n    FROM olist_orders\n    JOIN olist_order_payments ON olist_orders.order_id = olist_order_payments.order_id\n    JOIN olist_customers ON olist_orders.customer_id = olist_customers.customer_id\n    WHERE olist_orders.order_status = 'delivered'\n    GROUP BY olist_customers.customer_city\n    ORDER BY total_payment ASC\n    LIMIT 5\n)\nSELECT \n    AVG(total_payment) AS avg_total_payment,\n    AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.3252090100431815,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH city_payments AS (\n    SELECT \n        oc.customer_city,\n        SUM(oop.payment_value) AS total_payment,\n        COUNT(oop.order_id) AS delivered_order_count\n    FROM olist_orders oo\n    JOIN olist_order_payments oop ON oo.order_id = oop.order_id\n    JOIN olist_customers oc ON oo.customer_id = oc.customer_id\n    WHERE oo.order_status = 'delivered'\n    GROUP BY oc.customer_city\n    ORDER BY total_payment ASC\n    LIMIT 5\n)\nSELECT \n    AVG(total_payment) AS avg_total_payment,\n    AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.39412500336766243,
+      "result_signature": "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH city_payments AS (\n    SELECT \n        olist_customers.customer_city,\n        SUM(olist_order_payments.payment_value) AS total_payment,\n        COUNT(olist_orders.order_id) AS delivered_order_count\n    FROM olist_orders\n    JOIN olist_order_payments ON olist_orders.order_id = olist_order_payments.order_id\n    JOIN olist_customers ON olist_orders.customer_id = olist_customers.customer_id\n    WHERE olist_orders.order_status = 'delivered'\n    GROUP BY olist_customers.customer_city\n    ORDER BY total_payment ASC\n    LIMIT 5\n)\nSELECT \n    AVG(total_payment) AS avg_total_payment,\n    AVG(delivered_order_count) AS avg_delivered_order_count\nFROM city_payments;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d4519770d8fe71067b056b886da81fcd4325b098330e00fd7d39141923fa49d9": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4083.3622079953784
+}

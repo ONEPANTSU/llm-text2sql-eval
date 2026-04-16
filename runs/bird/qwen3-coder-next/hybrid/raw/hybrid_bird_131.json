@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_131",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1568.185584001185,
+  "execution_time_ms": 11.793540994403884,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT district.district_id\nFROM loan\nJOIN account ON loan.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE loan.status = 'A'\nGROUP BY district.district_id\nORDER BY SUM(loan.amount) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.8805419972050004,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT district.district_id\nFROM loan\nJOIN account ON loan.account_id = account.account_id\nJOIN district ON account.district_id = district.district_id\nWHERE loan.status = 'A'\nGROUP BY district.district_id\nORDER BY SUM(loan.amount) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.406583004107233,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT d.district_id\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.status = 'A'\nGROUP BY d.district_id\nORDER BY SUM(l.amount) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.517040996986907,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.district_id\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.status = 'A'\nGROUP BY d.district_id\nORDER BY SUM(l.amount) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6671249977662228,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.district_id\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.status = 'A'\nGROUP BY d.district_id\nORDER BY SUM(l.amount) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7447500029229559,
+      "result_signature": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT d.district_id\nFROM loan l\nJOIN account a ON l.account_id = a.account_id\nJOIN district d ON a.district_id = d.district_id\nWHERE l.status = 'A'\nGROUP BY d.district_id\nORDER BY SUM(l.amount) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1580.0656249994063
+}

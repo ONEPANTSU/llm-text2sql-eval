@@ -1,22 +1,22 @@
-# Placeholder / Skip Logic
+# Плейсхолдеры и пропуск задач
 
 ## TPC-DS
 
-TPC-DS data is generated via DuckDB's built-in `tpcds` extension (`CALL dsdgen()`), so no external toolkit is needed.
+Данные TPC-DS генерируются через встроенное расширение DuckDB `tpcds` (`CALL dsdgen()`), внешних инструментов не требуется.
 
-NL task descriptions for the 99 TPC-DS queries are stored in `data/tpcds/tasks.jsonl`.
+NL-описания для 99 запросов TPC-DS хранятся в `data/tpcds/tasks.jsonl`.
 
-## Data Validation
+## Валидация данных
 
-The test `tests/test_placeholders.py::test_no_placeholders` scans prepared data directories (`data/bird/`, `data/spider2/`, `data/tpcds/`) and fails if any JSONL entry has:
+Тест `tests/test_placeholders.py::test_no_placeholders` сканирует подготовленные директории данных (`data/bird/`, `data/spider2/`, `data/tpcds/`) и падает, если в любой JSONL-записи:
 
-- `question` and `prompt` both null
-- `sql` == "" (empty string)
-- `placeholder_tpcds` marker in the record
+- `question` и `prompt` одновременно null
+- `sql` == "" (пустая строка)
+- присутствует маркер `placeholder_tpcds`
 
-## Skip Reasons
+## Причины пропуска
 
-Tasks may be skipped at runtime with `skip_reason`:
-- `gold_exec_fail` — gold SQL fails to execute (broken test fixture)
-- `task_timeout` — task exceeded the configured timeout
-- `placeholder_tpcds` — legacy marker (should no longer appear)
+Задачи могут быть пропущены во время прогона с указанием `skip_reason`:
+- `gold_exec_fail` — эталонный SQL не исполняется (дефект тестовых данных)
+- `task_timeout` — задача превысила настроенный таймаут
+- `placeholder_tpcds` — legacy-маркер (не должен появляться в новых данных)

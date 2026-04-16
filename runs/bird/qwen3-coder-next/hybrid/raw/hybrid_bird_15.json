@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_15",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1508.9104590006173,
+  "execution_time_ms": 45.41154199978337,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 14.652291996753775,
+      "result_signature": "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.173332997306716,
+      "result_signature": "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.104708998871502,
+      "result_signature": "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.831957995018456,
+      "result_signature": "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.095417003962211,
+      "result_signature": "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT satscores.dname\nFROM satscores\nJOIN schools ON satscores.cds = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY satscores.dname\nORDER BY AVG(satscores.AvgScrRead) DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "173718f40e9b67b3c56336db681a1d2aa7d1fd199e0a4f48112d00a976eced4a": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1554.3669580001733
+}

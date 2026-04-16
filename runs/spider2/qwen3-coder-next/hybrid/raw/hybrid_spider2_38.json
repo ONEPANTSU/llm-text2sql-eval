@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_38",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 24585.99970799696,
+  "execution_time_ms": 27.00679200643208,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN promotions p ON s.promo_id = p.promo_id\n    JOIN channels c ON s.channel_id = c.channel_id\n    JOIN customers cust ON s.cust_id = cust.cust_id\n    JOIN countries co ON cust.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND p.promo_total_id = 1\n      AND c.channel_total_id = 1\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN promotions p ON s.promo_id = p.promo_id\n    JOIN channels c ON s.channel_id = c.channel_id\n    JOIN customers cust ON s.cust_id = cust.cust_id\n    JOIN countries co ON cust.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND p.promo_total_id = 1\n      AND c.channel_total_id = 1\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth_rates AS (\n    SELECT \n        s19.prod_id,\n        s19.calendar_month_number,\n        CASE \n            WHEN s19.amount_sold_2019 = 0 THEN NULL\n            ELSE (s20.amount_sold_2020 - s19.amount_sold_2019) * 1.0 / s19.amount_sold_2019\n        END AS growth_rate\n    FROM sales_2019 s19\n    LEFT JOIN sales_2020 s20 \n        ON s19.prod_id = s20.prod_id \n        AND s19.calendar_month_number = s20.calendar_month_number\n),\nprojected_2021 AS (\n    SELECT \n        gr.prod_id,\n        gr.calendar_month_number,\n        CASE \n            WHEN gr.growth_rate IS NULL THEN 0\n            ELSE (SELECT s.amount_sold \n                  FROM sales s\n                  JOIN times t ON s.time_id = t.time_id\n                  JOIN promotions p ON s.promo_id = p.promo_id\n                  JOIN channels c ON s.channel_id = c.channel_id\n                  JOIN customers cust ON s.cust_id = cust.cust_id\n                  JOIN countries co ON cust.country_id = co.country_id\n                  WHERE t.calendar_year = 2020\n                    AND p.promo_total_id = 1\n                    AND c.channel_total_id = 1\n                    AND co.country_name = 'France'\n                    AND s.prod_id = gr.prod_id\n                    AND t.calendar_month_number = gr.calendar_month_number\n            ) * (1 + gr.growth_rate)\n        END AS projected_amount\n    FROM growth_rates gr\n),\nsales_2021_projected AS (\n    SELECT \n        p.calendar_month_number,\n        p.projected_amount * cu.to_us AS amount_sold_usd\n    FROM projected_2021 p\n    JOIN currency cu \n        ON cu.country = 'France' \n        AND cu.year = 2021 \n        AND cu.month = p.calendar_month_number\n)\nSELECT \n    calendar_month_number,\n    AVG(amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM sales_2021_projected\nGROUP BY calendar_month_number\nORDER BY calendar_month_number ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.224749998888001,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth_rates AS (\n    SELECT \n        s19.prod_id,\n        s19.calendar_month_number,\n        CASE \n            WHEN s19.amount_sold_2019 = 0 THEN NULL\n            ELSE (s20.amount_sold_2020 - s19.amount_sold_2019) * 1.0 / s19.amount_sold_2019\n        END AS growth_rate\n    FROM sales_2019 s19\n    JOIN sales_2020 s20 \n        ON s19.prod_id = s20.prod_id \n        AND s19.calendar_month_number = s20.calendar_month_number\n),\nsales_2020_with_growth AS (\n    SELECT \n        s20.prod_id,\n        s20.calendar_month_number,\n        s20.amount_sold_2020,\n        gr.growth_rate\n    FROM sales_2020 s20\n    JOIN growth_rates gr \n        ON s20.prod_id = gr.prod_id \n        AND s20.calendar_month_number = gr.calendar_month_number\n),\nsales_2021_projected AS (\n    SELECT \n        s20g.prod_id,\n        s20g.calendar_month_number,\n        s20g.amount_sold_2020 * (1 + s20g.growth_rate) AS amount_sold_2021,\n        cur.to_us\n    FROM sales_2020_with_growth s20g\n    JOIN currency cur \n        ON cur.country = 'France' \n        AND cur.year = 2021 \n        AND cur.month = s20g.calendar_month_number\n    WHERE s20g.growth_rate IS NOT NULL\n),\nfiltered_sales_2021 AS (\n    SELECT \n        sp.prod_id,\n        sp.calendar_month_number,\n        sp.amount_sold_2021 * sp.to_us AS amount_sold_usd\n    FROM sales_2021_projected sp\n    JOIN sales s ON s.prod_id = sp.prod_id AND s.time_id = (\n        SELECT t.time_id \n        FROM times t \n        WHERE t.calendar_year = 2021 \n          AND t.calendar_month_number = sp.calendar_month_number\n        LIMIT 1\n    )\n    JOIN promotions p ON s.promo_id = p.promo_id\n    JOIN channels ch ON s.channel_id = ch.channel_id\n    WHERE p.promo_total_id = 1\n      AND ch.channel_total_id = 1\n)\nSELECT \n    calendar_month_number,\n    AVG(amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM filtered_sales_2021\nGROUP BY calendar_month_number\nORDER BY calendar_month_number ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3271250063553452,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN promotions pr ON s.promo_id = pr.promo_id\n    JOIN channels ch ON s.channel_id = ch.channel_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND pr.promo_total_id = 1\n      AND ch.channel_total_id = 1\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN products p ON s.prod_id = p.prod_id\n    JOIN promotions pr ON s.promo_id = pr.promo_id\n    JOIN channels ch ON s.channel_id = ch.channel_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND pr.promo_total_id = 1\n      AND ch.channel_total_id = 1\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth AS (\n    SELECT \n        s2019.prod_id,\n        s2019.calendar_month_number,\n        s2019.amount_sold_2019,\n        s2020.amount_sold_2020,\n        CASE \n            WHEN s2019.amount_sold_2019 = 0 THEN 0\n            ELSE (s2020.amount_sold_2020 - s2019.amount_sold_2019) * 1.0 / s2019.amount_sold_2019\n        END AS growth_rate\n    FROM sales_2019 s2019\n    JOIN sales_2020 s2020 \n        ON s2019.prod_id = s2020.prod_id \n        AND s2019.calendar_month_number = s2020.calendar_month_number\n),\nprojected_2021 AS (\n    SELECT \n        g.prod_id,\n        g.calendar_month_number,\n        g.amount_sold_2020 * (1 + g.growth_rate) AS amount_sold_projected,\n        c.to_us\n    FROM growth g\n    JOIN currency c \n        ON c.country = 'France' \n        AND c.year = 2021 \n        AND c.month = g.calendar_month_number\n),\namounts_usd AS (\n    SELECT \n        calendar_month_number,\n        amount_sold_projected * to_us AS amount_sold_usd\n    FROM projected_2021\n)\nSELECT \n    calendar_month_number,\n    AVG(amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM amounts_usd\nGROUP BY calendar_month_number\nORDER BY calendar_month_number ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7279999990714714,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number AS month,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth_rates AS (\n    SELECT \n        COALESCE(s19.prod_id, s20.prod_id) AS prod_id,\n        COALESCE(s19.month, s20.month) AS month,\n        CASE \n            WHEN s19.amount_sold_2019 IS NULL OR s19.amount_sold_2019 = 0 THEN 0\n            ELSE (s20.amount_sold_2020 - s19.amount_sold_2019) / s19.amount_sold_2019\n        END AS growth_rate,\n        COALESCE(s20.amount_sold_2020, 0) AS amount_sold_2020,\n        COALESCE(s19.amount_sold_2019, 0) AS amount_sold_2019\n    FROM sales_2019 s19\n    FULL OUTER JOIN sales_2020 s20 \n        ON s19.prod_id = s20.prod_id AND s19.month = s20.month\n),\nsales_2021_projected AS (\n    SELECT \n        gr.prod_id,\n        t21.calendar_month_number AS month,\n        gr.amount_sold_2020 * (1 + gr.growth_rate) AS amount_sold_2021,\n        cur.to_us AS exchange_rate,\n        gr.amount_sold_2020 * (1 + gr.growth_rate) * cur.to_us AS amount_sold_usd\n    FROM growth_rates gr\n    JOIN times t21 ON t21.calendar_month_number = gr.month\n    JOIN currency cur ON cur.year = 2021 AND cur.month = gr.month\n    JOIN customers c ON c.cust_id IS NOT NULL -- placeholder to join countries\n    JOIN countries co ON co.country_id = c.country_id\n    WHERE co.country_name = 'France'\n),\nfiltered_sales_2021 AS (\n    SELECT \n        s21.prod_id,\n        s21.month,\n        s21.amount_sold_usd\n    FROM sales_2021_projected s21\n    JOIN sales s ON s.prod_id = s21.prod_id AND s.time_id IN (\n        SELECT time_id FROM times WHERE calendar_year = 2021 AND calendar_month_number = s21.month\n    )\n    JOIN promotions p ON s.promo_id = p.promo_id AND p.promo_total_id = 1\n    JOIN channels ch ON s.channel_id = ch.channel_id AND ch.channel_total_id = 1\n)\nSELECT \n    fp.month,\n    AVG(fp.amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM filtered_sales_2021 fp\nGROUP BY fp.month\nORDER BY fp.month ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8531249914085492,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth_rates AS (\n    SELECT \n        COALESCE(s19.prod_id, s20.prod_id) AS prod_id,\n        COALESCE(s19.calendar_month_number, s20.calendar_month_number) AS calendar_month_number,\n        CASE \n            WHEN s19.amount_sold_2019 IS NULL OR s19.amount_sold_2019 = 0 THEN 0\n            ELSE (s20.amount_sold_2020 - s19.amount_sold_2019) * 1.0 / s19.amount_sold_2019\n        END AS growth_rate\n    FROM sales_2019 s19\n    FULL OUTER JOIN sales_2020 s20 \n        ON s19.prod_id = s20.prod_id \n        AND s19.calendar_month_number = s20.calendar_month_number\n),\nprojected_2021 AS (\n    SELECT \n        s20.prod_id,\n        s20.calendar_month_number,\n        s20.amount_sold_2020 * (1 + COALESCE(gr.growth_rate, 0)) AS amount_sold_projected,\n        c.to_us\n    FROM sales_2020 s20\n    JOIN growth_rates gr \n        ON s20.prod_id = gr.prod_id \n        AND s20.calendar_month_number = gr.calendar_month_number\n    JOIN countries co ON co.country_name = 'France'\n    JOIN currency c \n        ON c.country = co.country_name \n        AND c.year = 2021 \n        AND c.month = s20.calendar_month_number\n),\nfiltered_projected AS (\n    SELECT \n        p.calendar_month_number,\n        p.amount_sold_projected * p.to_us AS amount_sold_usd\n    FROM projected_2021 p\n    JOIN sales s \n        ON s.prod_id = p.prod_id \n        AND s.time_id IN (SELECT time_id FROM times WHERE calendar_year = 2021 AND calendar_month_number = p.calendar_month_number)\n    JOIN promotions pr ON s.promo_id = pr.promo_id\n    JOIN channels ch ON s.channel_id = ch.channel_id\n    WHERE pr.promo_total_id = 1\n      AND ch.channel_total_id = 1\n)\nSELECT \n    calendar_month_number,\n    AVG(amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM filtered_projected\nGROUP BY calendar_month_number\nORDER BY calendar_month_number ASC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6126250082161278,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH sales_2019 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2019\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2019\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\nsales_2020 AS (\n    SELECT \n        s.prod_id,\n        t.calendar_month_number,\n        SUM(s.amount_sold) AS amount_sold_2020\n    FROM sales s\n    JOIN times t ON s.time_id = t.time_id\n    JOIN customers c ON s.cust_id = c.cust_id\n    JOIN countries co ON c.country_id = co.country_id\n    WHERE t.calendar_year = 2020\n      AND co.country_name = 'France'\n    GROUP BY s.prod_id, t.calendar_month_number\n),\ngrowth_rates AS (\n    SELECT \n        COALESCE(s19.prod_id, s20.prod_id) AS prod_id,\n        COALESCE(s19.calendar_month_number, s20.calendar_month_number) AS calendar_month_number,\n        CASE \n            WHEN s19.amount_sold_2019 IS NULL OR s19.amount_sold_2019 = 0 THEN 0\n            ELSE (s20.amount_sold_2020 - s19.amount_sold_2019) * 1.0 / s19.amount_sold_2019\n        END AS growth_rate\n    FROM sales_2019 s19\n    FULL OUTER JOIN sales_2020 s20 \n        ON s19.prod_id = s20.prod_id \n        AND s19.calendar_month_number = s20.calendar_month_number\n),\nprojected_2021 AS (\n    SELECT \n        s20.prod_id,\n        s20.calendar_month_number,\n        s20.amount_sold_2020 * (1 + COALESCE(gr.growth_rate, 0)) AS amount_sold_projected,\n        c.to_us\n    FROM sales_2020 s20\n    JOIN growth_rates gr \n        ON s20.prod_id = gr.prod_id \n        AND s20.calendar_month_number = gr.calendar_month_number\n    JOIN countries co ON co.country_name = 'France'\n    JOIN currency c \n        ON c.country = co.country_name \n        AND c.year = 2021 \n        AND c.month = s20.calendar_month_number\n),\nfiltered_projected AS (\n    SELECT \n        p.calendar_month_number,\n        p.amount_sold_projected * p.to_us AS amount_sold_usd\n    FROM projected_2021 p\n    JOIN sales s \n        ON s.prod_id = p.prod_id \n        AND s.time_id IN (SELECT time_id FROM times WHERE calendar_year = 2021 AND calendar_month_number = p.calendar_month_number)\n    JOIN promotions pr ON s.promo_id = pr.promo_id\n    JOIN channels ch ON s.channel_id = ch.channel_id\n    WHERE pr.promo_total_id = 1\n      AND ch.channel_total_id = 1\n)\nSELECT \n    calendar_month_number,\n    AVG(amount_sold_usd) AS avg_projected_monthly_sales_usd\nFROM filtered_projected\nGROUP BY calendar_month_number\nORDER BY calendar_month_number ASC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 24613.2372909924
+}

@@ -1,0 +1,219 @@
+{
+  "task_id": "spider2_115",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nstart_overtakes AS (\n    SELECT r.race_id, r.driver_id, r.lap, r.position_order\n    FROM retirements r\n    JOIN results res ON r.race_id = res.race_id AND r.driver_id = res.driver_id\n    WHERE r.lap = 1 AND res.grid > res.position_order\n),\npit_stops_overtakes AS (\n    SELECT ps.race_id, ps.driver_id, ps.lap, COUNT(*) AS pit_count\n    FROM pit_stops ps\n    JOIN first_five_laps ffl ON ps.race_id =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "start_overtakes",
+            "r",
+            "res",
+            "ffl",
+            "lap_position_changes",
+            "retirements",
+            "first_five_laps",
+            "pit_stops",
+            "results",
+            "lpc",
+            "ps",
+            "lap_positions",
+            "lp",
+            "lap_times"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nstart_overtakes AS (\n    SELECT r.race_id, r.driver_id, r.lap, r.position_order\n    FROM retirements r\n    JOIN results res ON r.race_id = res.race_id AND r.driver_id = res.driver_id\n    WHERE r.lap = 1 AND res.grid > res.position_order\n),\npit_stops_overtakes AS (\n    SELECT ps.race_id, ps.driver_id, ps.lap, COUNT(*) AS pit_count\n    FROM pit_stops ps\n    JOIN first_five_laps ffl ON ps.race_id =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "start_overtakes",
+            "r",
+            "res",
+            "ffl",
+            "lap_position_changes",
+            "retirements",
+            "first_five_laps",
+            "pit_stops",
+            "results",
+            "lpc",
+            "ps",
+            "lap_positions",
+            "lp",
+            "lap_times"
+          ]
+        },
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nlap_position_changes AS (\n    SELECT \n        lp.race_id, \n        lp.driver_id, \n        lp.lap, \n        lp.position AS current_pos,\n        LAG(lp.position) OVER (PARTITION BY lp.race_id, lp.driver_id ORDER BY lp.lap) AS prev_pos\n    FROM lap_positions lp\n    WHERE lp.lap BETWEEN 2 AND 5 AND lp.lap_type = 'normal'\n),\non_track_overtakes AS (\n    SELECT DISTINCT race_id, driver_id, lap\n    FROM...",
+          "score": 0.7654728511320377,
+          "similarity_max": 0.7690542977359247,
+          "tables_used": [
+            "start_overtakes",
+            "r",
+            "lp",
+            "res",
+            "ffl",
+            "lap_position_changes",
+            "retirements",
+            "first_five_laps",
+            "results",
+            "ps",
+            "lap_positions",
+            "pit_stops",
+            "lap_times"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nstart_overtakes AS (\n    SELECT r.race_id, r.driver_id, r.lap, r.position_order\n    FROM retirements r\n    JOIN results res ON r.race_id = res.race_id AND r.driver_id = res.driver_id\n    WHERE r.lap = 1 AND res.grid > res.position_order\n),\npit_stops_overtakes AS (\n    SELECT ps.race_id, ps.driver_id, ps.lap, COUNT(*) AS pit_count\n    FROM pit_stops ps\n    JOIN first_five_laps ffl ON ps.race_id =...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "start_overtakes",
+            "r",
+            "res",
+            "ffl",
+            "lap_position_changes",
+            "retirements",
+            "first_five_laps",
+            "pit_stops",
+            "results",
+            "lpc",
+            "ps",
+            "lap_positions",
+            "lp",
+            "lap_times"
+          ]
+        },
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nposition_gains AS (\n    SELECT \n        lp.race_id,\n        lp.driver_id,\n        lp.lap,\n        lp.position AS current_pos,\n        LAG(lp.position) OVER (PARTITION BY lp.race_id, lp.driver_id ORDER BY lp.lap) AS prev_pos\n    FROM lap_positions lp\n    WHERE lp.lap BETWEEN 2 AND 5 AND lp.lap_type = 'normal'\n),\non_track_overtakes AS (\n    SELECT DISTINCT race_id, driver_id, lap\n    FROM position...",
+          "score": 0.9120775729646697,
+          "similarity_max": 0.6758448540706604,
+          "tables_used": [
+            "start_overtakes",
+            "lp",
+            "res",
+            "pit_in_first_five",
+            "retirements",
+            "results",
+            "lap_times",
+            "lap_positions",
+            "pit_stops",
+            "position_gains",
+            "retirements_in_first_five"
+          ]
+        },
+        {
+          "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nlap_position_changes AS (\n    SELECT \n        lp.race_id, \n        lp.driver_id, \n        lp.lap, \n        lp.position AS current_pos,\n        LAG(lp.position) OVER (PARTITION BY lp.race_id, lp.driver_id ORDER BY lp.lap) AS prev_pos\n    FROM lap_positions lp\n    WHERE lp.lap BETWEEN 2 AND 5 AND lp.lap_type = 'normal'\n),\non_track_overtakes AS (\n    SELECT DISTINCT race_id, driver_id, lap\n    FROM...",
+          "score": 0.7654728511320377,
+          "similarity_max": 0.7690542977359247,
+          "tables_used": [
+            "start_overtakes",
+            "r",
+            "lp",
+            "res",
+            "ffl",
+            "lap_position_changes",
+            "retirements",
+            "first_five_laps",
+            "results",
+            "ps",
+            "lap_positions",
+            "pit_stops",
+            "lap_times"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH first_five_laps AS (\n    SELECT race_id, driver_id, lap\n    FROM lap_times\n    WHERE lap <= 5\n),\nstart_overtakes AS (\n    SELECT r.race_id, r.driver_id, r.lap, r.position_order\n    FROM retirements r\n    JOIN results res ON r.race_id = res.race_id AND r.driver_id = res.driver_id\n    WHERE r.lap = 1 AND res.grid > res.position_order\n),\npit_stops_overtakes AS (\n    SELECT ps.race_id, ps.driver_id, ps.lap, COUNT(*) AS pit_count\n    FROM pit_stops ps\n    JOIN first_five_laps ffl ON ps.race_id =...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "start_overtakes",
+        "r",
+        "res",
+        "ffl",
+        "lap_position_changes",
+        "retirements",
+        "first_five_laps",
+        "pit_stops",
+        "results",
+        "lpc",
+        "ps",
+        "lap_positions",
+        "lp",
+        "lap_times"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.3333333333333333,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such column: r.lap",
+        "count": 1
+      },
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "wrong number of arguments to function COUNT()",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 4.69
+  }
+}

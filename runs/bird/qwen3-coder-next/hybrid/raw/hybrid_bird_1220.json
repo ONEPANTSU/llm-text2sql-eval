@@ -1,0 +1,155 @@
+{
+  "task_id": "bird_1220",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5521.560750006756,
+  "execution_time_ms": 20.413500002177898,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN = (\n    SELECT MAX(UN) \n    FROM Laboratory \n    WHERE UN <= (\n        SELECT MAX(UN) \n        FROM Laboratory\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.5114999995566905,
+      "result_signature": "d0592133e0f93e5f043be4a467462150225ac2f693c279493541465ade82cc92",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN = (\n    SELECT MAX(UN)\n    FROM Laboratory\n    WHERE UN <= 20\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3527919984189793,
+      "result_signature": "e609424f286cdd2845133d725cf06adff67767a6542381e8c9df2506ca46040c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN = (\n    SELECT MAX(UN)\n    FROM Laboratory\n    WHERE UN < (\n        SELECT MAX(UN)\n        FROM Laboratory\n    )\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.894125005695969,
+      "result_signature": "e5763989a0e710056d3579e04552a5c9d59e86498040145677aee2e921df0917",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN BETWEEN 7.1 AND 8.5;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4743749998160638,
+      "result_signature": "69d7e7b86c78d76bd296e6365c0b5d9fba43316e0e8cee3b0d0c840fff0afa07",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN >= 15 AND l.UN <= 20;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.329874998598825,
+      "result_signature": "2132bce669d74b3a8ce78b8eb82cca8ca20ac7538df6ed2cc5e191098f666dfb",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN BETWEEN 7.1 AND 8.5;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "d0592133e0f93e5f043be4a467462150225ac2f693c279493541465ade82cc92": 1,
+        "e609424f286cdd2845133d725cf06adff67767a6542381e8c9df2506ca46040c": 1,
+        "e5763989a0e710056d3579e04552a5c9d59e86498040145677aee2e921df0917": 1,
+        "69d7e7b86c78d76bd296e6365c0b5d9fba43316e0e8cee3b0d0c840fff0afa07": 2,
+        "2132bce669d74b3a8ce78b8eb82cca8ca20ac7538df6ed2cc5e191098f666dfb": 1
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      3,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 1,
+    "expansion_time_ms": 4453.510249993997,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT p.ID, p.SEX, p.Birthday\nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.UN >= 7.1 AND l.UN <= 8.5;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.9432910048635677,
+        "result_signature": "69d7e7b86c78d76bd296e6365c0b5d9fba43316e0e8cee3b0d0c840fff0afa07",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 9995.569750004506
+}

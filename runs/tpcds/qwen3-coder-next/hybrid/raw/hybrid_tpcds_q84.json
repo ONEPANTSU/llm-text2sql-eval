@@ -1,0 +1,133 @@
+{
+  "task_id": "tpcds_q84",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4243.658833001973,
+  "execution_time_ms": 35.10720899794251,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state, d_year, i_category\nORDER BY \n    s_state ASC, d_year ASC, total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 9.489499992923811,
+      "result_signature": "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state,\n    d_year,\n    i_category\nORDER BY \n    s_state ASC,\n    d_year ASC,\n    total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.550457997946069,
+      "result_signature": "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state, d_year, i_category\nORDER BY \n    s_state ASC, d_year ASC, total_sales DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.866750012501143,
+      "result_signature": "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state,\n    d_year,\n    i_category\nORDER BY \n    s_state ASC,\n    d_year ASC,\n    total_sales DESC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.958499998087063,
+      "result_signature": "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state,\n    d_year,\n    i_category\nORDER BY \n    s_state ASC,\n    d_year ASC,\n    total_sales DESC\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.3420829974347726,
+      "result_signature": "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT \n    s_state,\n    d_year,\n    i_category,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN store ON store_sales.ss_store_sk = store.s_store_sk\n    JOIN item ON store_sales.ss_item_sk = item.i_item_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\nGROUP BY \n    s_state, d_year, i_category\nORDER BY \n    s_state ASC, d_year ASC, total_sales DESC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "48cd890811aaae6711cf5922dad7a48954f7dcc732a495c028d3e3d8846fb2a1": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4279.092999990098
+}

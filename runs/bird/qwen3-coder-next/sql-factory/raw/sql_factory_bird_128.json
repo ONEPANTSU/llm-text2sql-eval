@@ -1,0 +1,172 @@
+{
+  "task_id": "bird_128",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT d.district_id, COUNT(*) AS female_count\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON c.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT d.district_id, COUNT(*) AS female_count\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON c.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH female_accounts AS (\n    SELECT d.district_id, COUNT(*) AS female_count\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    JOIN district d ON c.district_id = d.district_id\n    WHERE c.gender = 'F'\n    GROUP BY d.district_id\n)\nSELECT district_id, female_count\nFROM female_accounts\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 1.0695192307692307,
+          "similarity_max": 0.7609615384615385,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "female_accounts",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT d.district_id, COUNT(*) AS female_count\nFROM client c\nJOIN disp dp ON c.client_id = dp.client_id\nJOIN account a ON dp.account_id = a.account_id\nJOIN district d ON c.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 0.8129864253393666,
+          "similarity_max": 0.7740271493212669,
+          "tables_used": [
+            "disp",
+            "client",
+            "d",
+            "a",
+            "c",
+            "account",
+            "dp",
+            "district"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT d.district_id, COUNT(*) AS female_count\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON c.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "WITH female_accounts AS (\n    SELECT d.district_id, COUNT(*) AS female_count\n    FROM client c\n    JOIN account a ON c.district_id = a.district_id\n    JOIN district d ON c.district_id = d.district_id\n    WHERE c.gender = 'F'\n    GROUP BY d.district_id\n)\nSELECT district_id, female_count\nFROM female_accounts\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 1.0695192307692307,
+          "similarity_max": 0.7609615384615385,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "female_accounts",
+            "account",
+            "district"
+          ]
+        },
+        {
+          "sql": "SELECT d.A2 AS district_name, COUNT(*) AS female_count\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON a.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.A2, d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+          "score": 0.8868534482758621,
+          "similarity_max": 0.8262931034482759,
+          "tables_used": [
+            "client",
+            "d",
+            "c",
+            "a",
+            "account",
+            "district"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT d.district_id, COUNT(*) AS female_count\nFROM client c\nJOIN account a ON c.district_id = a.district_id\nJOIN district d ON c.district_id = d.district_id\nWHERE c.gender = 'F'\nGROUP BY d.district_id\nORDER BY female_count DESC\nLIMIT 9;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "client",
+        "d",
+        "c",
+        "a",
+        "account",
+        "district"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 83.58
+  }
+}

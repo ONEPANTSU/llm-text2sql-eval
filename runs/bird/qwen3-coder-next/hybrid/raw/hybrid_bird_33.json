@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_33",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1633.4112500044284,
+  "execution_time_ms": 22.386500000720844,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT schools.School, schools.Website\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Free Meal Count (Ages 5-17)` >= 1900\n  AND frpm.`Free Meal Count (Ages 5-17)` <= 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 11.66508300229907,
+      "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT schools.School, schools.Website\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.\"Free Meal Count (Ages 5-17)\" >= 1900\n  AND frpm.\"Free Meal Count (Ages 5-17)\" <= 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.997165996930562,
+      "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT schools.School, schools.Website\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.\"Free Meal Count (Ages 5-17)\" >= 1900\n  AND frpm.\"Free Meal Count (Ages 5-17)\" <= 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.931875002104789,
+      "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT schools.Website, schools.School\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.\"Free Meal Count (Ages 5-17)\" >= 1900\n  AND frpm.\"Free Meal Count (Ages 5-17)\" <= 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2465840011136606,
+      "result_signature": "c964c4d68719719fdc3a14297f99a0fa29ec0c075a9c7fc3a8d0a8b441b9d117",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.School, schools.Website\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Free Meal Count (Ages 5-17)` >= 1900\n  AND frpm.`Free Meal Count (Ages 5-17)` <= 2000;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9412499968893826,
+      "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT schools.School, schools.Website\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`Free Meal Count (Ages 5-17)` >= 1900\n  AND frpm.`Free Meal Count (Ages 5-17)` <= 2000;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76": 6,
+        "c964c4d68719719fdc3a14297f99a0fa29ec0c075a9c7fc3a8d0a8b441b9d117": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1127.5731249988894,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT s.School, s.Website\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE f.`Free Meal Count (Ages 5-17)` BETWEEN 1900 AND 2000;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 6.362874999467749,
+        "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT s.School, s.Website\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE f.`Free Meal Count (Ages 5-17)` BETWEEN 1900 AND 2000;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.422332996909972,
+        "result_signature": "22b305383b2d64385b4274e8558d13b892e9cd387d8ef6fbc9202e0b745e1f76",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2783.5472090009716
+}

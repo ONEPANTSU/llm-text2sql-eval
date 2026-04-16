@@ -1,0 +1,134 @@
+{
+  "task_id": "tpcds_q04",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 17781.924583003274,
+  "execution_time_ms": 162.23037500458304,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH yearly_sales AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        d_year,\n        SUM((ss_ext_list_price - ss_ext_wholesale_cost - ss_ext_discount_amt + ss_ext_sales_price)/2) AS store_total,\n        SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_total,\n        SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_total\n    FROM customer\n    JOIN store_sales ON customer.c_customer_sk = store_sales.ss_customer_sk\n    JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n    JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk AND store_sales.ss_sold_date_sk = catalog_sales.cs_sold_date_sk\n    JOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk AND store_sales.ss_sold_date_sk = web_sales.ws_sold_date_sk\n    WHERE d_year IN (2001, 2002)\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n),\ncustomer_yearly AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        MAX(CASE WHEN d_year = 2001 THEN store_total END) AS store_2001,\n        MAX(CASE WHEN d_year = 2001 THEN catalog_total END) AS catalog_2001,\n        MAX(CASE WHEN d_year = 2001 THEN web_total END) AS web_2001,\n        MAX(CASE WHEN d_year = 2002 THEN store_total END) AS store_2002,\n        MAX(CASE WHEN d_year = 2002 THEN catalog_total END) AS catalog_2002,\n        MAX(CASE WHEN d_year = 2002 THEN web_total END) AS web_2002\n    FROM yearly_sales\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag\n),\nfiltered_customers AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag\n    FROM customer_yearly\n    WHERE store_2001 > 0 AND catalog_2001 > 0 AND web_2001 > 0\n      AND store_2002 > 0 AND catalog_2002 > 0 AND web_2002 > 0\n      AND catalog_2002 / store_2002 > catalog_2001 / store_2001\n      AND catalog_2002 / web_2002 > catalog_2001 / web_2001\n)\nSELECT \n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag\nFROM filtered_customers\nORDER BY c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag\nLIMIT 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 69.57875000080094,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH year_total AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    d_year,\n    SUM((ss_ext_list_price - ss_ext_wholesale_cost - ss_ext_discount_amt + ss_ext_sales_price)/2) AS store_sales_total,\n    SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_sales_total,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_sales_total\n  FROM store_sales\n  JOIN customer ON ss_customer_sk = c_customer_sk\n  JOIN date_dim ON ss_sold_date_sk = d_date_sk\n  WHERE d_year IN (2001, 2002)\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n\n  UNION ALL\n\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    d_year,\n    SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS store_sales_total,\n    SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_sales_total,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_sales_total\n  FROM catalog_sales\n  JOIN customer ON cs_bill_customer_sk = c_customer_sk\n  JOIN date_dim ON cs_sold_date_sk = d_date_sk\n  WHERE d_year IN (2001, 2002)\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n\n  UNION ALL\n\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    d_year,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS store_sales_total,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS catalog_sales_total,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_sales_total\n  FROM web_sales\n  JOIN customer ON ws_bill_customer_sk = c_customer_sk\n  JOIN date_dim ON ws_sold_date_sk = d_date_sk\n  WHERE d_year IN (2001, 2002)\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n),\ncustomer_year_totals AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    SUM(CASE WHEN d_year = 2001 THEN store_sales_total ELSE 0 END) AS s2001_store,\n    SUM(CASE WHEN d_year = 2001 THEN catalog_sales_total ELSE 0 END) AS s2001_catalog,\n    SUM(CASE WHEN d_year = 2001 THEN web_sales_total ELSE 0 END) AS s2001_web,\n    SUM(CASE WHEN d_year = 2002 THEN store_sales_total ELSE 0 END) AS s2002_store,\n    SUM(CASE WHEN d_year = 2002 THEN catalog_sales_total ELSE 0 END) AS s2002_catalog,\n    SUM(CASE WHEN d_year = 2002 THEN web_sales_total ELSE 0 END) AS s2002_web\n  FROM year_total\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag\n),\nfiltered_customers AS (\n  SELECT\n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    s2001_store,\n    s2001_catalog,\n    s2001_web,\n    s2002_store,\n    s2002_catalog,\n    s2002_web\n  FROM customer_year_totals\n  WHERE s2001_store > 0 AND s2001_catalog > 0 AND s2001_web > 0\n    AND s2002_store > 0 AND s2002_catalog > 0 AND s2002_web > 0\n    AND s2001_catalog / s2001_store > 1\n    AND s2001_catalog / s2001_web > 1\n    AND s2002_catalog / s2002_store > 1\n    AND s2002_catalog / s2002_web > 1\n)\nSELECT\n  c_customer_id,\n  c_first_name,\n  c_last_name,\n  c_preferred_cust_flag\nFROM filtered_customers\nJOIN customer USING (c_customer_sk)\nORDER BY c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag\nLIMIT 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cs_ext_list_price\" not found in FROM clause!\nCandidate bindings: \"ss_ext_list_price\", \"ss_list_price\", \"ss_ext_sales_price\", \"ss_sales_price\", \"ss_ext_tax\"\n\nLINE 10:     SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount...\n                  ^",
+      "exec_time_ms": 15.748707999591716,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH year_total AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    d_year,\n    SUM((ss_ext_list_price - ss_ext_wholesale_cost - ss_ext_discount_amt + ss_ext_sales_price)/2) AS store_sales,\n    SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_sales,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_sales\n  FROM store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk AND store_sales.ss_sold_date_sk = catalog_sales.cs_sold_date_sk\n  JOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk AND store_sales.ss_sold_date_sk = web_sales.ws_sold_date_sk\n  WHERE d_year IN (2001, 2002)\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n),\nfiltered AS (\n  SELECT \n    t1.c_customer_sk,\n    t1.c_customer_id,\n    t1.c_first_name,\n    t1.c_last_name,\n    t1.c_preferred_cust_flag\n  FROM year_total t1\n  JOIN year_total t2 \n    ON t1.c_customer_sk = t2.c_customer_sk \n    AND t1.d_year = 2001 \n    AND t2.d_year = 2002\n  WHERE t1.store_sales > 0 \n    AND t1.catalog_sales > 0 \n    AND t1.web_sales > 0\n    AND t2.store_sales > 0 \n    AND t2.catalog_sales > 0 \n    AND t2.web_sales > 0\n    AND (t1.catalog_sales / t1.store_sales) > 1\n    AND (t2.catalog_sales / t2.store_sales) > 1\n    AND (t1.catalog_sales / t1.store_sales) > (t1.web_sales / t1.store_sales)\n    AND (t2.catalog_sales / t2.store_sales) > (t2.web_sales / t2.store_sales)\n)\nSELECT \n  c_customer_id,\n  c_first_name,\n  c_last_name,\n  c_preferred_cust_flag\nFROM filtered\nORDER BY c_customer_id ASC, c_first_name ASC, c_last_name ASC, c_preferred_cust_flag ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 24.958499998319894,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH yearly_sales AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        d_year,\n        SUM((ss_ext_list_price - ss_ext_wholesale_cost - ss_ext_discount_amt + ss_ext_sales_price)/2) AS store_year_total,\n        NULL AS catalog_year_total,\n        NULL AS web_year_total\n    FROM store_sales\n    JOIN customer ON ss_customer_sk = c_customer_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    WHERE d_year IN (2001, 2002)\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n\n    UNION ALL\n\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        d_year,\n        NULL AS store_year_total,\n        SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_year_total,\n        NULL AS web_year_total\n    FROM catalog_sales\n    JOIN customer ON cs_bill_customer_sk = c_customer_sk\n    JOIN date_dim ON cs_sold_date_sk = d_date_sk\n    WHERE d_year IN (2001, 2002)\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n\n    UNION ALL\n\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        d_year,\n        NULL AS store_year_total,\n        NULL AS catalog_year_total,\n        SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_year_total\n    FROM web_sales\n    JOIN customer ON ws_bill_customer_sk = c_customer_sk\n    JOIN date_dim ON ws_sold_date_sk = d_date_sk\n    WHERE d_year IN (2001, 2002)\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n),\naggregated_sales AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        MAX(CASE WHEN d_year = 2001 THEN store_year_total END) AS s2001,\n        MAX(CASE WHEN d_year = 2002 THEN store_year_total END) AS s2002,\n        MAX(CASE WHEN d_year = 2001 THEN catalog_year_total END) AS c2001,\n        MAX(CASE WHEN d_year = 2002 THEN catalog_year_total END) AS c2002,\n        MAX(CASE WHEN d_year = 2001 THEN web_year_total END) AS w2001,\n        MAX(CASE WHEN d_year = 2002 THEN web_year_total END) AS w2002\n    FROM yearly_sales\n    GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag\n),\nqualified_customers AS (\n    SELECT \n        c_customer_sk,\n        c_customer_id,\n        c_first_name,\n        c_last_name,\n        c_preferred_cust_flag,\n        s2001, s2002, c2001, c2002, w2001, w2002\n    FROM aggregated_sales\n    WHERE s2001 > 0 AND s2002 > 0\n      AND c2001 > 0 AND c2002 > 0\n      AND w2001 > 0 AND w2002 > 0\n      AND c2001/s2001 > 1\n      AND c2001/w2001 > 1\n      AND c2002/s2002 > 1\n      AND c2002/w2002 > 1\n)\nSELECT \n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag\nFROM qualified_customers\nORDER BY c_customer_id ASC, c_first_name ASC, c_last_name ASC, c_preferred_cust_flag ASC\nLIMIT 100",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 33.3212500117952,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH year_total AS (\n  SELECT \n    c_customer_sk,\n    c_customer_id,\n    c_first_name,\n    c_last_name,\n    c_preferred_cust_flag,\n    d_year,\n    SUM((ss_ext_list_price - ss_ext_wholesale_cost - ss_ext_discount_amt + ss_ext_sales_price)/2) AS store_sales,\n    SUM((cs_ext_list_price - cs_ext_wholesale_cost - cs_ext_discount_amt + cs_ext_sales_price)/2) AS catalog_sales,\n    SUM((ws_ext_list_price - ws_ext_wholesale_cost - ws_ext_discount_amt + ws_ext_sales_price)/2) AS web_sales\n  FROM store_sales\n  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk\n  JOIN customer ON store_sales.ss_customer_sk = customer.c_customer_sk\n  JOIN catalog_sales ON customer.c_customer_sk = catalog_sales.cs_bill_customer_sk AND store_sales.ss_sold_date_sk = catalog_sales.cs_sold_date_sk\n  JOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk AND store_sales.ss_sold_date_sk = web_sales.ws_sold_date_sk\n  WHERE d_year IN (2001, 2002)\n  GROUP BY c_customer_sk, c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, d_year\n),\nfiltered AS (\n  SELECT \n    t1.c_customer_sk,\n    t1.c_customer_id,\n    t1.c_first_name,\n    t1.c_last_name,\n    t1.c_preferred_cust_flag\n  FROM year_total t1\n  JOIN year_total t2 \n    ON t1.c_customer_sk = t2.c_customer_sk \n    AND t1.d_year = 2001 \n    AND t2.d_year = 2002\n  WHERE t1.store_sales > 0 \n    AND t1.catalog_sales > 0 \n    AND t1.web_sales > 0\n    AND t2.store_sales > 0 \n    AND t2.catalog_sales > 0 \n    AND t2.web_sales > 0\n    AND (t1.catalog_sales / t1.store_sales) > 1\n    AND (t2.catalog_sales / t2.store_sales) > 1\n    AND (t1.catalog_sales / t1.store_sales) > (t1.web_sales / t1.store_sales)\n    AND (t2.catalog_sales / t2.store_sales) > (t2.web_sales / t2.store_sales)\n)\nSELECT \n  c_customer_id,\n  c_first_name,\n  c_last_name,\n  c_preferred_cust_flag\nFROM filtered\nORDER BY c_customer_id ASC, c_first_name ASC, c_last_name ASC, c_preferred_cust_flag ASC\nLIMIT 100",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 17944.298417001846
+}

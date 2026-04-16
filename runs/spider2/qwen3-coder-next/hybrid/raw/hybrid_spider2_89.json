@@ -1,0 +1,130 @@
+{
+  "task_id": "spider2_89",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 282893.1877499999,
+  "execution_time_ms": 15.990333005902357,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH cleaned_salaries AS (\n    SELECT \n        location,\n        company,\n        CAST(\n            REPLACE(\n                REPLACE(\n                    REPLACE(\n                        REPLACE(\n                            REPLACE(salary, '\u20b9', ''),\n                            ',', ''\n                        ),\n                        ' ', ''\n                    ),\n                    'Lakh', ''\n                ),\n                'lakh', ''\n            ) AS REAL\n        ) AS salary_numeric\n    FROM (\n        -- Assuming there's a salaries table (not in schema) but since none is provided, \n        -- and no table contains salary data per the schema, we cannot proceed.\n        -- This is a placeholder to indicate that without a salary-related table, \n        -- the query is not possible.\n        SELECT NULL AS location, NULL AS company, NULL AS salary\n        LIMIT 0\n    )\n),\nnational_avg AS (\n    SELECT AVG(salary_numeric) AS avg_national_salary\n    FROM cleaned_salaries\n),\ncity_company_avg AS (\n    SELECT \n        location,\n        company,\n        AVG(salary_numeric) AS avg_salary_in_city\n    FROM cleaned_salaries\n    WHERE location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n    GROUP BY location, company\n),\nranked_companies AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city,\n        ROW_NUMBER() OVER (PARTITION BY location ORDER BY avg_salary_in_city DESC) AS rn\n    FROM city_company_avg\n),\ntop5_per_city AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city\n    FROM ranked_companies\n    WHERE rn <= 5\n)\nSELECT \n    t.location AS Location,\n    t.company AS Company_Name,\n    ROUND(t.avg_salary_in_city, 2) AS Average_Salary_in_State,\n    ROUND(n.avg_national_salary, 2) AS Average_Salary_in_Country\nFROM top5_per_city t\nCROSS JOIN national_avg n\nORDER BY t.location, t.avg_salary_in_city DESC;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7769159894669428,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH cleaned_salary_data AS (\n    SELECT \n        location,\n        company,\n        CAST(\n            REPLACE(\n                REPLACE(\n                    REPLACE(\n                        REPLACE(\n                            REPLACE(\n                                REPLACE(\n                                    REPLACE(\n                                        REPLACE(\n                                            REPLACE(\n                                                REPLACE(salary, '$', ''),\n                                            '\u20b9', ''),\n                                        ',', ''),\n                                    ' ', ''),\n                                'INR', ''),\n                            'Rs', ''),\n                        'INR', ''),\n                    'Rs.', ''),\n                '.', '')\n            AS REAL\n        ) AS salary_numeric\n    FROM (\n        SELECT \n            location,\n            company,\n            salary\n        FROM \n            salary_dataset\n        WHERE \n            salary IS NOT NULL\n            AND location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n    )\n),\ncompany_avg_by_location AS (\n    SELECT \n        location,\n        company,\n        AVG(salary_numeric) AS avg_salary_in_state\n    FROM \n        cleaned_salary_data\n    GROUP BY \n        location, company\n),\nnational_avg AS (\n    SELECT \n        AVG(salary_numeric) AS avg_salary_in_country\n    FROM \n        cleaned_salary_data\n),\nranked_companies AS (\n    SELECT \n        cbl.location,\n        cbl.company,\n        cbl.avg_salary_in_state,\n        na.avg_salary_in_country,\n        ROW_NUMBER() OVER (PARTITION BY cbl.location ORDER BY cbl.avg_salary_in_state DESC) AS rn\n    FROM \n        company_avg_by_location cbl\n    CROSS JOIN \n        national_avg na\n)\nSELECT \n    location,\n    company,\n    avg_salary_in_state,\n    avg_salary_in_country\nFROM \n    ranked_companies\nWHERE \n    rn <= 5\n    AND location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\nORDER BY \n    location, avg_salary_in_state DESC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"AS\": syntax error",
+      "exec_time_ms": 0.3027500060852617,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH cleaned_salaries AS (\n    SELECT \n        location,\n        company,\n        CAST(\n            REPLACE(\n                REPLACE(\n                    REPLACE(\n                        REPLACE(\n                            REPLACE(\n                                REPLACE(\n                                    REPLACE(\n                                        REPLACE(\n                                            REPLACE(\n                                                REPLACE(salary, '\u20b9', ''),\n                                            ' ', ''),\n                                        ',', ''),\n                                    'L', ''),\n                                'l', ''),\n                            'k', ''),\n                        'K', ''),\n                    'a', ''),\n                'A', '') AS REAL\n            ) AS avg_salary\n    FROM (\n        SELECT \n            TRIM(COALESCE(location, '')) AS location,\n            TRIM(COALESCE(company, '')) AS company,\n            TRIM(COALESCE(CAST(salary AS TEXT), '')) AS salary\n        FROM (\n            -- Since no salary table is provided in schema, we must simulate placeholder logic\n            -- This is a best-effort interpretation; no actual salary table exists in schema.\n            SELECT NULL AS location, NULL AS company, NULL AS salary WHERE 1=0\n        )\n    )\n    WHERE avg_salary IS NOT NULL\n),\nnational_avg AS (\n    SELECT AVG(avg_salary) AS country_avg\n    FROM cleaned_salaries\n    WHERE location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n),\nranked_companies AS (\n    SELECT \n        location,\n        company,\n        AVG(avg_salary) AS state_avg,\n        ROW_NUMBER() OVER (PARTITION BY location ORDER BY AVG(avg_salary) DESC) AS rn\n    FROM cleaned_salaries\n    WHERE location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n    GROUP BY location, company\n),\ntop5_per_city AS (\n    SELECT \n        location,\n        company,\n        state_avg\n    FROM ranked_companies\n    WHERE rn <= 5\n)\nSELECT \n    t.location AS Location,\n    t.company AS Company_Name,\n    ROUND(t.state_avg, 2) AS Average_Salary_in_State,\n    ROUND(n.country_avg, 2) AS Average_Salary_in_Country\nFROM top5_per_city t\nCROSS JOIN national_avg n\nORDER BY t.location, t.state_avg DESC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "near \"AS\": syntax error",
+      "exec_time_ms": 0.5102910072309896,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_generation_fail",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "gen_error": "timeout"
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH cleaned_salary AS (\n    SELECT \n        TRIM(location) AS location,\n        TRIM(company) AS company,\n        CAST(\n            REPLACE(\n                REPLACE(\n                    REPLACE(\n                        REPLACE(\n                            REPLACE(\n                                REPLACE(\n                                    REPLACE(\n                                        REPLACE(\n                                            REPLACE(\n                                                REPLACE(salary, ',', ''),\n                                                '\u20b9', ''\n                                            ),\n                                            '$', ''\n                                        ),\n                                        '\u20ac', ''\n                                    ),\n                                    '\u00a3', ''\n                                ),\n                                'CAD', ''\n                            ),\n                            'AUD', ''\n                        ),\n                        'CHF', ''\n                    ),\n                    'DKK', ''\n                ),\n                'NOK', ''\n            ) AS REAL\n        ) AS salary_numeric\n    FROM (\n        SELECT \n            location,\n            company,\n            salary\n        FROM \n            hardware_dim_customer hc\n        JOIN \n            hardware_fact_pre_invoice_deductions hf ON hc.customer_code = hf.customer_code\n        JOIN \n            web_sales_reps ws ON hf.fiscal_year = ws.id\n        JOIN \n            StaffHours sh ON sh.StaffMember = ws.name\n        JOIN \n            university_enrollment ue ON ue.OfferNo = sh.StaffMember\n        JOIN \n            university_faculty uf ON uf.FacNo = ue.StdNo\n        JOIN \n            university_student us ON us.StdNo = uf.FacSupervisor\n        JOIN \n            university_offering uo ON uo.FacNo = us.StdClass\n        JOIN \n            web_accounts wa ON wa.id = uo.CourseNo\n        JOIN \n            web_events we ON we.account_id = wa.id\n        JOIN \n            web_orders wo ON wo.id = we.account_id\n    ) AS raw_data\n    WHERE salary IS NOT NULL\n),\nnational_avg AS (\n    SELECT AVG(salary_numeric) AS avg_national_salary\n    FROM cleaned_salary\n),\ncity_company_avg AS (\n    SELECT \n        location,\n        company,\n        AVG(salary_numeric) AS avg_salary_in_city\n    FROM cleaned_salary\n    WHERE location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n    GROUP BY location, company\n),\nranked_companies AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city,\n        ROW_NUMBER() OVER (PARTITION BY location ORDER BY avg_salary_in_city DESC) AS rn\n    FROM city_company_avg\n),\ntop5_per_city AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city\n    FROM ranked_companies\n    WHERE rn <= 5\n)\nSELECT \n    t5.location AS Location,\n    t5.company AS Company_Name,\n    ROUND(t5.avg_salary_in_city, 2) AS Average_Salary_in_State,\n    ROUND(na.avg_national_salary, 2) AS Average_Salary_in_Country\nFROM top5_per_city t5\nCROSS JOIN national_avg na\nORDER BY t5.location, t5.avg_salary_in_city DESC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: location",
+      "exec_time_ms": 0.28295800439082086,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "WITH cleaned_salaries AS (\n    SELECT \n        location,\n        company,\n        CAST(\n            REPLACE(\n                REPLACE(\n                    REPLACE(\n                        REPLACE(\n                            REPLACE(salary, '\u20b9', ''),\n                            ',', ''\n                        ),\n                        ' ', ''\n                    ),\n                    'Lakh', ''\n                ),\n                'lakh', ''\n            ) AS REAL\n        ) AS salary_numeric\n    FROM (\n        -- Assuming there's a salaries table (not in schema) but since none is provided, \n        -- and no table contains salary data per the schema, we cannot proceed.\n        -- This is a placeholder to indicate that without a salary-related table, \n        -- the query is not possible.\n        SELECT NULL AS location, NULL AS company, NULL AS salary\n        LIMIT 0\n    )\n),\nnational_avg AS (\n    SELECT AVG(salary_numeric) AS avg_national_salary\n    FROM cleaned_salaries\n),\ncity_company_avg AS (\n    SELECT \n        location,\n        company,\n        AVG(salary_numeric) AS avg_salary_in_city\n    FROM cleaned_salaries\n    WHERE location IN ('Mumbai', 'Pune', 'New Delhi', 'Hyderabad')\n    GROUP BY location, company\n),\nranked_companies AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city,\n        ROW_NUMBER() OVER (PARTITION BY location ORDER BY avg_salary_in_city DESC) AS rn\n    FROM city_company_avg\n),\ntop5_per_city AS (\n    SELECT \n        location,\n        company,\n        avg_salary_in_city\n    FROM ranked_companies\n    WHERE rn <= 5\n)\nSELECT \n    t.location AS Location,\n    t.company AS Company_Name,\n    ROUND(t.avg_salary_in_city, 2) AS Average_Salary_in_State,\n    ROUND(n.avg_national_salary, 2) AS Average_Salary_in_Country\nFROM top5_per_city t\nCROSS JOIN national_avg n\nORDER BY t.location, t.avg_salary_in_city DESC;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 1
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 282909.2615839909
+}

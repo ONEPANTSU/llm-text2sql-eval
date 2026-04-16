@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_810",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1478.8282500012428,
+  "execution_time_ms": 3.832583002804313,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT race.race\nFROM superhero\nJOIN hero_attribute ON superhero.id = hero_attribute.hero_id\nJOIN attribute ON hero_attribute.attribute_id = attribute.id\nJOIN race ON superhero.race_id = race.id\nORDER BY hero_attribute.attribute_value DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3010409966227598,
+      "result_signature": "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT r.race\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nJOIN race r ON s.race_id = r.id\nORDER BY ha.attribute_value DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6270420053624548,
+      "result_signature": "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT r.race\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nJOIN race r ON s.race_id = r.id\nORDER BY ha.attribute_value DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.600207997194957,
+      "result_signature": "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT r.race\nFROM superhero s\nJOIN hero_attribute ha ON s.id = ha.hero_id\nJOIN attribute a ON ha.attribute_id = a.id\nJOIN race r ON s.race_id = r.id\nORDER BY ha.attribute_value DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5896250004298054,
+      "result_signature": "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT race.race\nFROM superhero\nJOIN hero_attribute ON superhero.id = hero_attribute.hero_id\nJOIN attribute ON hero_attribute.attribute_id = attribute.id\nJOIN race ON superhero.race_id = race.id\nORDER BY hero_attribute.attribute_value DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5892080007470213,
+      "result_signature": "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT race.race\nFROM superhero\nJOIN hero_attribute ON superhero.id = hero_attribute.hero_id\nJOIN attribute ON hero_attribute.attribute_id = attribute.id\nJOIN race ON superhero.race_id = race.id\nORDER BY hero_attribute.attribute_value DESC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "88cf31025033cdc201f8b3ea399ad04d1e672dae45402dc1a35617f55d8781ba": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1482.686208000814
+}

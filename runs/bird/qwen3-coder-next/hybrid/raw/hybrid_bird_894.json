@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_894",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1466.8299580007442,
+  "execution_time_ms": 12.653083002078347,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT drivers.forename, drivers.surname, races.name, results.fastestLapTime\nFROM results\nJOIN drivers ON results.driverId = drivers.driverId\nJOIN races ON results.raceId = races.raceId\nWHERE results.fastestLapTime IS NOT NULL\nORDER BY results.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.3816250001545995,
+      "result_signature": "43e89fc032c060d1cf171257dd4c3e32d7ee906455c3ce8125fc344ac736b40f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT d.forename, d.surname, r.name, res.fastestLapTime\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.9416249997448176,
+      "result_signature": "43e89fc032c060d1cf171257dd4c3e32d7ee906455c3ce8125fc344ac736b40f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT d.forename, d.surname, r.name\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7111250053858384,
+      "result_signature": "80a3bacef0ae253343a918f3901981e1745fd443218d04cfedabe62e3236dba0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT d.forename, d.surname, r.name, res.fastestLapTime\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7147909966297448,
+      "result_signature": "43e89fc032c060d1cf171257dd4c3e32d7ee906455c3ce8125fc344ac736b40f",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT d.forename, d.surname, r.name\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6862080010469072,
+      "result_signature": "80a3bacef0ae253343a918f3901981e1745fd443218d04cfedabe62e3236dba0",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT d.forename, d.surname, r.name, res.fastestLapTime\nFROM results res\nJOIN drivers d ON res.driverId = d.driverId\nJOIN races r ON res.raceId = r.raceId\nWHERE res.fastestLapTime IS NOT NULL\nORDER BY res.fastestLapTime ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "43e89fc032c060d1cf171257dd4c3e32d7ee906455c3ce8125fc344ac736b40f": 3,
+        "80a3bacef0ae253343a918f3901981e1745fd443218d04cfedabe62e3236dba0": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 1,
+    "variations_accepted": 0,
+    "expansion_time_ms": 4057.637749996502,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5537.246166997647
+}

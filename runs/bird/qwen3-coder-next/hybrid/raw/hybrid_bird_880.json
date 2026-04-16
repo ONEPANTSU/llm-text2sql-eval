@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_880",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3377.6512910044403,
+  "execution_time_ms": 18.399708002107218,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT \n    (r1.fastestLapSpeed - r2.fastestLapSpeed) * 100.0 / r2.fastestLapSpeed AS percent_faster\nFROM results r1\nJOIN drivers d1 ON r1.driverId = d1.driverId\nJOIN races ra1 ON r1.raceId = ra1.raceId\nJOIN results r2 ON r1.driverId = r2.driverId\nJOIN races ra2 ON r2.raceId = ra2.raceId\nWHERE d1.driverRef = 'Paul di Resta'\n  AND ra1.round = 853\n  AND ra2.round = 854\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.8433749984251335,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT \n    (t1.fastestLapSpeed - t2.fastestLapSpeed) * 100.0 / t2.fastestLapSpeed AS percent_faster\nFROM \n    (SELECT r.fastestLapSpeed\n     FROM results r\n     JOIN drivers d ON r.driverId = d.driverId\n     JOIN races ra ON r.raceId = ra.raceId\n     WHERE d.driverRef = 'Paul di Resta' AND ra.round = 853) t1,\n    (SELECT r.fastestLapSpeed\n     FROM results r\n     JOIN drivers d ON r.driverId = d.driverId\n     JOIN races ra ON r.raceId = ra.raceId\n     WHERE d.driverRef = 'Paul di Resta' AND ra.round = 854) t2",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.3089999997173436,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT \n  (t1.fastestLapSpeed - t2.fastestLapSpeed) * 100.0 / t2.fastestLapSpeed AS percent_faster\nFROM \n  (SELECT r.fastestLapSpeed, ra.round\n   FROM results r\n   JOIN drivers d ON r.driverId = d.driverId\n   JOIN races ra ON r.raceId = ra.raceId\n   WHERE d.driverRef = 'Paul di Resta' AND ra.round = 853) t1,\n  (SELECT r.fastestLapSpeed, ra.round\n   FROM results r\n   JOIN drivers d ON r.driverId = d.driverId\n   JOIN races ra ON r.raceId = ra.raceId\n   WHERE d.driverRef = 'Paul di Resta' AND ra.round = 854) t2\nORDER BY t1.round ASC\nLIMIT 2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.315833004307933,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT \n    (r1.fastestLapSpeed - r2.fastestLapSpeed) * 100.0 / r2.fastestLapSpeed AS percent_faster\nFROM results r1\nJOIN drivers d1 ON r1.driverId = d1.driverId\nJOIN races ra1 ON r1.raceId = ra1.raceId\nJOIN results r2 ON r2.driverId = d1.driverId\nJOIN races ra2 ON r2.raceId = ra2.raceId\nWHERE d1.driverRef = 'Paul di Resta'\n  AND ra1.round = 853\n  AND ra2.round = 854\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.094500003498979,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT \n    (r1.fastestLapSpeed - r2.fastestLapSpeed) * 100.0 / r2.fastestLapSpeed AS percent_faster\nFROM \n    results r1\n    JOIN drivers d1 ON r1.driverId = d1.driverId\n    JOIN races ra1 ON r1.raceId = ra1.raceId\n    JOIN results r2 \n        ON r2.driverId = d1.driverId \n        AND r2.raceId = (\n            SELECT raceId \n            FROM races \n            WHERE round = 854\n        )\nWHERE \n    d1.driverRef = 'Paul di Resta'\n    AND ra1.round = 853\n    AND r1.fastestLapSpeed IS NOT NULL\n    AND r2.fastestLapSpeed IS NOT NULL;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.6469580004923046,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT \n    (r1.fastestLapSpeed - r2.fastestLapSpeed) * 100.0 / r2.fastestLapSpeed AS percent_faster\nFROM \n    results r1\n    JOIN drivers d1 ON r1.driverId = d1.driverId\n    JOIN races ra1 ON r1.raceId = ra1.raceId\n    JOIN results r2 \n        ON r2.driverId = d1.driverId \n        AND r2.raceId = (\n            SELECT raceId \n            FROM races \n            WHERE round = 854\n        )\nWHERE \n    d1.driverRef = 'Paul di Resta'\n    AND ra1.round = 853\n    AND r1.fastestLapSpeed IS NOT NULL\n    AND r2.fastestLapSpeed IS NOT NULL;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3396.077958001115
+}

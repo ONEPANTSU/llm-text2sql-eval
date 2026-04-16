@@ -1,0 +1,172 @@
+{
+  "task_id": "bird_582",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nJOIN users u ON ph.UserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "ph",
+            "users",
+            "postHistory",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN users u ON p.LastEditorUserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+          "score": 0.8602173913043478,
+          "similarity_max": 0.6795652173913044,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nJOIN users u ON ph.UserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "ph",
+            "users",
+            "postHistory",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nINNER JOIN users u ON p.OwnerUserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa' AND p.LastEditorUserId IS NOT NULL;",
+          "score": 0.9648571428571429,
+          "similarity_max": 0.6702857142857143,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN users u ON p.LastEditorUserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+          "score": 0.8602173913043478,
+          "similarity_max": 0.6795652173913044,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nJOIN users u ON ph.UserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "u",
+            "posts",
+            "ph",
+            "users",
+            "postHistory",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nINNER JOIN postHistory ph ON p.Id = ph.PostId\nWHERE ph.UserId IN (\n    SELECT Id\n    FROM users\n    WHERE DisplayName = 'Vebjorn Ljosa'\n);",
+          "score": 1.1214423076923077,
+          "similarity_max": 0.6571153846153845,
+          "tables_used": [
+            "posts",
+            "ph",
+            "users",
+            "postHistory",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT p.Title\nFROM posts p\nINNER JOIN users u ON p.OwnerUserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa' AND p.LastEditorUserId IS NOT NULL;",
+          "score": 0.9648571428571429,
+          "similarity_max": 0.6702857142857143,
+          "tables_used": [
+            "u",
+            "posts",
+            "p",
+            "users"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT DISTINCT p.Title\nFROM posts p\nJOIN postHistory ph ON p.Id = ph.PostId\nJOIN users u ON ph.UserId = u.Id\nWHERE u.DisplayName = 'Vebjorn Ljosa';",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "u",
+        "posts",
+        "ph",
+        "users",
+        "postHistory",
+        "p"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 500.03
+  }
+}

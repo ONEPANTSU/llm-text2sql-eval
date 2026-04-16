@@ -1,0 +1,144 @@
+{
+  "task_id": "bird_423",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT c.cardKingdomFoilId, c.id\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\n  AND c.cardKingdomId IS NOT NULL\nORDER BY c.cardKingdomFoilId, c.id\nLIMIT 3;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.cardKingdomFoilId\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\nGROUP BY c.cardKingdomFoilId\nORDER BY c.cardKingdomFoilId ASC\nLIMIT 3;",
+          "score": 0.7965250965250966,
+          "similarity_max": 0.6069498069498069,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT c.cardKingdomFoilId, c.id\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\n  AND c.cardKingdomId IS NOT NULL\nORDER BY c.cardKingdomFoilId, c.id\nLIMIT 3;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.cardKingdomFoilId\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\nGROUP BY c.cardKingdomFoilId\nORDER BY c.cardKingdomFoilId ASC\nLIMIT 3;",
+          "score": 0.7965250965250966,
+          "similarity_max": 0.6069498069498069,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.cardKingdomId, c.cardKingdomFoilId\nFROM cards c\nWHERE c.cardKingdomId IS NOT NULL AND c.cardKingdomFoilId IS NOT NULL\nGROUP BY c.cardKingdomId, c.cardKingdomFoilId\nORDER BY c.cardKingdomFoilId ASC\nLIMIT 3;",
+          "score": 0.726607142857143,
+          "similarity_max": 0.7467857142857142,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 6,
+      "top3": [
+        {
+          "sql": "SELECT c.cardKingdomFoilId, c.id\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\n  AND c.cardKingdomId IS NOT NULL\nORDER BY c.cardKingdomFoilId, c.id\nLIMIT 3;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT id\nFROM cards\nWHERE hasFoil = 1\nORDER BY id ASC\nLIMIT 3;",
+          "score": 0.8238095238095239,
+          "similarity_max": 0.45238095238095233,
+          "tables_used": [
+            "cards"
+          ]
+        },
+        {
+          "sql": "SELECT c.cardKingdomFoilId\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\nGROUP BY c.cardKingdomFoilId\nORDER BY c.cardKingdomFoilId ASC\nLIMIT 3;",
+          "score": 0.7965250965250966,
+          "similarity_max": 0.6069498069498069,
+          "tables_used": [
+            "c",
+            "cards"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT c.cardKingdomFoilId, c.id\nFROM cards c\nWHERE c.cardKingdomFoilId IS NOT NULL\n  AND c.cardKingdomId IS NOT NULL\nORDER BY c.cardKingdomFoilId, c.id\nLIMIT 3;",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "c",
+        "cards"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 6,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 90.36
+  }
+}

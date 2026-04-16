@@ -1,0 +1,164 @@
+{
+  "task_id": "bird_276",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT a1.atom_id, a2.atom_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT a1.atom_id, a2.atom_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT a1.atom_id AS first_atom, a2.atom_id AS second_atom\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 0.8581896551724137,
+          "similarity_max": 0.7836206896551724,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT a1.atom_id, a2.atom_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 1.25,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT a1.atom_id AS first_atom, a2.atom_id AS second_atom\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 0.8581896551724137,
+          "similarity_max": 0.7836206896551724,
+          "tables_used": [
+            "connected",
+            "c",
+            "bond",
+            "b",
+            "a1",
+            "a2",
+            "atom"
+          ]
+        },
+        {
+          "sql": "SELECT a1.atom_id AS first_atom, a2.atom_id AS second_atom\nFROM molecule m\nJOIN atom a1 ON m.molecule_id = a1.molecule_id\nJOIN connected c ON a1.atom_id = c.atom_id\nJOIN bond b ON c.bond_id = b.bond_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+          "score": 0.7590476190476191,
+          "similarity_max": 0.7819047619047619,
+          "tables_used": [
+            "connected",
+            "m",
+            "a1",
+            "a2",
+            "atom",
+            "molecule",
+            "c",
+            "bond",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT a1.atom_id, a2.atom_id\nFROM bond b\nJOIN connected c ON b.bond_id = c.bond_id\nJOIN atom a1 ON c.atom_id = a1.atom_id\nJOIN atom a2 ON c.atom_id2 = a2.atom_id\nWHERE b.bond_type = 'triple';",
+    "meta": {
+      "score": 1.25,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "connected",
+        "c",
+        "bond",
+        "b",
+        "a1",
+        "a2",
+        "atom"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 17.53
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "task_id": "tpcds_q69",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    LEFT JOIN store_returns ON ss_ticket_number = sr_ticket_number AND ss_sold_date_sk = sr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store_returns",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year AS year,\n    d_moy AS month,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year, d_moy\nORDER BY \n    d_year, d_moy\nLIMIT 100",
+          "score": 0.7143341404358354,
+          "similarity_max": 0.6713317191283292,
+          "tables_used": [
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    LEFT JOIN store_returns ON ss_ticket_number = sr_ticket_number AND ss_sold_date_sk = sr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store_returns",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(cs_ext_sales_price) AS total_sales,\n    SUM(cs_net_profit) AS net_profit\nFROM \n    catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = d_date_sk\n    LEFT JOIN catalog_returns ON cs_order_number = cr_order_number AND cs_sold_date_sk = cr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+          "score": 0.8670731707317075,
+          "similarity_max": 0.6658536585365853,
+          "tables_used": [
+            "catalog_sales",
+            "catalog_returns"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year AS year,\n    d_moy AS month,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year, d_moy\nORDER BY \n    d_year, d_moy\nLIMIT 100",
+          "score": 0.7143341404358354,
+          "similarity_max": 0.6713317191283292,
+          "tables_used": [
+            "store_sales"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    LEFT JOIN store_returns ON ss_ticket_number = sr_ticket_number AND ss_sold_date_sk = sr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "store_returns",
+            "store_sales"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(cs_ext_sales_price) AS total_sales,\n    SUM(cs_net_profit) AS net_profit\nFROM \n    catalog_sales\n    JOIN date_dim ON cs_sold_date_sk = d_date_sk\n    LEFT JOIN catalog_returns ON cs_order_number = cr_order_number AND cs_sold_date_sk = cr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+          "score": 0.8670731707317075,
+          "similarity_max": 0.6658536585365853,
+          "tables_used": [
+            "catalog_sales",
+            "catalog_returns"
+          ]
+        },
+        {
+          "sql": "SELECT \n    d_year AS year,\n    d_moy AS month,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\nJOIN \n    date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year, d_moy\nORDER BY \n    d_year, d_moy\nLIMIT 100",
+          "score": 0.7143341404358354,
+          "similarity_max": 0.6713317191283292,
+          "tables_used": [
+            "store_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    d_year,\n    d_moy,\n    SUM(ss_ext_sales_price) AS total_sales,\n    SUM(ss_net_profit) AS net_profit\nFROM \n    store_sales\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\n    LEFT JOIN store_returns ON ss_ticket_number = sr_ticket_number AND ss_sold_date_sk = sr_returned_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    d_year,\n    d_moy\nORDER BY \n    d_year,\n    d_moy\nLIMIT 100",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "store_returns",
+        "store_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 33.96
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_960",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8080.726791005873,
+  "execution_time_ms": 26.67141699930653,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed\nFROM races\nJOIN results ON races.raceId = results.raceId\nWHERE races.year = 2009\n  AND races.name = 'Spanish Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 16.314249995048158,
+      "result_signature": "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2009\n  AND races.name = 'Spanish Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.600874999188818,
+      "result_signature": "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2009\n  AND races.name = 'Spanish Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0997500032535754,
+      "result_signature": "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2009\n  AND races.name = 'Spanish Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.380625002842862,
+      "result_signature": "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed  \nFROM races  \nJOIN results ON races.raceId = results.raceId  \nWHERE races.year = 2009  \n  AND races.name = 'Spanish Grand Prix';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.374042000155896,
+      "result_signature": "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT AVG(results.fastestLapSpeed) AS avg_fastest_lap_speed\nFROM results\nJOIN races ON results.raceId = races.raceId\nWHERE races.year = 2009\n  AND races.name = 'Spanish Grand Prix';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "870b6173b6f7aab4f33005d441917ba3f991ab6ad503fce5ed772f775dcbb7ae": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 8107.552917004796
+}

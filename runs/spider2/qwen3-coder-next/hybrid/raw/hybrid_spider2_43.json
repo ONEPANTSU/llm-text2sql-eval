@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_43",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4126.980999993975,
+  "execution_time_ms": 39.441207991330884,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH daily_inserts AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS rn\n  FROM cities\n  WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nconsecutive_groups AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || CAST(rn AS TEXT) || ' days') AS grp\n  FROM daily_inserts\n),\nstreaks AS (\n  SELECT \n    country_code_2,\n    grp,\n    COUNT(*) AS streak_length\n  FROM consecutive_groups\n  GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n  SELECT \n    country_code_2,\n    MAX(streak_length) AS max_streak\n  FROM streaks\n  GROUP BY country_code_2\n),\nfinal_countries AS (\n  SELECT \n    s.country_code_2\n  FROM streaks s\n  JOIN max_streaks m ON s.country_code_2 = m.country_code_2 AND s.streak_length = m.max_streak\n)\nSELECT country_code_2\nFROM final_countries;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6517090009292588,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH daily_inserts AS (\n    SELECT \n        country_code_2,\n        DATE(insert_date) AS insert_day\n    FROM cities\n    WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nordered_inserts AS (\n    SELECT \n        country_code_2,\n        insert_day,\n        ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_day) AS row_num\n    FROM daily_inserts\n),\nstreak_groups AS (\n    SELECT \n        country_code_2,\n        insert_day,\n        DATE(insert_day, '-' || row_num || ' days') AS streak_group\n    FROM ordered_inserts\n),\nstreak_lengths AS (\n    SELECT \n        country_code_2,\n        streak_group,\n        COUNT(*) AS streak_length\n    FROM streak_groups\n    GROUP BY country_code_2, streak_group\n),\nmax_streaks AS (\n    SELECT \n        country_code_2,\n        MAX(streak_length) AS max_streak\n    FROM streak_lengths\n    GROUP BY country_code_2\n),\nglobal_max AS (\n    SELECT MAX(max_streak) AS max_overall\n    FROM max_streaks\n)\nSELECT \n    s.country_code_2\nFROM max_streaks s\nJOIN global_max g ON s.max_streak = g.max_overall;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.713040994014591,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH daily_cities AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS row_num\n    FROM cities\n    WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nconsecutive_groups AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        date(insert_date, '-' || row_num || ' days') AS grp\n    FROM daily_cities\n),\nstreaks AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS streak_length\n    FROM consecutive_groups\n    GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n    SELECT \n        country_code_2,\n        MAX(streak_length) AS max_streak\n    FROM streaks\n    GROUP BY country_code_2\n),\noverall_max AS (\n    SELECT MAX(max_streak) AS overall_max_streak\n    FROM max_streaks\n)\nSELECT \n    s.country_code_2\nFROM streaks s\nJOIN max_streaks ms ON s.country_code_2 = ms.country_code_2 AND s.streak_length = ms.max_streak\nCROSS JOIN overall_max om\nWHERE s.streak_length = om.overall_max_streak\nORDER BY s.country_code_2;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4677079889224842,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH daily_inserts AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS rn\n    FROM cities\n    WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nconsecutive_groups AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        julianday(insert_date) - rn AS grp\n    FROM daily_inserts\n),\nstreaks AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS streak_length\n    FROM consecutive_groups\n    GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n    SELECT \n        country_code_2,\n        MAX(streak_length) AS max_streak\n    FROM streaks\n    GROUP BY country_code_2\n),\nglobal_max AS (\n    SELECT MAX(max_streak) AS global_max_streak\n    FROM max_streaks\n)\nSELECT \n    ms.country_code_2\nFROM max_streaks ms\nJOIN global_max gm ON ms.max_streak = gm.global_max_streak;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6373749929480255,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH daily_inserts AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS row_num\n  FROM cities\n  WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nconsecutive_groups AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || row_num || ' days') AS grp\n  FROM daily_inserts\n),\nstreaks AS (\n  SELECT \n    country_code_2,\n    grp,\n    COUNT(*) AS streak_length\n  FROM consecutive_groups\n  GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n  SELECT \n    country_code_2,\n    MAX(streak_length) AS max_streak\n  FROM streaks\n  GROUP BY country_code_2\n),\nlongest_streaks AS (\n  SELECT \n    s.country_code_2\n  FROM streaks s\n  JOIN max_streaks m ON s.country_code_2 = m.country_code_2 AND s.streak_length = m.max_streak\n)\nSELECT DISTINCT country_code_2\nFROM longest_streaks;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.38470800791401416,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH daily_inserts AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS row_num\n  FROM cities\n  WHERE insert_date BETWEEN '2022-06-01' AND '2022-06-30'\n),\nconsecutive_groups AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || row_num || ' days') AS grp\n  FROM daily_inserts\n),\nstreaks AS (\n  SELECT \n    country_code_2,\n    grp,\n    COUNT(*) AS streak_length\n  FROM consecutive_groups\n  GROUP BY country_code_2, grp\n),\nmax_streaks AS (\n  SELECT \n    country_code_2,\n    MAX(streak_length) AS max_streak\n  FROM streaks\n  GROUP BY country_code_2\n),\nlongest_streaks AS (\n  SELECT \n    s.country_code_2\n  FROM streaks s\n  JOIN max_streaks m ON s.country_code_2 = m.country_code_2 AND s.streak_length = m.max_streak\n)\nSELECT DISTINCT country_code_2\nFROM longest_streaks;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4166.5645410103025
+}

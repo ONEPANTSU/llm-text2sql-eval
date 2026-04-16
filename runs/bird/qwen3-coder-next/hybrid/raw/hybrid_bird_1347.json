@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1347",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 3217.889915998967,
+  "execution_time_ms": 7.674542001041118,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT z.county\nFROM member m\nJOIN zip_code z ON m.zip = z.zip_code\nWHERE m.first_name = 'Adela' AND m.last_name = 'O''Gallagher';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.783167001325637,
+      "result_signature": "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT zip_code.county\nFROM member\nJOIN zip_code ON member.zip = zip_code.zip_code\nWHERE member.first_name = 'Adela' AND member.last_name = 'O''Gallagher';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6815419987542555,
+      "result_signature": "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT zip_code.county\nFROM member\nJOIN zip_code ON member.zip = zip_code.zip_code\nWHERE member.first_name = 'Adela' AND member.last_name = 'O''Gallagher';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6986250009504147,
+      "result_signature": "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT zip_code.county\nFROM member\nJOIN zip_code ON member.zip = zip_code.zip_code\nWHERE member.first_name = 'Adela' AND member.last_name = 'O''Gallagher';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4346670029917732,
+      "result_signature": "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT zip_code.county\nFROM member\nJOIN zip_code ON member.zip = zip_code.zip_code\nWHERE member.first_name = 'Adela' AND member.last_name = 'O''Gallagher';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.39562500023748726,
+      "result_signature": "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT zip_code.county\nFROM member\nJOIN zip_code ON member.zip = zip_code.zip_code\nWHERE member.first_name = 'Adela' AND member.last_name = 'O''Gallagher';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "3968fe572a8eccc23a6a7861344b7970f8c3b8f6105d15aaf61f1c608f276cc1": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 3225.769750002655
+}

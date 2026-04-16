@@ -1,0 +1,166 @@
+{
+  "task_id": "spider2_44",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 10225.263665997772,
+  "execution_time_ms": 52.113083002041094,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH country_insertion_counts AS (\n  SELECT \n    country_code_2,\n    COUNT(DISTINCT insert_date) AS insertion_days_count\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n  GROUP BY country_code_2\n  HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n  SELECT country_code_2\n  FROM country_insertion_counts\n),\nconsecutive_periods AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || CAST(ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS TEXT) || ' days') AS grp\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\nconsecutive_stretches AS (\n  SELECT \n    country_code_2,\n    grp,\n    MIN(insert_date) AS start_date,\n    MAX(insert_date) AS end_date,\n    COUNT(*) AS consecutive_days\n  FROM consecutive_periods\n  GROUP BY country_code_2, grp\n),\nlongest_consecutive_period AS (\n  SELECT \n    country_code_2,\n    start_date,\n    end_date\n  FROM consecutive_stretches\n  ORDER BY consecutive_days DESC, start_date ASC\n  LIMIT 1\n)\nSELECT \n  CAST(SUM(CASE WHEN c.capital = 'Y' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS capital_proportion\nFROM cities c\nINNER JOIN longest_consecutive_period lcp \n  ON c.country_code_2 = lcp.country_code_2\n  AND c.insert_date BETWEEN lcp.start_date AND lcp.end_date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.3471250024158508,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH country_insertion_days AS (\n  SELECT \n    country_code_2,\n    COUNT(DISTINCT insert_date) AS insertion_days\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n  GROUP BY country_code_2\n  HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n  SELECT country_code_2\n  FROM country_insertion_days\n),\nconsecutive_periods AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || CAST(ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS TEXT) || ' days') AS grp\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\nlongest_consecutive_period AS (\n  SELECT \n    country_code_2,\n    grp,\n    MIN(insert_date) AS period_start,\n    MAX(insert_date) AS period_end,\n    COUNT(*) AS days_count\n  FROM consecutive_periods\n  GROUP BY country_code_2, grp\n  ORDER BY days_count DESC\n  LIMIT 1\n),\ncapital_entries_in_period AS (\n  SELECT \n    COUNT(*) AS total_entries,\n    SUM(CASE WHEN capital = 'Y' THEN 1 ELSE 0 END) AS capital_entries\n  FROM cities c\n  JOIN longest_consecutive_period lcp \n    ON c.country_code_2 = lcp.country_code_2\n   AND c.insert_date BETWEEN lcp.period_start AND lcp.period_end\n)\nSELECT \n  CAST(capital_entries AS REAL) / total_entries AS proportion_from_capital\nFROM capital_entries_in_period;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.46350000775419176,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH country_insertion_days AS (\n    SELECT \n        country_code_2,\n        COUNT(DISTINCT insert_date) AS insertion_days_count\n    FROM cities\n    WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    GROUP BY country_code_2\n    HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n    SELECT country_code_2\n    FROM country_insertion_days\n),\nconsecutive_periods AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS rn,\n        DATE(insert_date, '-' || (ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) - 1) || ' days') AS grp\n    FROM cities\n    WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n      AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\nconsecutive_groups AS (\n    SELECT \n        country_code_2,\n        grp,\n        MIN(insert_date) AS period_start,\n        MAX(insert_date) AS period_end,\n        COUNT(*) AS consecutive_days\n    FROM consecutive_periods\n    GROUP BY country_code_2, grp\n),\nlongest_consecutive_period AS (\n    SELECT \n        country_code_2,\n        period_start,\n        period_end\n    FROM consecutive_groups\n    WHERE consecutive_days = (SELECT MAX(consecutive_days) FROM consecutive_groups)\n),\nentries_in_longest_period AS (\n    SELECT \n        c.country_code_2,\n        c.capital,\n        CASE WHEN c.capital = 1 THEN 1 ELSE 0 END AS is_capital_entry\n    FROM cities c\n    JOIN longest_consecutive_period lcp \n        ON c.country_code_2 = lcp.country_code_2\n       AND c.insert_date BETWEEN lcp.period_start AND lcp.period_end\n)\nSELECT \n    CAST(SUM(is_capital_entry) AS REAL) / COUNT(*) AS capital_proportion\nFROM entries_in_longest_period;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5575410032179207,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH country_insertion_days AS (\n  SELECT \n    country_code_2,\n    COUNT(DISTINCT insert_date) AS insertion_days_count\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n  GROUP BY country_code_2\n  HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n  SELECT country_code_2\n  FROM country_insertion_days\n),\nconsecutive_periods AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || CAST(ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS TEXT) || ' day') AS grp\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\nconsecutive_period_lengths AS (\n  SELECT \n    country_code_2,\n    grp,\n    COUNT(*) AS consecutive_days,\n    MIN(insert_date) AS period_start,\n    MAX(insert_date) AS period_end\n  FROM consecutive_periods\n  GROUP BY country_code_2, grp\n),\nlongest_consecutive_period AS (\n  SELECT \n    country_code_2,\n    period_start,\n    period_end\n  FROM consecutive_period_lengths\n  WHERE consecutive_days = (SELECT MAX(consecutive_days) FROM consecutive_period_lengths)\n),\ncapital_entries_in_longest_period AS (\n  SELECT \n    COUNT(*) AS capital_count\n  FROM cities c\n  JOIN longest_consecutive_period lcp \n    ON c.country_code_2 = lcp.country_code_2\n    AND c.insert_date BETWEEN lcp.period_start AND lcp.period_end\n  WHERE c.capital = 1\n),\ntotal_entries_in_longest_period AS (\n  SELECT \n    COUNT(*) AS total_count\n  FROM cities c\n  JOIN longest_consecutive_period lcp \n    ON c.country_code_2 = lcp.country_code_2\n    AND c.insert_date BETWEEN lcp.period_start AND lcp.period_end\n)\nSELECT \n  CAST(capital_count AS REAL) / total_count AS proportion_from_capital\nFROM capital_entries_in_longest_period, total_entries_in_longest_period;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4742089950013906,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH country_insertion_counts AS (\n    SELECT \n        country_code_2,\n        COUNT(DISTINCT insert_date) AS insertion_days\n    FROM cities\n    WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    GROUP BY country_code_2\n    HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n    SELECT country_code_2\n    FROM country_insertion_counts\n),\nconsecutive_periods AS (\n    SELECT \n        c.country_code_2,\n        c.insert_date,\n        DATE(c.insert_date, '-' || (SELECT COUNT(*) FROM cities c2 \n                                     WHERE c2.country_code_2 = c.country_code_2 \n                                       AND c2.insert_date BETWEEN '2022-01-01' AND '2022-01-31' \n                                       AND c2.insert_date <= c.insert_date) || ' days') AS grp\n    FROM cities c\n    WHERE c.country_code_2 IN (SELECT country_code_2 FROM country_with_nine_days)\n      AND c.insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n),\nconsecutive_counts AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS consecutive_days\n    FROM consecutive_periods\n    GROUP BY country_code_2, grp\n),\nlongest_consecutive AS (\n    SELECT \n        country_code_2,\n        MAX(consecutive_days) AS max_consecutive\n    FROM consecutive_counts\n    GROUP BY country_code_2\n),\nlongest_period_details AS (\n    SELECT \n        cc.country_code_2,\n        cc.grp,\n        MIN(c.insert_date) AS start_date,\n        MAX(c.insert_date) AS end_date\n    FROM consecutive_counts cc\n    JOIN cities c ON c.country_code_2 = cc.country_code_2 \n                  AND DATE(c.insert_date, '-' || (SELECT COUNT(*) FROM cities c3 \n                                                  WHERE c3.country_code_2 = c.country_code_2 \n                                                    AND c3.insert_date BETWEEN '2022-01-01' AND '2022-01-31' \n                                                    AND c3.insert_date <= c.insert_date) || ' days') = cc.grp\n    WHERE cc.country_code_2 IN (SELECT country_code_2 FROM country_with_nine_days)\n      AND cc.consecutive_days = (SELECT max_consecutive FROM longest_consecutive lc WHERE lc.country_code_2 = cc.country_code_2)\n    GROUP BY cc.country_code_2, cc.grp\n),\ncapital_entries AS (\n    SELECT \n        c.country_code_2,\n        COUNT(*) AS total_entries,\n        SUM(CASE WHEN c.capital = 1 THEN 1 ELSE 0 END) AS capital_entries\n    FROM cities c\n    JOIN longest_period_details lpd ON c.country_code_2 = lpd.country_code_2\n                                   AND c.insert_date BETWEEN lpd.start_date AND lpd.end_date\n    WHERE c.country_code_2 IN (SELECT country_code_2 FROM country_with_nine_days)\n    GROUP BY c.country_code_2\n)\nSELECT \n    CAST(ce.capital_entries AS REAL) / ce.total_entries AS proportion\nFROM capital_entries ce;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4439170006662607,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 1,
+    "selected_sql": "WITH country_insertion_days AS (\n  SELECT \n    country_code_2,\n    COUNT(DISTINCT insert_date) AS insertion_days\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n  GROUP BY country_code_2\n  HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n  SELECT country_code_2\n  FROM country_insertion_days\n),\nconsecutive_periods AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    DATE(insert_date, '-' || CAST(ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS TEXT) || ' days') AS grp\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\nlongest_consecutive_period AS (\n  SELECT \n    country_code_2,\n    grp,\n    MIN(insert_date) AS period_start,\n    MAX(insert_date) AS period_end,\n    COUNT(*) AS days_count\n  FROM consecutive_periods\n  GROUP BY country_code_2, grp\n  ORDER BY days_count DESC\n  LIMIT 1\n),\ncapital_entries_in_period AS (\n  SELECT \n    COUNT(*) AS total_entries,\n    SUM(CASE WHEN capital = 'Y' THEN 1 ELSE 0 END) AS capital_entries\n  FROM cities c\n  JOIN longest_consecutive_period lcp \n    ON c.country_code_2 = lcp.country_code_2\n   AND c.insert_date BETWEEN lcp.period_start AND lcp.period_end\n)\nSELECT \n  CAST(capital_entries AS REAL) / total_entries AS proportion_from_capital\nFROM capital_entries_in_period;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 4,
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      4,
+      1
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 2,
+    "expansion_time_ms": 15188.47624999762,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH country_insertion_counts AS (\n    SELECT \n        country_code_2,\n        COUNT(DISTINCT insert_date) AS insertion_days\n    FROM cities\n    WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    GROUP BY country_code_2\n    HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n    SELECT country_code_2\n    FROM country_insertion_counts\n),\ndate_sequence AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS rn\n    FROM cities\n    WHERE country_code_2 IN (SELECT country_code_2 FROM country_with_nine_days)\n      AND insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n),\nconsecutive_groups AS (\n    SELECT \n        country_code_2,\n        insert_date,\n        DATE(insert_date, '-' || (SELECT COUNT(*) FROM date_sequence ds2 \n                                   WHERE ds2.country_code_2 = date_sequence.country_code_2 \n                                     AND ds2.insert_date <= date_sequence.insert_date) || ' days') AS grp\n    FROM date_sequence\n),\nconsecutive_counts AS (\n    SELECT \n        country_code_2,\n        grp,\n        COUNT(*) AS consecutive_days,\n        MIN(insert_date) AS start_date,\n        MAX(insert_date) AS end_date\n    FROM consecutive_groups\n    GROUP BY country_code_2, grp\n),\nlongest_consecutive AS (\n    SELECT \n        country_code_2,\n        MAX(consecutive_days) AS max_consecutive\n    FROM consecutive_counts\n    GROUP BY country_code_2\n),\nlongest_period AS (\n    SELECT \n        cc.country_code_2,\n        cc.start_date,\n        cc.end_date\n    FROM consecutive_counts cc\n    JOIN longest_consecutive lc ON cc.country_code_2 = lc.country_code_2 \n                               AND cc.consecutive_days = lc.max_consecutive\n),\ncapital_entries AS (\n    SELECT \n        c.country_code_2,\n        COUNT(*) AS total_entries,\n        SUM(CASE WHEN c.capital = 1 THEN 1 ELSE 0 END) AS capital_entries\n    FROM cities c\n    JOIN longest_period lp ON c.country_code_2 = lp.country_code_2\n                          AND c.insert_date BETWEEN lp.start_date AND lp.end_date\n    WHERE c.country_code_2 IN (SELECT country_code_2 FROM country_with_nine_days)\n    GROUP BY c.country_code_2\n)\nSELECT \n    CAST(ce.capital_entries AS REAL) / ce.total_entries AS proportion\nFROM capital_entries ce;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.5418339975876734,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH country_insertion_days AS (\n  SELECT \n    country_code_2,\n    COUNT(DISTINCT insert_date) AS insertion_days\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n  GROUP BY country_code_2\n  HAVING COUNT(DISTINCT insert_date) = 9\n),\ncountry_with_nine_days AS (\n  SELECT country_code_2\n  FROM country_insertion_days\n),\nfiltered_cities AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    capital,\n    ROW_NUMBER() OVER (PARTITION BY country_code_2 ORDER BY insert_date) AS rn\n  FROM cities\n  WHERE insert_date BETWEEN '2022-01-01' AND '2022-01-31'\n    AND country_code_2 = (SELECT country_code_2 FROM country_with_nine_days)\n),\ngrouped_periods AS (\n  SELECT \n    country_code_2,\n    insert_date,\n    capital,\n    CAST(julianday(insert_date) - julianday('2022-01-01') - rn AS INTEGER) AS grp\n  FROM filtered_cities\n),\nperiod_stats AS (\n  SELECT \n    country_code_2,\n    grp,\n    MIN(insert_date) AS period_start,\n    MAX(insert_date) AS period_end,\n    COUNT(*) AS days_count,\n    SUM(CASE WHEN capital = 'Y' THEN 1 ELSE 0 END) AS capital_count\n  FROM grouped_periods\n  GROUP BY country_code_2, grp\n  ORDER BY days_count DESC\n  LIMIT 1\n)\nSELECT \n  CAST(capital_count AS REAL) / days_count AS proportion_from_capital\nFROM period_stats;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 2.357874996960163,
+        "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 25466.817665990675
+}

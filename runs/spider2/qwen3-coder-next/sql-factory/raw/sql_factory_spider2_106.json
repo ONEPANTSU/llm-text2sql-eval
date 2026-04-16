@@ -1,0 +1,61 @@
+{
+  "task_id": "spider2_106",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "WITH seller_performance AS (\n    SELECT \n        s.seller_id,\n        s.seller_name,\n        SUM(oi.quantity) AS total_quantity_sold,\n        SUM(oi.quantity * oi.price_per_unit) AS total_sales,\n        AVG(oi.price_per_unit) AS avg_item_price,\n        AVG(r.rating) AS avg_review_score,\n        AVG(julianday(o.shipped_date) - julianday(o.order_date)) AS avg_packing_time_days\n    FROM sellers s\n    JOIN orders o ON s.seller_id = o.seller_id\n    JOIN order_items oi ON o.order_id = oi.order_id\n    ...",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 2
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "no such table: sellers",
+        "count": 2
+      }
+    ],
+    "avg_preflight_ms": 1.0
+  }
+}

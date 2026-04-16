@@ -1,0 +1,165 @@
+{
+  "task_id": "bird_12",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1404.1371249986696,
+  "execution_time_ms": 15.862458996707574,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT MAX(frpm.`Percent (%) Eligible Free (Ages 5-17)`) AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr * 1.0 / satscores.enroll12 > 0.3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.010707998939324,
+      "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT MAX(frpm.\"Percent (%) Eligible Free (Ages 5-17)\") AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr * 1.0 / satscores.enroll12 > 0.3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.478582999377977,
+      "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT MAX(frpm.`Percent (%) Eligible Free (Ages 5-17)`) AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr / satscores.enroll12 > 0.3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8717500022612512,
+      "result_signature": "ae97ff84f5da7bcf5fcd34ef0c416ca1955390bf7dea066267fc2bdf5bbd3b1c",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT MAX(frpm.\"Percent (%) Eligible Free (Ages 5-17)\") AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr * 1.0 / satscores.enroll12 > 0.3;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.458624992868863,
+      "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT MAX(frpm.`Percent (%) Eligible Free (Ages 5-17)`) AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr * 1.0 / satscores.enroll12 > 0.3\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.429374995699618,
+      "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT MAX(frpm.`Percent (%) Eligible Free (Ages 5-17)`) AS max_eligible_free_rate\nFROM frpm\nJOIN satscores ON frpm.CDSCode = satscores.cds\nWHERE satscores.NumTstTakr * 1.0 / satscores.enroll12 > 0.3\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93": 6,
+        "ae97ff84f5da7bcf5fcd34ef0c416ca1955390bf7dea066267fc2bdf5bbd3b1c": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      2
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 2,
+    "expansion_time_ms": 1535.6748750054976,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT MAX(f.`Percent (%) Eligible Free (Ages 5-17)`)\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumTstTakr * 1.0 / s.enroll12 > 0.3\nLIMIT 1",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 5.554333001782652,
+        "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT MAX(f.`Percent (%) Eligible Free (Ages 5-17)`) AS max_eligible_free_rate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE CAST(s.NumTstTakr AS REAL) / s.enroll12 > 0.3\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 4.404999999678694,
+        "result_signature": "5552cc5aa701b59dc0fdb521a81f3a8f639a70b198590c4b39475019021e5a93",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2955.9530000042287
+}

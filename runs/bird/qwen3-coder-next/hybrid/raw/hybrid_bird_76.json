@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_76",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 5004.924249995383,
+  "execution_time_ms": 20.102083995880093,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 8.672874995681923,
+      "result_signature": "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.7560420023510233,
+      "result_signature": "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.8120000060880557,
+      "result_signature": "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.0499999955063686,
+      "result_signature": "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.2053749999031425,
+      "result_signature": "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT schools.City\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE frpm.`County Name` = 'Merced'\n  AND frpm.`NSLP Provision Status` = 'Lunch Provision 2'\n  AND frpm.`Low Grade` = 9\n  AND frpm.`High Grade` = 12;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "311c7ed734acfca5512b1b4c79d78e8fdd4786629e7710b79028e8dd8f502672": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 5025.114124997344
+}

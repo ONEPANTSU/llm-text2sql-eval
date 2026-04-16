@@ -1,0 +1,134 @@
+{
+  "task_id": "spider2_53",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 19171.499957999913,
+  "execution_time_ms": 41.1924159998307,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH daily_balances AS (\n    SELECT \n        customer_id,\n        DATE(txn_date) AS txn_day,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS daily_balance\n    FROM customer_transactions\n    GROUP BY customer_id, DATE(txn_date)\n),\nrunning_balances AS (\n    SELECT \n        customer_id,\n        txn_day,\n        SUM(daily_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM daily_balances\n),\nrolling_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        AVG(running_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS rolling_avg_balance\n    FROM running_balances\n),\nfiltered_rolling AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        CASE \n            WHEN COUNT(*) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) >= 30 \n            THEN MAX(0, rolling_avg_balance) \n            ELSE NULL \n        END AS rolling_avg_balance_filtered\n    FROM rolling_averages\n),\nmonthly_max AS (\n    SELECT \n        customer_id,\n        strftime('%Y', txn_day) AS year_number,\n        strftime('%m', txn_day) AS month_number,\n        MAX(rolling_avg_balance_filtered) AS max_30day_avg_balance\n    FROM filtered_rolling\n    WHERE rolling_avg_balance_filtered IS NOT NULL\n    GROUP BY customer_id, strftime('%Y', txn_day), strftime('%m', txn_day)\n),\ncustomer_first_month AS (\n    SELECT \n        customer_id,\n        MIN(strftime('%Y', txn_day)) || '-' || MIN(strftime('%m', txn_day)) AS first_month\n    FROM filtered_rolling\n    WHERE rolling_avg_balance_filtered IS NOT NULL\n    GROUP BY customer_id\n),\nfinal_results AS (\n    SELECT \n        mm.year_number,\n        mm.month_number,\n        SUM(mm.max_30day_avg_balance) AS total_max_30day_avg_balance\n    FROM monthly_max mm\n    JOIN customer_first_month cfm \n        ON mm.customer_id = cfm.customer_id \n        AND NOT (mm.year_number || '-' || mm.month_number = cfm.first_month)\n    GROUP BY mm.year_number, mm.month_number\n)\nSELECT \n    year_number,\n    month_number,\n    total_max_30day_avg_balance\nFROM final_results\nORDER BY year_number, month_number;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.86929099902045,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_invalid_sql",
+      "exec_ok": false,
+      "exec_error": null,
+      "exec_time_ms": null,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1,
+        "placeholder": "placeholder:<[^>]+>"
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH daily_balances AS (\n    SELECT \n        customer_id,\n        DATE(txn_date) AS txn_day,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS daily_balance\n    FROM customer_transactions\n    GROUP BY customer_id, DATE(txn_date)\n),\nrunning_balances AS (\n    SELECT \n        customer_id,\n        txn_day,\n        SUM(daily_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM daily_balances\n),\nrolling_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        AVG(running_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS rolling_avg_balance\n    FROM running_balances\n),\nadjusted_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        CASE \n            WHEN COUNT(*) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) >= 30 \n            THEN MAX(0, rolling_avg_balance)\n            ELSE NULL \n        END AS adjusted_rolling_avg\n    FROM rolling_averages\n),\ncustomer_first_month AS (\n    SELECT \n        customer_id,\n        strftime('%Y', MIN(txn_day)) AS first_year,\n        strftime('%m', MIN(txn_day)) AS first_month\n    FROM daily_balances\n    GROUP BY customer_id\n),\nmonthly_max_averages AS (\n    SELECT \n        aa.customer_id,\n        strftime('%Y', aa.txn_day) AS year_number,\n        strftime('%m', aa.txn_day) AS month_number,\n        MAX(aa.adjusted_rolling_avg) AS max_30day_avg_balance\n    FROM adjusted_averages aa\n    JOIN customer_first_month cfm ON aa.customer_id = cfm.customer_id\n    WHERE NOT (strftime('%Y', aa.txn_day) = cfm.first_year AND strftime('%m', aa.txn_day) = cfm.first_month)\n    GROUP BY aa.customer_id, strftime('%Y', aa.txn_day), strftime('%m', aa.txn_day)\n)\nSELECT \n    year_number,\n    month_number,\n    SUM(max_30day_avg_balance) AS total_max_30day_avg_balance\nFROM monthly_max_averages\nGROUP BY year_number, month_number\nORDER BY year_number, month_number;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.8248329977504909,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH daily_balances AS (\n    SELECT \n        customer_id,\n        DATE(txn_date) AS txn_day,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS daily_net\n    FROM customer_transactions\n    GROUP BY customer_id, DATE(txn_date)\n),\nrunning_balances AS (\n    SELECT \n        customer_id,\n        txn_day,\n        SUM(daily_net) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM daily_balances\n),\nrolling_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        AVG(running_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS rolling_avg_balance\n    FROM running_balances\n),\nadjusted_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        CASE \n            WHEN COUNT(*) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) >= 30 \n            THEN MAX(0, rolling_avg_balance)\n            ELSE NULL \n        END AS adjusted_rolling_avg\n    FROM rolling_averages\n),\nmonthly_max AS (\n    SELECT \n        customer_id,\n        strftime('%Y', txn_day) AS year_number,\n        strftime('%m', txn_day) AS month_number,\n        MAX(adjusted_rolling_avg) AS max_30day_avg_balance\n    FROM adjusted_averages\n    WHERE adjusted_rolling_avg IS NOT NULL\n    GROUP BY customer_id, strftime('%Y', txn_day), strftime('%m', txn_day)\n),\ncustomer_first_month AS (\n    SELECT \n        customer_id,\n        MIN(strftime('%Y', txn_day)) || '-' || MIN(strftime('%m', txn_day)) AS first_month\n    FROM rolling_averages\n    GROUP BY customer_id\n),\nfiltered_monthly_max AS (\n    SELECT \n        mm.customer_id,\n        mm.year_number,\n        mm.month_number,\n        mm.max_30day_avg_balance\n    FROM monthly_max mm\n    JOIN customer_first_month cfm \n        ON mm.customer_id = cfm.customer_id \n        AND (mm.year_number || '-' || mm.month_number) > cfm.first_month\n)\nSELECT \n    year_number,\n    month_number,\n    SUM(max_30day_avg_balance) AS total_max_30day_avg_balance\nFROM filtered_monthly_max\nGROUP BY year_number, month_number\nORDER BY year_number, month_number;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.49758399836719036,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH daily_balances AS (\n    SELECT \n        customer_id,\n        DATE(txn_date) AS txn_day,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS daily_net\n    FROM customer_transactions\n    GROUP BY customer_id, DATE(txn_date)\n),\nrunning_balances AS (\n    SELECT \n        customer_id,\n        txn_day,\n        SUM(daily_net) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM daily_balances\n),\nrolling_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        AVG(running_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS rolling_avg_balance,\n        COUNT(*) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS days_in_window\n    FROM running_balances\n),\nfiltered_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        CASE WHEN days_in_window >= 30 THEN MAX(0, rolling_avg_balance) ELSE NULL END AS rolling_avg_balance\n    FROM rolling_averages\n),\nmonthly_max AS (\n    SELECT \n        customer_id,\n        CAST(strftime('%Y', txn_day) AS INTEGER) AS year_number,\n        CAST(strftime('%m', txn_day) AS INTEGER) AS month_number,\n        MAX(rolling_avg_balance) AS max_30day_avg_balance\n    FROM filtered_averages\n    WHERE rolling_avg_balance IS NOT NULL\n    GROUP BY customer_id, year_number, month_number\n),\ncustomer_first_month AS (\n    SELECT \n        customer_id,\n        MIN(year_number * 12 + month_number) AS first_month_num\n    FROM monthly_max\n    GROUP BY customer_id\n),\nfiltered_monthly_max AS (\n    SELECT \n        mm.customer_id,\n        mm.year_number,\n        mm.month_number,\n        mm.max_30day_avg_balance\n    FROM monthly_max mm\n    JOIN customer_first_month cfm \n        ON mm.customer_id = cfm.customer_id \n        AND (mm.year_number * 12 + mm.month_number) > cfm.first_month_num\n)\nSELECT \n    year_number,\n    month_number,\n    SUM(max_30day_avg_balance) AS total_max_30day_avg_balance\nFROM filtered_monthly_max\nGROUP BY year_number, month_number\nORDER BY year_number, month_number;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.6222089868970215,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "WITH daily_balances AS (\n    SELECT \n        customer_id,\n        DATE(txn_date) AS txn_day,\n        SUM(CASE WHEN txn_type = 'deposit' THEN txn_amount ELSE -txn_amount END) AS daily_net\n    FROM customer_transactions\n    GROUP BY customer_id, DATE(txn_date)\n),\nrunning_balances AS (\n    SELECT \n        customer_id,\n        txn_day,\n        SUM(daily_net) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM daily_balances\n),\nrolling_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        running_balance,\n        AVG(running_balance) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS rolling_avg_balance\n    FROM running_balances\n),\nadjusted_averages AS (\n    SELECT \n        customer_id,\n        txn_day,\n        CASE \n            WHEN COUNT(*) OVER (PARTITION BY customer_id ORDER BY txn_day ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) >= 30 \n            THEN MAX(0, rolling_avg_balance)\n            ELSE NULL \n        END AS adjusted_rolling_avg\n    FROM rolling_averages\n),\nmonthly_max AS (\n    SELECT \n        customer_id,\n        strftime('%Y', txn_day) AS year_number,\n        strftime('%m', txn_day) AS month_number,\n        MAX(adjusted_rolling_avg) AS max_30day_avg_balance\n    FROM adjusted_averages\n    WHERE adjusted_rolling_avg IS NOT NULL\n    GROUP BY customer_id, strftime('%Y', txn_day), strftime('%m', txn_day)\n),\ncustomer_first_month AS (\n    SELECT \n        customer_id,\n        MIN(strftime('%Y', txn_day)) || '-' || MIN(strftime('%m', txn_day)) AS first_month\n    FROM rolling_averages\n    GROUP BY customer_id\n),\nfiltered_monthly_max AS (\n    SELECT \n        mm.customer_id,\n        mm.year_number,\n        mm.month_number,\n        mm.max_30day_avg_balance\n    FROM monthly_max mm\n    JOIN customer_first_month cfm \n        ON mm.customer_id = cfm.customer_id \n        AND (mm.year_number || '-' || mm.month_number) > cfm.first_month\n)\nSELECT \n    year_number,\n    month_number,\n    SUM(max_30day_avg_balance) AS total_max_30day_avg_balance\nFROM filtered_monthly_max\nGROUP BY year_number, month_number\nORDER BY year_number, month_number;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 4
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 19212.885417000507
+}

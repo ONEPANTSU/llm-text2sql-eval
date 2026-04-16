@@ -1,0 +1,151 @@
+{
+  "task_id": "bird_107",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1369.8745830042753,
+  "execution_time_ms": 20.1090840055258,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN district dist ON c.district_id = dist.district_id\nORDER BY c.birth_date ASC, dist.A11 DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.921209002030082,
+      "result_signature": "c6ce60e4e26384ffc5b2117ecde5aa9ede8125a5a3d43ecd994110df859172b7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN district dist ON c.district_id = dist.district_id\nORDER BY c.birth_date ASC, dist.A11 DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.714958005934022,
+      "result_signature": "c6ce60e4e26384ffc5b2117ecde5aa9ede8125a5a3d43ecd994110df859172b7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN district dist ON a.district_id = dist.district_id\nORDER BY c.birth_date ASC, dist.A11 DESC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 3.550041998096276,
+      "result_signature": "c6ce60e4e26384ffc5b2117ecde5aa9ede8125a5a3d43ecd994110df859172b7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN district dist ON a.district_id = dist.district_id\nWHERE a.date = (\n    SELECT MIN(a2.date)\n    FROM account a2\n    WHERE a2.district_id = (\n        SELECT district_id\n        FROM district\n        ORDER BY A11 DESC\n        LIMIT 1\n    )\n)\nORDER BY c.birth_date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.6194579986622557,
+      "result_signature": "8d22ba5233e38afcef98acce1cc6e4d320dd5ee8f1368512371fdcafa25c93a7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN district dist ON c.district_id = dist.district_id\nWHERE a.district_id = (\n    SELECT district_id\n    FROM district\n    ORDER BY A11 DESC\n    LIMIT 1\n)\nORDER BY c.birth_date ASC\nLIMIT 1;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.7591249998076819,
+      "result_signature": "8d22ba5233e38afcef98acce1cc6e4d320dd5ee8f1368512371fdcafa25c93a7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 5,
+    "selected_sql": "WITH highest_salary_district AS (\n    SELECT district_id\n    FROM district\n    ORDER BY A11 DESC\n    LIMIT 1\n)\nSELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN highest_salary_district hsd ON c.district_id = hsd.district_id\nORDER BY c.birth_date ASC\nLIMIT 1;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "c6ce60e4e26384ffc5b2117ecde5aa9ede8125a5a3d43ecd994110df859172b7": 4,
+        "8d22ba5233e38afcef98acce1cc6e4d320dd5ee8f1368512371fdcafa25c93a7": 2
+      }
+    },
+    "total_pool_size": 6
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 2,
+    "variations_accepted": 1,
+    "expansion_time_ms": 1288.3657499987748,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH highest_salary_district AS (\n    SELECT district_id\n    FROM district\n    ORDER BY A11 DESC\n    LIMIT 1\n)\nSELECT c.gender\nFROM client c\nJOIN disp d ON c.client_id = d.client_id\nJOIN account a ON d.account_id = a.account_id\nJOIN highest_salary_district hsd ON c.district_id = hsd.district_id\nORDER BY c.birth_date ASC\nLIMIT 1;",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 3.368500001670327,
+        "result_signature": "c6ce60e4e26384ffc5b2117ecde5aa9ede8125a5a3d43ecd994110df859172b7",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 2678.5559999989346
+}

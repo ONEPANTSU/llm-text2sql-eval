@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_1305",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE p.Admission = 'accepted' \nAND l.WBC = 'normal';",
+          "score": 0.8330965909090908,
+          "similarity_max": 0.7338068181818181,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT p.ID) \nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+          "score": 0.9135467980295567,
+          "similarity_max": 0.7729064039408866,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT p.ID) \nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE p.Admission = 'accepted' \nAND l.WBC = 'normal';",
+          "score": 0.9046428571428572,
+          "similarity_max": 0.7907142857142857,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 2,
+      "pool_size_before": 4,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT p.ID) \nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+          "score": 0.9135467980295567,
+          "similarity_max": 0.7729064039408866,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT p.ID) \nFROM Patient p\nINNER JOIN Laboratory l ON p.ID = l.ID\nWHERE p.Admission = 'accepted' \nAND l.WBC = 'normal';",
+          "score": 0.9046428571428572,
+          "similarity_max": 0.7907142857142857,
+          "tables_used": [
+            "Laboratory",
+            "l",
+            "p",
+            "Patient"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM Patient p\nJOIN Laboratory l ON p.ID = l.ID\nWHERE l.WBC = 'normal';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Laboratory",
+        "l",
+        "p",
+        "Patient"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 2.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 7.69
+  }
+}

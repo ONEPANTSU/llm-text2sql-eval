@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_1063",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2284.338084005867,
+  "execution_time_ms": 313.8911249989178,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT potential FROM Player_Attributes INNER JOIN Player ON Player_Attributes.player_api_id = Player.player_api_id WHERE Player.player_name = 'Aaron Doran';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 89.88879199750954,
+      "result_signature": "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT potential\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Aaron Doran';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.379249996098224,
+      "result_signature": "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT potential FROM Player_Attributes JOIN Player ON Player_Attributes.player_api_id = Player.player_api_id WHERE Player.player_name = 'Aaron Doran';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.07904200203484,
+      "result_signature": "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT potential\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Aaron Doran';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 56.81449999974575,
+      "result_signature": "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT potential\nFROM Player_Attributes\nJOIN Player ON Player_Attributes.player_api_id = Player.player_api_id\nWHERE Player.player_name = 'Aaron Doran';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 55.295083999226335,
+      "result_signature": "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 2,
+    "selected_sql": "SELECT potential FROM Player_Attributes JOIN Player ON Player_Attributes.player_api_id = Player.player_api_id WHERE Player.player_name = 'Aaron Doran';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "a6c19251db38d98339d12d52300cd298fbd47330b16f0f05955034db6ecee6f7": 5
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 2598.3419170006528
+}

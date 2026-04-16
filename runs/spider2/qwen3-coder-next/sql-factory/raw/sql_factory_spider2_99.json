@@ -1,0 +1,169 @@
+{
+  "task_id": "spider2_99",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM \n    picking_line pl\nJOIN \n    picking_list p ON pl.picklist_id = p.id\nJOIN \n    orders o ON pl.order_id = o.id\nWHERE \n    o.id = 421\nGROUP BY \n    pl.product_id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "pl",
+            "orders",
+            "picking_line",
+            "picking_list",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM picking_list p\nJOIN picking_line pl ON p.id = pl.picklist_id\nWHERE pl.order_id = 421\nGROUP BY pl.product_id;",
+          "score": 0.8081632653061224,
+          "similarity_max": 0.7836734693877551,
+          "tables_used": [
+            "picking_list",
+            "pl",
+            "p",
+            "picking_line"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM \n    picking_line pl\nJOIN \n    picking_list p ON pl.picklist_id = p.id\nJOIN \n    orders o ON pl.order_id = o.id\nWHERE \n    o.id = 421\nGROUP BY \n    pl.product_id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "pl",
+            "orders",
+            "picking_line",
+            "picking_list",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM picking_list p\nJOIN picking_line pl ON p.id = pl.picklist_id\nWHERE pl.order_id = 421\nGROUP BY pl.product_id;",
+          "score": 0.8081632653061224,
+          "similarity_max": 0.7836734693877551,
+          "tables_used": [
+            "picking_list",
+            "pl",
+            "p",
+            "picking_line"
+          ]
+        },
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM \n    picking_line pl\nWHERE \n    pl.order_id = 421\nGROUP BY \n    pl.product_id;",
+          "score": 0.7678794178794179,
+          "similarity_max": 0.6642411642411643,
+          "tables_used": [
+            "pl",
+            "picking_line"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 3,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM \n    picking_line pl\nJOIN \n    picking_list p ON pl.picklist_id = p.id\nJOIN \n    orders o ON pl.order_id = o.id\nWHERE \n    o.id = 421\nGROUP BY \n    pl.product_id;",
+          "score": 1.3,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "o",
+            "pl",
+            "orders",
+            "picking_line",
+            "picking_list",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    pl.product_id,\n    ROUND(AVG(pl.qty * 1.0), 2) AS avg_units_picked\nFROM picking_line pl\nJOIN picking_list p ON pl.picklist_id = p.id\nWHERE pl.order_id = 421\nGROUP BY pl.product_id;",
+          "score": 0.8119512195121951,
+          "similarity_max": 0.7760975609756098,
+          "tables_used": [
+            "picking_list",
+            "pl",
+            "picking_line",
+            "p"
+          ]
+        },
+        {
+          "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM picking_list p\nJOIN picking_line pl ON p.id = pl.picklist_id\nWHERE pl.order_id = 421\nGROUP BY pl.product_id;",
+          "score": 0.8081632653061224,
+          "similarity_max": 0.7836734693877551,
+          "tables_used": [
+            "picking_list",
+            "pl",
+            "p",
+            "picking_line"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    pl.product_id,\n    AVG(pl.qty) AS avg_units_picked\nFROM \n    picking_line pl\nJOIN \n    picking_list p ON pl.picklist_id = p.id\nJOIN \n    orders o ON pl.order_id = o.id\nWHERE \n    o.id = 421\nGROUP BY \n    pl.product_id;",
+    "meta": {
+      "score": 1.3,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "o",
+        "pl",
+        "orders",
+        "picking_line",
+        "picking_list",
+        "p"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.07
+  }
+}

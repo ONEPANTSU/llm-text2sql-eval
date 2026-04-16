@@ -1,0 +1,168 @@
+{
+  "task_id": "bird_1219",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1976.8187500012573,
+  "execution_time_ms": 20.615624998754356,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT AVG(Laboratory.UA) AS avg_ua\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Laboratory.UA = (SELECT UA FROM Laboratory WHERE ID = Laboratory.ID ORDER BY Date DESC LIMIT 1)",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 6.14937500358792,
+      "result_signature": "9396dad66013539d1bf67370b9ec65e1152f6fb1d9aff00196268c4204dafdc8",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT AVG(Laboratory.UA) AS avg_ua\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Laboratory.UA = (\n    SELECT UA \n    FROM Laboratory AS L2 \n    WHERE L2.ID = Laboratory.ID \n    ORDER BY L2.Date DESC \n    LIMIT 1\n);",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 5.535292002605274,
+      "result_signature": "895eba1a294970dbd259bc0edf709d4a988f992d8a8f57e831ea9d83b8b00c20",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT AVG(Laboratory.UA) AS avg_ua\nFROM Laboratory\nJOIN Patient ON Laboratory.ID = Patient.ID\nWHERE Laboratory.UA = (SELECT UA FROM Laboratory WHERE ID = Patient.ID ORDER BY Date DESC LIMIT 1)\nAND Laboratory.UA = 'normal';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.3591249953606166,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH LatestLab AS (\n    SELECT ID, MAX(Date) AS LatestDate\n    FROM Laboratory\n    GROUP BY ID\n),\nNormalUAPatients AS (\n    SELECT L.ID, L.UA\n    FROM Laboratory L\n    JOIN LatestLab LL ON L.ID = LL.ID AND L.Date = LL.LatestDate\n    WHERE L.UA = 'normal'\n)\nSELECT AVG(CAST(UA AS REAL)) AS avg_ua\nFROM NormalUAPatients;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.986374998523388,
+      "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH LatestLab AS (\n    SELECT \n        ID, \n        MAX(Date) AS latest_date\n    FROM Laboratory\n    GROUP BY ID\n),\nNormalUA AS (\n    SELECT \n        L.ID\n    FROM Laboratory L\n    JOIN LatestLab LL ON L.ID = LL.ID AND L.Date = LL.latest_date\n    WHERE L.UA >= 3.5 AND L.UA <= 7.0  -- assuming normal range for UA is 3.5-7.0 mg/dL\n)\nSELECT \n    AVG(L.UA) AS avg_ua\nFROM Laboratory L\nJOIN NormalUA N ON L.ID = N.ID\nJOIN LatestLab LL ON L.ID = LL.ID AND L.Date = LL.latest_date;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 4.996791998564731,
+      "result_signature": "e59dab68e50d115f64405bd9b4bb2aff3e3607f3c79618bc3615d814f0e72de3",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 6,
+    "selected_sql": "SELECT AVG(latest.UA) AS avg_ua\nFROM (\n    SELECT Laboratory.ID, Laboratory.UA\n    FROM Laboratory\n    WHERE Laboratory.Date = (\n        SELECT MAX(l2.Date)\n        FROM Laboratory l2\n        WHERE l2.ID = Laboratory.ID\n    )\n) AS latest\nJOIN Patient ON latest.ID = Patient.ID\nWHERE latest.UA = 'normal';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "9396dad66013539d1bf67370b9ec65e1152f6fb1d9aff00196268c4204dafdc8": 1,
+        "895eba1a294970dbd259bc0edf709d4a988f992d8a8f57e831ea9d83b8b00c20": 1,
+        "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e": 4,
+        "e59dab68e50d115f64405bd9b4bb2aff3e3607f3c79618bc3615d814f0e72de3": 1
+      }
+    },
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 2,
+    "seed_attempt_ids": [
+      2,
+      3
+    ],
+    "variations_requested": 4,
+    "variations_generated": 3,
+    "variations_accepted": 2,
+    "expansion_time_ms": 2389.8655410011997,
+    "expansion_skipped_reason": null,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "SELECT AVG(latest.UA) AS avg_ua\nFROM (\n  SELECT Laboratory.ID, Laboratory.UA\n  FROM Laboratory\n  WHERE Laboratory.Date = (\n    SELECT MAX(l2.Date)\n    FROM Laboratory l2\n    WHERE l2.ID = Laboratory.ID\n  )\n) AS latest\nJOIN Patient ON latest.ID = Patient.ID\nWHERE latest.UA = 'normal';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.85191700438736,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "SELECT AVG(latest.UA) AS avg_ua\nFROM (\n    SELECT Laboratory.ID, Laboratory.UA\n    FROM Laboratory\n    WHERE Laboratory.Date = (\n        SELECT MAX(l2.Date)\n        FROM Laboratory l2\n        WHERE l2.ID = Laboratory.ID\n    )\n) AS latest\nJOIN Patient ON latest.ID = Patient.ID\nWHERE latest.UA = 'normal';",
+        "preflight_ok": true,
+        "preflight_error_type": null,
+        "exec_ok": true,
+        "exec_error": null,
+        "exec_time_ms": 1.3091660002828576,
+        "result_signature": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "gen_params": {
+          "source": "expansion",
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 4387.374124999042
+}

@@ -1,0 +1,67 @@
+{
+  "task_id": "tpcds_q53",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 0,
+      "preflight_ok": 0,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 0,
+      "top3": []
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    i_brand,\n    i_category,\n    s_store_type,\n    SUM(ss_ext_sales_price) AS total_sales\nFROM \n    store_sales\n    JOIN item ON ss_item_sk = i_item_sk\n    JOIN store ON ss_store_sk = s_store_sk\n    JOIN date_dim ON ss_sold_date_sk = d_date_sk\nWHERE \n    d_year = 2001\nGROUP BY \n    i_brand,\n    i_category,\n    s_store_type\nORDER BY \n    total_sales DESC\nLIMIT 100",
+    "meta": {
+      "fallback": true,
+      "fallback_used": true
+    }
+  },
+  "summary": {
+    "avg_rounds": 2,
+    "avg_pool_size": 0,
+    "reject_exec_fail_rate": 1.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {
+      "pred_parse_fail": 1,
+      "pred_bind_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_parse_fail",
+        "message_head": "Parser Error: syntax error at or near \"{\"\n\nLINE 12:     d_year = {{year}}\n      ",
+        "count": 1
+      },
+      {
+        "error_type": "pred_bind_fail",
+        "message_head": "Binder Error: Referenced column \"s_store_type\" not found in FROM clause!\nCandida",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 28.96
+  }
+}

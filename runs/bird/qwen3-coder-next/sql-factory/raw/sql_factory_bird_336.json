@@ -1,0 +1,163 @@
+{
+  "task_id": "bird_336",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE EXISTS (\n    SELECT 1 \n    FROM bond b \n    WHERE b.molecule_id = m.molecule_id \n    AND b.bond_type = 'triple'\n) \nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 0.9790485829959514,
+          "similarity_max": 0.6419028340080971,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE EXISTS (\n    SELECT 1 \n    FROM bond b \n    WHERE b.molecule_id = m.molecule_id \n    AND b.bond_type = 'triple'\n) \nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 0.9790485829959514,
+          "similarity_max": 0.6419028340080971,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(DISTINCT m.molecule_id)\nFROM molecule m\nINNER JOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 0.9012820512820513,
+          "similarity_max": 0.7974358974358975,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE EXISTS (\n    SELECT 1 \n    FROM bond b \n    WHERE b.molecule_id = m.molecule_id \n    AND b.bond_type = 'triple'\n) \nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 0.9790485829959514,
+          "similarity_max": 0.6419028340080971,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) \nFROM molecule m\nWHERE m.molecule_id IN (\n    SELECT DISTINCT b.molecule_id \n    FROM bond b \n    WHERE b.bond_type = 'triple'\n)\nAND m.label NOT LIKE '%carcinogenic%';",
+          "score": 0.963259109311741,
+          "similarity_max": 0.6734817813765182,
+          "tables_used": [
+            "molecule",
+            "bond",
+            "m",
+            "b"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT COUNT(*) \nFROM molecule m\nJOIN bond b ON m.molecule_id = b.molecule_id\nWHERE b.bond_type = 'triple'\nAND m.label NOT LIKE '%carcinogenic%';",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "molecule",
+        "bond",
+        "m",
+        "b"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 31.52
+  }
+}

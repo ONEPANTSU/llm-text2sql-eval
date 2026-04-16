@@ -1,0 +1,183 @@
+{
+  "task_id": "spider2_71",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "WITH rank_avg AS (\n  SELECT \n    FacRank,\n    AVG(FacSalary) AS avg_salary\n  FROM university_faculty\n  GROUP BY FacRank\n),\nsalary_diff AS (\n  SELECT \n    f.FacRank,\n    f.FacFirstName,\n    f.FacLastName,\n    f.FacSalary,\n    ABS(f.FacSalary - r.avg_salary) AS salary_diff\n  FROM university_faculty f\n  JOIN rank_avg r ON f.FacRank = r.FacRank\n)\nSELECT \n  FacRank,\n  FacFirstName,\n  FacLastName,\n  FacSalary\nFROM salary_diff\nWHERE salary_diff = (SELECT MIN(salary_diff) FROM salary_diff);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salary_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "f"
+          ]
+        },
+        {
+          "sql": "WITH rank_avg AS (\n    SELECT \n        FacRank,\n        AVG(FacSalary) AS avg_salary\n    FROM university_faculty\n    GROUP BY FacRank\n),\nfaculty_with_diff AS (\n    SELECT \n        f.FacRank,\n        f.FacFirstName,\n        f.FacLastName,\n        f.FacSalary,\n        ABS(f.FacSalary - r.avg_salary) AS salary_diff\n    FROM university_faculty f\n    JOIN rank_avg r ON f.FacRank = r.FacRank\n),\nclosest_faculty AS (\n    SELECT \n        FacRank,\n        FacFirstName,\n        FacLastName,\n        FacSala...",
+          "score": 1.1682239382239383,
+          "similarity_max": 0.6635521235521236,
+          "tables_used": [
+            "faculty_with_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "closest_faculty",
+            "f"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "WITH rank_avg AS (\n  SELECT \n    FacRank,\n    AVG(FacSalary) AS avg_salary\n  FROM university_faculty\n  GROUP BY FacRank\n),\nsalary_diff AS (\n  SELECT \n    f.FacRank,\n    f.FacFirstName,\n    f.FacLastName,\n    f.FacSalary,\n    ABS(f.FacSalary - r.avg_salary) AS salary_diff\n  FROM university_faculty f\n  JOIN rank_avg r ON f.FacRank = r.FacRank\n)\nSELECT \n  FacRank,\n  FacFirstName,\n  FacLastName,\n  FacSalary\nFROM salary_diff\nWHERE salary_diff = (SELECT MIN(salary_diff) FROM salary_diff);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salary_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "f"
+          ]
+        },
+        {
+          "sql": "WITH rank_avg AS (\n    SELECT \n        FacRank,\n        AVG(FacSalary) AS avg_salary\n    FROM university_faculty\n    GROUP BY FacRank\n),\nfaculty_with_diff AS (\n    SELECT \n        f.FacRank,\n        f.FacFirstName,\n        f.FacLastName,\n        f.FacSalary,\n        ABS(f.FacSalary - r.avg_salary) AS salary_diff\n    FROM university_faculty f\n    JOIN rank_avg r ON f.FacRank = r.FacRank\n),\nclosest_faculty AS (\n    SELECT \n        FacRank,\n        FacFirstName,\n        FacLastName,\n        FacSala...",
+          "score": 1.1682239382239383,
+          "similarity_max": 0.6635521235521236,
+          "tables_used": [
+            "faculty_with_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "closest_faculty",
+            "f"
+          ]
+        },
+        {
+          "sql": "WITH rank_stats AS (\n    SELECT \n        FacRank,\n        AVG(FacSalary) AS avg_salary,\n        MIN(FacSalary) AS min_salary,\n        MAX(FacSalary) AS max_salary\n    FROM university_faculty\n    GROUP BY FacRank\n),\nfaculty_ranked AS (\n    SELECT \n        f.FacRank,\n        f.FacFirstName,\n        f.FacLastName,\n        f.FacSalary,\n        ABS(f.FacSalary - s.avg_salary) AS diff_from_avg,\n        ROW_NUMBER() OVER (\n            PARTITION BY f.FacRank \n            ORDER BY ABS(f.FacSalary - s.avg...",
+          "score": 1.1443885760257442,
+          "similarity_max": 0.6112228479485117,
+          "tables_used": [
+            "rank_stats",
+            "university_faculty",
+            "f",
+            "faculty_ranked",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "WITH rank_avg AS (\n  SELECT \n    FacRank,\n    AVG(FacSalary) AS avg_salary\n  FROM university_faculty\n  GROUP BY FacRank\n),\nsalary_diff AS (\n  SELECT \n    f.FacRank,\n    f.FacFirstName,\n    f.FacLastName,\n    f.FacSalary,\n    ABS(f.FacSalary - r.avg_salary) AS salary_diff\n  FROM university_faculty f\n  JOIN rank_avg r ON f.FacRank = r.FacRank\n)\nSELECT \n  FacRank,\n  FacFirstName,\n  FacLastName,\n  FacSalary\nFROM salary_diff\nWHERE salary_diff = (SELECT MIN(salary_diff) FROM salary_diff);",
+          "score": 1.45,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "salary_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "f"
+          ]
+        },
+        {
+          "sql": "WITH rank_avg AS (\n    SELECT \n        FacRank,\n        AVG(FacSalary) AS avg_salary\n    FROM university_faculty\n    GROUP BY FacRank\n),\nfaculty_with_diff AS (\n    SELECT \n        f.FacRank,\n        f.FacFirstName,\n        f.FacLastName,\n        f.FacSalary,\n        ABS(f.FacSalary - r.avg_salary) AS salary_diff\n    FROM university_faculty f\n    JOIN rank_avg r ON f.FacRank = r.FacRank\n),\nclosest_faculty AS (\n    SELECT \n        FacRank,\n        FacFirstName,\n        FacLastName,\n        FacSala...",
+          "score": 1.1682239382239383,
+          "similarity_max": 0.6635521235521236,
+          "tables_used": [
+            "faculty_with_diff",
+            "r",
+            "university_faculty",
+            "rank_avg",
+            "closest_faculty",
+            "f"
+          ]
+        },
+        {
+          "sql": "WITH rank_stats AS (\n    SELECT \n        FacRank,\n        AVG(FacSalary) AS avg_salary,\n        MIN(FacSalary) AS min_salary,\n        MAX(FacSalary) AS max_salary\n    FROM university_faculty\n    GROUP BY FacRank\n),\nfaculty_ranked AS (\n    SELECT \n        f.FacRank,\n        f.FacFirstName,\n        f.FacLastName,\n        f.FacSalary,\n        ABS(f.FacSalary - s.avg_salary) AS diff_from_avg,\n        ROW_NUMBER() OVER (\n            PARTITION BY f.FacRank \n            ORDER BY ABS(f.FacSalary - s.avg...",
+          "score": 1.1443885760257442,
+          "similarity_max": 0.6112228479485117,
+          "tables_used": [
+            "rank_stats",
+            "university_faculty",
+            "f",
+            "faculty_ranked",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH rank_avg AS (\n  SELECT \n    FacRank,\n    AVG(FacSalary) AS avg_salary\n  FROM university_faculty\n  GROUP BY FacRank\n),\nsalary_diff AS (\n  SELECT \n    f.FacRank,\n    f.FacFirstName,\n    f.FacLastName,\n    f.FacSalary,\n    ABS(f.FacSalary - r.avg_salary) AS salary_diff\n  FROM university_faculty f\n  JOIN rank_avg r ON f.FacRank = r.FacRank\n)\nSELECT \n  FacRank,\n  FacFirstName,\n  FacLastName,\n  FacSalary\nFROM salary_diff\nWHERE salary_diff = (SELECT MIN(salary_diff) FROM salary_diff);",
+    "meta": {
+      "score": 1.45,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "salary_diff",
+        "r",
+        "university_faculty",
+        "rank_avg",
+        "f"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.16666666666666666,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {
+      "pred_exec_fail": 1
+    },
+    "top_error_messages": [
+      {
+        "error_type": "pred_exec_fail",
+        "message_head": "misuse of window function AVG()",
+        "count": 1
+      }
+    ],
+    "avg_preflight_ms": 2.96
+  }
+}

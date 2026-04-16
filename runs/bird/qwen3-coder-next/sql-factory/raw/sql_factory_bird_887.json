@@ -1,0 +1,134 @@
+{
+  "task_id": "bird_887",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT name\nFROM races\nWHERE year = 2017\nEXCEPT\nSELECT name\nFROM races\nWHERE year = 2000;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT name\nFROM races\nWHERE year = 2017\nEXCEPT\nSELECT name\nFROM races\nWHERE year = 2000;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT r1.name\nFROM races r1\nWHERE r1.year = 2017\n  AND r1.name NOT IN (\n    SELECT r2.name\n    FROM races r2\n    WHERE r2.year = 2000\n  );",
+          "score": 1.0486842105263159,
+          "similarity_max": 0.4026315789473684,
+          "tables_used": [
+            "r2",
+            "races",
+            "r1"
+          ]
+        },
+        {
+          "sql": "SELECT name\nFROM races\nWHERE year = 2017\nAND name NOT IN (\n  SELECT name\n  FROM races\n  WHERE year = 2000\n);",
+          "score": 0.8026315789473686,
+          "similarity_max": 0.6947368421052631,
+          "tables_used": [
+            "races"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT name\nFROM races\nWHERE year = 2017\nEXCEPT\nSELECT name\nFROM races\nWHERE year = 2000;",
+          "score": 1.05,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "races"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT r1.name\nFROM races r1\nWHERE r1.year = 2017\n  AND r1.name NOT IN (\n    SELECT r2.name\n    FROM races r2\n    WHERE r2.year = 2000\n  );",
+          "score": 1.0486842105263159,
+          "similarity_max": 0.4026315789473684,
+          "tables_used": [
+            "r2",
+            "races",
+            "r1"
+          ]
+        },
+        {
+          "sql": "SELECT DISTINCT r1.name\nFROM races r1\nWHERE r1.year = 2017\n  AND NOT EXISTS (\n    SELECT 1\n    FROM races r2\n    WHERE r2.year = 2000\n      AND r2.name = r1.name\n  );",
+          "score": 0.9028571428571429,
+          "similarity_max": 0.6942857142857142,
+          "tables_used": [
+            "r2",
+            "races",
+            "r1"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT name\nFROM races\nWHERE year = 2017\nEXCEPT\nSELECT name\nFROM races\nWHERE year = 2000;",
+    "meta": {
+      "score": 1.05,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "races"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.13
+  }
+}

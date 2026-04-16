@@ -1,0 +1,167 @@
+{
+  "task_id": "spider2_68",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 6774.294791001012,
+  "execution_time_ms": 3.3880830014823005,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH top_genres AS (\n    SELECT g.genre_id, g.genre_name, COUNT(r.movie_id) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_id, g.genre_name\n    ORDER BY movie_count DESC\n    LIMIT 3\n),\ntop_directors AS (\n    SELECT d.name, COUNT(r.movie_id) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    JOIN movie_directors md ON m.movie_id = md.movie_id\n    JOIN directors d ON md.director_id = d.director_id\n    WHERE r.rating > 8\n      AND g.genre_id IN (SELECT genre_id FROM top_genres)\n    GROUP BY d.name\n    ORDER BY movie_count DESC\n    LIMIT 4\n)\nSELECT name, movie_count\nFROM top_directors\nORDER BY movie_count DESC;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: ratings",
+      "exec_time_ms": 1.5544170018984005,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH top_genres AS (\n    SELECT g.genre_name\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_name\n    ORDER BY COUNT(r.movie_id) DESC\n    LIMIT 3\n)\nSELECT d.name, COUNT(r.movie_id) AS movie_count\nFROM ratings r\nJOIN movies m ON r.movie_id = m.movie_id\nJOIN movie_genres mg ON m.movie_id = mg.movie_id\nJOIN genres g ON mg.genre_id = g.genre_id\nJOIN movie_directors md ON m.movie_id = md.movie_id\nJOIN directors d ON md.director_id = d.director_id\nWHERE r.rating > 8\n  AND g.genre_name IN (SELECT genre_name FROM top_genres)\nGROUP BY d.name\nORDER BY movie_count DESC\nLIMIT 4;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: ratings",
+      "exec_time_ms": 0.35270799708087,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH top_genres AS (\n    SELECT g.genre_id, g.genre_name, COUNT(*) AS genre_movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_id, g.genre_name\n    ORDER BY genre_movie_count DESC\n    LIMIT 3\n),\ntop_directors AS (\n    SELECT d.name, COUNT(*) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    JOIN movie_directors md ON m.movie_id = md.movie_id\n    JOIN directors d ON md.director_id = d.director_id\n    WHERE r.rating > 8\n      AND g.genre_id IN (SELECT genre_id FROM top_genres)\n    GROUP BY d.name\n    ORDER BY movie_count DESC\n    LIMIT 4\n)\nSELECT name, movie_count\nFROM top_directors;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: ratings",
+      "exec_time_ms": 0.5910000036237761,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH top_genres AS (\n    SELECT g.genre_name\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_name\n    ORDER BY COUNT(r.movie_id) DESC\n    LIMIT 3\n)\nSELECT d.name, COUNT(r.movie_id) AS movie_count\nFROM ratings r\nJOIN movies m ON r.movie_id = m.movie_id\nJOIN movie_genres mg ON m.movie_id = mg.movie_id\nJOIN genres g ON mg.genre_id = g.genre_id\nJOIN movie_directors md ON m.movie_id = md.movie_id\nJOIN directors d ON md.director_id = d.director_id\nWHERE r.rating > 8\n  AND g.genre_name IN (SELECT genre_name FROM top_genres)\nGROUP BY d.name\nORDER BY movie_count DESC\nLIMIT 4;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: ratings",
+      "exec_time_ms": 0.27691600553225726,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH top_genres AS (\n    SELECT g.genre_name, COUNT(r.movie_id) AS genre_movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_name\n    ORDER BY genre_movie_count DESC\n    LIMIT 3\n),\ntop_directors AS (\n    SELECT d.name, COUNT(r.movie_id) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    JOIN movie_directors md ON m.movie_id = md.movie_id\n    JOIN directors d ON md.director_id = d.director_id\n    WHERE r.rating > 8 AND g.genre_name IN (SELECT genre_name FROM top_genres)\n    GROUP BY d.name\n    ORDER BY movie_count DESC\n    LIMIT 4\n)\nSELECT name, movie_count\nFROM top_directors;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such table: ratings",
+      "exec_time_ms": 0.5517079989658669,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 7
+  },
+  "diagnostic_retry": {
+    "triggered": true,
+    "common_error": "no such table: ratings",
+    "retry_count": 2,
+    "retry_candidates_generated": 2,
+    "retry_exec_ok": 0,
+    "candidates": [
+      {
+        "attempt_id": 5,
+        "sql": "WITH top_genres AS (\n    SELECT g.genre_id, g.genre_name, COUNT(*) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_id, g.genre_name\n    ORDER BY movie_count DESC\n    LIMIT 3\n),\ntop_directors AS (\n    SELECT d.name, COUNT(*) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    JOIN movie_directors md ON m.movie_id = md.movie_id\n    JOIN directors d ON md.director_id = d.director_id\n    WHERE r.rating > 8\n      AND g.genre_id IN (SELECT genre_id FROM top_genres)\n    GROUP BY d.name\n    ORDER BY movie_count DESC\n    LIMIT 4\n)\nSELECT name, movie_count\nFROM top_directors\nORDER BY movie_count DESC;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: ratings",
+        "exec_time_ms": 5.626875004963949,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 102,
+          "attempt_id": 5
+        }
+      },
+      {
+        "attempt_id": 6,
+        "sql": "WITH top_genres AS (\n    SELECT g.genre_id, g.genre_name, COUNT(r.movie_id) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    WHERE r.rating > 8\n    GROUP BY g.genre_id, g.genre_name\n    ORDER BY movie_count DESC\n    LIMIT 3\n),\ntop_directors AS (\n    SELECT d.name, COUNT(r.movie_id) AS movie_count\n    FROM ratings r\n    JOIN movies m ON r.movie_id = m.movie_id\n    JOIN movie_genres mg ON m.movie_id = mg.movie_id\n    JOIN genres g ON mg.genre_id = g.genre_id\n    JOIN movie_directors md ON m.movie_id = md.movie_id\n    JOIN directors d ON md.director_id = d.director_id\n    WHERE r.rating > 8\n      AND g.genre_id IN (SELECT genre_id FROM top_genres)\n    GROUP BY d.name\n    ORDER BY movie_count DESC\n    LIMIT 4\n)\nSELECT name, movie_count\nFROM top_directors\nORDER BY movie_count DESC;",
+        "preflight_ok": false,
+        "preflight_error_type": "pred_exec_fail",
+        "exec_ok": false,
+        "exec_error": "no such table: ratings",
+        "exec_time_ms": 1.1752089922083542,
+        "result_signature": null,
+        "gen_params": {
+          "source": "diagnostic_retry",
+          "temperature": 0.3,
+          "seed": 103,
+          "attempt_id": 6
+        }
+      }
+    ]
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 15153.685333993053
+}

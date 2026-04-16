@@ -1,0 +1,136 @@
+{
+  "task_id": "bird_1460",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 2541.9313329985016,
+  "execution_time_ms": 5.327958999259863,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT m.first_name, m.last_name, e.cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 2.5186670027324,
+      "result_signature": "b44057a88deec02b5bd88fc9bb237448ed6187b82c8885cba9ad72c1a08a84a9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT m.first_name, m.last_name, e.cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.7227500027511269,
+      "result_signature": "b44057a88deec02b5bd88fc9bb237448ed6187b82c8885cba9ad72c1a08a84a9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name, e.cost\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.46608300181105733,
+      "result_signature": "c55fe48c199a60fe9f2792abf7adfaaecc348e288fc1d9f384f6cbf451d24504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT m.first_name, m.last_name, e.cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4191670013824478,
+      "result_signature": "b44057a88deec02b5bd88fc9bb237448ed6187b82c8885cba9ad72c1a08a84a9",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT m.first_name || ' ' || m.last_name AS full_name, e.cost\nFROM member m\nJOIN expense e ON e.link_to_member = m.member_id\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.35879200004274026,
+      "result_signature": "c55fe48c199a60fe9f2792abf7adfaaecc348e288fc1d9f384f6cbf451d24504",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 3,
+    "selected_sql": "SELECT m.first_name, m.last_name, e.cost\nFROM member m\nJOIN expense e ON m.member_id = e.link_to_member\nJOIN budget b ON e.link_to_budget = b.budget_id\nWHERE e.expense_description LIKE '%water%'\n   OR e.expense_description LIKE '%veggie tray%'\n   OR e.expense_description LIKE '%supplies%';",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "b44057a88deec02b5bd88fc9bb237448ed6187b82c8885cba9ad72c1a08a84a9": 3,
+        "c55fe48c199a60fe9f2792abf7adfaaecc348e288fc1d9f384f6cbf451d24504": 2
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 1,
+    "seed_attempt_ids": [
+      4
+    ],
+    "variations_requested": 2,
+    "variations_generated": 1,
+    "variations_accepted": 0,
+    "expansion_time_ms": 3009.872999995423,
+    "expansion_skipped_reason": null,
+    "candidates": []
+  },
+  "expansion_skipped_reason": null,
+  "latency_ms": 5557.423042002483
+}

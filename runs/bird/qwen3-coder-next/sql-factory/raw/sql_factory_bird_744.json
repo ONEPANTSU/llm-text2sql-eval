@@ -1,0 +1,133 @@
+{
+  "task_id": "bird_744",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'DC Comics')) -\n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')) AS difference;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 1,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'DC Comics')) -\n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')) AS difference;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    COUNT(CASE WHEN p.publisher_name = 'DC Comics' THEN 1 END) -\n    COUNT(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 END) AS difference\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE p.publisher_name IN ('DC Comics', 'Marvel Comics');",
+          "score": 0.9898064516129031,
+          "similarity_max": 0.42038709677419356,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 2,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'DC Comics')) -\n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')) AS difference;",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "publisher",
+            "superhero"
+          ]
+        },
+        {
+          "sql": "SELECT \n    (SELECT COUNT(*) FROM superhero s JOIN publisher p ON s.publisher_id = p.id WHERE p.publisher_name = 'DC Comics') -\n    (SELECT COUNT(*) FROM superhero s JOIN publisher p ON s.publisher_id = p.id WHERE p.publisher_name = 'Marvel Comics') AS difference",
+          "score": 0.9948275862068966,
+          "similarity_max": 0.6103448275862069,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        },
+        {
+          "sql": "SELECT \n    COUNT(CASE WHEN p.publisher_name = 'DC Comics' THEN 1 END) -\n    COUNT(CASE WHEN p.publisher_name = 'Marvel Comics' THEN 1 END) AS difference\nFROM superhero s\nJOIN publisher p ON s.publisher_id = p.id\nWHERE p.publisher_name IN ('DC Comics', 'Marvel Comics');",
+          "score": 0.9898064516129031,
+          "similarity_max": 0.42038709677419356,
+          "tables_used": [
+            "p",
+            "publisher",
+            "superhero",
+            "s"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT \n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'DC Comics')) -\n    (SELECT COUNT(*) FROM superhero WHERE publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')) AS difference;",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "publisher",
+        "superhero"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 3,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.5,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.65
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "task_id": "tpcds_q33",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 8391.548082989175,
+  "execution_time_ms": 75.28741599526256,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\nFROM catalog_returns\nJOIN reason ON catalog_returns.cr_reason_sk = reason.r_reason_sk\nJOIN date_dim ON catalog_returns.cr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 5\nGROUP BY r_reason_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandidate bindings: \"cr_return_amount\", \"cr_return_tax\", \"cr_return_amt_inc_tax\", \"cr_return_quantity\", \"cr_returned_date_sk\"\n\nLINE 1: EXPLAIN SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\n                                          ^",
+      "exec_time_ms": 26.079125003889203,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\nFROM catalog_returns\nJOIN reason ON catalog_returns.cr_reason_sk = reason.r_reason_sk\nJOIN date_dim ON catalog_returns.cr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998 AND date_dim.d_moy = 5\nGROUP BY r_reason_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandidate bindings: \"cr_return_amount\", \"cr_return_tax\", \"cr_return_amt_inc_tax\", \"cr_return_quantity\", \"cr_returned_date_sk\"\n\nLINE 1: EXPLAIN SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\n                                          ^",
+      "exec_time_ms": 14.590665989089757,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT\n  r_reason_desc,\n  SUM(cr_return_amt) AS total_revenue\nFROM\n  catalog_returns,\n  reason,\n  date_dim\nWHERE\n  catalog_returns.cr_reason_sk = reason.r_reason_sk\n  AND catalog_returns.cr_returned_date_sk = date_dim.d_date_sk\n  AND date_dim.d_year = 1998\n  AND date_dim.d_moy = 5\nGROUP BY\n  r_reason_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandidate bindings: \"cr_return_amount\", \"cr_return_tax\", \"cr_return_amt_inc_tax\", \"cr_return_quantity\", \"cr_returned_date_sk\"\n\nLINE 3:   SUM(cr_return_amt) AS total_revenue\n              ^",
+      "exec_time_ms": 12.986375004402362,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\nFROM catalog_returns\nJOIN reason ON catalog_returns.cr_reason_sk = reason.r_reason_sk\nJOIN date_dim ON catalog_returns.cr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998 AND date_dim.d_moy = 5\nGROUP BY r_reason_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandidate bindings: \"cr_return_amount\", \"cr_return_tax\", \"cr_return_amt_inc_tax\", \"cr_return_quantity\", \"cr_returned_date_sk\"\n\nLINE 1: EXPLAIN SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\n                                          ^",
+      "exec_time_ms": 11.1075000022538,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\nFROM catalog_returns\nJOIN reason ON catalog_returns.cr_reason_sk = reason.r_reason_sk\nJOIN date_dim ON catalog_returns.cr_returned_date_sk = date_dim.d_date_sk\nWHERE date_dim.d_year = 1998\n  AND date_dim.d_moy = 5\nGROUP BY r_reason_desc\nLIMIT 100",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_bind_fail",
+      "exec_ok": false,
+      "exec_error": "Binder Error: Referenced column \"cr_return_amt\" not found in FROM clause!\nCandidate bindings: \"cr_return_amount\", \"cr_return_tax\", \"cr_return_amt_inc_tax\", \"cr_return_quantity\", \"cr_returned_date_sk\"\n\nLINE 1: EXPLAIN SELECT r_reason_desc, SUM(cr_return_amt) AS total_revenue\n                                          ^",
+      "exec_time_ms": 10.088000010000542,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 0,
+    "selected_sql": "",
+    "aggregation_reason": "all_candidates_failed",
+    "votes": {},
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "no_exec_ok",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "no_exec_ok",
+  "latency_ms": 8466.873500001384
+}

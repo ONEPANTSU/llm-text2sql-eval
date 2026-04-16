@@ -1,0 +1,153 @@
+{
+  "task_id": "bird_1110",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 2,
+      "top3": [
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes\nWHERE team_api_id = (\n    SELECT team_api_id\n    FROM Team\n    WHERE team_long_name = 'FC Lorient'\n)\nAND date <= '2010-02-22'\nORDER BY date DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes",
+            "Team"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes\nWHERE team_api_id = (SELECT team_api_id FROM Team WHERE team_long_name = 'FC Lorient')\n  AND date = '2010-02-22';",
+          "score": 0.7538181818181819,
+          "similarity_max": 0.6923636363636363,
+          "tables_used": [
+            "Team_Attributes",
+            "Team"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 2,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes\nWHERE team_api_id = (\n    SELECT team_api_id\n    FROM Team\n    WHERE team_long_name = 'FC Lorient'\n)\nAND date <= '2010-02-22'\nORDER BY date DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes",
+            "Team"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE t.team_long_name = 'FC Lorient'\n  AND ta.date = '2010-02-22';",
+          "score": 0.9265625,
+          "similarity_max": 0.546875,
+          "tables_used": [
+            "Team_Attributes",
+            "t",
+            "Team",
+            "ta"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE t.team_long_name = 'FC Lorient'\n  AND ta.date <= '2010-02-22'\nORDER BY ta.date DESC\nLIMIT 1;",
+          "score": 0.8450549450549449,
+          "similarity_max": 0.7098901098901099,
+          "tables_used": [
+            "Team_Attributes",
+            "t",
+            "Team",
+            "ta"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 4,
+      "pool_size_after": 5,
+      "top3": [
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes\nWHERE team_api_id = (\n    SELECT team_api_id\n    FROM Team\n    WHERE team_long_name = 'FC Lorient'\n)\nAND date <= '2010-02-22'\nORDER BY date DESC\nLIMIT 1;",
+          "score": 1.2000000000000002,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "Team_Attributes",
+            "Team"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE t.team_long_name = 'FC Lorient'\n  AND ta.date = (\n    SELECT MAX(date)\n    FROM Team_Attributes\n    WHERE team_api_id = t.team_api_id\n      AND date <= '2010-02-22'\n  );",
+          "score": 0.9520361990950227,
+          "similarity_max": 0.6959276018099547,
+          "tables_used": [
+            "Team_Attributes",
+            "t",
+            "Team",
+            "ta"
+          ]
+        },
+        {
+          "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes ta\nJOIN Team t ON ta.team_api_id = t.team_api_id\nWHERE t.team_long_name = 'FC Lorient'\n  AND ta.date = '2010-02-22';",
+          "score": 0.9265625,
+          "similarity_max": 0.546875,
+          "tables_used": [
+            "Team_Attributes",
+            "t",
+            "Team",
+            "ta"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT buildUpPlayPassingClass\nFROM Team_Attributes\nWHERE team_api_id = (\n    SELECT team_api_id\n    FROM Team\n    WHERE team_long_name = 'FC Lorient'\n)\nAND date <= '2010-02-22'\nORDER BY date DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2000000000000002,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "Team_Attributes",
+        "Team"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 5,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.16666666666666666,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 4.41
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_54",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 4621.695750000072,
+  "execution_time_ms": 35.536291004973464,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "WITH RECURSIVE \ndaily_balances AS (\n  SELECT \n    customer_id,\n    txn_date AS balance_date,\n    SUM(txn_amount) OVER (PARTITION BY customer_id ORDER BY txn_date) AS balance\n  FROM customer_transactions\n),\ndate_ranges AS (\n  SELECT \n    customer_id,\n    MIN(txn_date) AS start_date,\n    MAX(txn_date) AS end_date\n  FROM customer_transactions\n  GROUP BY customer_id\n),\nall_dates AS (\n  SELECT start_date AS balance_date, customer_id\n  FROM date_ranges\n  UNION ALL\n  SELECT DATE(balance_date, '+1 day'), customer_id\n  FROM all_dates ad\n  JOIN date_ranges dr ON ad.customer_id = dr.customer_id\n  WHERE balance_date < dr.end_date\n),\nfilled_balances AS (\n  SELECT \n    ad.customer_id,\n    ad.balance_date,\n    COALESCE(db.balance, \n      (SELECT balance \n       FROM daily_balances db2 \n       WHERE db2.customer_id = ad.customer_id \n         AND db2.txn_date <= ad.balance_date \n       ORDER BY db2.txn_date DESC \n       LIMIT 1), 0) AS balance\n  FROM all_dates ad\n  LEFT JOIN daily_balances db ON ad.customer_id = db.customer_id AND ad.balance_date = db.txn_date\n),\nadjusted_balances AS (\n  SELECT \n    customer_id,\n    balance_date,\n    CASE WHEN balance < 0 THEN 0 ELSE balance END AS balance\n  FROM filled_balances\n),\nmonthly_max AS (\n  SELECT \n    customer_id,\n    strftime('%Y-%m', balance_date) AS month,\n    MAX(balance) AS max_daily_balance\n  FROM adjusted_balances\n  GROUP BY customer_id, strftime('%Y-%m', balance_date)\n)\nSELECT \n  month,\n  SUM(max_daily_balance) AS total_monthly_balance\nFROM monthly_max\nGROUP BY month\nORDER BY month;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "ambiguous column name: customer_id",
+      "exec_time_ms": 1.0844170028576627,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "WITH RECURSIVE \ndaily_balances AS (\n  SELECT \n    customer_id,\n    txn_date AS balance_date,\n    SUM(txn_amount) OVER (PARTITION BY customer_id ORDER BY txn_date) AS daily_balance\n  FROM customer_transactions\n),\ndate_ranges AS (\n  SELECT \n    customer_id,\n    MIN(txn_date) AS start_date,\n    MAX(txn_date) AS end_date\n  FROM customer_transactions\n  GROUP BY customer_id\n),\nall_dates AS (\n  SELECT \n    customer_id,\n    start_date AS balance_date,\n    end_date\n  FROM date_ranges\n  UNION ALL\n  SELECT \n    customer_id,\n    DATE(balance_date, '+1 day') AS balance_date,\n    end_date\n  FROM all_dates\n  WHERE balance_date < end_date\n),\nfilled_balances AS (\n  SELECT \n    ad.customer_id,\n    ad.balance_date,\n    COALESCE(\n      (SELECT db.daily_balance \n       FROM daily_balances db \n       WHERE db.customer_id = ad.customer_id \n         AND db.txn_date <= ad.balance_date \n       ORDER BY db.txn_date DESC \n       LIMIT 1), \n      0\n    ) AS daily_balance\n  FROM all_dates ad\n),\nadjusted_balances AS (\n  SELECT \n    customer_id,\n    balance_date,\n    CASE \n      WHEN daily_balance < 0 THEN 0 \n      ELSE daily_balance \n    END AS daily_balance\n  FROM filled_balances\n),\nmonthly_max AS (\n  SELECT \n    customer_id,\n    strftime('%Y-%m', balance_date) AS month,\n    MAX(daily_balance) AS max_daily_balance\n  FROM adjusted_balances\n  GROUP BY customer_id, strftime('%Y-%m', balance_date)\n)\nSELECT \n  month,\n  SUM(max_daily_balance) AS monthly_total\nFROM monthly_max\nGROUP BY month\nORDER BY month;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: db.txn_date",
+      "exec_time_ms": 0.47391699627041817,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "WITH RECURSIVE \n  daily_balances AS (\n    SELECT \n      customer_id,\n      txn_date AS balance_date,\n      SUM(txn_amount) OVER (PARTITION BY customer_id ORDER BY txn_date) AS running_balance\n    FROM customer_transactions\n  ),\n  date_ranges AS (\n    SELECT \n      customer_id,\n      MIN(txn_date) AS start_date,\n      MAX(txn_date) AS end_date\n    FROM customer_transactions\n    GROUP BY customer_id\n  ),\n  all_dates AS (\n    SELECT start_date AS balance_date, customer_id\n    FROM date_ranges\n    UNION ALL\n    SELECT date(balance_date, '+1 day'), customer_id\n    FROM all_dates\n    WHERE balance_date < (SELECT end_date FROM date_ranges dr WHERE dr.customer_id = all_dates.customer_id)\n  ),\n  customer_daily_balances AS (\n    SELECT \n      ad.customer_id,\n      ad.balance_date,\n      COALESCE(db.running_balance, \n               (SELECT running_balance \n                FROM daily_balances db2 \n                WHERE db2.customer_id = ad.customer_id \n                  AND db2.balance_date <= ad.balance_date \n                ORDER BY db2.balance_date DESC \n                LIMIT 1), 0) AS daily_balance\n    FROM all_dates ad\n    LEFT JOIN daily_balances db \n      ON ad.customer_id = db.customer_id \n     AND ad.balance_date = db.balance_date\n  ),\n  adjusted_balances AS (\n    SELECT \n      customer_id,\n      balance_date,\n      MAX(daily_balance) OVER (PARTITION BY customer_id ORDER BY balance_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS adjusted_balance\n    FROM customer_daily_balances\n  ),\n  final_balances AS (\n    SELECT \n      customer_id,\n      balance_date,\n      CASE WHEN adjusted_balance < 0 THEN 0 ELSE adjusted_balance END AS daily_balance\n    FROM adjusted_balances\n  ),\n  monthly_max_balances AS (\n    SELECT \n      customer_id,\n      strftime('%Y-%m', balance_date) AS month,\n      MAX(daily_balance) AS max_daily_balance\n    FROM final_balances\n    GROUP BY customer_id, strftime('%Y-%m', balance_date)\n  )\nSELECT \n  month,\n  SUM(max_daily_balance) AS monthly_total\nFROM monthly_max_balances\nGROUP BY month\nORDER BY month;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.2285830016480759,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "WITH RECURSIVE daily_balances AS (\n    SELECT \n        customer_id,\n        txn_date AS balance_date,\n        SUM(txn_amount) OVER (PARTITION BY customer_id ORDER BY txn_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance\n    FROM customer_transactions\n),\ndate_ranges AS (\n    SELECT \n        customer_id,\n        MIN(txn_date) AS start_date,\n        MAX(txn_date) AS end_date\n    FROM customer_transactions\n    GROUP BY customer_id\n),\nall_dates AS (\n    SELECT \n        customer_id,\n        start_date AS balance_date\n    FROM date_ranges\n    UNION ALL\n    SELECT \n        d.customer_id,\n        DATE(d.balance_date, '+1 day') AS balance_date\n    FROM all_dates d\n    JOIN date_ranges dr ON d.customer_id = dr.customer_id\n    WHERE d.balance_date < dr.end_date\n),\nfilled_balances AS (\n    SELECT \n        ad.customer_id,\n        ad.balance_date,\n        COALESCE(\n            (SELECT db.running_balance \n             FROM daily_balances db \n             WHERE db.customer_id = ad.customer_id \n               AND db.balance_date <= ad.balance_date \n             ORDER BY db.balance_date DESC \n             LIMIT 1), \n            0\n        ) AS daily_balance\n    FROM all_dates ad\n),\nadjusted_balances AS (\n    SELECT \n        customer_id,\n        balance_date,\n        CASE WHEN daily_balance < 0 THEN 0 ELSE daily_balance END AS daily_balance\n    FROM filled_balances\n),\nmonthly_max_balances AS (\n    SELECT \n        customer_id,\n        strftime('%Y-%m', balance_date) AS month,\n        MAX(daily_balance) AS max_daily_balance\n    FROM adjusted_balances\n    GROUP BY customer_id, strftime('%Y-%m', balance_date)\n)\nSELECT \n    month,\n    SUM(max_daily_balance) AS monthly_total_max_balance\nFROM monthly_max_balances\nGROUP BY month\nORDER BY month;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 1.4637909916928038,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "WITH RECURSIVE\n  customer_dates AS (\n    SELECT \n      customer_id,\n      MIN(txn_date) AS min_date,\n      MAX(txn_date) AS max_date\n    FROM customer_transactions\n    GROUP BY customer_id\n  ),\n  all_days AS (\n    SELECT \n      customer_id,\n      min_date AS txn_date\n    FROM customer_dates\n    UNION ALL\n    SELECT \n      ad.customer_id,\n      DATE(ad.txn_date, '+1 day') AS txn_date\n    FROM all_days ad\n    JOIN customer_dates cd ON ad.customer_id = cd.customer_id\n    WHERE ad.txn_date < cd.max_date\n  ),\n  daily_balances AS (\n    SELECT \n      ad.customer_id,\n      ad.txn_date,\n      COALESCE(\n        (SELECT SUM(ct.txn_amount) \n         FROM customer_transactions ct \n         WHERE ct.customer_id = ad.customer_id \n           AND ct.txn_date <= ad.txn_date),\n        0\n      ) - COALESCE(\n        (SELECT SUM(ct.txn_amount) \n         FROM customer_transactions ct \n         WHERE ct.customer_id = ad.customer_id \n           AND ct.txn_date < ad.txn_date \n           AND ct.txn_type = 'refund'), -- Assuming negative amounts may represent refunds, but per schema only txn_amount is numeric; no explicit refund type. So we assume txn_amount can be negative.\n        0\n      ) AS raw_balance\n    FROM all_days ad\n  ),\n  daily_balances_cleaned AS (\n    SELECT \n      customer_id,\n      txn_date,\n      MAX(0, raw_balance) AS daily_balance\n    FROM daily_balances\n  ),\n  monthly_max_balances AS (\n    SELECT \n      customer_id,\n      strftime('%Y-%m', txn_date) AS month,\n      MAX(daily_balance) AS max_daily_balance\n    FROM daily_balances_cleaned\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n  )\nSELECT \n  month,\n  SUM(max_daily_balance) AS monthly_total_max_balance\nFROM monthly_max_balances\nGROUP BY month\nORDER BY month;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.34583300293888897,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "WITH RECURSIVE\n  customer_dates AS (\n    SELECT \n      customer_id,\n      MIN(txn_date) AS min_date,\n      MAX(txn_date) AS max_date\n    FROM customer_transactions\n    GROUP BY customer_id\n  ),\n  all_days AS (\n    SELECT \n      customer_id,\n      min_date AS txn_date\n    FROM customer_dates\n    UNION ALL\n    SELECT \n      ad.customer_id,\n      DATE(ad.txn_date, '+1 day') AS txn_date\n    FROM all_days ad\n    JOIN customer_dates cd ON ad.customer_id = cd.customer_id\n    WHERE ad.txn_date < cd.max_date\n  ),\n  daily_balances AS (\n    SELECT \n      ad.customer_id,\n      ad.txn_date,\n      COALESCE(\n        (SELECT SUM(ct.txn_amount) \n         FROM customer_transactions ct \n         WHERE ct.customer_id = ad.customer_id \n           AND ct.txn_date <= ad.txn_date),\n        0\n      ) - COALESCE(\n        (SELECT SUM(ct.txn_amount) \n         FROM customer_transactions ct \n         WHERE ct.customer_id = ad.customer_id \n           AND ct.txn_date < ad.txn_date \n           AND ct.txn_type = 'refund'), -- Assuming negative amounts may represent refunds, but per schema only txn_amount is numeric; no explicit refund type. So we assume txn_amount can be negative.\n        0\n      ) AS raw_balance\n    FROM all_days ad\n  ),\n  daily_balances_cleaned AS (\n    SELECT \n      customer_id,\n      txn_date,\n      MAX(0, raw_balance) AS daily_balance\n    FROM daily_balances\n  ),\n  monthly_max_balances AS (\n    SELECT \n      customer_id,\n      strftime('%Y-%m', txn_date) AS month,\n      MAX(daily_balance) AS max_daily_balance\n    FROM daily_balances_cleaned\n    GROUP BY customer_id, strftime('%Y-%m', txn_date)\n  )\nSELECT \n  month,\n  SUM(max_daily_balance) AS monthly_total_max_balance\nFROM monthly_max_balances\nGROUP BY month\nORDER BY month;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 4657.337416996597
+}

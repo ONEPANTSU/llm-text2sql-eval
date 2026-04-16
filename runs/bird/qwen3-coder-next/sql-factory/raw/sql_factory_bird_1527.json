@@ -1,0 +1,151 @@
+{
+  "task_id": "bird_1527",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT gs.GasStationID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nGROUP BY gs.GasStationID\nORDER BY SUM(t.Amount * t.Price) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "gs",
+            "gasstations",
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 2,
+      "reject_similarity": 0,
+      "pool_size_before": 1,
+      "pool_size_after": 3,
+      "top3": [
+        {
+          "sql": "SELECT gs.GasStationID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nGROUP BY gs.GasStationID\nORDER BY SUM(t.Amount * t.Price) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "gs",
+            "gasstations",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH RevenuePerStation AS (\n    SELECT \n        gs.GasStationID,\n        SUM(t.Amount * t.Price) AS TotalRevenue\n    FROM gasstations gs\n    JOIN transactions_1k t ON gs.GasStationID = t.GasStationID\n    GROUP BY gs.GasStationID\n)\nSELECT GasStationID\nFROM RevenuePerStation\nORDER BY TotalRevenue DESC\nLIMIT 1;",
+          "score": 1.122312373225152,
+          "similarity_max": 0.6553752535496957,
+          "tables_used": [
+            "gasstations",
+            "t",
+            "transactions_1k",
+            "gs",
+            "RevenuePerStation"
+          ]
+        },
+        {
+          "sql": "SELECT GasStationID\nFROM (\n    SELECT t.GasStationID, SUM(t.Amount * t.Price) AS Revenue\n    FROM transactions_1k t\n    GROUP BY t.GasStationID\n    ORDER BY Revenue DESC\n    LIMIT 1\n);",
+          "score": 0.9321321321321323,
+          "similarity_max": 0.5357357357357357,
+          "tables_used": [
+            "t",
+            "transactions_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "phase": "exploitation",
+      "generated": 2,
+      "preflight_ok": 1,
+      "reject_similarity": 1,
+      "pool_size_before": 3,
+      "pool_size_after": 4,
+      "top3": [
+        {
+          "sql": "SELECT gs.GasStationID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nGROUP BY gs.GasStationID\nORDER BY SUM(t.Amount * t.Price) DESC\nLIMIT 1;",
+          "score": 1.2,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "gs",
+            "gasstations",
+            "t",
+            "transactions_1k"
+          ]
+        },
+        {
+          "sql": "WITH RevenuePerStation AS (\n    SELECT \n        gs.GasStationID,\n        SUM(t.Amount * t.Price) AS TotalRevenue\n    FROM gasstations gs\n    JOIN transactions_1k t ON gs.GasStationID = t.GasStationID\n    GROUP BY gs.GasStationID\n)\nSELECT GasStationID\nFROM RevenuePerStation\nORDER BY TotalRevenue DESC\nLIMIT 1;",
+          "score": 1.122312373225152,
+          "similarity_max": 0.6553752535496957,
+          "tables_used": [
+            "gasstations",
+            "t",
+            "transactions_1k",
+            "gs",
+            "RevenuePerStation"
+          ]
+        },
+        {
+          "sql": "WITH RevenuePerStation AS (\n    SELECT \n        t.GasStationID,\n        SUM(t.Amount * t.Price) AS TotalRevenue\n    FROM transactions_1k t\n    GROUP BY t.GasStationID\n)\nSELECT GasStationID\nFROM RevenuePerStation\nORDER BY TotalRevenue DESC\nLIMIT 1;",
+          "score": 0.9870182555780932,
+          "similarity_max": 0.7259634888438133,
+          "tables_used": [
+            "t",
+            "RevenuePerStation",
+            "transactions_1k"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT gs.GasStationID\nFROM gasstations gs\nJOIN transactions_1k t ON gs.GasStationID = t.GasStationID\nGROUP BY gs.GasStationID\nORDER BY SUM(t.Amount * t.Price) DESC\nLIMIT 1;",
+    "meta": {
+      "score": 1.2,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "gs",
+        "gasstations",
+        "t",
+        "transactions_1k"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 3,
+    "avg_pool_size": 4,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.3333333333333333,
+    "exploration_vs_exploitation_ratio": 0.5,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 2.75
+  }
+}

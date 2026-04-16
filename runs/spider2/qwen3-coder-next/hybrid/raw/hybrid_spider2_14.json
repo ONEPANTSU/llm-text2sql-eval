@@ -1,0 +1,133 @@
+{
+  "task_id": "spider2_14",
+  "variant": "B",
+  "params": {
+    "sgr_grounding": true,
+    "initial_candidates": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "parallelism": "parallel",
+    "max_workers": 5,
+    "generation_timeout": 30,
+    "expansion_enabled": true,
+    "expansion_seeds": 2,
+    "expansion_per_seed": 2,
+    "expansion_sim_threshold": 0.85,
+    "expansion_timeout": 15,
+    "aggregation_mode": "hybrid",
+    "execution_timeout": 30
+  },
+  "initial_candidates_requested": 5,
+  "initial_candidates_generated": 5,
+  "candidates_fixed_count": 0,
+  "generation_time_ms": 1809.6340000047348,
+  "execution_time_ms": 3.0427919991780072,
+  "initial_candidates": [
+    {
+      "attempt_id": 0,
+      "sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\nWHERE bs.runs_scored >= 100\n  AND pm.team_id = m.match_winner;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 0.7323750032810494,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 42,
+        "attempt_id": 0
+      }
+    },
+    {
+      "attempt_id": 1,
+      "sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id\nWHERE pm.team_id = m.match_winner\nGROUP BY p.player_id, p.player_name, m.match_id, m.match_winner, pm.team_id\nHAVING SUM(bs.runs_scored) >= 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.5342079966794699,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 43,
+        "attempt_id": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id AND pm.player_id = bs.striker\nWHERE pm.team_id = m.match_winner\nGROUP BY p.player_id, p.player_name, m.match_id, m.match_winner, pm.team_id\nHAVING SUM(bs.runs_scored) >= 100;",
+      "preflight_ok": false,
+      "preflight_error_type": "pred_exec_fail",
+      "exec_ok": false,
+      "exec_error": "no such column: bs.striker",
+      "exec_time_ms": 0.6299579981714487,
+      "result_signature": null,
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 44,
+        "attempt_id": 2
+      }
+    },
+    {
+      "attempt_id": 3,
+      "sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id\nWHERE pm.team_id = m.match_winner\nGROUP BY p.player_id, p.player_name, m.match_id, m.match_winner, pm.team_id\nHAVING SUM(bs.runs_scored) >= 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.4710829962277785,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 45,
+        "attempt_id": 3
+      }
+    },
+    {
+      "attempt_id": 4,
+      "sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id\nWHERE pm.team_id = m.match_winner\nGROUP BY p.player_id, p.player_name, m.match_id, m.match_winner, pm.team_id\nHAVING SUM(bs.runs_scored) >= 100;",
+      "preflight_ok": true,
+      "preflight_error_type": null,
+      "exec_ok": true,
+      "exec_error": null,
+      "exec_time_ms": 0.25045798975043,
+      "result_signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "gen_params": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "seed": 46,
+        "attempt_id": 4
+      }
+    }
+  ],
+  "aggregation": {
+    "selected_attempt_id": 4,
+    "selected_sql": "SELECT DISTINCT p.player_name\nFROM player p\nJOIN player_match pm ON p.player_id = pm.player_id\nJOIN match m ON pm.match_id = m.match_id\nJOIN batsman_scored bs ON pm.match_id = bs.match_id\nWHERE pm.team_id = m.match_winner\nGROUP BY p.player_id, p.player_name, m.match_id, m.match_winner, pm.team_id\nHAVING SUM(bs.runs_scored) >= 100;",
+    "aggregation_reason": "hybrid: majority signature among exec_ok",
+    "votes": {
+      "by_signature": {
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": 3
+      }
+    },
+    "total_pool_size": 5
+  },
+  "diagnostic_retry": {
+    "triggered": false
+  },
+  "expansion": {
+    "seeds_used": 0,
+    "seed_attempt_ids": [],
+    "variations_requested": 0,
+    "variations_generated": 0,
+    "variations_accepted": 0,
+    "expansion_time_ms": 0.0,
+    "expansion_skipped_reason": "consensus",
+    "candidates": []
+  },
+  "expansion_skipped_reason": "consensus",
+  "latency_ms": 1812.805916997604
+}

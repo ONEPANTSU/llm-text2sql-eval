@@ -1,0 +1,62 @@
+{
+  "task_id": "tpcds_q15",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "SELECT ca_zip, SUM(cs_sales_price) AS total_sales\nFROM catalog_sales\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE (\n    ca_zip LIKE '85%' OR \n    ca_zip LIKE '30%' OR \n    ca_zip LIKE '54%' OR\n    ca_state IN ('CA', 'WA', 'GA') OR \n    cs_sales_price > 500\n)\nAND date_dim.d_qoy = 2 \nAND date_dim.d_year = 2001\n...",
+          "score": 1.15,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "customer_address",
+            "date_dim",
+            "catalog_sales"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "SELECT ca_zip, SUM(cs_sales_price) AS total_sales\nFROM catalog_sales\nJOIN customer ON catalog_sales.cs_bill_customer_sk = customer.c_customer_sk\nJOIN customer_address ON customer.c_current_addr_sk = customer_address.ca_address_sk\nJOIN date_dim ON catalog_sales.cs_sold_date_sk = date_dim.d_date_sk\nWHERE (\n    ca_zip LIKE '85%' OR \n    ca_zip LIKE '30%' OR \n    ca_zip LIKE '54%' OR\n    ca_state IN ('CA', 'WA', 'GA') OR \n    cs_sales_price > 500\n)\nAND date_dim.d_qoy = 2 \nAND date_dim.d_year = 2001\n...",
+    "meta": {
+      "score": 1.15,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "customer_address",
+        "date_dim",
+        "catalog_sales"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 40.52
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "task_id": "spider2_89",
+  "params": {
+    "max_rounds": 3,
+    "warmup_rounds": 1,
+    "gen_batch": 2,
+    "exp_batch": 2,
+    "target_pool_size": 5,
+    "sim_threshold": 0.85,
+    "stop_on_saturation": true,
+    "saturation_patience": 2,
+    "no_progress_patience": 2
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "phase": "exploration",
+      "generated": 1,
+      "preflight_ok": 1,
+      "reject_similarity": 0,
+      "pool_size_before": 0,
+      "pool_size_after": 1,
+      "top3": [
+        {
+          "sql": "WITH salary_cleaned AS (\n    SELECT \n        region,\n        customer AS company,\n        CAST(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(\n            CAST(total_amt_usd AS TEXT), '$', ''), '\u20b9', ''), ',', ''), ' ', ''), 'INR', ''), 'Rs.', ''), 'Rs', ''), 'INR ', ''), 'Rs ', ''), 'INR.', ''), '.', '') AS REAL) AS salary\n    FROM web_orders o\n    JOIN web_accounts a ON o.account_id = a.id\n    JOIN web_sales_reps s ON a.sales_rep_id = s.id\n    JOIN hardw...",
+          "score": 1.1,
+          "similarity_max": 0.0,
+          "tables_used": [
+            "r",
+            "ranked_companies",
+            "avg_by_company",
+            "national_avg",
+            "web_orders",
+            "web_sales_reps",
+            "web_accounts",
+            "a",
+            "o",
+            "s",
+            "c",
+            "n",
+            "salary_cleaned",
+            "hardware_dim_customer"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "sql": "WITH salary_cleaned AS (\n    SELECT \n        region,\n        customer AS company,\n        CAST(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(\n            CAST(total_amt_usd AS TEXT), '$', ''), '\u20b9', ''), ',', ''), ' ', ''), 'INR', ''), 'Rs.', ''), 'Rs', ''), 'INR ', ''), 'Rs ', ''), 'INR.', ''), '.', '') AS REAL) AS salary\n    FROM web_orders o\n    JOIN web_accounts a ON o.account_id = a.id\n    JOIN web_sales_reps s ON a.sales_rep_id = s.id\n    JOIN hardw...",
+    "meta": {
+      "score": 1.1,
+      "similarity_max": 0.0,
+      "tables_used": [
+        "r",
+        "ranked_companies",
+        "avg_by_company",
+        "national_avg",
+        "web_orders",
+        "web_sales_reps",
+        "web_accounts",
+        "a",
+        "o",
+        "s",
+        "c",
+        "n",
+        "salary_cleaned",
+        "hardware_dim_customer"
+      ],
+      "phase": "gen",
+      "round_idx": 0,
+      "fallback_used": false
+    }
+  },
+  "summary": {
+    "avg_rounds": 1,
+    "avg_pool_size": 1,
+    "reject_exec_fail_rate": 0.0,
+    "reject_similarity_rate": 0.0,
+    "exploration_vs_exploitation_ratio": 1.0,
+    "exec_fail_breakdown": {},
+    "top_error_messages": [],
+    "avg_preflight_ms": 1.78
+  }
+}
